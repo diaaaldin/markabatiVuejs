@@ -96,16 +96,16 @@ export default {
                         <div class="row">
                             <div class=" col-12 col-md-6 col-lg-6 mt-lg-5 a1">
                                 <div class="d-flex flex-column mt-lg-5 ">
-                                    <img class="img-fluid my-2" src="/img/pr3.jpg" alt="">
+                                    <img class="img-fluid my-2" src="/img/logo.png" alt="">
                                     <!-- <img class="img-fluid my-2" src="/img/pr11.jpg" alt=""> -->
-                                    <img class="img-fluid my-2" src="/img/bg-login.jpg" alt="">
+                                    <img class="img-fluid my-2" src="/img/logo.png" alt="">
                                 </div>
                             </div>
                             <div class="col-12 col-md-6 col-lg-6 ps-lg-1 a2">
                                 <div class="d-flex flex-column ">
-                                    <img class="img-fluid my-2 w-100" src="/img/pr14.jpg" alt="" style="object-fit: contain;">
-                                    <img class="img-fluid my-2" src="/img/pr2.jpg" alt="">
-                                    <img class="img-fluid mt-5" src="/img/YallaPartyLogo.png" alt="">
+                                    <img class="img-fluid my-2 w-100" src="/img/logo.png" alt="" style="object-fit: contain;">
+                                    <img class="img-fluid my-2" src="/img/logo.png" alt="">
+                                    <img class="img-fluid mt-5" src="/img/logo.png" alt="">
                                 </div>
                             </div>
                         </div>

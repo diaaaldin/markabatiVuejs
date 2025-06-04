@@ -78,14 +78,14 @@ export default {
 };
 </script>
 <template>
-    <div class="header-div second">
+    <div class="header-div main">
         <nav class="navbar navbar-expand-lg navbar-expand-lg pt-3">
-            <div class="container" >
+            <div class="container">
 
                 <div class="navbar-brand">
 
                     <router-link to="/">
-                        <img src="/img/YallaPartyLogo2.png" width="65" alt="" />
+                        <img src="/img/logo.png" width="100" alt="" />
                     </router-link>
 
                 </div> 
@@ -101,7 +101,7 @@ export default {
                     </span>
                 </button> 
                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav align-items-center mb-2 mb-lg-0 gradiant_nav">
+                    <ul class="navbar-nav align-items-center mx-auto mb-2 mb-lg-0 gradiant_nav">
                         <li class="nav-item">
                             <router-link to="/" class="nav-link" :class="{ active: $route.path === '/' }"> الرئيسية
                             </router-link>
@@ -118,19 +118,23 @@ export default {
                             <router-link to="/aboutus" class="nav-link"
                                 :class="{ active: $route.path === '/aboutus' }"> من نحن </router-link>
                         </li>
+                        <li class="nav-item">
+                            <router-link to="/aboutus" class="nav-link"
+                                :class="{ active: $route.path === '/aboutus' }"> تواصل معنا  </router-link>
+                        </li>
                     </ul>
 
                     <ul v-if="GetUserName == ''"
                         class="nav align-items-center mb-2 mb-lg-0 white-header justify-content-center gradiant_nav">
                         <li class="nav-item login">
 
-                            <router-link to="/login" class="px-3 py-2 align-items-center d-flex login-btn"> LOGIN
+                            <router-link to="/login" class="px-3 py-2 align-items-center d-flex login-btn"> تسجيل دخول
                             </router-link>
 
                         </li>
                         <li class="nav-item sign-up">
 
-                            <router-link to="/signUp" class="px-3 py-2 align-items-center d-flex login-btn"> SIGN UP
+                            <router-link to="/signUp" class="px-3 py-2 align-items-center d-flex login-btn"> مستخدم جديد
                             </router-link>
 
                         </li>

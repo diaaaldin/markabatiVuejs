@@ -192,7 +192,7 @@ export default {
 					<div class="col-12 col-lg-8">
 						<div class="img">
 							<router-link to="/">
-							<img src="/img/YallaPartyLogo2.png" alt="">
+							<img src="/img/logo.png" alt="">
 							</router-link>
 						</div>
 						<div class="text-center">

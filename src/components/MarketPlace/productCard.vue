@@ -163,14 +163,14 @@ export default {
                     <div class="d-flex justify-content-between">
                         <div class=" d-flex  flex-column">
                             <div class="d-flex align-items-center mb-3">
-                                <img src="/img/icons/price-svgrepo-com.svg" class="icon-card" width="25" alt="">
+                                <img src="/img/logo.png" class="icon-card" width="25" alt="">
                                 <span class="text-store">{{ product.price }}</span>
                             </div>
 
                         </div>
                         <div class="d-flex justify-content-end flex-column">
                             <div class="d-flex align-items-center mb-3">
-                                <img src="/img/icons/company-svgrepo-com.svg" class="icon-card" width="25" alt="">
+                                <img src="/img/logo.png" class="icon-card" width="25" alt="">
 
                                 <a href="javascript:void(0)" v-on:click="toMarketFunc()"><span class="text-store">
                                     {{ product.companyName }}</span></a>

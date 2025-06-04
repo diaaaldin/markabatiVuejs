@@ -40,6 +40,8 @@ export default {
         }
     },
     mounted() {
+        this.MainSlider();
+
         useHead({
             title: 'Market | YallaParty',
             meta: [
@@ -238,7 +240,7 @@ export default {
             try {
                 const response = await axios.get(
                     `https://api.census.gov/data/2020/dec/pl?get=NAME&for=place:*&in=state:${stateId}`
-                    , {  withCredentials: false }
+                    , { withCredentials: false }
                 );
                 this.cities = response.data;
             } catch (error) {
@@ -253,6 +255,44 @@ export default {
             const selectedCity = this.cities.find(x => x[2] === cityId);  // Assuming cityId is at index 2
             return selectedCity ? selectedCity[0] : "City not found";  // Return city name or a default message
         },
+        MainSlider() {
+            $('.slider').slick({
+                dots: true,
+                infinite: false,
+                speed: 300,
+                slidesToShow: 1,
+                rtl: true,
+                autoplay: true,
+                autoplaySpeed: 2000,
+                prevArrow: '<button class="slick-prev prev-arrow"> <i class="fa-solid fa-angle-right"></i></button>',
+                nextArrow: '<button class="slick-next next-arrow"> <i class="fa-solid fa-angle-left"></i></button>',
+                slidesToScroll: 1,
+                responsive: [
+                    {
+                        breakpoint: 1200,
+                        settings: {
+                            slidesToShow: 1,
+                            slidesToScroll: 1,
+                        }
+                    },
+                    {
+                        breakpoint: 1008,
+                        settings: {
+                            slidesToShow: 1,
+                            slidesToScroll: 1,
+                        }
+                    },
+                    {
+                        breakpoint: 800,
+                        settings: {
+                            arrows: false,
+                            slidesToShow: 1,
+                            slidesToScroll: 1,
+                        },
+                    }
+                ]
+            });
+        },
 
     },
     beforeDestroy() {
@@ -262,140 +302,1381 @@ export default {
 </script>
 <template>
     <pageNav></pageNav>
-
-    <div class="imagetest">
-    </div>
-    <div class="header-title text-center">
-        <div class="breadcrumb-outer campany">
+    <div class="bread">
+        <nav>
             <div class="container">
-                <div class="breadcrumb-content text-center">
-                    <h5 class="theme mb-0">Yalla Party</h5>
-                    <h1 class="mb-0 white">Market</h1>
-                </div>
-
-                <div class="d-flex justify-content-between mt-5 search_input">
-                    <div class="input-group">
-                        <input @input="SearchChangeFunc()" v-model="dataSearch.productName" type="text"
-                            placeholder="Search..." class="form-control search_input-tab  p-3 search">
-                        <button class="input-group-text search_icon-tab"><i class="fas fa-search"></i></button>
-                    </div>
-
-                    <div class="custom-select" :class="{ open: isOpen === true }" ref="customSelect">
-                        <div class="selected-option" @click="toggleDropdown()">{{ selectedOption }}</div>
-                        <ul class="options-list">
-                            <li class="option" @click="selectOption(0)">-- select section --</li>
-                            <li v-for="item in getToolsSectionsData" :key="item.id" class="option"
-                                @click="selectOption(item)">
-                                {{ item.name }}
-                            </li>
-                        </ul>
-                    </div>
-
-                </div>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                            <router-link to="/" :class="{ active: $route.path === '/' }"> الرئيسية </router-link>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">الدورات</li>
+                </ol>
             </div>
-
-        </div>
-
-    </div> 
-     <section class="profile campany mt-5">
+        </nav>
+    </div>
+    
+    <section class="profile campany mt-5">
         <div class="container">
-            <div class="row mt-5 h-100"> 
+            <div class="row mt-5 h-100">
                 <!--  start left side list  -->
-                <div class="col-12 col-lg-3 h-100 left-side">
+                <div class="col-12 col-lg-3 h-100 left-side fillter">
 
-                    <div class="image">
-                     
-                        <img :src="userImage" alt="profile-picture" class="img-fluid hero-profile-campany">
-                    </div>
+                    <div class="accordion" id="accordionExample">
+                        <div class="sec">
+                            <div class="title-fill">
+                                <img src="/img/icons/fillter.svg">
+                                <span>الفلترة</span>
+                            </div>
+                        </div>
+                        <div class="accordion-item customize-according">
+                            <h2 class="accordion-header" id="headingOne">
+                                <button class="accordion-button  btn collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                    <div class="title-fill">
+                                        <img src="/img/icons/car.svg">
+                                        <span>نوع السيارة</span>
+                                    </div>
+                                </button>
+                            </h2>
+                            <div id="collapseOne" class="accordion-collapse collapse show " aria-labelledby="headingOne"
+                                data-bs-parent="#accordionExample">
+                                <div class="accordion-body customize-acc-body">
+                                    <form action="">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value=""
+                                                id="flexCheckChecked" checked="">
+                                            <label class="form-check-label" for="flexCheckChecked"> مرسيدس بنز</label>
+                                            <span>(345)</span>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input " type="checkbox" value=""
+                                                id="flexCheckChecked">
+                                            <label class="form-check-label" for="flexCheckChecked">تويوتا كورلا</label>
+                                            <span>(345)</span>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input " type="checkbox" value=""
+                                                id="flexCheckChecked">
+                                            <label class="form-check-label" for="flexCheckChecked"> هونداي
+                                                النترا</label>
+                                            <span>(345)</span>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input " type="checkbox" value=""
+                                                id="flexCheckChecked">
+                                            <label class="form-check-label" for="flexCheckChecked"> هونداي أكورد</label>
+                                            <span>(345)</span>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input " type="checkbox" value=""
+                                                id="flexCheckChecked" checked="">
+                                            <label class="form-check-label" for="flexCheckChecked"> نيسان التيما</label>
+                                            <span>(345)</span>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input " type="checkbox" value=""
+                                                id="flexCheckChecked">
+                                            <label class="form-check-label" for="flexCheckChecked"> كيا أوبتمام</label>
+                                            <span>(345)</span>
+                                        </div>
+                                    </form>
 
-                    <div class="" id="">
-                        <ul class="list-group  h-100">
-                            <li class="list-group-item">
-                                <div class="d-flex justify-content-between align-items-center py-2">
-                                    <div class="justify-content-start  d-flex">
-                                        <div class="d-flex align-items-center">
-                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M4 7.8C4 6.11984 4 5.27976 4.32698 4.63803C4.6146 4.07354 5.07354 3.6146 5.63803 3.32698C6.27976 3 7.11984 3 8.8 3H15.2C16.8802 3 17.7202 3 18.362 3.32698C18.9265 3.6146 19.3854 4.07354 19.673 4.63803C20 5.27976 20 6.11984 20 7.8V17.2C20 18.8802 20 19.7202 19.673 20.362C19.3854 20.9265 18.9265 21.3854 18.362 21.673C17.7202 22 16.8802 22 15.2 22H8.8C7.11984 22 6.27976 22 5.63803 21.673C5.07354 21.3854 4.6146 20.9265 4.32698 20.362C4 19.7202 4 18.8802 4 17.2V7.8Z"
-                                                    fill="#B5BEC8" />
-                                                <path fill-rule="evenodd" clip-rule="evenodd"
-                                                    d="M9 10C9.55228 10 10 9.55228 10 9C10 8.44772 9.55228 8 9 8C8.44772 8 8 8.44772 8 9C8 9.55228 8.44772 10 9 10ZM13 8C12.4477 8 12 8.44772 12 9C12 9.55228 12.4477 10 13 10H15C15.5523 10 16 9.55228 16 9C16 8.44772 15.5523 8 15 8H13ZM13 12C12.4477 12 12 12.4477 12 13C12 13.5523 12.4477 14 13 14H15C15.5523 14 16 13.5523 16 13C16 12.4477 15.5523 12 15 12H13ZM12 17C12 16.4477 12.4477 16 13 16H15C15.5523 16 16 16.4477 16 17C16 17.5523 15.5523 18 15 18H13C12.4477 18 12 17.5523 12 17ZM10 13C10 13.5523 9.55228 14 9 14C8.44772 14 8 13.5523 8 13C8 12.4477 8.44772 12 9 12C9.55228 12 10 12.4477 10 13ZM9 18C9.55228 18 10 17.5523 10 17C10 16.4477 9.55228 16 9 16C8.44772 16 8 16.4477 8 17C8 17.5523 8.44772 18 9 18Z"
-                                                    fill="black" />
-                                                <path
-                                                    d="M9 3C9 2.44772 9.44772 2 10 2H14C14.5523 2 15 2.44772 15 3V4C15 4.55228 14.5523 5 14 5H10C9.44772 5 9 4.55228 9 4V3Z"
-                                                    fill="black" />
-                                            </svg>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item customize-according mt-2">
+                            <h2 class="accordion-header" id="heading2">
+                                <button class="accordion-button  btn " type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapse2" aria-expanded="true" aria-controls="collapse2">
+                                    <div class="title-fill">
+                                        <img src="/img/icons/car.svg">
+                                        <span>موديل السيارة</span>
+                                    </div>
+                                </button>
+                            </h2>
+                            <div id="collapse2" class="accordion-collapse collapse show " aria-labelledby="heading2"
+                                data-bs-parent="#accordionExample">
+                                <div class="accordion-body customize-acc-body ">
+                                    <form action="">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value=""
+                                                id="flexCheckChecked" checked="">
+                                            <label class="form-check-label" for="flexCheckChecked"> مرسيدس بنز</label>
+                                            <span>(345)</span>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input " type="checkbox" value=""
+                                                id="flexCheckChecked">
+                                            <label class="form-check-label" for="flexCheckChecked">تويوتا كورلا</label>
+                                            <span>(345)</span>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input " type="checkbox" value=""
+                                                id="flexCheckChecked">
+                                            <label class="form-check-label" for="flexCheckChecked"> هونداي
+                                                النترا</label>
+                                            <span>(345)</span>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input " type="checkbox" value=""
+                                                id="flexCheckChecked">
+                                            <label class="form-check-label" for="flexCheckChecked"> هونداي أكورد</label>
+                                            <span>(345)</span>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input " type="checkbox" value=""
+                                                id="flexCheckChecked" checked="">
+                                            <label class="form-check-label" for="flexCheckChecked"> نيسان التيما</label>
+                                            <span>(345)</span>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input " type="checkbox" value=""
+                                                id="flexCheckChecked">
+                                            <label class="form-check-label" for="flexCheckChecked"> كيا أوبتمام</label>
+                                            <span>(345)</span>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
 
-                                            <a href="javascript:void(0)" class="list_link ms-2"> diaa</a>
+                        <div class="accordion-item customize-according mt-2">
+                            <h2 class="accordion-header" id="">
+                                <button class="btn py-3" type="">
+                                    <div class="title-fill">
+                                        <img src="/img/icons/date.svg">
+                                        <span>السنة</span>
+                                    </div>
+                                </button>
+                            </h2>
+                            <div id="" class="show">
+                                <div class="accordion-body customize-acc-body pt-0">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label class="label-form">من</label>
+                                            <input name="price" id="price" type="text"
+                                                class="form-control mt-2  text-start gray_text gray-inp"
+                                                placeholder=" 0 " required="">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="label-form">الى</label>
+                                            <input name="price" id="price" type="text"
+                                                class="form-control mt-2  text-start gray_text gray-inp"
+                                                placeholder=" 0 " required="">
                                         </div>
                                     </div>
-                                </div>
-                            </li>
 
-                            <li class="list-group-item ">
-                                <div class="d-flex justify-content-between align-items-center py-2">
-                                    <div class="justify-content-start  d-flex">
-                                        <div class="d-flex align-items-center">
-                                            <svg class="svg-inline--fa fa-map-marked-alt fa-w-18 fa-1x me-2"
-                                                aria-hidden="true" width="24" height="24" focusable="false"
-                                                data-prefix="fas" data-icon="map-marked-alt" role="img"
-                                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"
-                                                data-fa-i2svg="">
-                                                <path fill="currentColor"
-                                                    d="M288 0c-69.59 0-126 56.41-126 126 0 56.26 82.35 158.8 113.9 196.02 6.39 7.54 17.82 7.54 24.2 0C331.65 284.8 414 182.26 414 126 414 56.41 357.59 0 288 0zm0 168c-23.2 0-42-18.8-42-42s18.8-42 42-42 42 18.8 42 42-18.8 42-42 42zM20.12 215.95A32.006 32.006 0 0 0 0 245.66v250.32c0 11.32 11.43 19.06 21.94 14.86L160 448V214.92c-8.84-15.98-16.07-31.54-21.25-46.42L20.12 215.95zM288 359.67c-14.07 0-27.38-6.18-36.51-16.96-19.66-23.2-40.57-49.62-59.49-76.72v182l192 64V266c-18.92 27.09-39.82 53.52-59.49 76.72-9.13 10.77-22.44 16.95-36.51 16.95zm266.06-198.51L416 224v288l139.88-55.95A31.996 31.996 0 0 0 576 426.34V176.02c0-11.32-11.43-19.06-21.94-14.86z">
-                                                </path>
-                                            </svg>
-                                            <a href="javascript:void(0)" class="list_link ms-2"> مدينة غزة </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item customize-according mt-2">
+                            <h2 class="accordion-header" id="">
+                                <button class="btn py-3" type="">
+                                    <div class="title-fill">
+                                        <img src="/img/icons/money.svg">
+                                        <span>السعر</span>
+                                    </div>
+                                </button>
+                            </h2>
+                            <div id="" class="show">
+                                <div class="accordion-body customize-acc-body pt-0">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label class="label-form">من</label>
+                                            <input name="price" id="price" type="text"
+                                                class="form-control mt-2  text-start gray_text gray-inp"
+                                                placeholder=" 0 " required="">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="label-form">الى</label>
+                                            <input name="price" id="price" type="text"
+                                                class="form-control mt-2  text-start gray_text gray-inp"
+                                                placeholder=" 0 " required="">
                                         </div>
                                     </div>
+
                                 </div>
-                            </li>
+                            </div>
+                        </div>
+                        <div class="accordion-item customize-according mt-2">
+                            <h2 class="accordion-header" id="">
+                                <button class="btn py-3" type="">
+                                    <div class="title-fill">
+                                        <img src="/img/icons/speed.svg">
+                                        <span>عدد الأميال</span>
+                                    </div>
+                                </button>
+                            </h2>
+                            <div id="" class="show">
+                                <div class="accordion-body customize-acc-body pt-0">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label class="label-form">من</label>
+                                            <input name="price" id="price" type="text"
+                                                class="form-control mt-2  text-start gray_text gray-inp"
+                                                placeholder=" 0 " required="">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="label-form">الى</label>
+                                            <input name="price" id="price" type="text"
+                                                class="form-control mt-2  text-start gray_text gray-inp"
+                                                placeholder=" 0 " required="">
+                                        </div>
+                                    </div>
 
-                        </ul>
+                                </div>
+                            </div>
+                        </div>
 
 
+                        <div class="accordion-item customize-according mt-2">
+                            <h2 class="accordion-header" id="heading6">
+                                <button class="accordion-button  btn collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapse6" aria-expanded="false" aria-controls="collapse6">
+                                    <div class="title-fill">
+                                        <img src="/img/icons/color.svg">
+                                        <span>الألوان</span>
+                                    </div>
+                                </button>
+                            </h2>
+                            <div id="collapse6" class="accordion-collapse collapse " aria-labelledby="heading6"
+                                data-bs-parent="#accordionExample">
+                                <div class="accordion-body customize-acc-body pt-0">
+                                    غالباً ما يحتاج العثور على المنتج الذي ترغب في شراءه مجهوداً كبيراً إذا قمت بالتسوق
+                                    من
+                                    المتاجر التقليدية الموجودة بمراكز التسوق، ولكن إذا قررت التسوق أون لاين فإن عملية
+                                    البحث
+                                    والعثور على المنتج ستكون أكثر سهولة من خلال تصفح بعض قنوات التسوق الإلكترونية للحصول
+                                    على
+                                    أفضل منتج.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item customize-according mt-2">
+                            <h2 class="accordion-header" id="heading7">
+                                <button class="accordion-button  btn collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapse7" aria-expanded="false" aria-controls="collapse7">
+                                    <div class="title-fill">
+                                        <img src="/img/icons/spas.svg">
+                                        <span>المواصفات</span>
+                                    </div>
+                                </button>
+                            </h2>
+                            <div id="collapse7" class="accordion-collapse collapse " aria-labelledby="heading7"
+                                data-bs-parent="#accordionExample">
+                                <div class="accordion-body customize-acc-body pt-0">
+                                    غالباً ما يحتاج العثور على المنتج الذي ترغب في شراءه مجهوداً كبيراً إذا قمت بالتسوق
+                                    من
+                                    المتاجر التقليدية الموجودة بمراكز التسوق، ولكن إذا قررت التسوق أون لاين فإن عملية
+                                    البحث
+                                    والعثور على المنتج ستكون أكثر سهولة من خلال تصفح بعض قنوات التسوق الإلكترونية للحصول
+                                    على
+                                    أفضل منتج.
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
 
-                </div> 
+
+                </div>
                 <!-- end left side list-->
 
                 <!-- right side container -->
                 <div class="col-12 col-lg-9 ">
-                    <div class="container white_card px-4 pb-4 pt-4 pb-0 mt-3 mt-lg-0 right-side">
-                        <div class="Product">
-                            <span class="sub-hero-title"> Products </span>
-                            <div class="row first_sec">
-                                <productCard v-for="item in productsData" :product='item'></productCard>
+                    <div class="container white_card mt-2 right-side">
+                        <span class="header-title"> أحدث السيارات </span>
+                        <select class="header-drop form-select p-3 align-items-center d-flex mx-lg-2"
+                            aria-label="Default select example">
+                            <option selected=""> من الأعلى الى الأسفل</option>
+                            <option value="1">من الأسفل الى الأعلى</option>
+                        </select>
+                        <div class="clearfix"></div>
+                        <div class="row">
+                            <div class="col-12 col-lg-4 col-md-6 mt-4" data-aos="fade-up" data-aos-delay="100"
+                                data-aos-duration="700">
+                                <router-link to="/vehicle">
+                                    <div class="card custom_card">
+                                        <div class="img">
+                                            <img src="/img/cars/c1.png" class="card-img-top index-img-card" alt="...">
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-between align-items-baseline mb-2">
+                                                <h6 class="card-title justify-content-start">فيراري</h6>
+                                                <a href="javascript:void(0)" class="justify-content-end">
+                                                    <!-- <img src="/img/icons/star2.svg"> -->
+                                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                        xmlns="http://www.w3.org/2000/svg">
+                                                        <path
+                                                            d="M10.7878 3.10215C11.283 2.09877 12.7138 2.09876 13.209 3.10215L15.567 7.87987L20.8395 8.64601C21.9468 8.80691 22.3889 10.1677 21.5877 10.9487L17.7724 14.6676L18.6731 19.9189C18.8622 21.0217 17.7047 21.8627 16.7143 21.342L11.9984 18.8627L7.28252 21.342C6.29213 21.8627 5.13459 21.0217 5.32374 19.9189L6.2244 14.6676L2.40916 10.9487C1.60791 10.1677 2.05005 8.80691 3.15735 8.64601L8.42988 7.87987L10.7878 3.10215ZM11.9984 4.03854L9.74008 8.61443C9.54344 9.01288 9.16332 9.28904 8.72361 9.35294L3.67382 10.0867L7.32788 13.6486C7.64606 13.9587 7.79125 14.4055 7.71614 14.8435L6.85353 19.8729L11.3702 17.4983C11.7635 17.2915 12.2333 17.2915 12.6266 17.4983L17.1433 19.8729L16.2807 14.8435C16.2056 14.4055 16.3508 13.9587 16.6689 13.6486L20.323 10.0867L15.2732 9.35294C14.8335 9.28904 14.4534 9.01288 14.2568 8.61443L11.9984 4.03854Z"
+                                                            fill="#999999" />
+                                                    </svg>
+                                                </a>
+                                            </div>
+                                            <div class="d-flex justify-content-between">
+                                                <div class=" d-flex  flex-column">
+                                                    <div class="d-flex align-items-center mb-2">
+                                                        <a href="hotel_details.html" class="name-details">
+                                                            فيراري 488 جي تي بي
+                                                        </a>
+                                                    </div>
+                                                    <div class=" d-flex align-items-center rate mb-2">
+                                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path
+                                                                d="M6.19185 1.0681C6.52198 0.399179 7.47585 0.399172 7.80598 1.0681L9.37798 4.25325L12.893 4.76401C13.6312 4.87127 13.9259 5.77847 13.3918 6.29913L10.8482 8.7784L11.4487 12.2793C11.5748 13.0145 10.8031 13.5751 10.1428 13.228L6.99891 11.5751L3.85499 13.228C3.19473 13.5751 2.42304 13.0145 2.54914 12.2793L3.14958 8.7784L0.606087 6.29913C0.0719199 5.77847 0.36668 4.87127 1.10488 4.76401L4.6199 4.25325L6.19185 1.0681Z"
+                                                                fill="#FFCE1F" />
+                                                        </svg>
+                                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path
+                                                                d="M6.19185 1.0681C6.52198 0.399179 7.47585 0.399172 7.80598 1.0681L9.37798 4.25325L12.893 4.76401C13.6312 4.87127 13.9259 5.77847 13.3918 6.29913L10.8482 8.7784L11.4487 12.2793C11.5748 13.0145 10.8031 13.5751 10.1428 13.228L6.99891 11.5751L3.85499 13.228C3.19473 13.5751 2.42304 13.0145 2.54914 12.2793L3.14958 8.7784L0.606087 6.29913C0.0719199 5.77847 0.36668 4.87127 1.10488 4.76401L4.6199 4.25325L6.19185 1.0681Z"
+                                                                fill="#FFCE1F" />
+                                                        </svg>
+                                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path
+                                                                d="M6.19185 1.0681C6.52198 0.399179 7.47585 0.399172 7.80598 1.0681L9.37798 4.25325L12.893 4.76401C13.6312 4.87127 13.9259 5.77847 13.3918 6.29913L10.8482 8.7784L11.4487 12.2793C11.5748 13.0145 10.8031 13.5751 10.1428 13.228L6.99891 11.5751L3.85499 13.228C3.19473 13.5751 2.42304 13.0145 2.54914 12.2793L3.14958 8.7784L0.606087 6.29913C0.0719199 5.77847 0.36668 4.87127 1.10488 4.76401L4.6199 4.25325L6.19185 1.0681Z"
+                                                                fill="#FFCE1F" />
+                                                        </svg>
+                                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path
+                                                                d="M6.19185 1.0681C6.52198 0.399179 7.47585 0.399172 7.80598 1.0681L9.37798 4.25325L12.893 4.76401C13.6312 4.87127 13.9259 5.77847 13.3918 6.29913L10.8482 8.7784L11.4487 12.2793C11.5748 13.0145 10.8031 13.5751 10.1428 13.228L6.99891 11.5751L3.85499 13.228C3.19473 13.5751 2.42304 13.0145 2.54914 12.2793L3.14958 8.7784L0.606087 6.29913C0.0719199 5.77847 0.36668 4.87127 1.10488 4.76401L4.6199 4.25325L6.19185 1.0681Z"
+                                                                fill="#FFCE1F" />
+                                                        </svg>
+                                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path
+                                                                d="M6.19185 1.0681C6.52198 0.399179 7.47585 0.399172 7.80598 1.0681L9.37798 4.25325L12.893 4.76401C13.6312 4.87127 13.9259 5.77847 13.3918 6.29913L10.8482 8.7784L11.4487 12.2793C11.5748 13.0145 10.8031 13.5751 10.1428 13.228L6.99891 11.5751L3.85499 13.228C3.19473 13.5751 2.42304 13.0145 2.54914 12.2793L3.14958 8.7784L0.606087 6.29913C0.0719199 5.77847 0.36668 4.87127 1.10488 4.76401L4.6199 4.25325L6.19185 1.0681Z"
+                                                                fill="#FFCE1F" />
+                                                        </svg>
+
+                                                        <span class="number">
+                                                            (5)
+                                                        </span>
+                                                    </div>
+                                                    <div class=" d-flex align-items-center">
+
+                                                        <span class="price">
+                                                            5000$
+                                                        </span>
+                                                        <span class="des">
+                                                            34.75$
+                                                        </span>
+                                                    </div>
+
+                                                </div>
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </router-link>
+                            </div>
+                            <div class="col-12 col-lg-4 col-md-6 mt-4" data-aos="fade-up" data-aos-delay="100"
+                                data-aos-duration="700">
+                                <a href="service_details.html" style="color:black;">
+                                    <div class="card custom_card">
+                                        <div class="img">
+                                            <img src="/img/cars/c2.png" class="card-img-top index-img-card" alt="...">
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-between align-items-baseline mb-2">
+                                                <h6 class="card-title justify-content-start">فيراري</h6>
+                                                <a href="javascript:void(0)" class="justify-content-end">
+                                                    <!-- <img src="/img/icons/star2.svg"> -->
+                                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                        xmlns="http://www.w3.org/2000/svg">
+                                                        <path
+                                                            d="M10.7878 3.10215C11.283 2.09877 12.7138 2.09876 13.209 3.10215L15.567 7.87987L20.8395 8.64601C21.9468 8.80691 22.3889 10.1677 21.5877 10.9487L17.7724 14.6676L18.6731 19.9189C18.8622 21.0217 17.7047 21.8627 16.7143 21.342L11.9984 18.8627L7.28252 21.342C6.29213 21.8627 5.13459 21.0217 5.32374 19.9189L6.2244 14.6676L2.40916 10.9487C1.60791 10.1677 2.05005 8.80691 3.15735 8.64601L8.42988 7.87987L10.7878 3.10215ZM11.9984 4.03854L9.74008 8.61443C9.54344 9.01288 9.16332 9.28904 8.72361 9.35294L3.67382 10.0867L7.32788 13.6486C7.64606 13.9587 7.79125 14.4055 7.71614 14.8435L6.85353 19.8729L11.3702 17.4983C11.7635 17.2915 12.2333 17.2915 12.6266 17.4983L17.1433 19.8729L16.2807 14.8435C16.2056 14.4055 16.3508 13.9587 16.6689 13.6486L20.323 10.0867L15.2732 9.35294C14.8335 9.28904 14.4534 9.01288 14.2568 8.61443L11.9984 4.03854Z"
+                                                            fill="#999999" />
+                                                    </svg>
+                                                </a>
+                                            </div>
+                                            <div class="d-flex justify-content-between">
+                                                <div class=" d-flex  flex-column">
+                                                    <div class="d-flex align-items-center mb-2">
+                                                        <a href="hotel_details.html" class="name-details">
+                                                            فيراري 488 جي تي بي
+                                                        </a>
+                                                    </div>
+                                                    <div class=" d-flex align-items-center rate mb-2">
+                                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path
+                                                                d="M6.19185 1.0681C6.52198 0.399179 7.47585 0.399172 7.80598 1.0681L9.37798 4.25325L12.893 4.76401C13.6312 4.87127 13.9259 5.77847 13.3918 6.29913L10.8482 8.7784L11.4487 12.2793C11.5748 13.0145 10.8031 13.5751 10.1428 13.228L6.99891 11.5751L3.85499 13.228C3.19473 13.5751 2.42304 13.0145 2.54914 12.2793L3.14958 8.7784L0.606087 6.29913C0.0719199 5.77847 0.36668 4.87127 1.10488 4.76401L4.6199 4.25325L6.19185 1.0681Z"
+                                                                fill="#FFCE1F" />
+                                                        </svg>
+                                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path
+                                                                d="M6.19185 1.0681C6.52198 0.399179 7.47585 0.399172 7.80598 1.0681L9.37798 4.25325L12.893 4.76401C13.6312 4.87127 13.9259 5.77847 13.3918 6.29913L10.8482 8.7784L11.4487 12.2793C11.5748 13.0145 10.8031 13.5751 10.1428 13.228L6.99891 11.5751L3.85499 13.228C3.19473 13.5751 2.42304 13.0145 2.54914 12.2793L3.14958 8.7784L0.606087 6.29913C0.0719199 5.77847 0.36668 4.87127 1.10488 4.76401L4.6199 4.25325L6.19185 1.0681Z"
+                                                                fill="#FFCE1F" />
+                                                        </svg>
+                                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path
+                                                                d="M6.19185 1.0681C6.52198 0.399179 7.47585 0.399172 7.80598 1.0681L9.37798 4.25325L12.893 4.76401C13.6312 4.87127 13.9259 5.77847 13.3918 6.29913L10.8482 8.7784L11.4487 12.2793C11.5748 13.0145 10.8031 13.5751 10.1428 13.228L6.99891 11.5751L3.85499 13.228C3.19473 13.5751 2.42304 13.0145 2.54914 12.2793L3.14958 8.7784L0.606087 6.29913C0.0719199 5.77847 0.36668 4.87127 1.10488 4.76401L4.6199 4.25325L6.19185 1.0681Z"
+                                                                fill="#FFCE1F" />
+                                                        </svg>
+                                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path
+                                                                d="M6.19185 1.0681C6.52198 0.399179 7.47585 0.399172 7.80598 1.0681L9.37798 4.25325L12.893 4.76401C13.6312 4.87127 13.9259 5.77847 13.3918 6.29913L10.8482 8.7784L11.4487 12.2793C11.5748 13.0145 10.8031 13.5751 10.1428 13.228L6.99891 11.5751L3.85499 13.228C3.19473 13.5751 2.42304 13.0145 2.54914 12.2793L3.14958 8.7784L0.606087 6.29913C0.0719199 5.77847 0.36668 4.87127 1.10488 4.76401L4.6199 4.25325L6.19185 1.0681Z"
+                                                                fill="#FFCE1F" />
+                                                        </svg>
+                                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path
+                                                                d="M6.19185 1.0681C6.52198 0.399179 7.47585 0.399172 7.80598 1.0681L9.37798 4.25325L12.893 4.76401C13.6312 4.87127 13.9259 5.77847 13.3918 6.29913L10.8482 8.7784L11.4487 12.2793C11.5748 13.0145 10.8031 13.5751 10.1428 13.228L6.99891 11.5751L3.85499 13.228C3.19473 13.5751 2.42304 13.0145 2.54914 12.2793L3.14958 8.7784L0.606087 6.29913C0.0719199 5.77847 0.36668 4.87127 1.10488 4.76401L4.6199 4.25325L6.19185 1.0681Z"
+                                                                fill="#FFCE1F" />
+                                                        </svg>
+
+                                                        <span class="number">
+                                                            (5)
+                                                        </span>
+                                                    </div>
+                                                    <div class=" d-flex align-items-center">
+
+                                                        <span class="price">
+                                                            5000$
+                                                        </span>
+                                                        <span class="des">
+                                                            34.75$
+                                                        </span>
+                                                    </div>
+
+                                                </div>
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col-12 col-lg-4 col-md-6 mt-4" data-aos="fade-up" data-aos-delay="100"
+                                data-aos-duration="700">
+                                <a href="service_details.html" style="color:black;">
+                                    <div class="card custom_card">
+                                        <div class="img">
+                                            <img src="/img/cars/c3.png" class="card-img-top index-img-card" alt="...">
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-between align-items-baseline mb-2">
+                                                <h6 class="card-title justify-content-start">فيراري</h6>
+                                                <a href="javascript:void(0)" class="justify-content-end">
+                                                    <!-- <img src="/img/icons/star2.svg"> -->
+                                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                        xmlns="http://www.w3.org/2000/svg">
+                                                        <path
+                                                            d="M10.7878 3.10215C11.283 2.09877 12.7138 2.09876 13.209 3.10215L15.567 7.87987L20.8395 8.64601C21.9468 8.80691 22.3889 10.1677 21.5877 10.9487L17.7724 14.6676L18.6731 19.9189C18.8622 21.0217 17.7047 21.8627 16.7143 21.342L11.9984 18.8627L7.28252 21.342C6.29213 21.8627 5.13459 21.0217 5.32374 19.9189L6.2244 14.6676L2.40916 10.9487C1.60791 10.1677 2.05005 8.80691 3.15735 8.64601L8.42988 7.87987L10.7878 3.10215ZM11.9984 4.03854L9.74008 8.61443C9.54344 9.01288 9.16332 9.28904 8.72361 9.35294L3.67382 10.0867L7.32788 13.6486C7.64606 13.9587 7.79125 14.4055 7.71614 14.8435L6.85353 19.8729L11.3702 17.4983C11.7635 17.2915 12.2333 17.2915 12.6266 17.4983L17.1433 19.8729L16.2807 14.8435C16.2056 14.4055 16.3508 13.9587 16.6689 13.6486L20.323 10.0867L15.2732 9.35294C14.8335 9.28904 14.4534 9.01288 14.2568 8.61443L11.9984 4.03854Z"
+                                                            fill="#999999" />
+                                                    </svg>
+                                                </a>
+                                            </div>
+                                            <div class="d-flex justify-content-between">
+                                                <div class=" d-flex  flex-column">
+                                                    <div class="d-flex align-items-center mb-2">
+                                                        <a href="hotel_details.html" class="name-details">
+                                                            فيراري 488 جي تي بي
+                                                        </a>
+                                                    </div>
+                                                    <div class=" d-flex align-items-center rate mb-2">
+                                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path
+                                                                d="M6.19185 1.0681C6.52198 0.399179 7.47585 0.399172 7.80598 1.0681L9.37798 4.25325L12.893 4.76401C13.6312 4.87127 13.9259 5.77847 13.3918 6.29913L10.8482 8.7784L11.4487 12.2793C11.5748 13.0145 10.8031 13.5751 10.1428 13.228L6.99891 11.5751L3.85499 13.228C3.19473 13.5751 2.42304 13.0145 2.54914 12.2793L3.14958 8.7784L0.606087 6.29913C0.0719199 5.77847 0.36668 4.87127 1.10488 4.76401L4.6199 4.25325L6.19185 1.0681Z"
+                                                                fill="#FFCE1F" />
+                                                        </svg>
+                                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path
+                                                                d="M6.19185 1.0681C6.52198 0.399179 7.47585 0.399172 7.80598 1.0681L9.37798 4.25325L12.893 4.76401C13.6312 4.87127 13.9259 5.77847 13.3918 6.29913L10.8482 8.7784L11.4487 12.2793C11.5748 13.0145 10.8031 13.5751 10.1428 13.228L6.99891 11.5751L3.85499 13.228C3.19473 13.5751 2.42304 13.0145 2.54914 12.2793L3.14958 8.7784L0.606087 6.29913C0.0719199 5.77847 0.36668 4.87127 1.10488 4.76401L4.6199 4.25325L6.19185 1.0681Z"
+                                                                fill="#FFCE1F" />
+                                                        </svg>
+                                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path
+                                                                d="M6.19185 1.0681C6.52198 0.399179 7.47585 0.399172 7.80598 1.0681L9.37798 4.25325L12.893 4.76401C13.6312 4.87127 13.9259 5.77847 13.3918 6.29913L10.8482 8.7784L11.4487 12.2793C11.5748 13.0145 10.8031 13.5751 10.1428 13.228L6.99891 11.5751L3.85499 13.228C3.19473 13.5751 2.42304 13.0145 2.54914 12.2793L3.14958 8.7784L0.606087 6.29913C0.0719199 5.77847 0.36668 4.87127 1.10488 4.76401L4.6199 4.25325L6.19185 1.0681Z"
+                                                                fill="#FFCE1F" />
+                                                        </svg>
+                                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path
+                                                                d="M6.19185 1.0681C6.52198 0.399179 7.47585 0.399172 7.80598 1.0681L9.37798 4.25325L12.893 4.76401C13.6312 4.87127 13.9259 5.77847 13.3918 6.29913L10.8482 8.7784L11.4487 12.2793C11.5748 13.0145 10.8031 13.5751 10.1428 13.228L6.99891 11.5751L3.85499 13.228C3.19473 13.5751 2.42304 13.0145 2.54914 12.2793L3.14958 8.7784L0.606087 6.29913C0.0719199 5.77847 0.36668 4.87127 1.10488 4.76401L4.6199 4.25325L6.19185 1.0681Z"
+                                                                fill="#FFCE1F" />
+                                                        </svg>
+                                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path
+                                                                d="M6.19185 1.0681C6.52198 0.399179 7.47585 0.399172 7.80598 1.0681L9.37798 4.25325L12.893 4.76401C13.6312 4.87127 13.9259 5.77847 13.3918 6.29913L10.8482 8.7784L11.4487 12.2793C11.5748 13.0145 10.8031 13.5751 10.1428 13.228L6.99891 11.5751L3.85499 13.228C3.19473 13.5751 2.42304 13.0145 2.54914 12.2793L3.14958 8.7784L0.606087 6.29913C0.0719199 5.77847 0.36668 4.87127 1.10488 4.76401L4.6199 4.25325L6.19185 1.0681Z"
+                                                                fill="#FFCE1F" />
+                                                        </svg>
+
+                                                        <span class="number">
+                                                            (5)
+                                                        </span>
+                                                    </div>
+                                                    <div class=" d-flex align-items-center">
+
+                                                        <span class="price">
+                                                            5000$
+                                                        </span>
+                                                        <span class="des">
+                                                            34.75$
+                                                        </span>
+                                                    </div>
+
+                                                </div>
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col-12 col-lg-4 col-md-6 mt-4" data-aos="fade-up" data-aos-delay="100"
+                                data-aos-duration="700">
+                                <a href="service_details.html" style="color:black;">
+                                    <div class="card custom_card">
+                                        <div class="img">
+                                            <img src="/img/cars/c4.png" class="card-img-top index-img-card" alt="...">
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-between align-items-baseline mb-2">
+                                                <h6 class="card-title justify-content-start">فيراري</h6>
+                                                <a href="javascript:void(0)" class="justify-content-end">
+                                                    <!-- <img src="/img/icons/star2.svg"> -->
+                                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                        xmlns="http://www.w3.org/2000/svg">
+                                                        <path
+                                                            d="M10.7878 3.10215C11.283 2.09877 12.7138 2.09876 13.209 3.10215L15.567 7.87987L20.8395 8.64601C21.9468 8.80691 22.3889 10.1677 21.5877 10.9487L17.7724 14.6676L18.6731 19.9189C18.8622 21.0217 17.7047 21.8627 16.7143 21.342L11.9984 18.8627L7.28252 21.342C6.29213 21.8627 5.13459 21.0217 5.32374 19.9189L6.2244 14.6676L2.40916 10.9487C1.60791 10.1677 2.05005 8.80691 3.15735 8.64601L8.42988 7.87987L10.7878 3.10215ZM11.9984 4.03854L9.74008 8.61443C9.54344 9.01288 9.16332 9.28904 8.72361 9.35294L3.67382 10.0867L7.32788 13.6486C7.64606 13.9587 7.79125 14.4055 7.71614 14.8435L6.85353 19.8729L11.3702 17.4983C11.7635 17.2915 12.2333 17.2915 12.6266 17.4983L17.1433 19.8729L16.2807 14.8435C16.2056 14.4055 16.3508 13.9587 16.6689 13.6486L20.323 10.0867L15.2732 9.35294C14.8335 9.28904 14.4534 9.01288 14.2568 8.61443L11.9984 4.03854Z"
+                                                            fill="#999999" />
+                                                    </svg>
+                                                </a>
+                                            </div>
+                                            <div class="d-flex justify-content-between">
+                                                <div class=" d-flex  flex-column">
+                                                    <div class="d-flex align-items-center mb-2">
+                                                        <a href="hotel_details.html" class="name-details">
+                                                            فيراري 488 جي تي بي
+                                                        </a>
+                                                    </div>
+                                                    <div class=" d-flex align-items-center rate mb-2">
+                                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path
+                                                                d="M6.19185 1.0681C6.52198 0.399179 7.47585 0.399172 7.80598 1.0681L9.37798 4.25325L12.893 4.76401C13.6312 4.87127 13.9259 5.77847 13.3918 6.29913L10.8482 8.7784L11.4487 12.2793C11.5748 13.0145 10.8031 13.5751 10.1428 13.228L6.99891 11.5751L3.85499 13.228C3.19473 13.5751 2.42304 13.0145 2.54914 12.2793L3.14958 8.7784L0.606087 6.29913C0.0719199 5.77847 0.36668 4.87127 1.10488 4.76401L4.6199 4.25325L6.19185 1.0681Z"
+                                                                fill="#FFCE1F" />
+                                                        </svg>
+                                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path
+                                                                d="M6.19185 1.0681C6.52198 0.399179 7.47585 0.399172 7.80598 1.0681L9.37798 4.25325L12.893 4.76401C13.6312 4.87127 13.9259 5.77847 13.3918 6.29913L10.8482 8.7784L11.4487 12.2793C11.5748 13.0145 10.8031 13.5751 10.1428 13.228L6.99891 11.5751L3.85499 13.228C3.19473 13.5751 2.42304 13.0145 2.54914 12.2793L3.14958 8.7784L0.606087 6.29913C0.0719199 5.77847 0.36668 4.87127 1.10488 4.76401L4.6199 4.25325L6.19185 1.0681Z"
+                                                                fill="#FFCE1F" />
+                                                        </svg>
+                                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path
+                                                                d="M6.19185 1.0681C6.52198 0.399179 7.47585 0.399172 7.80598 1.0681L9.37798 4.25325L12.893 4.76401C13.6312 4.87127 13.9259 5.77847 13.3918 6.29913L10.8482 8.7784L11.4487 12.2793C11.5748 13.0145 10.8031 13.5751 10.1428 13.228L6.99891 11.5751L3.85499 13.228C3.19473 13.5751 2.42304 13.0145 2.54914 12.2793L3.14958 8.7784L0.606087 6.29913C0.0719199 5.77847 0.36668 4.87127 1.10488 4.76401L4.6199 4.25325L6.19185 1.0681Z"
+                                                                fill="#FFCE1F" />
+                                                        </svg>
+                                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path
+                                                                d="M6.19185 1.0681C6.52198 0.399179 7.47585 0.399172 7.80598 1.0681L9.37798 4.25325L12.893 4.76401C13.6312 4.87127 13.9259 5.77847 13.3918 6.29913L10.8482 8.7784L11.4487 12.2793C11.5748 13.0145 10.8031 13.5751 10.1428 13.228L6.99891 11.5751L3.85499 13.228C3.19473 13.5751 2.42304 13.0145 2.54914 12.2793L3.14958 8.7784L0.606087 6.29913C0.0719199 5.77847 0.36668 4.87127 1.10488 4.76401L4.6199 4.25325L6.19185 1.0681Z"
+                                                                fill="#FFCE1F" />
+                                                        </svg>
+                                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path
+                                                                d="M6.19185 1.0681C6.52198 0.399179 7.47585 0.399172 7.80598 1.0681L9.37798 4.25325L12.893 4.76401C13.6312 4.87127 13.9259 5.77847 13.3918 6.29913L10.8482 8.7784L11.4487 12.2793C11.5748 13.0145 10.8031 13.5751 10.1428 13.228L6.99891 11.5751L3.85499 13.228C3.19473 13.5751 2.42304 13.0145 2.54914 12.2793L3.14958 8.7784L0.606087 6.29913C0.0719199 5.77847 0.36668 4.87127 1.10488 4.76401L4.6199 4.25325L6.19185 1.0681Z"
+                                                                fill="#FFCE1F" />
+                                                        </svg>
+
+                                                        <span class="number">
+                                                            (5)
+                                                        </span>
+                                                    </div>
+                                                    <div class=" d-flex align-items-center">
+
+                                                        <span class="price">
+                                                            5000$
+                                                        </span>
+                                                        <span class="des">
+                                                            34.75$
+                                                        </span>
+                                                    </div>
+
+                                                </div>
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col-12 col-lg-4 col-md-6 mt-4" data-aos="fade-up" data-aos-delay="100"
+                                data-aos-duration="700">
+                                <a href="service_details.html" style="color:black;">
+                                    <div class="card custom_card">
+                                        <div class="img">
+                                            <img src="/img/cars/c5.png" class="card-img-top index-img-card" alt="...">
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-between align-items-baseline mb-2">
+                                                <h6 class="card-title justify-content-start">فيراري</h6>
+                                                <a href="javascript:void(0)" class="justify-content-end">
+                                                    <!-- <img src="/img/icons/star2.svg"> -->
+                                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                        xmlns="http://www.w3.org/2000/svg">
+                                                        <path
+                                                            d="M10.7878 3.10215C11.283 2.09877 12.7138 2.09876 13.209 3.10215L15.567 7.87987L20.8395 8.64601C21.9468 8.80691 22.3889 10.1677 21.5877 10.9487L17.7724 14.6676L18.6731 19.9189C18.8622 21.0217 17.7047 21.8627 16.7143 21.342L11.9984 18.8627L7.28252 21.342C6.29213 21.8627 5.13459 21.0217 5.32374 19.9189L6.2244 14.6676L2.40916 10.9487C1.60791 10.1677 2.05005 8.80691 3.15735 8.64601L8.42988 7.87987L10.7878 3.10215ZM11.9984 4.03854L9.74008 8.61443C9.54344 9.01288 9.16332 9.28904 8.72361 9.35294L3.67382 10.0867L7.32788 13.6486C7.64606 13.9587 7.79125 14.4055 7.71614 14.8435L6.85353 19.8729L11.3702 17.4983C11.7635 17.2915 12.2333 17.2915 12.6266 17.4983L17.1433 19.8729L16.2807 14.8435C16.2056 14.4055 16.3508 13.9587 16.6689 13.6486L20.323 10.0867L15.2732 9.35294C14.8335 9.28904 14.4534 9.01288 14.2568 8.61443L11.9984 4.03854Z"
+                                                            fill="#999999" />
+                                                    </svg>
+                                                </a>
+                                            </div>
+                                            <div class="d-flex justify-content-between">
+                                                <div class=" d-flex  flex-column">
+                                                    <div class="d-flex align-items-center mb-2">
+                                                        <a href="hotel_details.html" class="name-details">
+                                                            فيراري 488 جي تي بي
+                                                        </a>
+                                                    </div>
+                                                    <div class=" d-flex align-items-center rate mb-2">
+                                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path
+                                                                d="M6.19185 1.0681C6.52198 0.399179 7.47585 0.399172 7.80598 1.0681L9.37798 4.25325L12.893 4.76401C13.6312 4.87127 13.9259 5.77847 13.3918 6.29913L10.8482 8.7784L11.4487 12.2793C11.5748 13.0145 10.8031 13.5751 10.1428 13.228L6.99891 11.5751L3.85499 13.228C3.19473 13.5751 2.42304 13.0145 2.54914 12.2793L3.14958 8.7784L0.606087 6.29913C0.0719199 5.77847 0.36668 4.87127 1.10488 4.76401L4.6199 4.25325L6.19185 1.0681Z"
+                                                                fill="#FFCE1F" />
+                                                        </svg>
+                                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path
+                                                                d="M6.19185 1.0681C6.52198 0.399179 7.47585 0.399172 7.80598 1.0681L9.37798 4.25325L12.893 4.76401C13.6312 4.87127 13.9259 5.77847 13.3918 6.29913L10.8482 8.7784L11.4487 12.2793C11.5748 13.0145 10.8031 13.5751 10.1428 13.228L6.99891 11.5751L3.85499 13.228C3.19473 13.5751 2.42304 13.0145 2.54914 12.2793L3.14958 8.7784L0.606087 6.29913C0.0719199 5.77847 0.36668 4.87127 1.10488 4.76401L4.6199 4.25325L6.19185 1.0681Z"
+                                                                fill="#FFCE1F" />
+                                                        </svg>
+                                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path
+                                                                d="M6.19185 1.0681C6.52198 0.399179 7.47585 0.399172 7.80598 1.0681L9.37798 4.25325L12.893 4.76401C13.6312 4.87127 13.9259 5.77847 13.3918 6.29913L10.8482 8.7784L11.4487 12.2793C11.5748 13.0145 10.8031 13.5751 10.1428 13.228L6.99891 11.5751L3.85499 13.228C3.19473 13.5751 2.42304 13.0145 2.54914 12.2793L3.14958 8.7784L0.606087 6.29913C0.0719199 5.77847 0.36668 4.87127 1.10488 4.76401L4.6199 4.25325L6.19185 1.0681Z"
+                                                                fill="#FFCE1F" />
+                                                        </svg>
+                                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path
+                                                                d="M6.19185 1.0681C6.52198 0.399179 7.47585 0.399172 7.80598 1.0681L9.37798 4.25325L12.893 4.76401C13.6312 4.87127 13.9259 5.77847 13.3918 6.29913L10.8482 8.7784L11.4487 12.2793C11.5748 13.0145 10.8031 13.5751 10.1428 13.228L6.99891 11.5751L3.85499 13.228C3.19473 13.5751 2.42304 13.0145 2.54914 12.2793L3.14958 8.7784L0.606087 6.29913C0.0719199 5.77847 0.36668 4.87127 1.10488 4.76401L4.6199 4.25325L6.19185 1.0681Z"
+                                                                fill="#FFCE1F" />
+                                                        </svg>
+                                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path
+                                                                d="M6.19185 1.0681C6.52198 0.399179 7.47585 0.399172 7.80598 1.0681L9.37798 4.25325L12.893 4.76401C13.6312 4.87127 13.9259 5.77847 13.3918 6.29913L10.8482 8.7784L11.4487 12.2793C11.5748 13.0145 10.8031 13.5751 10.1428 13.228L6.99891 11.5751L3.85499 13.228C3.19473 13.5751 2.42304 13.0145 2.54914 12.2793L3.14958 8.7784L0.606087 6.29913C0.0719199 5.77847 0.36668 4.87127 1.10488 4.76401L4.6199 4.25325L6.19185 1.0681Z"
+                                                                fill="#FFCE1F" />
+                                                        </svg>
+
+                                                        <span class="number">
+                                                            (5)
+                                                        </span>
+                                                    </div>
+                                                    <div class=" d-flex align-items-center">
+
+                                                        <span class="price">
+                                                            5000$
+                                                        </span>
+                                                        <span class="des">
+                                                            34.75$
+                                                        </span>
+                                                    </div>
+
+                                                </div>
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col-12 col-lg-4 col-md-6 mt-4" data-aos="fade-up" data-aos-delay="100"
+                                data-aos-duration="700">
+                                <a href="service_details.html" style="color:black;">
+                                    <div class="card custom_card">
+                                        <div class="img">
+                                            <img src="/img/cars/c6.png" class="card-img-top index-img-card" alt="...">
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-between align-items-baseline mb-2">
+                                                <h6 class="card-title justify-content-start">فيراري</h6>
+                                                <a href="javascript:void(0)" class="justify-content-end">
+                                                    <!-- <img src="/img/icons/star2.svg"> -->
+                                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                        xmlns="http://www.w3.org/2000/svg">
+                                                        <path
+                                                            d="M10.7878 3.10215C11.283 2.09877 12.7138 2.09876 13.209 3.10215L15.567 7.87987L20.8395 8.64601C21.9468 8.80691 22.3889 10.1677 21.5877 10.9487L17.7724 14.6676L18.6731 19.9189C18.8622 21.0217 17.7047 21.8627 16.7143 21.342L11.9984 18.8627L7.28252 21.342C6.29213 21.8627 5.13459 21.0217 5.32374 19.9189L6.2244 14.6676L2.40916 10.9487C1.60791 10.1677 2.05005 8.80691 3.15735 8.64601L8.42988 7.87987L10.7878 3.10215ZM11.9984 4.03854L9.74008 8.61443C9.54344 9.01288 9.16332 9.28904 8.72361 9.35294L3.67382 10.0867L7.32788 13.6486C7.64606 13.9587 7.79125 14.4055 7.71614 14.8435L6.85353 19.8729L11.3702 17.4983C11.7635 17.2915 12.2333 17.2915 12.6266 17.4983L17.1433 19.8729L16.2807 14.8435C16.2056 14.4055 16.3508 13.9587 16.6689 13.6486L20.323 10.0867L15.2732 9.35294C14.8335 9.28904 14.4534 9.01288 14.2568 8.61443L11.9984 4.03854Z"
+                                                            fill="#999999" />
+                                                    </svg>
+                                                </a>
+                                            </div>
+                                            <div class="d-flex justify-content-between">
+                                                <div class=" d-flex  flex-column">
+                                                    <div class="d-flex align-items-center mb-2">
+                                                        <a href="hotel_details.html" class="name-details">
+                                                            فيراري 488 جي تي بي
+                                                        </a>
+                                                    </div>
+                                                    <div class=" d-flex align-items-center rate mb-2">
+                                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path
+                                                                d="M6.19185 1.0681C6.52198 0.399179 7.47585 0.399172 7.80598 1.0681L9.37798 4.25325L12.893 4.76401C13.6312 4.87127 13.9259 5.77847 13.3918 6.29913L10.8482 8.7784L11.4487 12.2793C11.5748 13.0145 10.8031 13.5751 10.1428 13.228L6.99891 11.5751L3.85499 13.228C3.19473 13.5751 2.42304 13.0145 2.54914 12.2793L3.14958 8.7784L0.606087 6.29913C0.0719199 5.77847 0.36668 4.87127 1.10488 4.76401L4.6199 4.25325L6.19185 1.0681Z"
+                                                                fill="#FFCE1F" />
+                                                        </svg>
+                                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path
+                                                                d="M6.19185 1.0681C6.52198 0.399179 7.47585 0.399172 7.80598 1.0681L9.37798 4.25325L12.893 4.76401C13.6312 4.87127 13.9259 5.77847 13.3918 6.29913L10.8482 8.7784L11.4487 12.2793C11.5748 13.0145 10.8031 13.5751 10.1428 13.228L6.99891 11.5751L3.85499 13.228C3.19473 13.5751 2.42304 13.0145 2.54914 12.2793L3.14958 8.7784L0.606087 6.29913C0.0719199 5.77847 0.36668 4.87127 1.10488 4.76401L4.6199 4.25325L6.19185 1.0681Z"
+                                                                fill="#FFCE1F" />
+                                                        </svg>
+                                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path
+                                                                d="M6.19185 1.0681C6.52198 0.399179 7.47585 0.399172 7.80598 1.0681L9.37798 4.25325L12.893 4.76401C13.6312 4.87127 13.9259 5.77847 13.3918 6.29913L10.8482 8.7784L11.4487 12.2793C11.5748 13.0145 10.8031 13.5751 10.1428 13.228L6.99891 11.5751L3.85499 13.228C3.19473 13.5751 2.42304 13.0145 2.54914 12.2793L3.14958 8.7784L0.606087 6.29913C0.0719199 5.77847 0.36668 4.87127 1.10488 4.76401L4.6199 4.25325L6.19185 1.0681Z"
+                                                                fill="#FFCE1F" />
+                                                        </svg>
+                                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path
+                                                                d="M6.19185 1.0681C6.52198 0.399179 7.47585 0.399172 7.80598 1.0681L9.37798 4.25325L12.893 4.76401C13.6312 4.87127 13.9259 5.77847 13.3918 6.29913L10.8482 8.7784L11.4487 12.2793C11.5748 13.0145 10.8031 13.5751 10.1428 13.228L6.99891 11.5751L3.85499 13.228C3.19473 13.5751 2.42304 13.0145 2.54914 12.2793L3.14958 8.7784L0.606087 6.29913C0.0719199 5.77847 0.36668 4.87127 1.10488 4.76401L4.6199 4.25325L6.19185 1.0681Z"
+                                                                fill="#FFCE1F" />
+                                                        </svg>
+                                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path
+                                                                d="M6.19185 1.0681C6.52198 0.399179 7.47585 0.399172 7.80598 1.0681L9.37798 4.25325L12.893 4.76401C13.6312 4.87127 13.9259 5.77847 13.3918 6.29913L10.8482 8.7784L11.4487 12.2793C11.5748 13.0145 10.8031 13.5751 10.1428 13.228L6.99891 11.5751L3.85499 13.228C3.19473 13.5751 2.42304 13.0145 2.54914 12.2793L3.14958 8.7784L0.606087 6.29913C0.0719199 5.77847 0.36668 4.87127 1.10488 4.76401L4.6199 4.25325L6.19185 1.0681Z"
+                                                                fill="#FFCE1F" />
+                                                        </svg>
+
+                                                        <span class="number">
+                                                            (5)
+                                                        </span>
+                                                    </div>
+                                                    <div class=" d-flex align-items-center">
+
+                                                        <span class="price">
+                                                            5000$
+                                                        </span>
+                                                        <span class="des">
+                                                            34.75$
+                                                        </span>
+                                                    </div>
+
+                                                </div>
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col-12 col-lg-4 col-md-6 mt-4" data-aos="fade-up" data-aos-delay="100"
+                                data-aos-duration="700">
+                                <a href="service_details.html" style="color:black;">
+                                    <div class="card custom_card">
+                                        <div class="img">
+                                            <img src="/img/cars/c1.png" class="card-img-top index-img-card" alt="...">
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-between align-items-baseline mb-2">
+                                                <h6 class="card-title justify-content-start">فيراري</h6>
+                                                <a href="javascript:void(0)" class="justify-content-end">
+                                                    <!-- <img src="/img/icons/star2.svg"> -->
+                                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                        xmlns="http://www.w3.org/2000/svg">
+                                                        <path
+                                                            d="M10.7878 3.10215C11.283 2.09877 12.7138 2.09876 13.209 3.10215L15.567 7.87987L20.8395 8.64601C21.9468 8.80691 22.3889 10.1677 21.5877 10.9487L17.7724 14.6676L18.6731 19.9189C18.8622 21.0217 17.7047 21.8627 16.7143 21.342L11.9984 18.8627L7.28252 21.342C6.29213 21.8627 5.13459 21.0217 5.32374 19.9189L6.2244 14.6676L2.40916 10.9487C1.60791 10.1677 2.05005 8.80691 3.15735 8.64601L8.42988 7.87987L10.7878 3.10215ZM11.9984 4.03854L9.74008 8.61443C9.54344 9.01288 9.16332 9.28904 8.72361 9.35294L3.67382 10.0867L7.32788 13.6486C7.64606 13.9587 7.79125 14.4055 7.71614 14.8435L6.85353 19.8729L11.3702 17.4983C11.7635 17.2915 12.2333 17.2915 12.6266 17.4983L17.1433 19.8729L16.2807 14.8435C16.2056 14.4055 16.3508 13.9587 16.6689 13.6486L20.323 10.0867L15.2732 9.35294C14.8335 9.28904 14.4534 9.01288 14.2568 8.61443L11.9984 4.03854Z"
+                                                            fill="#999999" />
+                                                    </svg>
+                                                </a>
+                                            </div>
+                                            <div class="d-flex justify-content-between">
+                                                <div class=" d-flex  flex-column">
+                                                    <div class="d-flex align-items-center mb-2">
+                                                        <a href="hotel_details.html" class="name-details">
+                                                            فيراري 488 جي تي بي
+                                                        </a>
+                                                    </div>
+                                                    <div class=" d-flex align-items-center rate mb-2">
+                                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path
+                                                                d="M6.19185 1.0681C6.52198 0.399179 7.47585 0.399172 7.80598 1.0681L9.37798 4.25325L12.893 4.76401C13.6312 4.87127 13.9259 5.77847 13.3918 6.29913L10.8482 8.7784L11.4487 12.2793C11.5748 13.0145 10.8031 13.5751 10.1428 13.228L6.99891 11.5751L3.85499 13.228C3.19473 13.5751 2.42304 13.0145 2.54914 12.2793L3.14958 8.7784L0.606087 6.29913C0.0719199 5.77847 0.36668 4.87127 1.10488 4.76401L4.6199 4.25325L6.19185 1.0681Z"
+                                                                fill="#FFCE1F" />
+                                                        </svg>
+                                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path
+                                                                d="M6.19185 1.0681C6.52198 0.399179 7.47585 0.399172 7.80598 1.0681L9.37798 4.25325L12.893 4.76401C13.6312 4.87127 13.9259 5.77847 13.3918 6.29913L10.8482 8.7784L11.4487 12.2793C11.5748 13.0145 10.8031 13.5751 10.1428 13.228L6.99891 11.5751L3.85499 13.228C3.19473 13.5751 2.42304 13.0145 2.54914 12.2793L3.14958 8.7784L0.606087 6.29913C0.0719199 5.77847 0.36668 4.87127 1.10488 4.76401L4.6199 4.25325L6.19185 1.0681Z"
+                                                                fill="#FFCE1F" />
+                                                        </svg>
+                                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path
+                                                                d="M6.19185 1.0681C6.52198 0.399179 7.47585 0.399172 7.80598 1.0681L9.37798 4.25325L12.893 4.76401C13.6312 4.87127 13.9259 5.77847 13.3918 6.29913L10.8482 8.7784L11.4487 12.2793C11.5748 13.0145 10.8031 13.5751 10.1428 13.228L6.99891 11.5751L3.85499 13.228C3.19473 13.5751 2.42304 13.0145 2.54914 12.2793L3.14958 8.7784L0.606087 6.29913C0.0719199 5.77847 0.36668 4.87127 1.10488 4.76401L4.6199 4.25325L6.19185 1.0681Z"
+                                                                fill="#FFCE1F" />
+                                                        </svg>
+                                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path
+                                                                d="M6.19185 1.0681C6.52198 0.399179 7.47585 0.399172 7.80598 1.0681L9.37798 4.25325L12.893 4.76401C13.6312 4.87127 13.9259 5.77847 13.3918 6.29913L10.8482 8.7784L11.4487 12.2793C11.5748 13.0145 10.8031 13.5751 10.1428 13.228L6.99891 11.5751L3.85499 13.228C3.19473 13.5751 2.42304 13.0145 2.54914 12.2793L3.14958 8.7784L0.606087 6.29913C0.0719199 5.77847 0.36668 4.87127 1.10488 4.76401L4.6199 4.25325L6.19185 1.0681Z"
+                                                                fill="#FFCE1F" />
+                                                        </svg>
+                                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path
+                                                                d="M6.19185 1.0681C6.52198 0.399179 7.47585 0.399172 7.80598 1.0681L9.37798 4.25325L12.893 4.76401C13.6312 4.87127 13.9259 5.77847 13.3918 6.29913L10.8482 8.7784L11.4487 12.2793C11.5748 13.0145 10.8031 13.5751 10.1428 13.228L6.99891 11.5751L3.85499 13.228C3.19473 13.5751 2.42304 13.0145 2.54914 12.2793L3.14958 8.7784L0.606087 6.29913C0.0719199 5.77847 0.36668 4.87127 1.10488 4.76401L4.6199 4.25325L6.19185 1.0681Z"
+                                                                fill="#FFCE1F" />
+                                                        </svg>
+
+                                                        <span class="number">
+                                                            (5)
+                                                        </span>
+                                                    </div>
+                                                    <div class=" d-flex align-items-center">
+
+                                                        <span class="price">
+                                                            5000$
+                                                        </span>
+                                                        <span class="des">
+                                                            34.75$
+                                                        </span>
+                                                    </div>
+
+                                                </div>
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col-12 col-lg-4 col-md-6 mt-4" data-aos="fade-up" data-aos-delay="100"
+                                data-aos-duration="700">
+                                <a href="service_details.html" style="color:black;">
+                                    <div class="card custom_card">
+                                        <div class="img">
+                                            <img src="/img/cars/c2.png" class="card-img-top index-img-card" alt="...">
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-between align-items-baseline mb-2">
+                                                <h6 class="card-title justify-content-start">فيراري</h6>
+                                                <a href="javascript:void(0)" class="justify-content-end">
+                                                    <!-- <img src="/img/icons/star2.svg"> -->
+                                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                        xmlns="http://www.w3.org/2000/svg">
+                                                        <path
+                                                            d="M10.7878 3.10215C11.283 2.09877 12.7138 2.09876 13.209 3.10215L15.567 7.87987L20.8395 8.64601C21.9468 8.80691 22.3889 10.1677 21.5877 10.9487L17.7724 14.6676L18.6731 19.9189C18.8622 21.0217 17.7047 21.8627 16.7143 21.342L11.9984 18.8627L7.28252 21.342C6.29213 21.8627 5.13459 21.0217 5.32374 19.9189L6.2244 14.6676L2.40916 10.9487C1.60791 10.1677 2.05005 8.80691 3.15735 8.64601L8.42988 7.87987L10.7878 3.10215ZM11.9984 4.03854L9.74008 8.61443C9.54344 9.01288 9.16332 9.28904 8.72361 9.35294L3.67382 10.0867L7.32788 13.6486C7.64606 13.9587 7.79125 14.4055 7.71614 14.8435L6.85353 19.8729L11.3702 17.4983C11.7635 17.2915 12.2333 17.2915 12.6266 17.4983L17.1433 19.8729L16.2807 14.8435C16.2056 14.4055 16.3508 13.9587 16.6689 13.6486L20.323 10.0867L15.2732 9.35294C14.8335 9.28904 14.4534 9.01288 14.2568 8.61443L11.9984 4.03854Z"
+                                                            fill="#999999" />
+                                                    </svg>
+                                                </a>
+                                            </div>
+                                            <div class="d-flex justify-content-between">
+                                                <div class=" d-flex  flex-column">
+                                                    <div class="d-flex align-items-center mb-2">
+                                                        <a href="hotel_details.html" class="name-details">
+                                                            فيراري 488 جي تي بي
+                                                        </a>
+                                                    </div>
+                                                    <div class=" d-flex align-items-center rate mb-2">
+                                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path
+                                                                d="M6.19185 1.0681C6.52198 0.399179 7.47585 0.399172 7.80598 1.0681L9.37798 4.25325L12.893 4.76401C13.6312 4.87127 13.9259 5.77847 13.3918 6.29913L10.8482 8.7784L11.4487 12.2793C11.5748 13.0145 10.8031 13.5751 10.1428 13.228L6.99891 11.5751L3.85499 13.228C3.19473 13.5751 2.42304 13.0145 2.54914 12.2793L3.14958 8.7784L0.606087 6.29913C0.0719199 5.77847 0.36668 4.87127 1.10488 4.76401L4.6199 4.25325L6.19185 1.0681Z"
+                                                                fill="#FFCE1F" />
+                                                        </svg>
+                                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path
+                                                                d="M6.19185 1.0681C6.52198 0.399179 7.47585 0.399172 7.80598 1.0681L9.37798 4.25325L12.893 4.76401C13.6312 4.87127 13.9259 5.77847 13.3918 6.29913L10.8482 8.7784L11.4487 12.2793C11.5748 13.0145 10.8031 13.5751 10.1428 13.228L6.99891 11.5751L3.85499 13.228C3.19473 13.5751 2.42304 13.0145 2.54914 12.2793L3.14958 8.7784L0.606087 6.29913C0.0719199 5.77847 0.36668 4.87127 1.10488 4.76401L4.6199 4.25325L6.19185 1.0681Z"
+                                                                fill="#FFCE1F" />
+                                                        </svg>
+                                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path
+                                                                d="M6.19185 1.0681C6.52198 0.399179 7.47585 0.399172 7.80598 1.0681L9.37798 4.25325L12.893 4.76401C13.6312 4.87127 13.9259 5.77847 13.3918 6.29913L10.8482 8.7784L11.4487 12.2793C11.5748 13.0145 10.8031 13.5751 10.1428 13.228L6.99891 11.5751L3.85499 13.228C3.19473 13.5751 2.42304 13.0145 2.54914 12.2793L3.14958 8.7784L0.606087 6.29913C0.0719199 5.77847 0.36668 4.87127 1.10488 4.76401L4.6199 4.25325L6.19185 1.0681Z"
+                                                                fill="#FFCE1F" />
+                                                        </svg>
+                                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path
+                                                                d="M6.19185 1.0681C6.52198 0.399179 7.47585 0.399172 7.80598 1.0681L9.37798 4.25325L12.893 4.76401C13.6312 4.87127 13.9259 5.77847 13.3918 6.29913L10.8482 8.7784L11.4487 12.2793C11.5748 13.0145 10.8031 13.5751 10.1428 13.228L6.99891 11.5751L3.85499 13.228C3.19473 13.5751 2.42304 13.0145 2.54914 12.2793L3.14958 8.7784L0.606087 6.29913C0.0719199 5.77847 0.36668 4.87127 1.10488 4.76401L4.6199 4.25325L6.19185 1.0681Z"
+                                                                fill="#FFCE1F" />
+                                                        </svg>
+                                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path
+                                                                d="M6.19185 1.0681C6.52198 0.399179 7.47585 0.399172 7.80598 1.0681L9.37798 4.25325L12.893 4.76401C13.6312 4.87127 13.9259 5.77847 13.3918 6.29913L10.8482 8.7784L11.4487 12.2793C11.5748 13.0145 10.8031 13.5751 10.1428 13.228L6.99891 11.5751L3.85499 13.228C3.19473 13.5751 2.42304 13.0145 2.54914 12.2793L3.14958 8.7784L0.606087 6.29913C0.0719199 5.77847 0.36668 4.87127 1.10488 4.76401L4.6199 4.25325L6.19185 1.0681Z"
+                                                                fill="#FFCE1F" />
+                                                        </svg>
+
+                                                        <span class="number">
+                                                            (5)
+                                                        </span>
+                                                    </div>
+                                                    <div class=" d-flex align-items-center">
+
+                                                        <span class="price">
+                                                            5000$
+                                                        </span>
+                                                        <span class="des">
+                                                            34.75$
+                                                        </span>
+                                                    </div>
+
+                                                </div>
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col-12 col-lg-4 col-md-6 mt-4" data-aos="fade-up" data-aos-delay="100"
+                                data-aos-duration="700">
+                                <a href="service_details.html" style="color:black;">
+                                    <div class="card custom_card">
+                                        <div class="img">
+                                            <img src="/img/cars/c3.png" class="card-img-top index-img-card" alt="...">
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-between align-items-baseline mb-2">
+                                                <h6 class="card-title justify-content-start">فيراري</h6>
+                                                <a href="javascript:void(0)" class="justify-content-end">
+                                                    <!-- <img src="/img/icons/star2.svg"> -->
+                                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                        xmlns="http://www.w3.org/2000/svg">
+                                                        <path
+                                                            d="M10.7878 3.10215C11.283 2.09877 12.7138 2.09876 13.209 3.10215L15.567 7.87987L20.8395 8.64601C21.9468 8.80691 22.3889 10.1677 21.5877 10.9487L17.7724 14.6676L18.6731 19.9189C18.8622 21.0217 17.7047 21.8627 16.7143 21.342L11.9984 18.8627L7.28252 21.342C6.29213 21.8627 5.13459 21.0217 5.32374 19.9189L6.2244 14.6676L2.40916 10.9487C1.60791 10.1677 2.05005 8.80691 3.15735 8.64601L8.42988 7.87987L10.7878 3.10215ZM11.9984 4.03854L9.74008 8.61443C9.54344 9.01288 9.16332 9.28904 8.72361 9.35294L3.67382 10.0867L7.32788 13.6486C7.64606 13.9587 7.79125 14.4055 7.71614 14.8435L6.85353 19.8729L11.3702 17.4983C11.7635 17.2915 12.2333 17.2915 12.6266 17.4983L17.1433 19.8729L16.2807 14.8435C16.2056 14.4055 16.3508 13.9587 16.6689 13.6486L20.323 10.0867L15.2732 9.35294C14.8335 9.28904 14.4534 9.01288 14.2568 8.61443L11.9984 4.03854Z"
+                                                            fill="#999999" />
+                                                    </svg>
+                                                </a>
+                                            </div>
+                                            <div class="d-flex justify-content-between">
+                                                <div class=" d-flex  flex-column">
+                                                    <div class="d-flex align-items-center mb-2">
+                                                        <a href="hotel_details.html" class="name-details">
+                                                            فيراري 488 جي تي بي
+                                                        </a>
+                                                    </div>
+                                                    <div class=" d-flex align-items-center rate mb-2">
+                                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path
+                                                                d="M6.19185 1.0681C6.52198 0.399179 7.47585 0.399172 7.80598 1.0681L9.37798 4.25325L12.893 4.76401C13.6312 4.87127 13.9259 5.77847 13.3918 6.29913L10.8482 8.7784L11.4487 12.2793C11.5748 13.0145 10.8031 13.5751 10.1428 13.228L6.99891 11.5751L3.85499 13.228C3.19473 13.5751 2.42304 13.0145 2.54914 12.2793L3.14958 8.7784L0.606087 6.29913C0.0719199 5.77847 0.36668 4.87127 1.10488 4.76401L4.6199 4.25325L6.19185 1.0681Z"
+                                                                fill="#FFCE1F" />
+                                                        </svg>
+                                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path
+                                                                d="M6.19185 1.0681C6.52198 0.399179 7.47585 0.399172 7.80598 1.0681L9.37798 4.25325L12.893 4.76401C13.6312 4.87127 13.9259 5.77847 13.3918 6.29913L10.8482 8.7784L11.4487 12.2793C11.5748 13.0145 10.8031 13.5751 10.1428 13.228L6.99891 11.5751L3.85499 13.228C3.19473 13.5751 2.42304 13.0145 2.54914 12.2793L3.14958 8.7784L0.606087 6.29913C0.0719199 5.77847 0.36668 4.87127 1.10488 4.76401L4.6199 4.25325L6.19185 1.0681Z"
+                                                                fill="#FFCE1F" />
+                                                        </svg>
+                                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path
+                                                                d="M6.19185 1.0681C6.52198 0.399179 7.47585 0.399172 7.80598 1.0681L9.37798 4.25325L12.893 4.76401C13.6312 4.87127 13.9259 5.77847 13.3918 6.29913L10.8482 8.7784L11.4487 12.2793C11.5748 13.0145 10.8031 13.5751 10.1428 13.228L6.99891 11.5751L3.85499 13.228C3.19473 13.5751 2.42304 13.0145 2.54914 12.2793L3.14958 8.7784L0.606087 6.29913C0.0719199 5.77847 0.36668 4.87127 1.10488 4.76401L4.6199 4.25325L6.19185 1.0681Z"
+                                                                fill="#FFCE1F" />
+                                                        </svg>
+                                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path
+                                                                d="M6.19185 1.0681C6.52198 0.399179 7.47585 0.399172 7.80598 1.0681L9.37798 4.25325L12.893 4.76401C13.6312 4.87127 13.9259 5.77847 13.3918 6.29913L10.8482 8.7784L11.4487 12.2793C11.5748 13.0145 10.8031 13.5751 10.1428 13.228L6.99891 11.5751L3.85499 13.228C3.19473 13.5751 2.42304 13.0145 2.54914 12.2793L3.14958 8.7784L0.606087 6.29913C0.0719199 5.77847 0.36668 4.87127 1.10488 4.76401L4.6199 4.25325L6.19185 1.0681Z"
+                                                                fill="#FFCE1F" />
+                                                        </svg>
+                                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path
+                                                                d="M6.19185 1.0681C6.52198 0.399179 7.47585 0.399172 7.80598 1.0681L9.37798 4.25325L12.893 4.76401C13.6312 4.87127 13.9259 5.77847 13.3918 6.29913L10.8482 8.7784L11.4487 12.2793C11.5748 13.0145 10.8031 13.5751 10.1428 13.228L6.99891 11.5751L3.85499 13.228C3.19473 13.5751 2.42304 13.0145 2.54914 12.2793L3.14958 8.7784L0.606087 6.29913C0.0719199 5.77847 0.36668 4.87127 1.10488 4.76401L4.6199 4.25325L6.19185 1.0681Z"
+                                                                fill="#FFCE1F" />
+                                                        </svg>
+
+                                                        <span class="number">
+                                                            (5)
+                                                        </span>
+                                                    </div>
+                                                    <div class=" d-flex align-items-center">
+
+                                                        <span class="price">
+                                                            5000$
+                                                        </span>
+                                                        <span class="des">
+                                                            34.75$
+                                                        </span>
+                                                    </div>
+
+                                                </div>
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col-12 col-lg-4 col-md-6 mt-4" data-aos="fade-up" data-aos-delay="100"
+                                data-aos-duration="700">
+                                <a href="service_details.html" style="color:black;">
+                                    <div class="card custom_card">
+                                        <div class="img">
+                                            <img src="/img/cars/c4.png" class="card-img-top index-img-card" alt="...">
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-between align-items-baseline mb-2">
+                                                <h6 class="card-title justify-content-start">فيراري</h6>
+                                                <a href="javascript:void(0)" class="justify-content-end">
+                                                    <!-- <img src="/img/icons/star2.svg"> -->
+                                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                        xmlns="http://www.w3.org/2000/svg">
+                                                        <path
+                                                            d="M10.7878 3.10215C11.283 2.09877 12.7138 2.09876 13.209 3.10215L15.567 7.87987L20.8395 8.64601C21.9468 8.80691 22.3889 10.1677 21.5877 10.9487L17.7724 14.6676L18.6731 19.9189C18.8622 21.0217 17.7047 21.8627 16.7143 21.342L11.9984 18.8627L7.28252 21.342C6.29213 21.8627 5.13459 21.0217 5.32374 19.9189L6.2244 14.6676L2.40916 10.9487C1.60791 10.1677 2.05005 8.80691 3.15735 8.64601L8.42988 7.87987L10.7878 3.10215ZM11.9984 4.03854L9.74008 8.61443C9.54344 9.01288 9.16332 9.28904 8.72361 9.35294L3.67382 10.0867L7.32788 13.6486C7.64606 13.9587 7.79125 14.4055 7.71614 14.8435L6.85353 19.8729L11.3702 17.4983C11.7635 17.2915 12.2333 17.2915 12.6266 17.4983L17.1433 19.8729L16.2807 14.8435C16.2056 14.4055 16.3508 13.9587 16.6689 13.6486L20.323 10.0867L15.2732 9.35294C14.8335 9.28904 14.4534 9.01288 14.2568 8.61443L11.9984 4.03854Z"
+                                                            fill="#999999" />
+                                                    </svg>
+                                                </a>
+                                            </div>
+                                            <div class="d-flex justify-content-between">
+                                                <div class=" d-flex  flex-column">
+                                                    <div class="d-flex align-items-center mb-2">
+                                                        <a href="hotel_details.html" class="name-details">
+                                                            فيراري 488 جي تي بي
+                                                        </a>
+                                                    </div>
+                                                    <div class=" d-flex align-items-center rate mb-2">
+                                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path
+                                                                d="M6.19185 1.0681C6.52198 0.399179 7.47585 0.399172 7.80598 1.0681L9.37798 4.25325L12.893 4.76401C13.6312 4.87127 13.9259 5.77847 13.3918 6.29913L10.8482 8.7784L11.4487 12.2793C11.5748 13.0145 10.8031 13.5751 10.1428 13.228L6.99891 11.5751L3.85499 13.228C3.19473 13.5751 2.42304 13.0145 2.54914 12.2793L3.14958 8.7784L0.606087 6.29913C0.0719199 5.77847 0.36668 4.87127 1.10488 4.76401L4.6199 4.25325L6.19185 1.0681Z"
+                                                                fill="#FFCE1F" />
+                                                        </svg>
+                                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path
+                                                                d="M6.19185 1.0681C6.52198 0.399179 7.47585 0.399172 7.80598 1.0681L9.37798 4.25325L12.893 4.76401C13.6312 4.87127 13.9259 5.77847 13.3918 6.29913L10.8482 8.7784L11.4487 12.2793C11.5748 13.0145 10.8031 13.5751 10.1428 13.228L6.99891 11.5751L3.85499 13.228C3.19473 13.5751 2.42304 13.0145 2.54914 12.2793L3.14958 8.7784L0.606087 6.29913C0.0719199 5.77847 0.36668 4.87127 1.10488 4.76401L4.6199 4.25325L6.19185 1.0681Z"
+                                                                fill="#FFCE1F" />
+                                                        </svg>
+                                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path
+                                                                d="M6.19185 1.0681C6.52198 0.399179 7.47585 0.399172 7.80598 1.0681L9.37798 4.25325L12.893 4.76401C13.6312 4.87127 13.9259 5.77847 13.3918 6.29913L10.8482 8.7784L11.4487 12.2793C11.5748 13.0145 10.8031 13.5751 10.1428 13.228L6.99891 11.5751L3.85499 13.228C3.19473 13.5751 2.42304 13.0145 2.54914 12.2793L3.14958 8.7784L0.606087 6.29913C0.0719199 5.77847 0.36668 4.87127 1.10488 4.76401L4.6199 4.25325L6.19185 1.0681Z"
+                                                                fill="#FFCE1F" />
+                                                        </svg>
+                                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path
+                                                                d="M6.19185 1.0681C6.52198 0.399179 7.47585 0.399172 7.80598 1.0681L9.37798 4.25325L12.893 4.76401C13.6312 4.87127 13.9259 5.77847 13.3918 6.29913L10.8482 8.7784L11.4487 12.2793C11.5748 13.0145 10.8031 13.5751 10.1428 13.228L6.99891 11.5751L3.85499 13.228C3.19473 13.5751 2.42304 13.0145 2.54914 12.2793L3.14958 8.7784L0.606087 6.29913C0.0719199 5.77847 0.36668 4.87127 1.10488 4.76401L4.6199 4.25325L6.19185 1.0681Z"
+                                                                fill="#FFCE1F" />
+                                                        </svg>
+                                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path
+                                                                d="M6.19185 1.0681C6.52198 0.399179 7.47585 0.399172 7.80598 1.0681L9.37798 4.25325L12.893 4.76401C13.6312 4.87127 13.9259 5.77847 13.3918 6.29913L10.8482 8.7784L11.4487 12.2793C11.5748 13.0145 10.8031 13.5751 10.1428 13.228L6.99891 11.5751L3.85499 13.228C3.19473 13.5751 2.42304 13.0145 2.54914 12.2793L3.14958 8.7784L0.606087 6.29913C0.0719199 5.77847 0.36668 4.87127 1.10488 4.76401L4.6199 4.25325L6.19185 1.0681Z"
+                                                                fill="#FFCE1F" />
+                                                        </svg>
+
+                                                        <span class="number">
+                                                            (5)
+                                                        </span>
+                                                    </div>
+                                                    <div class=" d-flex align-items-center">
+
+                                                        <span class="price">
+                                                            5000$
+                                                        </span>
+                                                        <span class="des">
+                                                            34.75$
+                                                        </span>
+                                                    </div>
+
+                                                </div>
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col-12 col-lg-4 col-md-6 mt-4" data-aos="fade-up" data-aos-delay="100"
+                                data-aos-duration="700">
+                                <a href="service_details.html" style="color:black;">
+                                    <div class="card custom_card">
+                                        <div class="img">
+                                            <img src="/img/cars/c5.png" class="card-img-top index-img-card" alt="...">
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-between align-items-baseline mb-2">
+                                                <h6 class="card-title justify-content-start">فيراري</h6>
+                                                <a href="javascript:void(0)" class="justify-content-end">
+                                                    <!-- <img src="/img/icons/star2.svg"> -->
+                                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                        xmlns="http://www.w3.org/2000/svg">
+                                                        <path
+                                                            d="M10.7878 3.10215C11.283 2.09877 12.7138 2.09876 13.209 3.10215L15.567 7.87987L20.8395 8.64601C21.9468 8.80691 22.3889 10.1677 21.5877 10.9487L17.7724 14.6676L18.6731 19.9189C18.8622 21.0217 17.7047 21.8627 16.7143 21.342L11.9984 18.8627L7.28252 21.342C6.29213 21.8627 5.13459 21.0217 5.32374 19.9189L6.2244 14.6676L2.40916 10.9487C1.60791 10.1677 2.05005 8.80691 3.15735 8.64601L8.42988 7.87987L10.7878 3.10215ZM11.9984 4.03854L9.74008 8.61443C9.54344 9.01288 9.16332 9.28904 8.72361 9.35294L3.67382 10.0867L7.32788 13.6486C7.64606 13.9587 7.79125 14.4055 7.71614 14.8435L6.85353 19.8729L11.3702 17.4983C11.7635 17.2915 12.2333 17.2915 12.6266 17.4983L17.1433 19.8729L16.2807 14.8435C16.2056 14.4055 16.3508 13.9587 16.6689 13.6486L20.323 10.0867L15.2732 9.35294C14.8335 9.28904 14.4534 9.01288 14.2568 8.61443L11.9984 4.03854Z"
+                                                            fill="#999999" />
+                                                    </svg>
+                                                </a>
+                                            </div>
+                                            <div class="d-flex justify-content-between">
+                                                <div class=" d-flex  flex-column">
+                                                    <div class="d-flex align-items-center mb-2">
+                                                        <a href="hotel_details.html" class="name-details">
+                                                            فيراري 488 جي تي بي
+                                                        </a>
+                                                    </div>
+                                                    <div class=" d-flex align-items-center rate mb-2">
+                                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path
+                                                                d="M6.19185 1.0681C6.52198 0.399179 7.47585 0.399172 7.80598 1.0681L9.37798 4.25325L12.893 4.76401C13.6312 4.87127 13.9259 5.77847 13.3918 6.29913L10.8482 8.7784L11.4487 12.2793C11.5748 13.0145 10.8031 13.5751 10.1428 13.228L6.99891 11.5751L3.85499 13.228C3.19473 13.5751 2.42304 13.0145 2.54914 12.2793L3.14958 8.7784L0.606087 6.29913C0.0719199 5.77847 0.36668 4.87127 1.10488 4.76401L4.6199 4.25325L6.19185 1.0681Z"
+                                                                fill="#FFCE1F" />
+                                                        </svg>
+                                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path
+                                                                d="M6.19185 1.0681C6.52198 0.399179 7.47585 0.399172 7.80598 1.0681L9.37798 4.25325L12.893 4.76401C13.6312 4.87127 13.9259 5.77847 13.3918 6.29913L10.8482 8.7784L11.4487 12.2793C11.5748 13.0145 10.8031 13.5751 10.1428 13.228L6.99891 11.5751L3.85499 13.228C3.19473 13.5751 2.42304 13.0145 2.54914 12.2793L3.14958 8.7784L0.606087 6.29913C0.0719199 5.77847 0.36668 4.87127 1.10488 4.76401L4.6199 4.25325L6.19185 1.0681Z"
+                                                                fill="#FFCE1F" />
+                                                        </svg>
+                                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path
+                                                                d="M6.19185 1.0681C6.52198 0.399179 7.47585 0.399172 7.80598 1.0681L9.37798 4.25325L12.893 4.76401C13.6312 4.87127 13.9259 5.77847 13.3918 6.29913L10.8482 8.7784L11.4487 12.2793C11.5748 13.0145 10.8031 13.5751 10.1428 13.228L6.99891 11.5751L3.85499 13.228C3.19473 13.5751 2.42304 13.0145 2.54914 12.2793L3.14958 8.7784L0.606087 6.29913C0.0719199 5.77847 0.36668 4.87127 1.10488 4.76401L4.6199 4.25325L6.19185 1.0681Z"
+                                                                fill="#FFCE1F" />
+                                                        </svg>
+                                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path
+                                                                d="M6.19185 1.0681C6.52198 0.399179 7.47585 0.399172 7.80598 1.0681L9.37798 4.25325L12.893 4.76401C13.6312 4.87127 13.9259 5.77847 13.3918 6.29913L10.8482 8.7784L11.4487 12.2793C11.5748 13.0145 10.8031 13.5751 10.1428 13.228L6.99891 11.5751L3.85499 13.228C3.19473 13.5751 2.42304 13.0145 2.54914 12.2793L3.14958 8.7784L0.606087 6.29913C0.0719199 5.77847 0.36668 4.87127 1.10488 4.76401L4.6199 4.25325L6.19185 1.0681Z"
+                                                                fill="#FFCE1F" />
+                                                        </svg>
+                                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path
+                                                                d="M6.19185 1.0681C6.52198 0.399179 7.47585 0.399172 7.80598 1.0681L9.37798 4.25325L12.893 4.76401C13.6312 4.87127 13.9259 5.77847 13.3918 6.29913L10.8482 8.7784L11.4487 12.2793C11.5748 13.0145 10.8031 13.5751 10.1428 13.228L6.99891 11.5751L3.85499 13.228C3.19473 13.5751 2.42304 13.0145 2.54914 12.2793L3.14958 8.7784L0.606087 6.29913C0.0719199 5.77847 0.36668 4.87127 1.10488 4.76401L4.6199 4.25325L6.19185 1.0681Z"
+                                                                fill="#FFCE1F" />
+                                                        </svg>
+
+                                                        <span class="number">
+                                                            (5)
+                                                        </span>
+                                                    </div>
+                                                    <div class=" d-flex align-items-center">
+
+                                                        <span class="price">
+                                                            5000$
+                                                        </span>
+                                                        <span class="des">
+                                                            34.75$
+                                                        </span>
+                                                    </div>
+
+                                                </div>
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col-12 col-lg-4 col-md-6 mt-4" data-aos="fade-up" data-aos-delay="100"
+                                data-aos-duration="700">
+                                <a href="service_details.html" style="color:black;">
+                                    <div class="card custom_card">
+                                        <div class="img">
+                                            <img src="/img/cars/c6.png" class="card-img-top index-img-card" alt="...">
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-between align-items-baseline mb-2">
+                                                <h6 class="card-title justify-content-start">فيراري</h6>
+                                                <a href="javascript:void(0)" class="justify-content-end">
+                                                    <!-- <img src="/img/icons/star2.svg"> -->
+                                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                        xmlns="http://www.w3.org/2000/svg">
+                                                        <path
+                                                            d="M10.7878 3.10215C11.283 2.09877 12.7138 2.09876 13.209 3.10215L15.567 7.87987L20.8395 8.64601C21.9468 8.80691 22.3889 10.1677 21.5877 10.9487L17.7724 14.6676L18.6731 19.9189C18.8622 21.0217 17.7047 21.8627 16.7143 21.342L11.9984 18.8627L7.28252 21.342C6.29213 21.8627 5.13459 21.0217 5.32374 19.9189L6.2244 14.6676L2.40916 10.9487C1.60791 10.1677 2.05005 8.80691 3.15735 8.64601L8.42988 7.87987L10.7878 3.10215ZM11.9984 4.03854L9.74008 8.61443C9.54344 9.01288 9.16332 9.28904 8.72361 9.35294L3.67382 10.0867L7.32788 13.6486C7.64606 13.9587 7.79125 14.4055 7.71614 14.8435L6.85353 19.8729L11.3702 17.4983C11.7635 17.2915 12.2333 17.2915 12.6266 17.4983L17.1433 19.8729L16.2807 14.8435C16.2056 14.4055 16.3508 13.9587 16.6689 13.6486L20.323 10.0867L15.2732 9.35294C14.8335 9.28904 14.4534 9.01288 14.2568 8.61443L11.9984 4.03854Z"
+                                                            fill="#999999" />
+                                                    </svg>
+                                                </a>
+                                            </div>
+                                            <div class="d-flex justify-content-between">
+                                                <div class=" d-flex  flex-column">
+                                                    <div class="d-flex align-items-center mb-2">
+                                                        <a href="hotel_details.html" class="name-details">
+                                                            فيراري 488 جي تي بي
+                                                        </a>
+                                                    </div>
+                                                    <div class=" d-flex align-items-center rate mb-2">
+                                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path
+                                                                d="M6.19185 1.0681C6.52198 0.399179 7.47585 0.399172 7.80598 1.0681L9.37798 4.25325L12.893 4.76401C13.6312 4.87127 13.9259 5.77847 13.3918 6.29913L10.8482 8.7784L11.4487 12.2793C11.5748 13.0145 10.8031 13.5751 10.1428 13.228L6.99891 11.5751L3.85499 13.228C3.19473 13.5751 2.42304 13.0145 2.54914 12.2793L3.14958 8.7784L0.606087 6.29913C0.0719199 5.77847 0.36668 4.87127 1.10488 4.76401L4.6199 4.25325L6.19185 1.0681Z"
+                                                                fill="#FFCE1F" />
+                                                        </svg>
+                                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path
+                                                                d="M6.19185 1.0681C6.52198 0.399179 7.47585 0.399172 7.80598 1.0681L9.37798 4.25325L12.893 4.76401C13.6312 4.87127 13.9259 5.77847 13.3918 6.29913L10.8482 8.7784L11.4487 12.2793C11.5748 13.0145 10.8031 13.5751 10.1428 13.228L6.99891 11.5751L3.85499 13.228C3.19473 13.5751 2.42304 13.0145 2.54914 12.2793L3.14958 8.7784L0.606087 6.29913C0.0719199 5.77847 0.36668 4.87127 1.10488 4.76401L4.6199 4.25325L6.19185 1.0681Z"
+                                                                fill="#FFCE1F" />
+                                                        </svg>
+                                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path
+                                                                d="M6.19185 1.0681C6.52198 0.399179 7.47585 0.399172 7.80598 1.0681L9.37798 4.25325L12.893 4.76401C13.6312 4.87127 13.9259 5.77847 13.3918 6.29913L10.8482 8.7784L11.4487 12.2793C11.5748 13.0145 10.8031 13.5751 10.1428 13.228L6.99891 11.5751L3.85499 13.228C3.19473 13.5751 2.42304 13.0145 2.54914 12.2793L3.14958 8.7784L0.606087 6.29913C0.0719199 5.77847 0.36668 4.87127 1.10488 4.76401L4.6199 4.25325L6.19185 1.0681Z"
+                                                                fill="#FFCE1F" />
+                                                        </svg>
+                                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path
+                                                                d="M6.19185 1.0681C6.52198 0.399179 7.47585 0.399172 7.80598 1.0681L9.37798 4.25325L12.893 4.76401C13.6312 4.87127 13.9259 5.77847 13.3918 6.29913L10.8482 8.7784L11.4487 12.2793C11.5748 13.0145 10.8031 13.5751 10.1428 13.228L6.99891 11.5751L3.85499 13.228C3.19473 13.5751 2.42304 13.0145 2.54914 12.2793L3.14958 8.7784L0.606087 6.29913C0.0719199 5.77847 0.36668 4.87127 1.10488 4.76401L4.6199 4.25325L6.19185 1.0681Z"
+                                                                fill="#FFCE1F" />
+                                                        </svg>
+                                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path
+                                                                d="M6.19185 1.0681C6.52198 0.399179 7.47585 0.399172 7.80598 1.0681L9.37798 4.25325L12.893 4.76401C13.6312 4.87127 13.9259 5.77847 13.3918 6.29913L10.8482 8.7784L11.4487 12.2793C11.5748 13.0145 10.8031 13.5751 10.1428 13.228L6.99891 11.5751L3.85499 13.228C3.19473 13.5751 2.42304 13.0145 2.54914 12.2793L3.14958 8.7784L0.606087 6.29913C0.0719199 5.77847 0.36668 4.87127 1.10488 4.76401L4.6199 4.25325L6.19185 1.0681Z"
+                                                                fill="#FFCE1F" />
+                                                        </svg>
+
+                                                        <span class="number">
+                                                            (5)
+                                                        </span>
+                                                    </div>
+                                                    <div class=" d-flex align-items-center">
+
+                                                        <span class="price">
+                                                            5000$
+                                                        </span>
+                                                        <span class="des">
+                                                            34.75$
+                                                        </span>
+                                                    </div>
+
+                                                </div>
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
                             </div>
                         </div>
-                        <div v-if="moreDataShow" class="row justify-content-center see-more">
-                            <div class="col-6 col-lg-3">
-                                <div class=" d-flex align-items-center justify-content-center mt-4 ">
-                                    <a href="javascript:void(0)" v-on:click="seeMoreFunc()"
-                                        class="btn btn-light p-3  show-more-btn w-100">
-                                        <span> See More </span>
-                                        <svg width="14" height="15" viewBox="0 0 14 15" fill="none"
-                                            xmlns="http://www.w3.org/2000/svg">
-                                            <path
-                                                d="M0.276545 8.37881L6.36051 14.7351C6.45269 14.8314 6.55255 14.8998 6.6601 14.9403C6.76764 14.9807 6.88287 15.0006 7.00578 15C7.12869 15 7.24391 14.9798 7.35146 14.9393C7.459 14.8989 7.55887 14.8308 7.65105 14.7351L13.735 8.37881C13.904 8.20224 13.9922 7.98137 13.9996 7.71621C14.0069 7.45104 13.9188 7.22247 13.735 7.03049C13.566 6.83788 13.3546 6.7374 13.1008 6.72905C12.847 6.7207 12.6282 6.81316 12.4445 7.00642L7.92759 11.7255L7.92759 0.963084C7.92759 0.690211 7.8391 0.46132 7.66211 0.276408C7.48512 0.0914964 7.26634 -0.000639042 7.00578 3.73129e-06C6.7446 3.72818e-06 6.52551 0.0921392 6.34853 0.276408C6.17154 0.460678 6.08335 0.689569 6.08397 0.963084L6.08397 11.7255L1.56708 7.00642C1.39808 6.82985 1.18299 6.7374 0.921813 6.72905C0.660633 6.7207 0.445544 6.81316 0.276545 7.00642C0.0921823 7.18298 9.05373e-08 7.4077 8.72833e-08 7.68057C8.40293e-08 7.95344 0.0921822 8.18619 0.276545 8.37881Z"
-                                                fill=""></path>
-                                        </svg>
-                                    </a>
+                        <div class="row">
+                            <div class="pag">
+                                <p class="count">أظهر 1 من 5</p>
+                                <ul class="pagination">
+                                    <li><a href="#"><i class="fa-solid fa-arrow-right"></i></a></li>
+                                    <li class="active"><a href="#">1</a></li>
+                                    <li><a href="#">2</a></li>
+                                    <li><a href="#">3</a></li>
+                                    <li><a href="#"><i class="fa-solid fa-arrow-left"></i></a></li>
+                                </ul>
+                            </div>
+                            
+
+                        </div>
+                        
+                    </div>
+                </div>
+
+                <!-- end right side -->
+            </div>
+        </div>
+    </section>
+
+
+    <section class="slider-main ads-main">
+            <div class="slider">
+                <div class="card-slider">
+                    <img src="/img/slider/s2.png" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between mb-2">
+                            <h1 class="card-title justify-content-start"> 
+                                انطلق بقوة وأناقة مع سيارة الأحلام أصبحت في متناول يديك!
+                            </h1>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <div class=" d-flex  flex-column">
+                                <div class="d-flex align-items-center mb-3">
+                                    <ul class="details">
+                                        <li>
+                                            <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M14 0.666748C21.3637 0.666748 27.3333 6.63628 27.3333 14.0001C27.3333 21.3638 21.3637 27.3334 14 27.3334C6.6362 27.3334 0.666666 21.3638 0.666666 14.0001C0.666666 6.63628 6.6362 0.666748 14 0.666748ZM18.2929 9.95964L12.3333 15.9191L9.7071 13.293C9.31659 12.9025 8.68341 12.9025 8.29289 13.293C7.90237 13.6835 7.90237 14.3166 8.29289 14.7071L11.6263 18.0405C12.0168 18.431 12.6499 18.431 13.0404 18.0405L19.7071 11.3738C20.0976 10.9833 20.0976 10.3502 19.7071 9.95964C19.3165 9.56912 18.6835 9.56912 18.2929 9.95964Z" fill="#24DC26"/>
+                                            </svg>
+                                            المواصفات</li>
+                                        <li>
+                                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                  <path d="M10 0C15.5228 0 20 4.47715 20 10C20 15.5228 15.5228 20 10 20C4.47715 20 0 15.5228 0 10C0 4.47715 4.47715 0 10 0ZM13.2197 6.96967L8.75 11.4393L6.78033 9.4697C6.48744 9.1768 6.01256 9.1768 5.71967 9.4697C5.42678 9.7626 5.42678 10.2374 5.71967 10.5303L8.2197 13.0303C8.5126 13.3232 8.9874 13.3232 9.2803 13.0303L14.2803 8.0303C14.5732 7.73744 14.5732 7.26256 14.2803 6.96967C13.9874 6.67678 13.5126 6.67678 13.2197 6.96967Z" fill="white"/>
+                                            </svg>
+
+                                            محرك v8 توربو بقوة مذهلة</li>
+                                        <li>
+                                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                  <path d="M10 0C15.5228 0 20 4.47715 20 10C20 15.5228 15.5228 20 10 20C4.47715 20 0 15.5228 0 10C0 4.47715 4.47715 0 10 0ZM13.2197 6.96967L8.75 11.4393L6.78033 9.4697C6.48744 9.1768 6.01256 9.1768 5.71967 9.4697C5.42678 9.7626 5.42678 10.2374 5.71967 10.5303L8.2197 13.0303C8.5126 13.3232 8.9874 13.3232 9.2803 13.0303L14.2803 8.0303C14.5732 7.73744 14.5732 7.26256 14.2803 6.96967C13.9874 6.67678 13.5126 6.67678 13.2197 6.96967Z" fill="white"/>
+                                            </svg>
+                                            تسارع من 0 إلى 100 كم/س في عدد الثواني </li>
+                                        <li>
+                                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                  <path d="M10 0C15.5228 0 20 4.47715 20 10C20 15.5228 15.5228 20 10 20C4.47715 20 0 15.5228 0 10C0 4.47715 4.47715 0 10 0ZM13.2197 6.96967L8.75 11.4393L6.78033 9.4697C6.48744 9.1768 6.01256 9.1768 5.71967 9.4697C5.42678 9.7626 5.42678 10.2374 5.71967 10.5303L8.2197 13.0303C8.5126 13.3232 8.9874 13.3232 9.2803 13.0303L14.2803 8.0303C14.5732 7.73744 14.5732 7.26256 14.2803 6.96967C13.9874 6.67678 13.5126 6.67678 13.2197 6.96967Z" fill="white"/>
+                                            </svg>
+                                            تصميم رياضي فاخر يعكس الإبداع الإيطالي</li>
+                                        <li>
+                                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                  <path d="M10 0C15.5228 0 20 4.47715 20 10C20 15.5228 15.5228 20 10 20C4.47715 20 0 15.5228 0 10C0 4.47715 4.47715 0 10 0ZM13.2197 6.96967L8.75 11.4393L6.78033 9.4697C6.48744 9.1768 6.01256 9.1768 5.71967 9.4697C5.42678 9.7626 5.42678 10.2374 5.71967 10.5303L8.2197 13.0303C8.5126 13.3232 8.9874 13.3232 9.2803 13.0303L14.2803 8.0303C14.5732 7.73744 14.5732 7.26256 14.2803 6.96967C13.9874 6.67678 13.5126 6.67678 13.2197 6.96967Z" fill="white"/>
+                                            </svg>
+                                            
+                                            أنظمة تكنولوجيا متقدمة لتجربة قيادة لا تنسى</li>
+
+                                        <li>فقط<span>$4000</span></li>
+
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <div class=" d-flex  flex-column">
+                                <div class="d-flex align-items-center mb-3">
+                                    <a href="">تواصل مع البائع</a>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-              
-                <!-- end right side -->
+                <div class="card-slider">
+                    <img src="/img/slider/s1.png" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between mb-2">
+                            <h1 class="card-title justify-content-start">سيارتك المثالية بين يديك, ابدا رحلتك معنا!
+                            </h1>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <div class=" d-flex  flex-column">
+                                <div class="d-flex align-items-center mb-3">
+                                    <h3>حقق أحلامك على الطريق مع أفضل السيارات للبيع والإيجار! اختر من بين مجموعة فاخرة
+                                        ومميزة تلبي كل احتياجاتك بأسعار تنافسية وخدمات لا تضاهي. سواء كنت تبحث عن
+                                        الفخامة أو الأداء أو الراحة، نحن هنا لنمنحك تحربة قيادة تفوق التوقعات!</h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <div class=" d-flex  flex-column">
+                                <div class="d-flex align-items-center mb-3">
+                                    <a href="">استكشف المزيد</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
     </section>
+
+
     <lowerAnnouncement></lowerAnnouncement>
     <pageFooter></pageFooter>
 </template>
-<style scoped>
-
-</style>
+<style scoped></style>

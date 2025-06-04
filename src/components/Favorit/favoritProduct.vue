@@ -160,11 +160,11 @@ export default {
           <div class="col-8  col-md-5 col-lg-4 a3">
             <div class="d-flex justify-content-between align-items-center gab-3 gap-lg-5 ">
               <div class="d-flex align-items-center">
-                <img src="/img/icons/price-svgrepo-com.svg" class="icon-card" width="25" alt="">
+                <img src="/img/logo.png" class="icon-card" width="25" alt="">
                 <span class="gray_text_2 ms-1">{{ product.price }}</span>
               </div>
               <div class="d-flex align-items-center">
-                <img src="/img/icons/company-svgrepo-com.svg" class="icon-card" width="25" alt="">
+                <img src="/img/logo.png" class="icon-card" width="25" alt="">
                 <a href="javascript:void(0)" v-on:click="toMarketFunc()"><span class="gray_text_2 ms-1 campany-name">{{ product.companyName }}</span></a>
               </div>
             </div>

@@ -29,7 +29,7 @@ export default {
                 childrenServices: "",
                 totalPrice: 0
             },
-            emailError: '', 
+            emailError: '',
             states: [], // Will hold the list of states
             cities: [], // Will hold the list of cities for the selected state
 
@@ -101,12 +101,12 @@ export default {
             if (!this.data.email) {
                 this.emailError = '';
                 return false;
-            } 
+            }
             // Check if the input does not match the email format
             else if (!emailPattern.test(this.data.email)) {
                 this.emailError = 'Please enter a valid email address.';
                 return false;
-            } 
+            }
             // Clear the error if the input is valid
             else {
                 this.emailError = '';
@@ -115,12 +115,12 @@ export default {
         },
         filterMobileInput(event) {
             const input = event.target.value.replace(/\D/g, '').slice(0, 10);
-            this.data.mobile = input; 
+            this.data.mobile = input;
         },
-   
+
 
         clearData() {
-                this.data.id = 0,
+            this.data.id = 0,
                 this.data.orderType = 0,
                 this.data.name = "",
                 this.data.nickName = "",
@@ -143,114 +143,87 @@ export default {
 
 <template>
     <!--start footer section -->
-    <footer class="mt-5">
-        <!-- <div class="container py-5">
-            <div class="row align-items-center text-center text-lg-start justify-content-md-center">
+    <footer class="">
+        <div class="container py-5">
+            <div class="row text-center text-lg-start justify-content-md-center">
                 <div class="col-lg-3 col-md-12">
-                    <div class="d-flex flex-column flex-lg-column">
-                        <div class="d-flex justify-content-center justify-content-lg-start my-3">
-                            <img src="/img/WhiteYallaPartyLogo.png" alt="" width="70" class="img-fluid" />
+                    <div class="d-flex flex-column flex-lg-column ">
+                        <div class="  d-flex justify-content-center justify-content-lg-start  my-3">
+                            <img src="/img/logo.png" alt="" class="img-fluid">
                         </div>
-
-                        <p class="text_footer_hero">
-                            Yalla Party is a subsidiary of Yalla Party LLC, registered in the state of Maryland, United
-                            States of America.
-                        </p>
-                        
+                        <p class="text_footer_hero">موقع مركبتي ، لتسهيل عرض وطلب السيارات وخدماتها باسرع وقت ممكن مع
+                            اقوى البائعين والفنيين بشكل آمن
+                            ومنظم.</p>
                     </div>
                 </div>
-                <div class="col-lg-3 col-md-6 ps-lg-5 services">
+                <div class="col-lg-3 col-md-3 ps-lg-5">
                     <div class="d-flex flex-column flex-lg-column justify-content-center">
+                        <h4 class="text_footer-title">روابط مهمة </h4>
                         <a href="#">
-                            <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
-                                xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none"
-                                viewBox="0 0 24 24">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                    stroke-width="2" d="m9 5 7 7-7 7" />
-                            </svg>
-                            <span class="text_footer">Services </span>
+                            <span class="text_footer">الرئيسية </span>
                         </a>
-                 
-                        <router-link to="/aboutus">
-                            <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
-                                xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none"
-                                viewBox="0 0 24 24">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                    stroke-width="2" d="m9 5 7 7-7 7" />
-                            </svg>
-                            <span class="text_footer">About Us</span>
-                        </router-link>
 
-                        <a id="contact_with" @click="applySwing">
-                            <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
-                                xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none"
-                                viewBox="0 0 24 24">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                    stroke-width="2" d="m9 5 7 7-7 7" />
-                            </svg>
-
-                            <span class="text_footer"> Contact with us </span>
+                        <a href="about-us.html">
+                            <span class="text_footer">سياراتنا </span>
                         </a>
-                        <a href="" data-bs-toggle="modal" data-bs-target="#job-application">
-                            <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
-                                xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none"
-                                viewBox="0 0 24 24">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                    stroke-width="2" d="m9 5 7 7-7 7" />
-                            </svg>
 
-                            <span class="text_footer">Work with Yalla Party</span>
+                        <a href="common.html">
+                            <span class="text_footer"> البائعين</span>
                         </a>
                     </div>
+                    
                 </div>
-                <div class="col-lg-3 col-md-6 info">
+                <div class="col-lg-3 col-md-3">
                     <div class="d-flex flex-column flex-lg-column justify-content-between">
-                        <p class="text_footer_hero">
-                            Capitol Heights, MD USA
-                        </p>
-                        <a>
-                            <i class="fa fa-phone white fs-4"></i>
-                            <span class="text_footer contact-footer" :class="{ swing: isSwinging }"
-                                @animationend="isSwinging = false"> 202 455 9004 </span>
+                        <h4 class="text_footer-title">القانونية </h4>
+                        <a href="#">
+                            <span class="text_footer">سياسة الخصوصية </span>
                         </a>
-                        <a>
-                            <i class="fa fa-envelope white fs-4"></i>
-                            <span class="text_footer contact-footer" :class="{ swing: isSwinging }"
-                                @animationend="isSwinging = false"> info@yallaparty.net</span>
+                        <a href="#">
+                            <span class="text_footer"> الشروط والأحكام </span>
+                        </a>
+                        <a href="#">
+                            <span class="text_footer">سياسة الإرجاع </span>
                         </a>
                     </div>
+
                 </div>
-                <div class="col-lg-3 col-md-12 mb-lg-4 follow">
-                    <h3 class="text_footer"> Follow us on: </h3>
-                    <div class="d-flex justify-content-center justify-content-lg-start">
-                        <div class="social-links">
-                            <ul>
-                                <li><a :href="socialUrls.facebook"><i class="fab fa-facebook"
-                                            aria-hidden="true"></i></a></li>
-                                <li><a :href="socialUrls.twitter">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="fa-xx" width="19" viewBox="0 0 512 512"><path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z"/></svg>
-                                </a></li>
-                                <li><a :href="socialUrls.instagram"><i class="fab fa-instagram"
-                                            aria-hidden="true"></i></a></li>
-                       
-                            </ul>
-                        </div>
+                <div class="col-lg-3 col-md-3 social-links">
+                    <h4 class="text_footer-title">تابعونا على : </h4>
+                    <div class="d-flex justify-content-center justify-content-lg-start link">
+                        <a href="#">
+                            <img alt="Facebook" src="/img/icons/face.svg" class="img-fluid mx-1">
+                        </a>
+                        <a href="#">
+                            <img alt="web" src="/img/icons/web.svg" class="img-fluid mx-1">
+                        </a>
+                        <a href="#">
+                            <img alt="ln" src="/img/icons/ln.svg" class="img-fluid mx-1">
+                        </a>
+                        <a href="#">
+                            <img alt="insta" src="/img/icons/insta.svg" class="img-fluid mx-1">
+                        </a>
                     </div>
+
                 </div>
+
             </div>
         </div>
 
+        <div class="container">
         <div class="row text-center mt-4 mx-0 copy-write">
-            <h3 class="text_footer py-2 mb-0">
-                Copyright ©2024 Yalla Party. All Rights Reserved Copyright
-            </h3>
-        </div> -->
+                <h3 class="text_footer py-2 mb-0">
+                  جميع الحقوق محفوظة لدى مركبتي 2024 
+                </h3>
+            </div>
+        </div>
+
     </footer>
     <!--end footer section-->
 
 </template>
 <style scoped>
 .mt-5 {
-background-image: "C:/img\markabatiComponent\fotter.png";
+    background-image: "C:/img\markabatiComponent\fotter.png";
 }
 </style>

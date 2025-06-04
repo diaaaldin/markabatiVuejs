@@ -26,11 +26,12 @@ import main from '@/Views/main.vue'
 import aboutus from '@/Views/aboutUs.vue'
 import seller from '@/Views/seller.vue'
 import sellers from '@/Views/sellers.vue'
-import vehicle from '@/Views/vehicles.vue'
+import vehicle from '@/Views/vehicle.vue'
 import vehicles from '@/Views/vehicles.vue'
 
 import teckitsuccess from '@/Views/Checkout/PaymentSuccess.vue'
 import teckitfail from '@/Views/Checkout/PaymentFail.vue'
+
 
 
 const routes = [
@@ -70,10 +71,11 @@ const routes = [
         component: sellers
     },
     {
-        path: '/vehicle/:slug',
+        path: '/vehicle',
         name: "vehicle",
         component: vehicle
     },
+
     {
         path: '/add_announcement',
         name: "add_announcement",
