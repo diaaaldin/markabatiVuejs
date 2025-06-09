@@ -41,7 +41,6 @@ export default {
                     bestThreeCategories: [],
                     cardOfVehicle: [],
                     vehicleCategoryExtension: [],
-                  
                 };
             }
         }
@@ -133,7 +132,7 @@ export default {
         },
 
         toProductFunc() {
-            this.$router.push({ name: "product", params: { slug: this.product.slug } });
+            this.$router.push({ name: "vehicle"});
         },
 
         toMarketFunc() {
