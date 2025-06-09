@@ -1,7 +1,7 @@
 <script>
 //import { mapState, mapGetters, mapActions } from "vuex";
 import { useHead } from '@vueuse/head'
-import pageNav from '@/components/darkNavbar.vue';
+import darkNavbar from '@/components/darkNavbar.vue';
 import pageFooter from '@/components/footer.vue';
 
 export default {
@@ -23,7 +23,7 @@ export default {
         });
     },
     components: {
-        pageNav,
+        darkNavbar,
         pageFooter
     },
 
@@ -37,17 +37,17 @@ export default {
     },
 
     computed: {
-        // useHead() {
-        //     return {
-        //         title: 'About Us 2 | YallaParty',
-        //         meta: [
-        //             {
-        //                 name: 'description',
-        //                 content: 'Yalla Party is your go-to platform for booking events of all sizes, including weddings, engagements, birthdays, and graduation parties. We strive to connect users with businesses that provide everything needed for unforgettable celebrations',
-        //             },
-        //         ],
-        //     };
-        // },
+        useHead() {
+            return {
+                title: 'About Us | markabati',
+                meta: [
+                    {
+                        name: 'description',
+                        content: 'Yalla Party is your go-to platform for booking events of all sizes, including weddings, engagements, birthdays, and graduation parties. We strive to connect users with businesses that provide everything needed for unforgettable celebrations',
+                    },
+                ],
+            };
+        },
     
         //...mapGetters(),
         //...mapGetters(),
@@ -61,14 +61,14 @@ export default {
 };
 </script>
 <template>
-    <pageNav></pageNav>
+    <darkNavbar></darkNavbar>
 
     <!-- end header second -->
     <div class="header-title text-center">
         <div class="breadcrumb-outer events">
             <div class="container">
                 <div class="breadcrumb-content text-center">
-                    <h5 class="theme mb-0">Yalla Party</h5>
+                    <h5 class="theme mb-0">Markabati</h5>
                     <h1 class="mb-5 white">About Us</h1>
                 </div>
             </div>
@@ -117,4 +117,5 @@ export default {
     
     <pageFooter></pageFooter>
 </template>
-<style scoped></style>
+<style scoped>
+</style>

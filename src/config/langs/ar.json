@@ -1,5 +1,36 @@
 {
 
+    "navbar_main":"الرئيسية",
+    "navbar_vehicles":"سياراتنا",
+    "navbar_sellers":"البائعين",
+    "navbar_aboutus":"من نحن",
+    "navbar_contacts":"تواصل معنا",
+    "navbar_login":"تسجيل دخول",
+    "navbar_signup":"مستخدم جديد",
+    "navbar_profile":"الملف الشخصي",
+    "navbar_logout":"تسجيل خروج",
+
+
+    "footer_about":"موقع مركبتي ، لتسهيل عرض وطلب السيارات وخدماتها باسرع وقت ممكن مع اقوى البائعين والفنيين بشكل آمن ومنظم .",
+    "footer_important_links":"روابط مهمة",
+    "footer_main":"الرئيسية",
+    "footer_vehicles":"سياراتنا",
+    "footer_sellers":"البائعين",
+    "footer_lows":"القانونية",
+    "footer_private_polices":"سياسة الخصوصية",
+    "footer_jadgement":"الشروط والأحكام",
+    "footer_return_polices":"سياسة الإرجاع",
+    "footer_followus":"تابعونا على :",
+    "footer_footer":"جميع الحقوق محفوظة لدى مركبتي 2024",
+
+
+    "main_show_all":"عرض الكل",
+
+
+    "vehicels_title":"المركبات",
+
+
+
     "header_userType":"مدير للنظام",
     "header_to_store":"إلى المعرض",
     "header_logout":"تسجيل خروج",

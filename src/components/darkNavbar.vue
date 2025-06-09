@@ -103,40 +103,31 @@ export default {
                <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav align-items-center mx-auto mb-2 mb-lg-0 gradiant_nav">
                         <li class="nav-item">
-                            <router-link to="/" class="nav-link" :class="{ active: $route.path === '/' }"> الرئيسية
-                            </router-link>
+                            <router-link to="/" class="nav-link" :class="{ active: $route.path === '/' }"> {{ $t('navbar_main') }} </router-link>
                         </li>
                         <li class="nav-item">
-                            <router-link to="/vehicles" class="nav-link" :class="{ active: $route.path === '/vehicles' }">
-                                سياراتنا </router-link>
+                            <router-link to="/vehicles" class="nav-link" :class="{ active: $route.path === '/vehicles' }"> {{ $t('navbar_vehicles') }} </router-link>
                         </li>
                         <li class="nav-item">
                             <router-link to="/sellers" class="nav-link"
-                                :class="{ active: $route.path === '/sellers' }"> البائعين </router-link>
+                                :class="{ active: $route.path === '/sellers' }">  {{ $t('navbar_sellers') }} </router-link>
+                        </li>
+                        <li class="nav-item">
+                            <router-link to="/aboutus" class="nav-link" :class="{ active: $route.path === '/aboutus' }"> {{ $t('navbar_aboutus') }} </router-link>
                         </li>
                         <li class="nav-item">
                             <router-link to="/aboutus" class="nav-link"
-                                :class="{ active: $route.path === '/aboutus' }"> من نحن </router-link>
-                        </li>
-                        <li class="nav-item">
-                            <router-link to="/aboutus" class="nav-link"
-                                :class="{ active: $route.path === '/aboutus' }"> تواصل معنا  </router-link>
+                                :class="{ active: $route.path === '/aboutus' }"> {{ $t('navbar_contacts') }}   </router-link>
                         </li>
                     </ul>
 
                     <ul v-if="GetUserName == ''"
                         class="nav align-items-center mb-2 mb-lg-0 white-header justify-content-center gradiant_nav">
                         <li class="nav-item login">
-
-                            <router-link to="/login" class="px-3 py-2 align-items-center d-flex login-btn"> تسجيل دخول
-                            </router-link>
-
+                            <router-link to="/login" class="px-3 py-2 align-items-center d-flex login-btn"> {{ $t('navbar_login') }} </router-link>
                         </li>
                         <li class="nav-item sign-up">
-
-                            <router-link to="/signUp" class="px-3 py-2 align-items-center d-flex login-btn"> مستخدم جديد
-                            </router-link>
-
+                            <router-link to="/signUp" class="px-3 py-2 align-items-center d-flex login-btn">{{ $t('navbar_signup') }}</router-link>
                         </li>
                     </ul>
 
@@ -175,7 +166,7 @@ export default {
                                                         fill="black"></path>
                                                 </svg>
                                             </span>
-                                            Profile
+                                            {{ $t('navbar_profile') }}
                                         </a>
                                     </li>
                                     <li class="log-out">
@@ -191,7 +182,7 @@ export default {
                                                         fill="#e5008f" stroke="#e5008f" stroke-width="0.3"></path>
                                                 </svg>
                                             </span>
-                                            Log Out
+                                            {{ $t('navbar_logout') }}
                                         </a>
                                     </li>
                                 </ul>

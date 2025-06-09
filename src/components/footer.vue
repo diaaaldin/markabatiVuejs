@@ -151,45 +151,45 @@ export default {
                         <div class="  d-flex justify-content-center justify-content-lg-start  my-3">
                             <img src="/img/logo.png" alt="" class="img-fluid">
                         </div>
-                        <p class="text_footer_hero">موقع مركبتي ، لتسهيل عرض وطلب السيارات وخدماتها باسرع وقت ممكن مع
-                            اقوى البائعين والفنيين بشكل آمن
-                            ومنظم.</p>
+                        <p class="text_footer_hero">
+                            {{ $t('footer_about') }}
+                          </p>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-3 ps-lg-5">
                     <div class="d-flex flex-column flex-lg-column justify-content-center">
-                        <h4 class="text_footer-title">روابط مهمة </h4>
+                        <h4 class="text_footer-title"> {{ $t('footer_important_links') }} </h4>
                         <a href="#">
-                            <span class="text_footer">الرئيسية </span>
+                            <span class="text_footer">{{ $t('footer_main') }} </span>
                         </a>
 
                         <a href="about-us.html">
-                            <span class="text_footer">سياراتنا </span>
+                            <span class="text_footer">{{ $t('footer_vehicles') }} </span>
                         </a>
 
                         <a href="common.html">
-                            <span class="text_footer"> البائعين</span>
+                            <span class="text_footer">{{ $t('footer_sellers') }} </span>
                         </a>
                     </div>
                     
                 </div>
                 <div class="col-lg-3 col-md-3">
                     <div class="d-flex flex-column flex-lg-column justify-content-between">
-                        <h4 class="text_footer-title">القانونية </h4>
+                        <h4 class="text_footer-title">{{ $t('footer_lows') }}</h4>
                         <a href="#">
-                            <span class="text_footer">سياسة الخصوصية </span>
+                            <span class="text_footer">{{ $t('footer_private_polices') }}  </span>
                         </a>
                         <a href="#">
-                            <span class="text_footer"> الشروط والأحكام </span>
+                            <span class="text_footer">{{ $t('footer_jadgement') }} </span>
                         </a>
                         <a href="#">
-                            <span class="text_footer">سياسة الإرجاع </span>
+                            <span class="text_footer">{{ $t('footer_return_polices') }} </span>
                         </a>
                     </div>
 
                 </div>
                 <div class="col-lg-3 col-md-3 social-links">
-                    <h4 class="text_footer-title">تابعونا على : </h4>
+                    <h4 class="text_footer-title">{{ $t('footer_followus') }}</h4>
                     <div class="d-flex justify-content-center justify-content-lg-start link">
                         <a href="#">
                             <img alt="Facebook" src="/img/icons/face.svg" class="img-fluid mx-1">
@@ -213,7 +213,7 @@ export default {
         <div class="container">
         <div class="row text-center mt-4 mx-0 copy-write">
                 <h3 class="text_footer py-2 mb-0">
-                  جميع الحقوق محفوظة لدى مركبتي 2024 
+                    {{ $t('footer_footer') }} 
                 </h3>
             </div>
         </div>

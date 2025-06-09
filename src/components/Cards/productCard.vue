@@ -14,16 +14,34 @@ export default {
             default() {
                 return {
                     id: 0,
-                    userId: 0,
-                    companyEmail: "",
-                    companyName: "",
-                    name: "",
-                    section: 0,
-                    sectionName: "",
-                    image: "",
-                    price: 0,
+                    ownerId: 0,
+                    onerName: "",
+                    ownerImage: "",
+                    ownerMobile: "",
+                    brandId: 0,
+                    brandName: "فيراري",
+                    modelId: 0,
+                    modelName: "فيراري 488 جي تي بي",
+                    year: 0,
+                    price: 5000,
+                    currency: 0,
+                    meals: 0,
+                    color: "",
+                    bodyType: "",
+                    specification: "",
+                    paintedType: "",
+                    paintedStatus: "",
+                    gearType: "",
+                    oilType: "",
                     description: "",
-                    slug: ""
+                    slug: "",
+                    image: "/img/cars/c1.png",
+                    image360: "",
+                    vehicleImages: [],
+                    bestThreeCategories: [],
+                    cardOfVehicle: [],
+                    vehicleCategoryExtension: [],
+                  
                 };
             }
         }
@@ -133,8 +151,8 @@ export default {
             return new Intl.NumberFormat('en-US', {
                 style: 'currency',
                 currency: "USD",
-                //minimumFractionDigits: 0, // No decimals
-                //maximumFractionDigits: 0  // No decimals
+                minimumFractionDigits: 0, // No decimals
+                maximumFractionDigits: 0  // No decimals
             }).format(value);
         },
 
@@ -142,48 +160,71 @@ export default {
 };
 </script>
 <template>
-    <div class="col-12 col-lg-3 col-md-6 mt-4" data-aos="fade-up" data-aos-delay="100" data-aos-duration="700">
-        <a href="javascript:void(0)" style="color:black;">
-            <div class="card custom_card">
-                <img v-on:click="toProductFunc()" :src="product.image" class="card-img-top index-img-card" alt="...">
-                <div class="card-body p-3">
-                    <div class="d-flex justify-content-between align-items-baseline mb-2">
-                        <h6 class="card-title justify-content-start"> {{ product.name }} </h6>
-                        <a href="javascript:void(0)" @click="toggleHeartFill()">
-                            <svg width="21" height="17" :stroke="isFilled ? 'red' : '#999999'" class="heart_svg"
-                                viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M10 18C9.71527 18 9.44077 17.8957 9.22684 17.7061C8.41888 16.9914 7.63992 16.3198 6.95267 15.7274L6.94916 15.7243C4.93423 13.9873 3.19427 12.4873 1.98364 11.0096C0.630341 9.35765 0 7.79138 0 6.08032C0 4.41788 0.563507 2.88418 1.58661 1.76153C2.62192 0.625613 4.04251 0 5.58716 0C6.74164 0 7.79892 0.369224 8.72955 1.09733C9.19922 1.46486 9.62494 1.91466 10 2.43932C10.3752 1.91466 10.8008 1.46486 11.2706 1.09733C12.2012 0.369224 13.2585 0 14.413 0C15.9575 0 17.3782 0.625613 18.4135 1.76153C19.4366 2.88418 20 4.41788 20 6.08032C20 7.79138 19.3698 9.35765 18.0165 11.0094C16.8059 12.4873 15.0661 13.9872 13.0515 15.724C12.363 16.3173 11.5828 16.99 10.773 17.7064C10.5592 17.8957 10.2846 18 10 18Z"
-                                    :fill="isFilled ? 'red' : 'white'" stroke-width="1.4" />
-                            </svg>
-                        </a>
-                    </div>
-                    <div class="d-flex align-items-center">
-                        <p class="text-store">{{ stripHtml(product.description) }}</p>
-                    </div>
-                    <div class="d-flex justify-content-between">
-                        <div class=" d-flex  flex-column">
-                            <div class="d-flex align-items-center mb-3">
-                                <img src="/img/icons/price-svgrepo-com.svg" class="icon-card" width="25" alt="">
-                                <span class="text-store">{{ product.price }}</span>
-                            </div>
+    <div class="col-12 col-lg-4 col-md-6 mt-4" data-aos="fade-up" data-aos-delay="100"
+                            data-aos-duration="700">
+                            <a href="javascript:void(0)" style="color:black;">
+                                <div class="card custom_card">
+                                    <div class="img">
+                                        <img v-on:click="toProductFunc()" :src="product.image" class="card-img-top index-img-card" alt="...">
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-baseline mb-2">
+                                            <h6 class="card-title justify-content-start">{{ product.brandName }}</h6>
+                                            <a href="javascript:void(0)" class="justify-content-end">
+                                                <!-- <img src="/img/icons/star2.svg"> -->
+                                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M10.7878 3.10215C11.283 2.09877 12.7138 2.09876 13.209 3.10215L15.567 7.87987L20.8395 8.64601C21.9468 8.80691 22.3889 10.1677 21.5877 10.9487L17.7724 14.6676L18.6731 19.9189C18.8622 21.0217 17.7047 21.8627 16.7143 21.342L11.9984 18.8627L7.28252 21.342C6.29213 21.8627 5.13459 21.0217 5.32374 19.9189L6.2244 14.6676L2.40916 10.9487C1.60791 10.1677 2.05005 8.80691 3.15735 8.64601L8.42988 7.87987L10.7878 3.10215ZM11.9984 4.03854L9.74008 8.61443C9.54344 9.01288 9.16332 9.28904 8.72361 9.35294L3.67382 10.0867L7.32788 13.6486C7.64606 13.9587 7.79125 14.4055 7.71614 14.8435L6.85353 19.8729L11.3702 17.4983C11.7635 17.2915 12.2333 17.2915 12.6266 17.4983L17.1433 19.8729L16.2807 14.8435C16.2056 14.4055 16.3508 13.9587 16.6689 13.6486L20.323 10.0867L15.2732 9.35294C14.8335 9.28904 14.4534 9.01288 14.2568 8.61443L11.9984 4.03854Z" fill="#999999"/>
+                                                </svg>
+                                            </a>
+                                        </div>
+                                        <div class="d-flex justify-content-between">
+                                            <div class=" d-flex  flex-column">
+                                                <div class="d-flex align-items-center mb-2">
+                                                    <a href="hotel_details.html" class="name-details">
+                                                        {{ product.modelName }}                                                 
+                                                    </a>
+                                                </div>
+                                                <div class=" d-flex align-items-center rate mb-2">
+                                                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path d="M6.19185 1.0681C6.52198 0.399179 7.47585 0.399172 7.80598 1.0681L9.37798 4.25325L12.893 4.76401C13.6312 4.87127 13.9259 5.77847 13.3918 6.29913L10.8482 8.7784L11.4487 12.2793C11.5748 13.0145 10.8031 13.5751 10.1428 13.228L6.99891 11.5751L3.85499 13.228C3.19473 13.5751 2.42304 13.0145 2.54914 12.2793L3.14958 8.7784L0.606087 6.29913C0.0719199 5.77847 0.36668 4.87127 1.10488 4.76401L4.6199 4.25325L6.19185 1.0681Z" fill="#FFCE1F"/>
+                                                    </svg>
+                                                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path d="M6.19185 1.0681C6.52198 0.399179 7.47585 0.399172 7.80598 1.0681L9.37798 4.25325L12.893 4.76401C13.6312 4.87127 13.9259 5.77847 13.3918 6.29913L10.8482 8.7784L11.4487 12.2793C11.5748 13.0145 10.8031 13.5751 10.1428 13.228L6.99891 11.5751L3.85499 13.228C3.19473 13.5751 2.42304 13.0145 2.54914 12.2793L3.14958 8.7784L0.606087 6.29913C0.0719199 5.77847 0.36668 4.87127 1.10488 4.76401L4.6199 4.25325L6.19185 1.0681Z" fill="#FFCE1F"/>
+                                                    </svg>
+                                                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path d="M6.19185 1.0681C6.52198 0.399179 7.47585 0.399172 7.80598 1.0681L9.37798 4.25325L12.893 4.76401C13.6312 4.87127 13.9259 5.77847 13.3918 6.29913L10.8482 8.7784L11.4487 12.2793C11.5748 13.0145 10.8031 13.5751 10.1428 13.228L6.99891 11.5751L3.85499 13.228C3.19473 13.5751 2.42304 13.0145 2.54914 12.2793L3.14958 8.7784L0.606087 6.29913C0.0719199 5.77847 0.36668 4.87127 1.10488 4.76401L4.6199 4.25325L6.19185 1.0681Z" fill="#FFCE1F"/>
+                                                    </svg>
+                                                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path d="M6.19185 1.0681C6.52198 0.399179 7.47585 0.399172 7.80598 1.0681L9.37798 4.25325L12.893 4.76401C13.6312 4.87127 13.9259 5.77847 13.3918 6.29913L10.8482 8.7784L11.4487 12.2793C11.5748 13.0145 10.8031 13.5751 10.1428 13.228L6.99891 11.5751L3.85499 13.228C3.19473 13.5751 2.42304 13.0145 2.54914 12.2793L3.14958 8.7784L0.606087 6.29913C0.0719199 5.77847 0.36668 4.87127 1.10488 4.76401L4.6199 4.25325L6.19185 1.0681Z" fill="#FFCE1F"/>
+                                                    </svg>
+                                                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path d="M6.19185 1.0681C6.52198 0.399179 7.47585 0.399172 7.80598 1.0681L9.37798 4.25325L12.893 4.76401C13.6312 4.87127 13.9259 5.77847 13.3918 6.29913L10.8482 8.7784L11.4487 12.2793C11.5748 13.0145 10.8031 13.5751 10.1428 13.228L6.99891 11.5751L3.85499 13.228C3.19473 13.5751 2.42304 13.0145 2.54914 12.2793L3.14958 8.7784L0.606087 6.29913C0.0719199 5.77847 0.36668 4.87127 1.10488 4.76401L4.6199 4.25325L6.19185 1.0681Z" fill="#FFCE1F"/>
+                                                    </svg>
+                                                          
+                                                    <span class="number">
+                                                            (5)
+                                                    </span>
+                                                </div>
+                                                <div class=" d-flex align-items-center">
+                                                    
+                                                    <span class="price">
+                                                            <!-- 5000$ -->
+                                                            {{ formatCurrency(product.price) }}
+                                                    </span>
+                                                    <span class="des">
+                                                            34.75$
+                                                    </span>
+                                                </div>
 
+                                            </div>
+                                            
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
                         </div>
-                        <div class="d-flex justify-content-end flex-column">
-                            <div class="d-flex align-items-center mb-3">
-                                <img src="/img/icons/company-svgrepo-com.svg" class="icon-card" width="25" alt="">
-
-                                <a href="javascript:void(0)" v-on:click="toMarketFunc()"><span class="text-store">
-                                        {{ product.companyName }}</span></a>
-                            </div>
-
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </a>
-    </div>
+ 
 </template>
 <style scoped>
 .heart_svg {
