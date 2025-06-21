@@ -1,0 +1,233 @@
+<script>
+import { mapState, mapGetters, mapActions } from "vuex";
+import { ElLoading } from 'element-plus';
+
+export default {
+    data() {
+        return {
+            isFilled: false // Track if the heart is filled or not
+        }
+    },
+    props: {
+        product: {
+            type: Object,
+            default() {
+                return {
+                    id: 0,
+                    ownerId: 0,
+                    onerName: "",
+                    ownerImage: "",
+                    ownerMobile: "",
+                    brandId: 0,
+                    brandName: "فيراري",
+                    modelId: 0,
+                    modelName: "فيراري 488 جي تي بي",
+                    year: 0,
+                    price: 5000,
+                    currency: 0,
+                    meals: 0,
+                    color: "",
+                    bodyType: "",
+                    specification: "",
+                    paintedType: "",
+                    paintedStatus: "",
+                    gearType: "",
+                    oilType: "",
+                    description: "",
+                    slug: "",
+                    image: "/img/cars/c1.png",
+                    image360: "",
+                    vehicleImages: [],
+                    bestThreeCategories: [],
+                    cardOfVehicle: [],
+                    vehicleCategoryExtension: [],
+                };
+            }
+        }
+    },
+    mounted() {
+
+    },
+    components: {
+
+    },
+
+    emits: {
+
+    },
+
+    created() {
+        // Call the function from the store directly when the component is created
+        this.chickIsFavoritFunc();
+    },
+
+    computed: {
+        ...mapGetters("Products", ["getFavoritProductsData"]),
+
+    },
+    methods: {
+        ...mapActions("Products", ["ToggleProductInBasket"]),
+
+        chickIsFavoritFunc() {
+            if (this.getFavoritProductsData && this.getFavoritProductsData.some(x => x.id === this.product.id)) {
+                this.isFilled = true;
+            } else {
+                this.isFilled = false;
+            }
+        },
+
+        toggleHeartFill() {
+            const loading = ElLoading.service({
+                lock: true,
+                background: 'rgba(0, 0, 0, 0.7)',
+                text: "",
+            });
+            let token =  localStorage.getItem("token");
+            if (token) {
+                this.ToggleProductInBasket(this.product.id).then(Response => {
+                    if (Response.isInBasket) {
+                        this.$moshaToast('Added to favourites', {
+                            hideProgressBar: 'false',
+                            showIcon: 'true',
+                            swipeClose: 'true',
+                            type: 'success',
+                            timeout: 3000,
+                        });
+                        this.isFilled = true;
+                    } else {
+                        this.$moshaToast('Removed from favourites', {
+                            hideProgressBar: 'false',
+                            showIcon: 'true',
+                            swipeClose: 'true',
+                            type: 'danger',
+                            timeout: 3000,
+                        });
+                        this.isFilled = false;
+                    }
+
+                    loading.close();
+                }).catch(error => {
+                    this.$moshaToast(error.response.data.message, {
+                        hideProgressBar: 'false',
+                        position: 'top-center',
+                        showIcon: 'true',
+                        swipeClose: 'true',
+                        type: 'warning',
+                        timeout: 3000,
+                    });
+                    loading.close();
+                });
+            }else{
+                this.$moshaToast("login first", {
+                        hideProgressBar: 'false',
+                        position: 'top-center',
+                        showIcon: 'true',
+                        swipeClose: 'true',
+                        type: 'warning',
+                        timeout: 3000,
+                    });
+                    loading.close();
+            }
+
+        },
+
+        toProductFunc() {
+            this.$router.push({ name: "vehicle"});
+        },
+
+        toMarketFunc() {
+            this.$router.push({ name: 'productsmarket', params: { id: this.product.userId } });
+        },
+
+        stripHtml(html) {
+            const div = document.createElement('div');
+            div.innerHTML = html;
+            const text = div.textContent || div.innerText || '';
+            return text.length > 20 ? text.slice(0, 75) + '...' : text;
+        },
+
+        formatCurrency(value) {
+            return new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: "USD",
+                minimumFractionDigits: 0, // No decimals
+                maximumFractionDigits: 0  // No decimals
+            }).format(value);
+        },
+
+    }
+};
+</script>
+<template>
+    <div class="col-12 col-lg-3 col-md-6 mt-4" data-aos="fade-up" data-aos-delay="100"
+                            data-aos-duration="700">
+                            <a href="javascript:void(0)" style="color:black;">
+                                <div class="card custom_card">
+                                    <div class="img">
+                                        <img v-on:click="toProductFunc()" :src="product.image" class="card-img-top index-img-card" alt="...">
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-baseline mb-2">
+                                            <h6 class="card-title justify-content-start">{{ product.brandName }}</h6>
+                                            <a href="javascript:void(0)" class="justify-content-end">
+                                                <!-- <img src="/img/icons/star2.svg"> -->
+                                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M10.7878 3.10215C11.283 2.09877 12.7138 2.09876 13.209 3.10215L15.567 7.87987L20.8395 8.64601C21.9468 8.80691 22.3889 10.1677 21.5877 10.9487L17.7724 14.6676L18.6731 19.9189C18.8622 21.0217 17.7047 21.8627 16.7143 21.342L11.9984 18.8627L7.28252 21.342C6.29213 21.8627 5.13459 21.0217 5.32374 19.9189L6.2244 14.6676L2.40916 10.9487C1.60791 10.1677 2.05005 8.80691 3.15735 8.64601L8.42988 7.87987L10.7878 3.10215ZM11.9984 4.03854L9.74008 8.61443C9.54344 9.01288 9.16332 9.28904 8.72361 9.35294L3.67382 10.0867L7.32788 13.6486C7.64606 13.9587 7.79125 14.4055 7.71614 14.8435L6.85353 19.8729L11.3702 17.4983C11.7635 17.2915 12.2333 17.2915 12.6266 17.4983L17.1433 19.8729L16.2807 14.8435C16.2056 14.4055 16.3508 13.9587 16.6689 13.6486L20.323 10.0867L15.2732 9.35294C14.8335 9.28904 14.4534 9.01288 14.2568 8.61443L11.9984 4.03854Z" fill="#999999"/>
+                                                </svg>
+                                            </a>
+                                        </div>
+                                        <div class="d-flex justify-content-between">
+                                            <div class=" d-flex  flex-column">
+                                                <div class="d-flex align-items-center mb-2">
+                                                    <a href="hotel_details.html" class="name-details">
+                                                        {{ product.modelName }}                                                 
+                                                    </a>
+                                                </div>
+                                                <div class=" d-flex align-items-center rate mb-2">
+                                                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path d="M6.19185 1.0681C6.52198 0.399179 7.47585 0.399172 7.80598 1.0681L9.37798 4.25325L12.893 4.76401C13.6312 4.87127 13.9259 5.77847 13.3918 6.29913L10.8482 8.7784L11.4487 12.2793C11.5748 13.0145 10.8031 13.5751 10.1428 13.228L6.99891 11.5751L3.85499 13.228C3.19473 13.5751 2.42304 13.0145 2.54914 12.2793L3.14958 8.7784L0.606087 6.29913C0.0719199 5.77847 0.36668 4.87127 1.10488 4.76401L4.6199 4.25325L6.19185 1.0681Z" fill="#FFCE1F"/>
+                                                    </svg>
+                                                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path d="M6.19185 1.0681C6.52198 0.399179 7.47585 0.399172 7.80598 1.0681L9.37798 4.25325L12.893 4.76401C13.6312 4.87127 13.9259 5.77847 13.3918 6.29913L10.8482 8.7784L11.4487 12.2793C11.5748 13.0145 10.8031 13.5751 10.1428 13.228L6.99891 11.5751L3.85499 13.228C3.19473 13.5751 2.42304 13.0145 2.54914 12.2793L3.14958 8.7784L0.606087 6.29913C0.0719199 5.77847 0.36668 4.87127 1.10488 4.76401L4.6199 4.25325L6.19185 1.0681Z" fill="#FFCE1F"/>
+                                                    </svg>
+                                                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path d="M6.19185 1.0681C6.52198 0.399179 7.47585 0.399172 7.80598 1.0681L9.37798 4.25325L12.893 4.76401C13.6312 4.87127 13.9259 5.77847 13.3918 6.29913L10.8482 8.7784L11.4487 12.2793C11.5748 13.0145 10.8031 13.5751 10.1428 13.228L6.99891 11.5751L3.85499 13.228C3.19473 13.5751 2.42304 13.0145 2.54914 12.2793L3.14958 8.7784L0.606087 6.29913C0.0719199 5.77847 0.36668 4.87127 1.10488 4.76401L4.6199 4.25325L6.19185 1.0681Z" fill="#FFCE1F"/>
+                                                    </svg>
+                                                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path d="M6.19185 1.0681C6.52198 0.399179 7.47585 0.399172 7.80598 1.0681L9.37798 4.25325L12.893 4.76401C13.6312 4.87127 13.9259 5.77847 13.3918 6.29913L10.8482 8.7784L11.4487 12.2793C11.5748 13.0145 10.8031 13.5751 10.1428 13.228L6.99891 11.5751L3.85499 13.228C3.19473 13.5751 2.42304 13.0145 2.54914 12.2793L3.14958 8.7784L0.606087 6.29913C0.0719199 5.77847 0.36668 4.87127 1.10488 4.76401L4.6199 4.25325L6.19185 1.0681Z" fill="#FFCE1F"/>
+                                                    </svg>
+                                                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path d="M6.19185 1.0681C6.52198 0.399179 7.47585 0.399172 7.80598 1.0681L9.37798 4.25325L12.893 4.76401C13.6312 4.87127 13.9259 5.77847 13.3918 6.29913L10.8482 8.7784L11.4487 12.2793C11.5748 13.0145 10.8031 13.5751 10.1428 13.228L6.99891 11.5751L3.85499 13.228C3.19473 13.5751 2.42304 13.0145 2.54914 12.2793L3.14958 8.7784L0.606087 6.29913C0.0719199 5.77847 0.36668 4.87127 1.10488 4.76401L4.6199 4.25325L6.19185 1.0681Z" fill="#FFCE1F"/>
+                                                    </svg>
+                                                          
+                                                    <span class="number">
+                                                            (5)
+                                                    </span>
+                                                </div>
+                                                <div class=" d-flex align-items-center">
+                                                    
+                                                    <span class="price">
+                                                            <!-- 5000$ -->
+                                                            {{ formatCurrency(product.price) }}
+                                                    </span>
+                                                    <span class="des">
+                                                            34.75$
+                                                    </span>
+                                                </div>
+
+                                            </div>
+                                            
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+ 
+</template>
+<style scoped>
+.heart_svg {
+    cursor: pointer;
+    /* Change cursor to pointer for better UX */
+}
+</style>

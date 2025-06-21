@@ -235,7 +235,7 @@ export default {
             <div class="slider">
                 <div class="card-slider">
                     <img src="/img/slider/s1.png" class="card-img-top" alt="...">
-                    <div class="card-body">
+                    <!-- <div class="card-body">
                         <div class="d-flex justify-content-between mb-2">
                             <h1 class="card-title justify-content-start">سيارتك المثالية بين يديك, ابدأ رحلتك معنا!
                             </h1>
@@ -256,11 +256,11 @@ export default {
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
                 <div class="card-slider">
                     <img src="/img/slider/s2.png" class="card-img-top" alt="...">
-                     <div class="card-body">
+                     <!-- <div class="card-body">
                         <div class="d-flex justify-content-between mb-2">
                             <h1 class="card-title justify-content-start">سيارتك المثالية بين يديك, ابدا رحلتك معنا!
                             </h1>
@@ -281,7 +281,7 @@ export default {
                                 </div>
                             </div>
                         </div>
-                    </div> 
+                    </div>  -->
                 </div>
 
 
@@ -321,7 +321,7 @@ export default {
                                     <div class="image">
                                         <img src="/img/ads/ad2.png" class="card-img-top index-img-card" alt="...">
                                     </div>
-                                    <div class="card-body">
+                                    <!-- <div class="card-body">
                                         <div class=" mb-2">
                                             <h6 class="card-title ">فيراري</h6>
                                         </div>
@@ -367,7 +367,7 @@ export default {
                                             
 
                                         </div>
-                                    </div>
+                                    </div> -->
                                 </div>
                             </a>
                         </div>
@@ -378,7 +378,7 @@ export default {
                                     <div class="image">
                                         <img src="/img/ads/ad1.png" class="card-img-top index-img-card" alt="...">
                                     </div>
-                                    <div class="card-body">
+                                    <!-- <div class="card-body">
                                         <div class="mb-2">
                                             <h6 class="card-title">فيراري</h6>
                                            
@@ -425,7 +425,7 @@ export default {
                                             
 
                                         </div>
-                                    </div>
+                                    </div> -->
                                 </div>
                             </a>
                         </div>

@@ -308,11 +308,13 @@ export default {
         <nav>
             <div class="container">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item">
-                            <router-link to="/" :class="{ active: $route.path === '/' }"> الرئيسية </router-link>
+                     <li class="breadcrumb-item">
+                            <router-link to="/" :class="{ active: $route.path === '/' }">  {{ $t('location_menu_main') }} </router-link>
                     </li>
-                    <li class="breadcrumb-item active" aria-current="page">الدورات</li>
+                    
+                    <li class="breadcrumb-item active" aria-current="page">{{ $t('location_menu_vehicles') }}</li>
                 </ol>
+                
             </div>
         </nav>
     </div>
@@ -327,7 +329,7 @@ export default {
                 <!-- right side container -->
                 <div class="col-12 col-lg-9 ">
                     <div class="container white_card mt-2 right-side">
-                        <span class="header-title">  {{ $t('vehicels_title') }} </span>
+                        <span class="header-title">  {{ $t('vehicles_title') }} </span>
                         <!-- <select class="header-drop form-select p-3 align-items-center d-flex mx-lg-2"
                             aria-label="Default select example">
                             <option selected=""> من الأعلى الى الأسفل</option>
@@ -424,7 +426,7 @@ export default {
                         <div class="d-flex justify-content-between">
                             <div class=" d-flex  flex-column">
                                 <div class="d-flex align-items-center mb-3">
-                                    <a href="">تواصل مع البائع</a>
+                                    <a href=""> تواصل مع البائع</a>
                                 </div>
                             </div>
                         </div>

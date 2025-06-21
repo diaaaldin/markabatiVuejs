@@ -27,9 +27,30 @@
     "main_show_all":"عرض الكل",
 
 
-    "vehicels_title":"المركبات",
+    "vehicles_title":"المركبات",
 
+    "location_menu_main":"الرئيسية",
+    "location_menu_vehicles":"سياراتنا",
 
+    "vehicle_btn_contact_with_seller":"تواصل مع البائع",
+    "vehicle_btn_get_in":"اركب المركبة",
+
+    "vehicle_card_brand":"النوع",
+    "vehicle_card_model":"الموديل",
+    "vehicle_card_year":"سنة الإنتاج",
+    "vehicle_card_price":"السعر",
+    "vehicle_card_meals":"عدد الكيلومترات",
+    "vehicle_card_color":"اللون",
+    "vehicle_card_body_type":"نوع الهيكل",
+    "vehicle_card_specefication":"المواصفات",
+    "vehicle_card_painting_type":"نوع الدهان",
+    "vehicle_card_painting_status":"حالة الدهان",
+    "vehicle_card_gear_type":"نوع مبدل السرعة",
+    "vehicle_card_oil_type":"نوع الوقود",
+
+    "vehicle_discreption":"نظرة عامة",
+    "vehicle_vehicle_semiler":"المركبات المشابهة",
+    
 
     "header_userType":"مدير للنظام",
     "header_to_store":"إلى المعرض",

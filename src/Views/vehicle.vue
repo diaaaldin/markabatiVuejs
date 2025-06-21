@@ -8,6 +8,7 @@ import pageNav from '@/components/lightNavbar.vue';
 import pageFooter from '@/components/footer.vue';
 import ImageSlider from '@/components/ImageSlider.vue';
 // import { pointManagmentOperation } from '@/config/config';
+import productSemilerCard from '@/components/Cards/productSemilerCard.vue'
 
 export default {
 
@@ -15,8 +16,7 @@ export default {
     data() {
         return {
             emailError: '', 
-            buyData: {
-                paymentMethod: 0,
+           
                 data: {
                     id: 0,
                     ownerId: 0,
@@ -55,10 +55,6 @@ export default {
                     imageUrl: "",
                     price: 0,
                 },
-            },
-            siteProfitRate: 0,
-            pointsForDoller: 0,
-            finalProductPrice: 0,
 
         }
     },
@@ -90,6 +86,7 @@ export default {
         pageNav,
         pageFooter,
         ImageSlider,
+        productSemilerCard
     },
 
     emits: {
@@ -236,12 +233,12 @@ export default {
             <div class="container">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">
-                            <router-link to="/" :class="{ active: $route.path === '/' }"> الرئيسية </router-link>
+                            <router-link to="/" :class="{ active: $route.path === '/' }">  {{ $t('location_menu_main') }} </router-link>
                     </li>
                     <li class="breadcrumb-item">
-                            <router-link to="/vehicles" :class="{ active: $route.path === '/vehicles' }"> سياراتنا </router-link>
+                            <router-link to="/vehicles" :class="{ active: $route.path === '/vehicles' }"> {{ $t('location_menu_vehicles') }} </router-link>
                     </li>
-                    <li class="breadcrumb-item active" aria-current="page">فيراري 488 جي تي بي </li>
+                    <li class="breadcrumb-item active" aria-current="page">{{ data.modelName }} </li>
                 </ol>
             </div>
         </nav>
@@ -308,12 +305,12 @@ export default {
                         <div class="row">
                             <div class="col-6 text-center">
                                 <router-link to="/">  
-                                    <p class="contact">تواصل مع البائع</p>
+                                    <p class="contact">{{ $t('vehicle_btn_contact_with_seller') }} </p>
                                 </router-link>
                             </div>
                             <div class="col-6 text-center">
                                 <router-link to="/">  
-                                    <p class="call">  جرب المكالمة</p>
+                                    <p class="call"> {{ $t('vehicle_btn_get_in') }} </p>
                                 </router-link>
                             </div>
                         </div>
@@ -325,84 +322,84 @@ export default {
             <div class="col-md-2 text-center">
                 <div class="details-squre">
                     <span></span>
-                    <h5>نوع السيارة</h5>
+                    <h5>{{ $t('vehicle_card_brand') }}</h5>
                     <p>مرسيدس بنز</p>
                 </div>
             </div>
             <div class="col-md-2 text-center">
                 <div class="details-squre">
                     <span></span>
-                    <h5> موديل السنة</h5>
+                    <h5> {{ $t('vehicle_card_model') }}</h5>
                     <p> أي كلاس</p>
                 </div>
             </div>
             <div class="col-md-2 text-center">
                 <div class="details-squre">
                     <span></span>
-                    <h5> السنة</h5>
+                    <h5> {{ $t('vehicle_card_year') }}</h5>
                     <p> 2002</p>
                 </div>
             </div>
             <div class="col-md-2 text-center">
                 <div class="details-squre">
                     <span></span>
-                    <h5>السعر</h5>
+                    <h5>{{ $t('vehicle_card_price') }}</h5>
                     <p> 30000$</p>
                 </div>
             </div>
             <div class="col-md-2 text-center">
                 <div class="details-squre">
                     <span></span>
-                    <h5>عدد الكيلوميترات</h5>
+                    <h5>{{ $t('vehicle_card_meals') }}</h5>
                     <p> 22</p>
                 </div>
             </div>
             <div class="col-md-2 text-center">
                 <div class="details-squre">
                     <span></span>
-                    <h5> اللون</h5>
+                    <h5> {{ $t('vehicle_card_color') }}</h5>
                     <p> رمادي</p>
                 </div>
             </div>
             <div class="col-md-2 text-center">
                 <div class="details-squre">
                     <span></span>
-                    <h5>نوع الهيكل</h5>
+                    <h5>{{ $t('vehicle_card_body_type') }}</h5>
                     <p>سيدان </p>
                 </div>
             </div>
             <div class="col-md-2 text-center">
                 <div class="details-squre">
                     <span></span>
-                    <h5> المواصفات</h5>
+                    <h5> {{ $t('vehicle_card_specefication') }}</h5>
                     <p> أمريكي</p>
                 </div>
             </div>
             <div class="col-md-2 text-center">
                 <div class="details-squre">
                     <span></span>
-                    <h5>نوع الصبغ</h5>
+                    <h5>{{ $t('vehicle_card_painting_type') }}</h5>
                     <p>الميتالك </p>
                 </div>
             </div>
             <div class="col-md-2 text-center">
                 <div class="details-squre">
                     <span></span>
-                    <h5> حالة الصنع</h5>
+                    <h5> {{ $t('vehicle_card_painting_status') }}</h5>
                     <p> ممتازة</p>
                 </div>
             </div>
             <div class="col-md-2 text-center">
                 <div class="details-squre">
                     <span></span>
-                    <h5>نوع الغيار</h5>
+                    <h5>{{ $t('vehicle_card_gear_type') }}</h5>
                     <p> أوتوماتيكي</p>
                 </div>
             </div>
             <div class="col-md-2 text-center">
                 <div class="details-squre">
                     <span></span>
-                    <h5>نوع الوقود</h5>
+                    <h5>{{ $t('vehicle_card_oil_type') }}</h5>
                     <p> بنزين</p>
                 </div>
             </div>
@@ -410,7 +407,7 @@ export default {
            <div class="row">
             <div class="col-12">
                 <div class="public-view">
-                    <h1 class="line-green">نظرة عامة</h1>
+                    <h1 class="line-green">{{ $t('vehicle_discreption') }} </h1>
                     <div class="col-12 mt-4">
                     <p>فيراري 488 جي تي بي هي سيارة رياضية فائقة الأداء (سوبر كار) من إنتاج شركة فيراري الإيطالية، وتم الكشف عنها لأول مرة في عام 2015 كخلفية لطراز فيراري 458. تعتبر 488 جي تي بي مزيجا مثاليا من الأدالء العالي، التصمي الجذاب، والتفنيات الحديثة.</p>
                     </div>
@@ -420,332 +417,12 @@ export default {
            <div class="row">
             <div class="col-12">
                 <div class="same-vehicle">
-                    <h1>مركبات مشابهة</h1>
+                    <h1>{{ $t('vehicle_vehicle_semiler') }} </h1>
                         <div class="row">
-                            <div class="col-12 col-lg-3 col-md-6 mt-4" data-aos="fade-up" data-aos-delay="100"
-                                data-aos-duration="700">
-                                <router-link to="/vehicle">
-                                    <div class="card custom_card">
-                                        <div class="img">
-                                            <img src="/img/cars/c1.png" class="card-img-top index-img-card" alt="...">
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="d-flex justify-content-between align-items-baseline mb-2">
-                                                <h6 class="card-title justify-content-start">فيراري</h6>
-                                                <a href="javascript:void(0)" class="justify-content-end">
-                                                    <!-- <img src="/img/icons/star2.svg"> -->
-                                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                                        xmlns="http://www.w3.org/2000/svg">
-                                                        <path
-                                                            d="M10.7878 3.10215C11.283 2.09877 12.7138 2.09876 13.209 3.10215L15.567 7.87987L20.8395 8.64601C21.9468 8.80691 22.3889 10.1677 21.5877 10.9487L17.7724 14.6676L18.6731 19.9189C18.8622 21.0217 17.7047 21.8627 16.7143 21.342L11.9984 18.8627L7.28252 21.342C6.29213 21.8627 5.13459 21.0217 5.32374 19.9189L6.2244 14.6676L2.40916 10.9487C1.60791 10.1677 2.05005 8.80691 3.15735 8.64601L8.42988 7.87987L10.7878 3.10215ZM11.9984 4.03854L9.74008 8.61443C9.54344 9.01288 9.16332 9.28904 8.72361 9.35294L3.67382 10.0867L7.32788 13.6486C7.64606 13.9587 7.79125 14.4055 7.71614 14.8435L6.85353 19.8729L11.3702 17.4983C11.7635 17.2915 12.2333 17.2915 12.6266 17.4983L17.1433 19.8729L16.2807 14.8435C16.2056 14.4055 16.3508 13.9587 16.6689 13.6486L20.323 10.0867L15.2732 9.35294C14.8335 9.28904 14.4534 9.01288 14.2568 8.61443L11.9984 4.03854Z"
-                                                            fill="#999999" />
-                                                    </svg>
-                                                </a>
-                                            </div>
-                                            <div class="d-flex justify-content-between">
-                                                <div class=" d-flex  flex-column">
-                                                    <div class="d-flex align-items-center mb-2">
-                                                        <a href="hotel_details.html" class="name-details">
-                                                            فيراري 488 جي تي بي
-                                                        </a>
-                                                    </div>
-                                                    <div class=" d-flex align-items-center rate mb-2">
-                                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <path
-                                                                d="M6.19185 1.0681C6.52198 0.399179 7.47585 0.399172 7.80598 1.0681L9.37798 4.25325L12.893 4.76401C13.6312 4.87127 13.9259 5.77847 13.3918 6.29913L10.8482 8.7784L11.4487 12.2793C11.5748 13.0145 10.8031 13.5751 10.1428 13.228L6.99891 11.5751L3.85499 13.228C3.19473 13.5751 2.42304 13.0145 2.54914 12.2793L3.14958 8.7784L0.606087 6.29913C0.0719199 5.77847 0.36668 4.87127 1.10488 4.76401L4.6199 4.25325L6.19185 1.0681Z"
-                                                                fill="#FFCE1F" />
-                                                        </svg>
-                                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <path
-                                                                d="M6.19185 1.0681C6.52198 0.399179 7.47585 0.399172 7.80598 1.0681L9.37798 4.25325L12.893 4.76401C13.6312 4.87127 13.9259 5.77847 13.3918 6.29913L10.8482 8.7784L11.4487 12.2793C11.5748 13.0145 10.8031 13.5751 10.1428 13.228L6.99891 11.5751L3.85499 13.228C3.19473 13.5751 2.42304 13.0145 2.54914 12.2793L3.14958 8.7784L0.606087 6.29913C0.0719199 5.77847 0.36668 4.87127 1.10488 4.76401L4.6199 4.25325L6.19185 1.0681Z"
-                                                                fill="#FFCE1F" />
-                                                        </svg>
-                                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <path
-                                                                d="M6.19185 1.0681C6.52198 0.399179 7.47585 0.399172 7.80598 1.0681L9.37798 4.25325L12.893 4.76401C13.6312 4.87127 13.9259 5.77847 13.3918 6.29913L10.8482 8.7784L11.4487 12.2793C11.5748 13.0145 10.8031 13.5751 10.1428 13.228L6.99891 11.5751L3.85499 13.228C3.19473 13.5751 2.42304 13.0145 2.54914 12.2793L3.14958 8.7784L0.606087 6.29913C0.0719199 5.77847 0.36668 4.87127 1.10488 4.76401L4.6199 4.25325L6.19185 1.0681Z"
-                                                                fill="#FFCE1F" />
-                                                        </svg>
-                                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <path
-                                                                d="M6.19185 1.0681C6.52198 0.399179 7.47585 0.399172 7.80598 1.0681L9.37798 4.25325L12.893 4.76401C13.6312 4.87127 13.9259 5.77847 13.3918 6.29913L10.8482 8.7784L11.4487 12.2793C11.5748 13.0145 10.8031 13.5751 10.1428 13.228L6.99891 11.5751L3.85499 13.228C3.19473 13.5751 2.42304 13.0145 2.54914 12.2793L3.14958 8.7784L0.606087 6.29913C0.0719199 5.77847 0.36668 4.87127 1.10488 4.76401L4.6199 4.25325L6.19185 1.0681Z"
-                                                                fill="#FFCE1F" />
-                                                        </svg>
-                                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <path
-                                                                d="M6.19185 1.0681C6.52198 0.399179 7.47585 0.399172 7.80598 1.0681L9.37798 4.25325L12.893 4.76401C13.6312 4.87127 13.9259 5.77847 13.3918 6.29913L10.8482 8.7784L11.4487 12.2793C11.5748 13.0145 10.8031 13.5751 10.1428 13.228L6.99891 11.5751L3.85499 13.228C3.19473 13.5751 2.42304 13.0145 2.54914 12.2793L3.14958 8.7784L0.606087 6.29913C0.0719199 5.77847 0.36668 4.87127 1.10488 4.76401L4.6199 4.25325L6.19185 1.0681Z"
-                                                                fill="#FFCE1F" />
-                                                        </svg>
-
-                                                        <span class="number">
-                                                            (5)
-                                                        </span>
-                                                    </div>
-                                                    <div class=" d-flex align-items-center">
-
-                                                        <span class="price">
-                                                            5000$
-                                                        </span>
-                                                        <span class="des">
-                                                            34.75$
-                                                        </span>
-                                                    </div>
-
-                                                </div>
-
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </router-link>
-                            </div>
-                            <div class="col-12 col-lg-3 col-md-6 mt-4" data-aos="fade-up" data-aos-delay="100"
-                                data-aos-duration="700">
-                                <a href="service_details.html" style="color:black;">
-                                    <div class="card custom_card">
-                                        <div class="img">
-                                            <img src="/img/cars/c2.png" class="card-img-top index-img-card" alt="...">
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="d-flex justify-content-between align-items-baseline mb-2">
-                                                <h6 class="card-title justify-content-start">فيراري</h6>
-                                                <a href="javascript:void(0)" class="justify-content-end">
-                                                    <!-- <img src="/img/icons/star2.svg"> -->
-                                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                                        xmlns="http://www.w3.org/2000/svg">
-                                                        <path
-                                                            d="M10.7878 3.10215C11.283 2.09877 12.7138 2.09876 13.209 3.10215L15.567 7.87987L20.8395 8.64601C21.9468 8.80691 22.3889 10.1677 21.5877 10.9487L17.7724 14.6676L18.6731 19.9189C18.8622 21.0217 17.7047 21.8627 16.7143 21.342L11.9984 18.8627L7.28252 21.342C6.29213 21.8627 5.13459 21.0217 5.32374 19.9189L6.2244 14.6676L2.40916 10.9487C1.60791 10.1677 2.05005 8.80691 3.15735 8.64601L8.42988 7.87987L10.7878 3.10215ZM11.9984 4.03854L9.74008 8.61443C9.54344 9.01288 9.16332 9.28904 8.72361 9.35294L3.67382 10.0867L7.32788 13.6486C7.64606 13.9587 7.79125 14.4055 7.71614 14.8435L6.85353 19.8729L11.3702 17.4983C11.7635 17.2915 12.2333 17.2915 12.6266 17.4983L17.1433 19.8729L16.2807 14.8435C16.2056 14.4055 16.3508 13.9587 16.6689 13.6486L20.323 10.0867L15.2732 9.35294C14.8335 9.28904 14.4534 9.01288 14.2568 8.61443L11.9984 4.03854Z"
-                                                            fill="#999999" />
-                                                    </svg>
-                                                </a>
-                                            </div>
-                                            <div class="d-flex justify-content-between">
-                                                <div class=" d-flex  flex-column">
-                                                    <div class="d-flex align-items-center mb-2">
-                                                        <a href="hotel_details.html" class="name-details">
-                                                            فيراري 488 جي تي بي
-                                                        </a>
-                                                    </div>
-                                                    <div class=" d-flex align-items-center rate mb-2">
-                                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <path
-                                                                d="M6.19185 1.0681C6.52198 0.399179 7.47585 0.399172 7.80598 1.0681L9.37798 4.25325L12.893 4.76401C13.6312 4.87127 13.9259 5.77847 13.3918 6.29913L10.8482 8.7784L11.4487 12.2793C11.5748 13.0145 10.8031 13.5751 10.1428 13.228L6.99891 11.5751L3.85499 13.228C3.19473 13.5751 2.42304 13.0145 2.54914 12.2793L3.14958 8.7784L0.606087 6.29913C0.0719199 5.77847 0.36668 4.87127 1.10488 4.76401L4.6199 4.25325L6.19185 1.0681Z"
-                                                                fill="#FFCE1F" />
-                                                        </svg>
-                                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <path
-                                                                d="M6.19185 1.0681C6.52198 0.399179 7.47585 0.399172 7.80598 1.0681L9.37798 4.25325L12.893 4.76401C13.6312 4.87127 13.9259 5.77847 13.3918 6.29913L10.8482 8.7784L11.4487 12.2793C11.5748 13.0145 10.8031 13.5751 10.1428 13.228L6.99891 11.5751L3.85499 13.228C3.19473 13.5751 2.42304 13.0145 2.54914 12.2793L3.14958 8.7784L0.606087 6.29913C0.0719199 5.77847 0.36668 4.87127 1.10488 4.76401L4.6199 4.25325L6.19185 1.0681Z"
-                                                                fill="#FFCE1F" />
-                                                        </svg>
-                                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <path
-                                                                d="M6.19185 1.0681C6.52198 0.399179 7.47585 0.399172 7.80598 1.0681L9.37798 4.25325L12.893 4.76401C13.6312 4.87127 13.9259 5.77847 13.3918 6.29913L10.8482 8.7784L11.4487 12.2793C11.5748 13.0145 10.8031 13.5751 10.1428 13.228L6.99891 11.5751L3.85499 13.228C3.19473 13.5751 2.42304 13.0145 2.54914 12.2793L3.14958 8.7784L0.606087 6.29913C0.0719199 5.77847 0.36668 4.87127 1.10488 4.76401L4.6199 4.25325L6.19185 1.0681Z"
-                                                                fill="#FFCE1F" />
-                                                        </svg>
-                                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <path
-                                                                d="M6.19185 1.0681C6.52198 0.399179 7.47585 0.399172 7.80598 1.0681L9.37798 4.25325L12.893 4.76401C13.6312 4.87127 13.9259 5.77847 13.3918 6.29913L10.8482 8.7784L11.4487 12.2793C11.5748 13.0145 10.8031 13.5751 10.1428 13.228L6.99891 11.5751L3.85499 13.228C3.19473 13.5751 2.42304 13.0145 2.54914 12.2793L3.14958 8.7784L0.606087 6.29913C0.0719199 5.77847 0.36668 4.87127 1.10488 4.76401L4.6199 4.25325L6.19185 1.0681Z"
-                                                                fill="#FFCE1F" />
-                                                        </svg>
-                                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <path
-                                                                d="M6.19185 1.0681C6.52198 0.399179 7.47585 0.399172 7.80598 1.0681L9.37798 4.25325L12.893 4.76401C13.6312 4.87127 13.9259 5.77847 13.3918 6.29913L10.8482 8.7784L11.4487 12.2793C11.5748 13.0145 10.8031 13.5751 10.1428 13.228L6.99891 11.5751L3.85499 13.228C3.19473 13.5751 2.42304 13.0145 2.54914 12.2793L3.14958 8.7784L0.606087 6.29913C0.0719199 5.77847 0.36668 4.87127 1.10488 4.76401L4.6199 4.25325L6.19185 1.0681Z"
-                                                                fill="#FFCE1F" />
-                                                        </svg>
-
-                                                        <span class="number">
-                                                            (5)
-                                                        </span>
-                                                    </div>
-                                                    <div class=" d-flex align-items-center">
-
-                                                        <span class="price">
-                                                            5000$
-                                                        </span>
-                                                        <span class="des">
-                                                            34.75$
-                                                        </span>
-                                                    </div>
-
-                                                </div>
-
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="col-12 col-lg-3 col-md-6 mt-4" data-aos="fade-up" data-aos-delay="100"
-                                data-aos-duration="700">
-                                <a href="service_details.html" style="color:black;">
-                                    <div class="card custom_card">
-                                        <div class="img">
-                                            <img src="/img/cars/c3.png" class="card-img-top index-img-card" alt="...">
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="d-flex justify-content-between align-items-baseline mb-2">
-                                                <h6 class="card-title justify-content-start">فيراري</h6>
-                                                <a href="javascript:void(0)" class="justify-content-end">
-                                                    <!-- <img src="/img/icons/star2.svg"> -->
-                                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                                        xmlns="http://www.w3.org/2000/svg">
-                                                        <path
-                                                            d="M10.7878 3.10215C11.283 2.09877 12.7138 2.09876 13.209 3.10215L15.567 7.87987L20.8395 8.64601C21.9468 8.80691 22.3889 10.1677 21.5877 10.9487L17.7724 14.6676L18.6731 19.9189C18.8622 21.0217 17.7047 21.8627 16.7143 21.342L11.9984 18.8627L7.28252 21.342C6.29213 21.8627 5.13459 21.0217 5.32374 19.9189L6.2244 14.6676L2.40916 10.9487C1.60791 10.1677 2.05005 8.80691 3.15735 8.64601L8.42988 7.87987L10.7878 3.10215ZM11.9984 4.03854L9.74008 8.61443C9.54344 9.01288 9.16332 9.28904 8.72361 9.35294L3.67382 10.0867L7.32788 13.6486C7.64606 13.9587 7.79125 14.4055 7.71614 14.8435L6.85353 19.8729L11.3702 17.4983C11.7635 17.2915 12.2333 17.2915 12.6266 17.4983L17.1433 19.8729L16.2807 14.8435C16.2056 14.4055 16.3508 13.9587 16.6689 13.6486L20.323 10.0867L15.2732 9.35294C14.8335 9.28904 14.4534 9.01288 14.2568 8.61443L11.9984 4.03854Z"
-                                                            fill="#999999" />
-                                                    </svg>
-                                                </a>
-                                            </div>
-                                            <div class="d-flex justify-content-between">
-                                                <div class=" d-flex  flex-column">
-                                                    <div class="d-flex align-items-center mb-2">
-                                                        <a href="hotel_details.html" class="name-details">
-                                                            فيراري 488 جي تي بي
-                                                        </a>
-                                                    </div>
-                                                    <div class=" d-flex align-items-center rate mb-2">
-                                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <path
-                                                                d="M6.19185 1.0681C6.52198 0.399179 7.47585 0.399172 7.80598 1.0681L9.37798 4.25325L12.893 4.76401C13.6312 4.87127 13.9259 5.77847 13.3918 6.29913L10.8482 8.7784L11.4487 12.2793C11.5748 13.0145 10.8031 13.5751 10.1428 13.228L6.99891 11.5751L3.85499 13.228C3.19473 13.5751 2.42304 13.0145 2.54914 12.2793L3.14958 8.7784L0.606087 6.29913C0.0719199 5.77847 0.36668 4.87127 1.10488 4.76401L4.6199 4.25325L6.19185 1.0681Z"
-                                                                fill="#FFCE1F" />
-                                                        </svg>
-                                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <path
-                                                                d="M6.19185 1.0681C6.52198 0.399179 7.47585 0.399172 7.80598 1.0681L9.37798 4.25325L12.893 4.76401C13.6312 4.87127 13.9259 5.77847 13.3918 6.29913L10.8482 8.7784L11.4487 12.2793C11.5748 13.0145 10.8031 13.5751 10.1428 13.228L6.99891 11.5751L3.85499 13.228C3.19473 13.5751 2.42304 13.0145 2.54914 12.2793L3.14958 8.7784L0.606087 6.29913C0.0719199 5.77847 0.36668 4.87127 1.10488 4.76401L4.6199 4.25325L6.19185 1.0681Z"
-                                                                fill="#FFCE1F" />
-                                                        </svg>
-                                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <path
-                                                                d="M6.19185 1.0681C6.52198 0.399179 7.47585 0.399172 7.80598 1.0681L9.37798 4.25325L12.893 4.76401C13.6312 4.87127 13.9259 5.77847 13.3918 6.29913L10.8482 8.7784L11.4487 12.2793C11.5748 13.0145 10.8031 13.5751 10.1428 13.228L6.99891 11.5751L3.85499 13.228C3.19473 13.5751 2.42304 13.0145 2.54914 12.2793L3.14958 8.7784L0.606087 6.29913C0.0719199 5.77847 0.36668 4.87127 1.10488 4.76401L4.6199 4.25325L6.19185 1.0681Z"
-                                                                fill="#FFCE1F" />
-                                                        </svg>
-                                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <path
-                                                                d="M6.19185 1.0681C6.52198 0.399179 7.47585 0.399172 7.80598 1.0681L9.37798 4.25325L12.893 4.76401C13.6312 4.87127 13.9259 5.77847 13.3918 6.29913L10.8482 8.7784L11.4487 12.2793C11.5748 13.0145 10.8031 13.5751 10.1428 13.228L6.99891 11.5751L3.85499 13.228C3.19473 13.5751 2.42304 13.0145 2.54914 12.2793L3.14958 8.7784L0.606087 6.29913C0.0719199 5.77847 0.36668 4.87127 1.10488 4.76401L4.6199 4.25325L6.19185 1.0681Z"
-                                                                fill="#FFCE1F" />
-                                                        </svg>
-                                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <path
-                                                                d="M6.19185 1.0681C6.52198 0.399179 7.47585 0.399172 7.80598 1.0681L9.37798 4.25325L12.893 4.76401C13.6312 4.87127 13.9259 5.77847 13.3918 6.29913L10.8482 8.7784L11.4487 12.2793C11.5748 13.0145 10.8031 13.5751 10.1428 13.228L6.99891 11.5751L3.85499 13.228C3.19473 13.5751 2.42304 13.0145 2.54914 12.2793L3.14958 8.7784L0.606087 6.29913C0.0719199 5.77847 0.36668 4.87127 1.10488 4.76401L4.6199 4.25325L6.19185 1.0681Z"
-                                                                fill="#FFCE1F" />
-                                                        </svg>
-
-                                                        <span class="number">
-                                                            (5)
-                                                        </span>
-                                                    </div>
-                                                    <div class=" d-flex align-items-center">
-
-                                                        <span class="price">
-                                                            5000$
-                                                        </span>
-                                                        <span class="des">
-                                                            34.75$
-                                                        </span>
-                                                    </div>
-
-                                                </div>
-
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="col-12 col-lg-3 col-md-6 mt-4" data-aos="fade-up" data-aos-delay="100"
-                                data-aos-duration="700">
-                                <a href="service_details.html" style="color:black;">
-                                    <div class="card custom_card">
-                                        <div class="img">
-                                            <img src="/img/cars/c4.png" class="card-img-top index-img-card" alt="...">
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="d-flex justify-content-between align-items-baseline mb-2">
-                                                <h6 class="card-title justify-content-start">فيراري</h6>
-                                                <a href="javascript:void(0)" class="justify-content-end">
-                                                    <!-- <img src="/img/icons/star2.svg"> -->
-                                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                                        xmlns="http://www.w3.org/2000/svg">
-                                                        <path
-                                                            d="M10.7878 3.10215C11.283 2.09877 12.7138 2.09876 13.209 3.10215L15.567 7.87987L20.8395 8.64601C21.9468 8.80691 22.3889 10.1677 21.5877 10.9487L17.7724 14.6676L18.6731 19.9189C18.8622 21.0217 17.7047 21.8627 16.7143 21.342L11.9984 18.8627L7.28252 21.342C6.29213 21.8627 5.13459 21.0217 5.32374 19.9189L6.2244 14.6676L2.40916 10.9487C1.60791 10.1677 2.05005 8.80691 3.15735 8.64601L8.42988 7.87987L10.7878 3.10215ZM11.9984 4.03854L9.74008 8.61443C9.54344 9.01288 9.16332 9.28904 8.72361 9.35294L3.67382 10.0867L7.32788 13.6486C7.64606 13.9587 7.79125 14.4055 7.71614 14.8435L6.85353 19.8729L11.3702 17.4983C11.7635 17.2915 12.2333 17.2915 12.6266 17.4983L17.1433 19.8729L16.2807 14.8435C16.2056 14.4055 16.3508 13.9587 16.6689 13.6486L20.323 10.0867L15.2732 9.35294C14.8335 9.28904 14.4534 9.01288 14.2568 8.61443L11.9984 4.03854Z"
-                                                            fill="#999999" />
-                                                    </svg>
-                                                </a>
-                                            </div>
-                                            <div class="d-flex justify-content-between">
-                                                <div class=" d-flex  flex-column">
-                                                    <div class="d-flex align-items-center mb-2">
-                                                        <a href="hotel_details.html" class="name-details">
-                                                            فيراري 488 جي تي بي
-                                                        </a>
-                                                    </div>
-                                                    <div class=" d-flex align-items-center rate mb-2">
-                                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <path
-                                                                d="M6.19185 1.0681C6.52198 0.399179 7.47585 0.399172 7.80598 1.0681L9.37798 4.25325L12.893 4.76401C13.6312 4.87127 13.9259 5.77847 13.3918 6.29913L10.8482 8.7784L11.4487 12.2793C11.5748 13.0145 10.8031 13.5751 10.1428 13.228L6.99891 11.5751L3.85499 13.228C3.19473 13.5751 2.42304 13.0145 2.54914 12.2793L3.14958 8.7784L0.606087 6.29913C0.0719199 5.77847 0.36668 4.87127 1.10488 4.76401L4.6199 4.25325L6.19185 1.0681Z"
-                                                                fill="#FFCE1F" />
-                                                        </svg>
-                                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <path
-                                                                d="M6.19185 1.0681C6.52198 0.399179 7.47585 0.399172 7.80598 1.0681L9.37798 4.25325L12.893 4.76401C13.6312 4.87127 13.9259 5.77847 13.3918 6.29913L10.8482 8.7784L11.4487 12.2793C11.5748 13.0145 10.8031 13.5751 10.1428 13.228L6.99891 11.5751L3.85499 13.228C3.19473 13.5751 2.42304 13.0145 2.54914 12.2793L3.14958 8.7784L0.606087 6.29913C0.0719199 5.77847 0.36668 4.87127 1.10488 4.76401L4.6199 4.25325L6.19185 1.0681Z"
-                                                                fill="#FFCE1F" />
-                                                        </svg>
-                                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <path
-                                                                d="M6.19185 1.0681C6.52198 0.399179 7.47585 0.399172 7.80598 1.0681L9.37798 4.25325L12.893 4.76401C13.6312 4.87127 13.9259 5.77847 13.3918 6.29913L10.8482 8.7784L11.4487 12.2793C11.5748 13.0145 10.8031 13.5751 10.1428 13.228L6.99891 11.5751L3.85499 13.228C3.19473 13.5751 2.42304 13.0145 2.54914 12.2793L3.14958 8.7784L0.606087 6.29913C0.0719199 5.77847 0.36668 4.87127 1.10488 4.76401L4.6199 4.25325L6.19185 1.0681Z"
-                                                                fill="#FFCE1F" />
-                                                        </svg>
-                                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <path
-                                                                d="M6.19185 1.0681C6.52198 0.399179 7.47585 0.399172 7.80598 1.0681L9.37798 4.25325L12.893 4.76401C13.6312 4.87127 13.9259 5.77847 13.3918 6.29913L10.8482 8.7784L11.4487 12.2793C11.5748 13.0145 10.8031 13.5751 10.1428 13.228L6.99891 11.5751L3.85499 13.228C3.19473 13.5751 2.42304 13.0145 2.54914 12.2793L3.14958 8.7784L0.606087 6.29913C0.0719199 5.77847 0.36668 4.87127 1.10488 4.76401L4.6199 4.25325L6.19185 1.0681Z"
-                                                                fill="#FFCE1F" />
-                                                        </svg>
-                                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <path
-                                                                d="M6.19185 1.0681C6.52198 0.399179 7.47585 0.399172 7.80598 1.0681L9.37798 4.25325L12.893 4.76401C13.6312 4.87127 13.9259 5.77847 13.3918 6.29913L10.8482 8.7784L11.4487 12.2793C11.5748 13.0145 10.8031 13.5751 10.1428 13.228L6.99891 11.5751L3.85499 13.228C3.19473 13.5751 2.42304 13.0145 2.54914 12.2793L3.14958 8.7784L0.606087 6.29913C0.0719199 5.77847 0.36668 4.87127 1.10488 4.76401L4.6199 4.25325L6.19185 1.0681Z"
-                                                                fill="#FFCE1F" />
-                                                        </svg>
-
-                                                        <span class="number">
-                                                            (5)
-                                                        </span>
-                                                    </div>
-                                                    <div class=" d-flex align-items-center">
-
-                                                        <span class="price">
-                                                            5000$
-                                                        </span>
-                                                        <span class="des">
-                                                            34.75$
-                                                        </span>
-                                                    </div>
-
-                                                </div>
-
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
+                           <productSemilerCard></productSemilerCard>
+                           <productSemilerCard></productSemilerCard>
+                           <productSemilerCard></productSemilerCard>
+                           <productSemilerCard></productSemilerCard>
                         </div>
                 </div>
             </div>
