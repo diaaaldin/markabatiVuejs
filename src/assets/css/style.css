@@ -1707,6 +1707,20 @@ input::-webkit-inner-spin-button {
   border-radius: 8px;
   border: 2px solid #e4eae9;
   padding: 25px;
+  min-height: 400px;
+  max-height: 400px;
+  overflow: hidden;
+  transition: max-height 0.4s ease;
+  position: relative;
+  z-index: 20;
+}
+.custom_card:hover {
+  max-height: 800px;
+
+}
+.custom_card:hover .card-show{
+  z-index: 999;
+
 }
 .custom_card .img {
   border-radius: 8px;
@@ -1755,6 +1769,29 @@ input::-webkit-inner-spin-button {
   font-weight: 400;
   margin-right: 30px;
   text-decoration: line-through;
+}
+.card .show-more-details{
+margin-top: 20px;
+padding: 0;
+
+}
+.card .show-more-details li{
+font-size: 14px;
+list-style: none;
+line-height: 2;
+}
+
+.card .contact-with-seller{
+background-color: black;
+  font-weight: 400;
+  color: white;
+  font-size: 16px;
+  border-radius: 13px;
+  transition: all 0.4s ease-in-out;
+}
+.card .contact-with-seller:hover {
+  background-color: var(--main-color);
+  color: white;
 }
 .ads-card .custom_card {
   padding: 15px;
