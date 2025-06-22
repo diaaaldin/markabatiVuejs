@@ -493,6 +493,14 @@ body {
 .header-title {
   font-size: 25px;
   font-weight: bold;
+  background-color: #e7e7e7;
+  height: 200px;
+}
+.header-title h1{
+  font-size: 30px;
+  font-weight: bold;
+ padding-top: 20px;
+ color: var(--main-color);
 }
 
 /****************** End Header **********************/
@@ -1707,11 +1715,47 @@ input::-webkit-inner-spin-button {
   border-radius: 8px;
   border: 2px solid #e4eae9;
   padding: 25px;
+  min-height: 400px;
+  max-height: 400px;
+  overflow: hidden;
+  transition: max-height 0.4s ease;
+  position: relative;
+  z-index: 20;
+}
+.custom_card:hover {
+  max-height: 800px;
+
+}
+.custom_card:hover .card-show{
+  z-index: 999;
+
 }
 .custom_card .img {
   border-radius: 8px;
   background-color: #f5f5f5;
 }
+.seller_card{
+  padding: 20px;
+}
+.seller_card .img{
+  margin: 0 auto;
+}
+.seller_card .img img{
+  width: 100px;
+}
+.seller_card .addresul{
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.seller_card .card-body h6{
+color: var(--main-color);
+}
+
+
+
+
+
 .first_sec .custom_card:hover {
   box-shadow: rgba(0, 0, 0, 0.15) 0px 15px 25px,
     rgba(0, 0, 0, 0.05) 0px 5px 10px;
@@ -1755,6 +1799,29 @@ input::-webkit-inner-spin-button {
   font-weight: 400;
   margin-right: 30px;
   text-decoration: line-through;
+}
+.card .show-more-details{
+margin-top: 20px;
+padding: 0;
+
+}
+.card .show-more-details li{
+font-size: 14px;
+list-style: none;
+line-height: 2;
+}
+
+.card .contact-with-seller{
+background-color: black;
+  font-weight: 400;
+  color: white;
+  font-size: 16px;
+  border-radius: 13px;
+  transition: all 0.4s ease-in-out;
+}
+.card .contact-with-seller:hover {
+  background-color: var(--main-color);
+  color: white;
 }
 .ads-card .custom_card {
   padding: 15px;
@@ -1934,9 +2001,11 @@ input::-webkit-inner-spin-button {
   box-shadow: 0 20px 20px rgba(0, 0, 2, 0.33);
   border-radius: 30px;
   transition: all 0.4s ease-in-out;
+  background: white;
 }
 .search_input .input-group:hover {
   box-shadow: 0 20px 20px rgba(0, 0, 2, 0.53);
+
 }
 
 .search_input .custom-select {
@@ -2008,36 +2077,46 @@ input::-webkit-inner-spin-button {
   background: none;
   border: 1px solid white;
   border-right: none;
-  color: white;
-  font-size: 14px;
+  color: var(--main-color);
+  font-size: 16px;
   position: relative;
-  font-weight: 300;
+  font-weight: 400;
   margin: 0 auto;
   border-radius: 30px;
   padding-left: 30px !important;
 }
 .search_input-tab::placeholder {
   font-size: 14px !important;
+  color: #848181!important;
+  font-size: 16px !important;
+  font-weight: 400 !important;
+
+
 }
 
 .search_input-tab:focus {
   background-color: transparent !important;
   border: 1px solid white !important;
   border-right: none !important;
-  color: white;
+  color: #848181;
   /* box-shadow: 0 20px 20px rgba(0, 0, 2, 0.6) !important; */
 }
 .search_input-tab:focus .search_icon-tab {
   /* box-shadow: 0 20px 20px rgba(0, 0, 2, 0.6) !important; */
 }
 .search_icon-tab {
-  background: none;
+  background: white;
   color: white;
   border: 1px solid white;
   border-left: none;
   border-radius: 30px;
-  padding-right: 25px;
+  padding-right: 10px;
 }
+.search_icon-tab svg{
+  padding: 0 30px;
+  color: var(--main-color);
+}
+
 .filter {
   border-radius: 4px;
   border: 1px solid white;
