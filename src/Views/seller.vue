@@ -7,44 +7,24 @@ import axios from "axios";
 
 import pageNav from '@/components/lightNavbar.vue';
 import pageFooter from '@/components/footer.vue';
-// import toolCard from '@/components/MarketPlace/ToolCard.vue';
-import productCard from '@/components/MarketPlace/productCard.vue';
+import sellerCard from '@/components/Cards/sellerCard.vue';
+
 
 export default {
 
     data() {
         return {
-            dataSearch: {
-                exceptionIds: [],
-                productName: "",
-                productSection: 0,
-                userId: 0,
-                userEmail: "",
-                userName: "",
-                stateId: "",
-                page: 1,
-                pageSize: 12,
-            },
+           
 
-
-            productsData: [],
-            moreDataShow: false,
-
-            selectedOption: '-- select --', // Default selected option
-            selectedOption2: '-- select2 --', // Default selected option
-            isOpen: false, // Dropdown visibility state
-            isOpen2: false, // Dropdown visibility state
-
-            cities: []
         }
     },
     mounted() {
         useHead({
-            title: 'Market | YallaParty',
+            title: 'Seller | Markabati',
             meta: [
                 {
                     name: `description`,
-                    content: 'Yalla Party is your go-to platform for booking events of any size, from weddings and engagements to birthdays and graduation parties.',
+                    content: 'Markabati is your go-to platform for booking events of any size, from weddings and engagements to birthdays and graduation parties.',
                 },
             ],
         });
@@ -54,195 +34,23 @@ export default {
     components: {
         pageNav,
         pageFooter,
-        productCard
+        sellerCard
     },
 
     emits: {
 
     },
 
-    async created() {
-        // Call the function from the store directly when the component is created
-        // await this.initFunc();
-    },
+    
     watch: {
        
     },
 
     computed: {
-        ...mapGetters("Code", ["getToolsSectionsData"]),
-        ...mapGetters("Products", ["getProductsData"]),
-        ...mapGetters("Users", ["getCompanyData"]),
-
-        userImage() {
-            const imageUrl = this.getCompanyData && this.getCompanyData.image
-                ? this.getCompanyData.image
-                : "/img/person1.jpg";
-            return imageUrl;
-        },
+      
     },
     methods: {
-        ...mapActions("Code", ["GetToolsSections"]),
-        ...mapActions("Products", ["GetProducts"]),
-        ...mapActions("Users", ["GetStoreInfo"]),
-
-
-
-        initFunc() {
-            const loading = ElLoading.service({
-                lock: true,
-                background: 'rgba(0, 0, 0, 0.7)',
-                text: "",
-            });
-            const path = window.location.pathname;
-            const lastSection = path.split('/').pop(); // Get the last section of the URL
-            const idMatch = lastSection.match(/^\d+/); // Match numbers at the start of the string
-            const id = idMatch ? idMatch[0] : null; // Extract the first number if it exists
-
-            this.dataSearch.userId = id;
-
-            this.GetStoreInfo(id);
-            this.GetProducts(this.dataSearch).then(Response => {
-                Response.products.data.forEach(event => {
-                    this.productsData.push(event);
-                });
-                if (Response.products.pagination.currentPage >= Response.products.pagination.pageCount) this.moreDataShow = false;
-                else this.moreDataShow = true;
-
-
-
-                loading.close();
-            }).catch(error => {
-                this.$moshaToast(error.response.data.message, {
-                    hideProgressBar: 'false',
-                    position: 'top-center',
-                    showIcon: 'true',
-                    swipeClose: 'true',
-                    type: 'warning',
-                    timeout: 3000,
-                });
-                loading.close();
-            });
-        },
-
-        SearchChangeFunc() {
-            this.GetData();
-        },
-
-        GetData() {
-            this.GetProducts(this.dataSearch).then(Response => {
-                this.productsData = [];
-                Response.products.data.forEach(event => {
-                    this.productsData.push(event);
-                });
-                if (Response.products.pagination.currentPage >= Response.products.pagination.pageCount) this.moreDataShow = false;
-                else this.moreDataShow = true;
-            }).catch(error => {
-                this.$moshaToast(error.response.data.message, {
-                    hideProgressBar: 'false',
-                    position: 'top-center',
-                    showIcon: 'true',
-                    swipeClose: 'true',
-                    type: 'warning',
-                    timeout: 3000,
-                });
-            });
-        },
-
-        seeMoreFunc() {
-            const loading = ElLoading.service({
-                lock: true,
-                background: 'rgba(0, 0, 0, 0.7)',
-                text: "",
-            });
-
-            this.productsData.forEach(tool => {
-                this.dataSearch.exceptionIds.push(tool.id);
-            });
-            this.GetProducts(this.dataSearch).then(Response => {
-                Response.products.data.forEach(event => {
-                    this.productsData.push(event);
-                });
-                if (Response.products.pagination.currentPage >= Response.products.pagination.pageCount) this.moreDataShow = false;
-                else this.moreDataShow = true;
-
-                loading.close();
-            }).catch(error => {
-                this.$moshaToast(error.response.data.message, {
-                    hideProgressBar: 'false',
-                    position: 'top-center',
-                    showIcon: 'true',
-                    swipeClose: 'true',
-                    type: 'warning',
-                    timeout: 3000,
-                });
-                loading.close();
-            });
-        },
-
-        toggleDropdown() {
-            this.isOpen = !this.isOpen; // Toggle dropdown visibility
-        },
-
-        selectOption(option) {
-            if (option == 0) {
-                this.selectedOption = "-- select section --";
-                this.dataSearch.productSection = 0;
-            } else {
-                this.selectedOption = option.name;
-                this.dataSearch.productSection = option.id;
-            }
-            this.SearchChangeFunc();
-            this.isOpen = false; // Close dropdown
-        },
-
-        toggleDropdown2() {
-            this.isOpen2 = !this.isOpen2; // Toggle dropdown visibility
-        },
-
-        // selectOption2(option) {
-        //     this.selectedOption2 = option; // Update selected option
-        //     this.isOpen2 = false; // Close dropdown
-        // },
-
-        closeDropdown(e) {
-            const customSelect1 = this.$refs.customSelect;
-            const customSelect2 = this.$refs.customSelect2;
-
-            // Check if click is outside customSelect1
-            if (!customSelect1.contains(e.target)) {
-                this.isOpen = false;
-            }
-            // // Check if click is outside customSelect2
-            // if (!customSelect2.contains(e.target)) {
-            //     this.isOpen2 = false;
-            // }
-        },
-
-        // Fetch cities for the given stateId
-        async fetchSearchCities(stateId) {
-            try {
-                const response = await axios.get(
-                    `https://api.census.gov/data/2020/dec/pl?get=NAME&for=place:*&in=state:${stateId}`
-                    , {  withCredentials: false }
-                );
-                this.cities = response.data;
-            } catch (error) {
-                console.error("Error fetching cities:", error);
-            }
-
-        },
-
-        // Get city name by city ID (index 2 in the data array)
-        getCityName(cityId) {
-
-            const selectedCity = this.cities.find(x => x[2] === cityId);  // Assuming cityId is at index 2
-            return selectedCity ? selectedCity[0] : "City not found";  // Return city name or a default message
-        },
-
-    },
-    beforeDestroy() {
-        document.removeEventListener('click', this.closeDropdown);
+       
     }
 };
 </script>
@@ -253,26 +61,11 @@ export default {
         <div class="breadcrumb-outer campany">
             <div class="container">
                 <div class="breadcrumb-content text-center">
-                    <h5 class="theme mb-0">Yalla Party</h5>
-                    <h1 class="mb-0 white">Market</h1>
+                    <h1 class="mb-0 white">البائعين</h1>
                 </div>
 
                 <div class="d-flex justify-content-between mt-5 search_input">
-                   
 
-
-                    <!-- <div class="custom-select" :class="{ open: isOpen2 === true }" ref="customSelect2">
-                      <div class="selected-option"  @click="toggleDropdown2()">{{ selectedOption2 }}</div>
-                      <ul class="options-list">
-                          <li class="option" @click="selectOption2('-- select section --')">-- select section 2--</li>
-                          <li class="option" @click="selectOption2('Category Product 1')">Category Product 1</li>
-                          <li class="option" @click="selectOption2('Category Product 2')">Category Product 2</li>
-                          <li class="option" @click="selectOption2('Category Product 3')">Category Product 3</li>
-                          <li class="option" @click="selectOption2('Category Product 4')">Category Product 4</li>
-                          <li class="option" @click="selectOption2('Category Product 5')">Category Product 5</li>
-                          <li class="option" @click="selectOption2('Category Product 6')">Category Product 6</li>
-                      </ul>
-                  </div> -->
                 </div>
             </div>
 
@@ -386,36 +179,7 @@ export default {
 
 
                 </div>
-                <!-- end left side list      -->
-
-                <!-- right side container -->
-                <div class="col-12 col-lg-9 ">
-                    <div class="container white_card px-4 pb-4 pt-4 pb-0 mt-3 mt-lg-0 right-side">
-                        <div class="Product">
-                            <span class="sub-hero-title"> Products </span>
-                            <div class="row first_sec">
-                                <productCard v-for="item in productsData" :product='item'></productCard>
-                            </div>
-                        </div>
-                        <div v-if="moreDataShow" class="row justify-content-center see-more">
-                            <div class="col-6 col-lg-3">
-                                <div class=" d-flex align-items-center justify-content-center mt-4 ">
-                                    <a href="javascript:void(0)" v-on:click="seeMoreFunc()"
-                                        class="btn btn-light p-3  show-more-btn w-100">
-                                        <span> See More </span>
-                                        <svg width="14" height="15" viewBox="0 0 14 15" fill="none"
-                                            xmlns="http://www.w3.org/2000/svg">
-                                            <path
-                                                d="M0.276545 8.37881L6.36051 14.7351C6.45269 14.8314 6.55255 14.8998 6.6601 14.9403C6.76764 14.9807 6.88287 15.0006 7.00578 15C7.12869 15 7.24391 14.9798 7.35146 14.9393C7.459 14.8989 7.55887 14.8308 7.65105 14.7351L13.735 8.37881C13.904 8.20224 13.9922 7.98137 13.9996 7.71621C14.0069 7.45104 13.9188 7.22247 13.735 7.03049C13.566 6.83788 13.3546 6.7374 13.1008 6.72905C12.847 6.7207 12.6282 6.81316 12.4445 7.00642L7.92759 11.7255L7.92759 0.963084C7.92759 0.690211 7.8391 0.46132 7.66211 0.276408C7.48512 0.0914964 7.26634 -0.000639042 7.00578 3.73129e-06C6.7446 3.72818e-06 6.52551 0.0921392 6.34853 0.276408C6.17154 0.460678 6.08335 0.689569 6.08397 0.963084L6.08397 11.7255L1.56708 7.00642C1.39808 6.82985 1.18299 6.7374 0.921813 6.72905C0.660633 6.7207 0.445544 6.81316 0.276545 7.00642C0.0921823 7.18298 9.05373e-08 7.4077 8.72833e-08 7.68057C8.40293e-08 7.95344 0.0921822 8.18619 0.276545 8.37881Z"
-                                                fill=""></path>
-                                        </svg>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- end right side  -->
+             
             </div>
         </div>
     </section>
