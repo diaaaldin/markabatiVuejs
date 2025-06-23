@@ -114,9 +114,6 @@ export default {
                         <li class="nav-item">
                             <router-link to="/aboutus" class="nav-link" :class="{ active: $route.path === '/aboutus' }"> {{ $t('navbar_aboutus') }}  </router-link>
                         </li>
-                        <li class="nav-item">
-                            <router-link to="/aboutus" class="nav-link" :class="{ active: $route.path === '/aboutus' }"> {{ $t('navbar_contacts') }}  </router-link>
-                        </li>
                     </ul>
 
                     <!-- <ul v-if="GetUserName == ''"
