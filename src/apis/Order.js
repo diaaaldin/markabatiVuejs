@@ -4,6 +4,11 @@ const END_POINT = 'Order';
 
 export default {
 
+    
+    GetStarActiveVehicles() {
+
+        return Api.get(`${END_POINT}/GetStarActiveVehicles`);
+    },
 
     GetStarVehicleOrder(orderId) {
         let token = localStorage.getItem("token")
@@ -61,6 +66,7 @@ export default {
         };
         return Api.get(`${END_POINT}/GetAnnouncementOrders`, config);
     },
+
 
     GetStarVehicleOrderDate() {
         return Api.get(`${END_POINT}/GetStarVehicleOrderDate`);

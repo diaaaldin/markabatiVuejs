@@ -1,6 +1,13 @@
 import Order from "@/apis/Order";
 
-
+export const GetStarActiveVehicles = ({ commit, dispatch }) => {
+   return Order.GetStarActiveVehicles().then(function (response) {
+       commit('SET_STAR_ACTIVE_VEHICLE_DATA', response.data.data);
+       return response.data.data; 
+   }).catch(function (error) {
+           throw error;
+   });
+}
 
 export const GetStarVehicleOrder = ({ commit, dispatch },orderId) => {
    return Order.GetStarVehicleOrder(orderId).then(function (response) {

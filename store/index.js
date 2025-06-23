@@ -11,6 +11,8 @@ import Payment from "./modules/Payment/index";
 import Roles from "./modules/Roles/index";
 import Visit from "./modules/Visit/index";
 import Vehicles from "./modules/Vehicles/index";
+import Announcement from "./modules/Announcement/index";
+import Interfaces from "./modules/Interfaces/index";
 
 import Vuex from "vuex";
 import createPersistedState from 'vuex-persistedstate';
@@ -39,11 +41,13 @@ const store = new Vuex.Store({
       Payment,
       Roles,
       Vehicles,
+      Announcement,
+      Interfaces,
      },
 
      plugins: [
         createPersistedState({
-          paths: ['Users','Code','Orders','NotificationsAndMessages','Visit','Payment','Roles','Vehicles'],
+          paths: ['Users','Code','Orders','NotificationsAndMessages','Visit','Payment','Roles','Vehicles','Announcement'],
         })
       ],
 });

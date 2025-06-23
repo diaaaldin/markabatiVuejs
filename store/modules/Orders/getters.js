@@ -1,3 +1,7 @@
+export const getStarActiveVehicleData = (state) => {
+    return state.starActiveVehicleData;
+}
+
 export const getOrderData = (state) => {
     return state.OrderData;
 }

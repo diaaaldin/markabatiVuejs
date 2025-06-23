@@ -11,7 +11,6 @@ import sellerCard from '@/components/Cards/sellerCard.vue';
 
 
 export default {
-
     data() {
         return {}
     },
