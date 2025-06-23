@@ -49,7 +49,7 @@ export default {
         ...mapActions("Users", ["CustomerProfileInfo"]),
         goToProfileFunc() {
             if (!this.isTokenValid()) {
-                this.$router.push({ name: 'login' });
+                this.$router.push({ name: 'profile' });
             } else {
                 let email = localStorage.getItem("email");
                 this.CustomerProfileInfo(email).then(Response => {
