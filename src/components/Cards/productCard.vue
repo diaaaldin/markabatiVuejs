@@ -209,6 +209,7 @@ export default {
                             </div>
 
                             <div class="card-show">
+                               
                                 <div class="card-show">
                                     <div class=" d-flex align-items-center">
                                         <ul class="show-more-details">
