@@ -54,7 +54,7 @@ export default {
 <template>
     <pageNav></pageNav>
 
-    <div class="header-title text-center ">
+    <div class="header-title bg text-center ">
         <div class="breadcrumb-outer campany">
             <div class="container">
                 <div class="breadcrumb-content text-center">

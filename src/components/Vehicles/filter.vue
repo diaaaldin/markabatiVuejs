@@ -58,51 +58,43 @@ export default {
                 </div>
             </button>
         </h2>
-        <div id="collapseOne" class="accordion-collapse collapse show " aria-labelledby="headingOne"
-            data-bs-parent="#accordionExample">
-            <div class="accordion-body customize-acc-body">
-                <form action="">
+        <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+        <div class="accordion-body customize-acc-body">
+            <form action="">
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value=""
-                            id="flexCheckChecked" checked="">
-                        <label class="form-check-label" for="flexCheckChecked"> مرسيدس بنز</label>
+                        <input class="form-check-input" id="flexRadioDefault1" type="radio" name="car" value="مرسيدس بنز">
+                        <label class="form-check-label" for="flexRadioDefault1">مرسيدس بنز</label>
                         <span>(345)</span>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input " type="checkbox" value=""
-                            id="flexCheckChecked">
-                        <label class="form-check-label" for="flexCheckChecked">تويوتا كورلا</label>
+                        <input class="form-check-input" id="flexRadioDefault2" type="radio" name="car" value="تويوتا كورلا">
+                        <label class="form-check-label" for="flexRadioDefault2">تويوتا كورلا</label>
                         <span>(345)</span>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input " type="checkbox" value=""
-                            id="flexCheckChecked">
-                        <label class="form-check-label" for="flexCheckChecked"> هونداي
-                            النترا</label>
+                        <input class="form-check-input" id="flexRadioDefault3" type="radio" name="car" value="هونداي النترا">
+                        <label class="form-check-label" for="flexRadioDefault3">هونداي النترا</label>
                         <span>(345)</span>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input " type="checkbox" value=""
-                            id="flexCheckChecked">
-                        <label class="form-check-label" for="flexCheckChecked"> هونداي أكورد</label>
+                        <input class="form-check-input" id="flexRadioDefault4" type="radio" name="car" value="هونداي أكورد">
+                        <label class="form-check-label" for="flexRadioDefault4">هونداي أكورد</label>
                         <span>(345)</span>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input " type="checkbox" value=""
-                            id="flexCheckChecked" checked="">
-                        <label class="form-check-label" for="flexCheckChecked"> نيسان التيما</label>
+                        <input class="form-check-input" id="flexRadioDefault5" type="radio" name="car" value="نيسان التيما">
+                        <label class="form-check-label" for="flexRadioDefault5">نيسان التيما</label>
                         <span>(345)</span>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input " type="checkbox" value=""
-                            id="flexCheckChecked">
-                        <label class="form-check-label" for="flexCheckChecked"> كيا أوبتمام</label>
+                        <input class="form-check-input" id="flexRadioDefault6" type="radio" name="car" value="كيا أوبتما">
+                        <label class="form-check-label" for="flexRadioDefault6">كيا أوبتما</label>
                         <span>(345)</span>
                     </div>
-                </form>
-
-            </div>
+             </form>
         </div>
+</div>
+
     </div>
     <div class="accordion-item customize-according mt-2">
         <h2 class="accordion-header" id="heading2">
@@ -117,45 +109,38 @@ export default {
         <div id="collapse2" class="accordion-collapse collapse show " aria-labelledby="heading2"
             data-bs-parent="#accordionExample">
             <div class="accordion-body customize-acc-body ">
-                <form action="">
+               <form action="">
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value=""
-                            id="flexCheckChecked" checked="">
-                        <label class="form-check-label" for="flexCheckChecked"> مرسيدس بنز</label>
+                        <input class="form-check-input" id="flexRadioDefault1" type="radio" name="car" value="مرسيدس بنز">
+                        <label class="form-check-label" for="flexRadioDefault1">مرسيدس بنز</label>
                         <span>(345)</span>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input " type="checkbox" value=""
-                            id="flexCheckChecked">
-                        <label class="form-check-label" for="flexCheckChecked">تويوتا كورلا</label>
+                        <input class="form-check-input" id="flexRadioDefault2" type="radio" name="car" value="تويوتا كورلا">
+                        <label class="form-check-label" for="flexRadioDefault2">تويوتا كورلا</label>
                         <span>(345)</span>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input " type="checkbox" value=""
-                            id="flexCheckChecked">
-                        <label class="form-check-label" for="flexCheckChecked"> هونداي
-                            النترا</label>
+                        <input class="form-check-input" id="flexRadioDefault3" type="radio" name="car" value="هونداي النترا">
+                        <label class="form-check-label" for="flexRadioDefault3">هونداي النترا</label>
                         <span>(345)</span>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input " type="checkbox" value=""
-                            id="flexCheckChecked">
-                        <label class="form-check-label" for="flexCheckChecked"> هونداي أكورد</label>
+                        <input class="form-check-input" id="flexRadioDefault4" type="radio" name="car" value="هونداي أكورد">
+                        <label class="form-check-label" for="flexRadioDefault4">هونداي أكورد</label>
                         <span>(345)</span>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input " type="checkbox" value=""
-                            id="flexCheckChecked" checked="">
-                        <label class="form-check-label" for="flexCheckChecked"> نيسان التيما</label>
+                        <input class="form-check-input" id="flexRadioDefault5" type="radio" name="car" value="نيسان التيما">
+                        <label class="form-check-label" for="flexRadioDefault5">نيسان التيما</label>
                         <span>(345)</span>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input " type="checkbox" value=""
-                            id="flexCheckChecked">
-                        <label class="form-check-label" for="flexCheckChecked"> كيا أوبتمام</label>
+                        <input class="form-check-input" id="flexRadioDefault6" type="radio" name="car" value="كيا أوبتما">
+                        <label class="form-check-label" for="flexRadioDefault6">كيا أوبتما</label>
                         <span>(345)</span>
                     </div>
-                </form>
+             </form>
             </div>
         </div>
     </div>
