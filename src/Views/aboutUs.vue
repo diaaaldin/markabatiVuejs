@@ -55,47 +55,47 @@ export default {
 <template>
     <pageNav></pageNav>
 
-    <!-- end header second -->
-    <div class="header-title bg text-center">
-        <div class="breadcrumb-outer events">
-            <div class="container">
-                <div class="breadcrumb-content text-center">
-                    <h1 class="mb-5 white">من نحن</h1>
+    <div class="about-us">
+        <div class="header-title bg text-center">
+                <div class="container">
+                    <div class="text-center">
+                        <h1 class="mb-5 white">مـن نـحـن</h1>
+                    </div>
+                </div>
+        </div>
+        <section class="about-us mt-5">
+            <div class="container"> 
+                <div class="row">
+                    <div class="col-12 col-lg-6">
+                        <div class="me-3 mt-5">
+                            <div class="ms-4">
+                                <h2 class="title mb-0"> مرحباً بك في متجر مركبتي </h2>
+                                <p class="item_about_us mt-5" >
+                                    حقق أحلامك على الطريق مع أفضل السيارات للبيع والإيجار! اختر من بين مجموعة فاخرة ومميزة تلبي كل احتياجاتك بأسعار تنافسية وخدمات لا تُضاهى. سواء كنت تبحث عن الفخامة، الأداء، أو الراحة، نحن هنا لنمنحك تجربة قيادة تفوق التوقعات!
+                                </p>
+                            </div>
+                            <ul class="ul_about mt-3 ">
+                                <li class="item_about_us py-2"> هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص .</li>
+                                <li class="item_about_us py-2"> هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص .</li>
+                                <li class="item_about_us py-2"> هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص .</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-6 img-about-us">
+                            <div class="row">
+                                <div class=" col-12">
+                                    <div class="d-flex flex-column mt-lg-5 ">
+                                        <img class="img-fluid my-2" src="/img/aboutus1.jpg" alt="">
+                                    </div>
+                                </div>
+                                
+                            </div>
+                    </div>
                 </div>
             </div>
-        </div>
+        </section>
     </div>
-    <section class="about-us mt-5">
-        <div class="container"> 
-            <div class="row">
-                <div class="col-12 col-lg-6">
-                    <div class="me-3 mt-5">
-                        <div class="ms-4">
-                            <h2 class="title mb-0"> مرحباً بك في متجر مركبتي </h2>
-                            <p class="item_about_us mt-5" >
-                                 حقق أحلامك على الطريق مع أفضل السيارات للبيع والإيجار! اختر من بين مجموعة فاخرة ومميزة تلبي كل احتياجاتك بأسعار تنافسية وخدمات لا تُضاهى. سواء كنت تبحث عن الفخامة، الأداء، أو الراحة، نحن هنا لنمنحك تجربة قيادة تفوق التوقعات!
-                            </p>
-                        </div>
-                        <ul class="ul_about mt-3 ">
-                            <li class="item_about_us py-2"> هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص .</li>
-                            <li class="item_about_us py-2"> هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص .</li>
-                            <li class="item_about_us py-2"> هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص .</li>
-                        </ul>
-                    </div>
-                  </div>
-                  <div class="col-12 col-lg-6 img-about-us">
-                        <div class="row">
-                            <div class=" col-12">
-                                <div class="d-flex flex-column mt-lg-5 ">
-                                    <img class="img-fluid my-2" src="/img/aboutus1.jpg" alt="">
-                                </div>
-                            </div>
-                            
-                        </div>
-                  </div>
-            </div>
-        </div>
-    </section>
+    
 
     
     <pageFooter></pageFooter>
