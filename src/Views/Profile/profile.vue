@@ -57,12 +57,7 @@ export default {
         // this.setData(this.getProfileData);
     },
     mounted() {
-        // Initialize intl-tel-input on the input element
-        this.iti = window.intlTelInput(this.$refs.phoneInput, {
-            initialCountry: "us",
-            strictMode: true,
-            utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"
-        });
+     
     },
     beforeUnmount() {
         // Properly destroy the instance when the component is unmounted
@@ -78,7 +73,7 @@ export default {
         userImage() {
             const imageUrl = this.getProfileData && this.getProfileData.image
                 ? this.getProfileData.image
-                : "/img/person1.jpg";
+                : "/img/profile-icon.png";
             return imageUrl;
         }
     },
@@ -424,32 +419,21 @@ export default {
                             </a>
                         </div>
 
-                        <div class="point">
-                            <svg width="7" height="7" viewBox="0 0 7 7" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="3.5" cy="3.5" r="3.5" fill="#e5008f"></circle>
-                            </svg>
-                            <!-- <p>Point : <span>{{ this.getProfileData.points }}</span></p> -->
-                            <div class="clearfix"></div>
-                        </div>
-
+                     
                     </div>
-                    <div class="col-lg-12">
-                        <label class="label-form"> Name </label>
+                    <div class="col-lg-6">
+                        <label class="label-form"> الاسم </label>
                         <input v-model="data.name" name="name" type="text"
-                            class="form-control mt-2 mb-4 py-3 text-start list_link  gray-inp" placeholder="Full Name">
+                            class="form-control mt-2 mb-4 py-3 text-start list_link  gray-inp" placeholder="الاسم كامل">
+                    </div>
+                    
+                    <div class="col-lg-6">
+                        <label class="label-form"> البريد الالكتروني </label>
+                        <input v-model="data.email" name="email" type="email"
+                            class="form-control mt-2 mb-4  py-3 text-start list_link gray-inp" placeholder="example@email.com">
                     </div>
                     <div class="col-lg-6">
-                        <label class="label-form">Nickname</label>
-                        <input v-model="data.nickName" name="nickname" id="mobile" type="tel"
-                            class="form-control mt-2 mb-4  py-3 text-start list_link gray-inp" value="Nickname">
-                    </div>
-                    <div class="col-lg-6">
-                        <label class="label-form"> Email </label>
-                        <input disabled v-model="data.email" name="email" type="email"
-                            class="form-control mt-2 mb-4  py-3 text-start list_link gray-inp" placeholder="Email">
-                    </div>
-                    <div class="col-lg-6">
-                        <label class="label-form"> Mobile </label>
+                        <label class="label-form"> رقم الجوال </label>
                         <input v-model="data.mobile" name="mobile" id="phone" type="tel" ref="phoneInput"
                                         class="form-control mt-2 mb-4  py-3 text-start list_link gray-inp" maxlength="10"
                                         placeholder="(201) 555-0123" aria-label="" aria-describedby="basic-addon1"
@@ -457,39 +441,53 @@ export default {
 
                         </div>
                     <div class="col-lg-6">
-                        <label class="label-form"> Zip Code </label>
-                        <input v-model="data.zipCode" name="zipCode" type="text"
-                            class="form-control mt-2 mb-4  py-3 text-start list_link gray-inp" placeholder="Zip Code"
+                        <label class="label-form"> عنوان السكن  </label>
+                        <input v-model="data.addres" name="addres" type="text"
+                            class="form-control mt-2 mb-4  py-3 text-start list_link gray-inp" placeholder="عنوان السكن"
                             required="">
                     </div>
 
                     <div class="col-lg-6">
-                        <label class="label-form"> State </label>
+                        <label class="label-form"> المحافظة </label>
                         <select v-model="data.stateId"
                             class="form-control mt-2 mb-4  py-3 text-start list_link gray-inp"
                             @change="fetchCities(data.stateId)">
-                            <option value="" key="" selected>-- select a state --</option>
+                            <option value="" key="" selected>-- اختر المحافظة --</option>
                             <option v-for="item in states" :key="parseInt(item[1])" :value="item[1]">
                                 {{ item[0] }}
                             </option>
                         </select>
                     </div>
                     <div class="col-lg-6">
-                        <label class="label-form"> City </label>
+                        <label class="label-form"> المدينة </label>
                         <select v-model="data.cityId" class="form-control mt-2 mb-4  py-3 text-start list_link gray-inp"
                             :disabled="cities.length === 0">
-                            <option value="" key="" selected>-- select a city --</option>
+                            <option value="" key="" selected>-- اختر المدينة --</option>
                             <option v-for="item in cities" :key="parseInt(item[2])" :value="item[2]">
                                 {{ item[0] }}
                             </option>
                         </select>
+                    </div>
+                    <div class="col-lg-6">
+                        <label class="label-form">  رخصة الشركة </label>
+                        <input  name="" id="phone"
+                                        class="form-control mt-2 mb-4  py-3 text-start list_link gray-inp" maxlength="10"
+                                        placeholder="(201) 555-0123" aria-label="" aria-describedby="basic-addon1"
+                                        required>
+
+                        </div>
+                    <div class="col-lg-6">
+                        <label class="label-form">  معلومات أخرى  </label>
+                        <input v-model="data.addres" name="addres" type="text"
+                            class="form-control mt-2 mb-4  py-3 text-start list_link gray-inp" placeholder="أدخل معلومات أخرى"
+                            required="">
                     </div>
                     <hr>
                     <div class="row justify-content-start">
                         <div class=" col-12 col-md-4 col-lg-3">
 
                             <input v-on:click="UpdateFunc()" type="button"
-                                class=" form-control party-btn  w-100 my-4 py-3" value="Update Data">
+                                class=" form-control party-btn  w-100 my-4 py-3" value="تحديث البيانات">
 
                         </div>
                     </div>
@@ -508,7 +506,7 @@ export default {
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Update image</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">تحديث الصورة</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">

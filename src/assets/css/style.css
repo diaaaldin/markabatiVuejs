@@ -1362,15 +1362,19 @@ background-color: #0bc00e;
   color: white;
 }
 .profile .left-side {
-  /* border-radius: 16px;
+  border-radius: 16px;
   box-shadow: rgba(0, 0, 0, 0.15) 0px 15px 25px,
     rgba(0, 0, 0, 0.05) 0px 5px 10px;
-  background-color: white; */
+  background-color: white;
+}
+.profile .left-side .arrow{
+  fill: #54595e;
 }
 .profile .right-side {
-  /* border-radius: 16px;
+  border-radius: 16px;
   box-shadow: rgba(0, 0, 0, 0.15) 0px 15px 25px,
-    rgba(0, 0, 0, 0.05) 0px 5px 10px; */
+    rgba(0, 0, 0, 0.05) 0px 5px 10px;
+    margin-bottom: 50px;
 }
 .favorite-product .image {
   width: 150px;
@@ -1413,14 +1417,24 @@ background-color: #0bc00e;
   margin-right: 5px;
 }
 .profile ul .list-group-item {
-  border-radius: 16px;
+  /* border-radius: 16px; */
   transition: 0.4s all ease-in-out;
 }
 .profile ul .list-group-item.active {
   z-index: 2;
-  color: #fff;
-  background-color: var(--main-color);
-  border-color: var(--main-color);
+  color: var(--main-color);
+  font-weight: bold;
+  background-color: white;
+  border-color: rgba(0,0,0,.125);
+}
+.profile ul .list-group-item .arrow{
+    transition: transform 0.3s ease;
+}
+.profile ul .list-group-item.active .arrow{
+  fill: var(--main-color);
+}
+.profile ul .dropdown_list.active .arrow{
+    transform: rotate(270deg);
 }
 .profile .form-control.list_link {
   font-size: 14px;
@@ -1439,10 +1453,11 @@ background-color: #0bc00e;
   transition: 0.4s all ease-in-out;
 }
 .profile ul .list-group-item.active .list_link {
-  color: white;
+  color: var(--main-color);
+  font-weight: bold;
 }
 .profile ul .list-group-item .justify-content-start svg path:first-child {
-  fill: #ffa5dd;
+  fill: #dedcdc;
 }
 .profile
   ul
@@ -1450,7 +1465,7 @@ background-color: #0bc00e;
   .justify-content-start
   svg
   path:first-child {
-  fill: #fff;
+  fill: #41dc4373;
 }
 .profile ul .list-group-item .justify-content-start svg #secondary {
   fill: var(--main-color);
@@ -1481,14 +1496,14 @@ background-color: #0bc00e;
   font-size: 15px;
 }
 .profile thead th {
-  background-color: var(--second-color);
-  color: #fff;
+  background-color: #ddf9dd;
+  color: var(--main-color);
 }
 .profile thead th:first-child {
-  border-radius: 100px 0 0 100px;
+  border-radius: 0 100px 100px 0;
 }
 .profile thead th:last-child {
-  border-radius: 0 100px 100px 0;
+  border-radius: 100px 0 0 100px;
 }
 
 /* remove border from th... */
@@ -2421,7 +2436,7 @@ height: 400px;
 .fa-eye {
   position: absolute;
   top: 61%;
-  left: 89%;
+  left: 15px;
   cursor: pointer;
   color: lightgray;
 }
@@ -2939,7 +2954,7 @@ input[type="file"] {
   border: 2px solid white;
   position: absolute;
   top: 72%;
-  left: 0;
+  right: 0;
   cursor: pointer;
   z-index: 2;
 }

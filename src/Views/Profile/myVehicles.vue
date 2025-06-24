@@ -211,7 +211,7 @@ export default {
         </tbody>
       </table>
       <div v-if="!getCustomerBuyProductsOrdersData || getCustomerBuyProductsOrdersData.length === 0" class="alert alert-danger mt-3">
-         Your table is empty. Try adding to show some data.
+         الجدول فارغ . حاول أن تضف فيه بعض البيانات
       </div>
     </div>
   </div>
