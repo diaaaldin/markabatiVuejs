@@ -46,14 +46,16 @@ export default {
       <div class="tab-content px-0" id="myTabContent">
         <div class="favorite-product" id="">
           <!-- start card link -->
-          <favoritProduct v-for="item in getFavoritProductsData" :product='item'></favoritProduct>
+          <favoritProduct ></favoritProduct>
           <!-- end card link -->
 
         </div>
       </div>
-      <div  v-if="!getFavoritProductsData || getFavoritProductsData.length === 0" class="alert alert-danger mt-3">
-                 Try adding to show data.
-              </div>
+
+      <!-- <div  v-if="!getFavoritProductsData || getFavoritProductsData.length === 0" class="alert alert-danger mt-3">
+        لا يوجد سيارات مفضلة لديك
+      </div> -->
+
     </div>
   </div>
   <!-- end right side  -->

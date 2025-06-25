@@ -404,6 +404,18 @@ export default {
         <div class="container white_card px-4 pt-4 pb-0 mt-3 mt-lg-0 right-side">
             <form method="" action="" class="mt-2">
                 <div class="row ">
+                        <div class="ads">
+                            <div class="add">
+                                <a class="option">اضافة مركبة 
+                                    <svg viewBox="0 0 24 24" width="20" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path opacity="0.4" d="M16.19 2H7.81C4.17 2 2 4.17 2 7.81V16.18C2 19.83 4.17 22 7.81 22H16.18C19.82 22 21.99 19.83 21.99 16.19V7.81C22 4.17 19.83 2 16.19 2Z" fill="#292D32"></path> <path d="M16 11.25H12.75V8C12.75 7.59 12.41 7.25 12 7.25C11.59 7.25 11.25 7.59 11.25 8V11.25H8C7.59 11.25 7.25 11.59 7.25 12C7.25 12.41 7.59 12.75 8 12.75H11.25V16C11.25 16.41 11.59 16.75 12 16.75C12.41 16.75 12.75 16.41 12.75 16V12.75H16C16.41 12.75 16.75 12.41 16.75 12C16.75 11.59 16.41 11.25 16 11.25Z" fill="#292D32"></path> </g></svg>
+                                </a>
+                                <a class="option">اضافة اعلان
+                                    <svg viewBox="0 0 24 24" width="20" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path opacity="0.4" d="M16.19 2H7.81C4.17 2 2 4.17 2 7.81V16.18C2 19.83 4.17 22 7.81 22H16.18C19.82 22 21.99 19.83 21.99 16.19V7.81C22 4.17 19.83 2 16.19 2Z" fill="#292D32"></path> <path d="M16 11.25H12.75V8C12.75 7.59 12.41 7.25 12 7.25C11.59 7.25 11.25 7.59 11.25 8V11.25H8C7.59 11.25 7.25 11.59 7.25 12C7.25 12.41 7.59 12.75 8 12.75H11.25V16C11.25 16.41 11.59 16.75 12 16.75C12.41 16.75 12.75 16.41 12.75 16V12.75H16C16.41 12.75 16.75 12.41 16.75 12C16.75 11.59 16.41 11.25 16 11.25Z" fill="#292D32"></path> </g></svg>
+
+                                </a>
+                            </div>
+                        </div>
+
                     <div class="d-flex  div-img-profile px-0 justify-content-lg-start mb-4">
                         <img data-bs-toggle="modal" data-bs-target="#cropper_modal" :src="userImage"
                             alt="profile-picture" class="img-fluid hero-profile-pic" id="output">
@@ -418,8 +430,6 @@ export default {
                             <a class="upload_profile_input" data-bs-toggle="modal" data-bs-target="#cropper_modal">
                             </a>
                         </div>
-
-                     
                     </div>
                     <div class="col-lg-6">
                         <label class="label-form"> الاسم </label>

@@ -12,6 +12,7 @@ import profile_announcement_orders from '@/Views/Profile/Orders/announcementOrde
 import profile_star_orders from '@/Views/Profile/Orders/starOrders.vue'
 import profile_change_password from '@/Views/Profile/changePassword.vue'
 import profile_favorit from '@/Views/Profile/favorit.vue'
+import profile_Payment from '@/Views/Profile/PaymentOperations.vue'
 
 //announcement
 import add_announcement from '@/Views/Announcement/addAnnouncement.vue'
@@ -149,6 +150,12 @@ const routes = [
                 name: "profile_favorit",
                 component: profile_favorit
             },
+            {
+                path: '/PaymentOperations',
+                name: "profile_Payment",
+                component: profile_Payment
+            },
+           
         ]
     },
 
