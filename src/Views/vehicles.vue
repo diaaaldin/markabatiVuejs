@@ -284,7 +284,7 @@ export default {
         </nav>
     </div>
 
-    <section class="profile campany mt-5">
+    <section class="profile vehicles mt-5">
         <div class="container">
             <div class="row mt-5 h-100">
                 <!--  start left side list  -->
