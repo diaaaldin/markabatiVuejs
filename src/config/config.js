@@ -97,3 +97,9 @@ export const MessageWayEnum = {
 export const ConstantsEnum = {
   imageDefoult: 91,
 };
+
+export const InterfacesEnum = {
+  aboutUs : 92,
+  fotter : 93,
+  modals : 94,
+};

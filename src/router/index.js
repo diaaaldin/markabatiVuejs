@@ -124,7 +124,6 @@ const routes = [
                 name: "profile_profile",
                 component: profile_profile
             },
-           
             {
                 path: '/my_vehicles',
                 name: "profile_my_vehicles",
