@@ -51,6 +51,18 @@
     "vehicle_discreption":"نظرة عامة",
     "vehicle_vehicle_semiler":"المركبات المشابهة",
     
+    "filter_brand":"نوع المركبة",
+    "filter_model":"موديل الموركبة",
+    "filter_year":"سنة الإنتاج",
+    "filter_price":"السعر",
+    "filter_meals":"عدد الكيلومترات",
+    "filter_color":"اللون",
+    "filter_body_type":"نوع الهيكل",
+    "filter_specefication":"المواصفات",
+    "filter_painting_type":"نوع الدهان",
+    "filter_painting_status":"حالة الدهان",
+    "filter_gear_type":"نوع مبدل السرعة",
+    "filter_oil_type":"نوع الوقود",
 
     "header_userType":"مدير للنظام",
     "header_to_store":"إلى المعرض",

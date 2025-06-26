@@ -71,7 +71,7 @@ const routes = [
         component: sellers
     },
     {
-        path: '/vehicle',
+        path: '/vehicle/:slug',
         name: "vehicle",
         component: vehicle
     },

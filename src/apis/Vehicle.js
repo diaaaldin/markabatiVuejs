@@ -12,10 +12,42 @@ export default {
                 id: id,
             },
         };
-
         const responce = Api.get(`${END_POINT}/GetVehicle`, config);
         return responce;
     },
+
+    GetVehiclesRandomly(data) {
+
+        const queryString = new URLSearchParams({
+            ownerId: data.ownerId,
+            vehicleBrandId: data.vehicleBrandId,
+            vehicleModelId: data.vehicleModelId,
+            yearFrom: data.yearFrom,
+            yearTo: data.yearTo,
+            priceFrom: data.priceFrom,
+            priceTo: data.priceTo,
+            mealsFrom: data.mealsFrom,
+            mealsTo: data.mealsTo,
+            color: data.color,
+            bodyType: data.bodyType,
+            specification: data.specification,
+            paintedType: data.paintedType,
+            paintedStatus: data.paintedStatus,
+            gearType: data.gearType,
+            oilType: data.oilType,
+
+            page: data.page,
+            pageSize: data.pageSize
+        });
+        // data.exceptionIds.forEach(id => queryString.append('exceptionIds', id));
+
+        let config = {
+            params: queryString,
+        };
+        return Api.get(`${END_POINT}/GetVehiclesRandomly`, config);
+    },
+  
+
 
     GetVehicelForUpdate(id) {
 
@@ -106,7 +138,7 @@ export default {
             headers: { 'Authorization': token, "Access-Control-Allow-Origin": "*" },
         };
 
-        console.log("this.data : " , data);
+        console.log("this.data : ", data);
         const responce = Api.put(`${END_POINT}/UpdateVehicle`, data, config);
         return responce;
     },

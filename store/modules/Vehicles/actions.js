@@ -1,5 +1,23 @@
 import Vehicle from "@/apis/Vehicle";
 
+export const GetVehicle = ({ commit, dispatch },id) => {
+    return Vehicle.GetVehicle(id).then(function (response) {
+        commit('SET_VEHICEL_DATA', response.data.data);
+        return response.data.data;
+    }).catch(function (error) {
+            throw error;
+    });
+}
+
+export const GetVehiclesRandomly = ({ commit, dispatch },data) => {
+    return Vehicle.GetVehiclesRandomly(data).then(function (response) {
+        commit('SET_VEHICELS_DATA', response.data.data);
+        return response.data.data;
+    }).catch(function (error) {
+            throw error;
+    });
+}
+
 export const GetVehicelForUpdate = ({ commit, dispatch },id) => {
     // console.log("action run ");
     return Vehicle.GetVehicelForUpdate(id).then(function (response) {

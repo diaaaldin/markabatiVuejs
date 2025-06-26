@@ -1,6 +1,8 @@
 <script>
 import { mapState, mapGetters, mapActions } from "vuex";
 import { ElLoading } from 'element-plus';
+import { CurrenceEnum } from '@/config/config.js';
+
 
 export default {
     data() {
@@ -120,7 +122,8 @@ export default {
         },
 
         toProductFunc() {
-            this.$router.push({ name: "vehicle" });
+
+            this.$router.push({ name: "vehicle", params: { slug: this.product.slug } });
         },
 
         toMarketFunc() {
@@ -134,14 +137,28 @@ export default {
             return text.length > 20 ? text.slice(0, 75) + '...' : text;
         },
 
-        formatCurrency(value) {
+        formatCurrency(value, currency) {
+            let currencyCode = "";
+
+            switch (currency) {
+                case CurrenceEnum.NIS:
+                    currencyCode = "ILS";
+                    break;
+                case CurrenceEnum.JOD:
+                    currencyCode = "JOD";
+                    break;
+                default:
+                    currencyCode = "USD";
+            }
+
             return new Intl.NumberFormat('en-US', {
                 style: 'currency',
-                currency: "USD",
+                currency: currencyCode,
+                // Allows up to 1 decimal digit
                 minimumFractionDigits: 0, // No decimals
                 maximumFractionDigits: 0  // No decimals
             }).format(value);
-        },
+        }
 
     }
 };
@@ -204,12 +221,12 @@ export default {
                             <div class=" d-flex align-items-center">
                                 <span class="price">
                                     <!-- 5000$ -->
-                                    {{ formatCurrency(product.price) }}
+                                    {{ formatCurrency(product.price, product.currency) }}
                                 </span>
                             </div>
 
                             <div class="card-show">
-                               
+
                                 <div class="card-show">
                                     <div class=" d-flex align-items-center">
                                         <ul class="show-more-details">

@@ -34,7 +34,7 @@ methods:{
 				// Handle any errors (network issues, API failure, etc.)
 				console.error("Error fetching IP:", error);
 			}
-		}
+		},
 }
 };
 </script>

@@ -1,65 +1,102 @@
+<script>
+export default {
+  props: {
+    images: {
+      type: Array,
+      required: false,
+      default: () => [
+        '/img/details-car/dc1.png',
+        '/img/details-car/Group-1.png',
+        '/img/details-car/Group-2.png',
+        '/img/details-car/Group-3.png',
+        '/img/details-car/Group-4.png',
+        '/img/details-car/Group-5.png',
+      ]
+    }
+  },
+  data() {
+    return {
+      currentIndex: 0
+    };
+  },
+
+  computed: {
+    // Display only the first 5 images
+    displayedImages() {
+      return this.images.slice(0, 5);
+    }
+  },
+  methods: {
+    setImage(index) {
+      this.currentIndex = index;
+    },
+    prevImage() {
+      this.currentIndex = (this.currentIndex - 1 + this.images.length) % this.images.length;
+    },
+    nextImage() {
+      this.currentIndex = (this.currentIndex + 1) % this.images.length;
+    },
+
+  }
+};
+</script>
 <template>
   <div class="slider-car">
     <div class="badge">جديد</div>
     <span class="arrow left" @click="prevImage">
-      <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="#000000" class="bi bi-arrow-left-short"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5z"></path> </g></svg>    </span>
+      <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="#000000" class="bi bi-arrow-left-short">
+        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+        <g id="SVGRepo_iconCarrier">
+          <path fill-rule="evenodd"
+            d="M12 8a.5.5 0 0 1-.5.5H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5a.5.5 0 0 1 .5.5z">
+          </path>
+        </g>
+      </svg> </span>
     <div class="image">
       <img :src="images[currentIndex]" class="main-image img-fluid" />
     </div>
     <span class="arrow right" @click="nextImage">
-      <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="#000000" class="bi bi-arrow-right-short"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8z"></path> </g></svg>
+      <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="#000000" class="bi bi-arrow-right-short">
+        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+        <g id="SVGRepo_iconCarrier">
+          <path fill-rule="evenodd"
+            d="M4 8a.5.5 0 0 1 .5-.5h5.793L8.146 5.354a.5.5 0 1 1 .708-.708l3 3a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708-.708L10.293 8.5H4.5A.5.5 0 0 1 4 8z">
+          </path>
+        </g>
+      </svg>
     </span>
 
     <div class="thumbnails">
-      <div
-          v-for="(img, index) in images"
-          :key="index"
-          class="thumbnail-wrapper"
-          @click="setImage(index)"
-        >
-          <img
-            :src="img"
-            :class="[
-              'thumbnail',
-              { active: index === currentIndex }
-            ]"
-          />
-          <!-- Only show overlay on last image -->
-          <div v-if="index === images.length - 1" class="thumbnail-overlay">
-            +{{ images.length - 5 }}
-          </div>
-      </div>
+      <!-- Loop through the first 5 images -->
+      <div v-for="(img, index) in displayedImages" :key="index" class="thumbnail-wrapper" @click="setImage(index)">
+        <img :src="img" :class="['thumbnail', { active: index === currentIndex }]" />
 
+        <!-- Only show overlay on the last image -->
+        <div v-if="index === displayedImages.length - 1 && images.length > 5" class="thumbnail-overlay">
+          +{{ images.length - 5 }}
+        </div>
+       
+      </div>
     </div>
+
+   <div class="col-lg-12 multi-img">
+      <div class="d-flex flex-lg-column  mt-3 mt-lg-0">
+        <div id="gallery" class="mt-lg-3">
+          <a v-for="(image, index) in images" :key="index" :href="image"
+            :data-caption="'Image #' + (index + 1)" :class="{ 'Before_After_div': index === 0 }">
+            <img :src="image" alt="" :class="index === 0
+              ? 'img-fluid srv_img w-100 last-sec-img'
+              : 'd-none'" />
+          </a>
+        </div>
+      </div>
+    </div> 
+
+
   </div>
 </template>
-
-<script setup>
-import { ref } from 'vue'
-
-const images = ref([
-  '/img/details-car/dc1.png',
-  '/img/details-car/Group-1.png',
-  '/img/details-car/Group-2.png',
-  '/img/details-car/Group-3.png',
-  '/img/details-car/Group-4.png',
-  '/img/details-car/Group-5.png',
-])
-
-const currentIndex = ref(0)
-
-const setImage = (index) => {
-  currentIndex.value = index
-}
-
-const prevImage = () => {
-  currentIndex.value = (currentIndex.value - 1 + images.value.length) % images.value.length
-}
-
-const nextImage = () => {
-  currentIndex.value = (currentIndex.value + 1) % images.value.length
-}
-</script>
 
 <style scoped>
 .slider-car {
@@ -151,16 +188,20 @@ const nextImage = () => {
 .arrow.left {
   left: -15px;
 }
-.arrow.left svg{
-width: 28px;
-  margin: -4px -7px 0 0;}
+
+.arrow.left svg {
+  width: 28px;
+  margin: -4px -7px 0 0;
+}
 
 .arrow.right {
   right: -15px;
 }
-.arrow.right svg{
+
+.arrow.right svg {
   width: 28px;
-margin: -4px -7px 0 0;}
+  margin: -4px -7px 0 0;
+}
 
 .badge {
   position: absolute;
@@ -236,5 +277,4 @@ margin: -4px -7px 0 0;}
     height: 32px;
   }
 }
-
 </style>
