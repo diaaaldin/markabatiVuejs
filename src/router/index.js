@@ -14,6 +14,10 @@ import profile_change_password from '@/Views/Profile/changePassword.vue'
 import profile_favorit from '@/Views/Profile/favorit.vue'
 import profile_Payment from '@/Views/Profile/PaymentOperations.vue'
 
+import profile_addVehicle from '@/Views/Profile/addVehicle.vue'
+import profile_addAds from '@/Views/Profile/addAds.vue'
+
+
 //announcement
 import add_announcement from '@/Views/Announcement/addAnnouncement.vue'
 import update_announcement from '@/Views/Announcement/updateAnnouncement.vue'
@@ -153,6 +157,16 @@ const routes = [
                 path: '/PaymentOperations',
                 name: "profile_Payment",
                 component: profile_Payment
+            },
+            {
+                path: '/addVehicle',
+                name: "profile_addVehicle",
+                component: profile_addVehicle
+            },
+            {
+                path: '/addAds',
+                name: "profile_addAds",
+                component: profile_addAds
             },
            
         ]
