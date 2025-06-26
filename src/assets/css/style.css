@@ -1167,10 +1167,13 @@ body {
 
 /******************************************/
 .login .image {
-background-image: linear-gradient( 45deg, rgba(50, 229, 0, 0.22), rgba(0, 91, 23, 0.08) ), url("/img/slider/bgcar.jpg"), url("/img/slider/bgcar.jpg");
+background-image: linear-gradient( 45deg, rgba(50, 229, 0, 0.22), rgba(0, 91, 23, 0.08) ), url("/img/login-bg.jpg");
   background-repeat: no-repeat;
   background-size: cover;
   min-height: 100vh;
+}
+.login.register .image {
+background-image: linear-gradient( 45deg, rgba(50, 229, 0, 0.22), rgba(0, 91, 23, 0.08) ), url("/img/signup-bg.jpg");
 }
 .text-login {
   color: var(--second-color);
@@ -1698,7 +1701,7 @@ background-color: #0bc00e;
 /*  style for tab  */
 .nav-tabs .nav-link {
   border: none;
-  width: 120px;
+  width: 160px;
   font-size: 16px;
   font-weight: bold;
 }
@@ -2586,6 +2589,9 @@ height: 400px;
 .row-login {
   margin-left: -33px;
 }
+.row-login.register {
+  margin: 0px -140px 0 60px;
+}
 .row-login.register .img {
   margin-bottom: 50px;
 }
@@ -2628,7 +2634,7 @@ height: 400px;
 .nav-tabs .nav-link.active {
   /* border-color: transparent; */
   border-bottom: 3px solid var(--main-color);
-  width: 120px;
+  width: 160px;
 }
 .gray_text {
   color: #7d7f82;

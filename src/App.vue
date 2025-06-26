@@ -44,8 +44,6 @@ methods:{
 </template>
 
 <style scoped>
-  *{
-    font-family: "Rubik", sans-serif !important;
-  }
+
 </style>
 
