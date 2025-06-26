@@ -133,7 +133,24 @@
     "general_user_not_allow_error_message":"المستخدم لا يمكلك صلاحية",
 
 
-    "profile_title":"البروفايل",
+    "profile_btn_addVehicel":"اضافة مركبة",
+    "profile_btn_addAnnouncement":"اضافة اعلان",
+
+    "profile_input_name":"الإسم",
+    "profile_input_email":"البريد الإلكتروني",
+    "profile_input_mobile":"رقم الجوال",
+    "profile_input_address":"العنوان",
+    "profile_input_state":"المحافظة",
+    "profile_input_city":"المدينة",
+    "profile_input_ssn":"رقم الهوية",
+    "profile_input_licenseNumber":"رخصة الشركة",
+    "profile_input_moreInfo":"معلومات أخرى",
+    
+    "profile_select_state":"-- اختر المحافظة --",
+    "profile_select_city":"-- اختر المدينة --",
+
+
+    
     "profile_image_update":"تعديل الصورة",
     "profile_about_siction":"المعلومات الشخصية",
     "profile_password_siction":"كلمة المرور",

@@ -35,8 +35,17 @@ export const GetCompanyUsers = ({ commit, dispatch }, data) => {
     });
 }
 
-export const AdminProfileInfo = ({ commit, dispatch }, userId) => {
-    return User.AdminProfileInfo(userId).then(function (response) {
+export const CustomerProfileInfo = ({ commit, dispatch }, userId) => {
+    return User.CustomerProfileInfo(userId).then(function (response) {
+        commit('SET_USER_DATA', response.data.data);
+        return response.data.data;
+    }).catch(function (error) {
+        throw error;
+    });
+}
+
+export const CompanyProfileInfo = ({ commit, dispatch }, userId) => {
+    return User.CompanyProfileInfo(userId).then(function (response) {
         commit('SET_USER_DATA', response.data.data);
         return response.data.data;
     }).catch(function (error) {
@@ -52,15 +61,16 @@ export const UserLogin = ({ commit, dispatch }, data) => {
             localStorage.setItem("token", JSON.stringify(response.data.data.token));
             response.data.data.token = "";
             localStorage.setItem('userName', JSON.parse(JSON.stringify(response.data.data.name)));
+            localStorage.setItem('userType', JSON.parse(JSON.stringify(response.data.data.userType)));
             localStorage.setItem('id', JSON.parse(JSON.stringify(response.data.data.id)));
             // localStorage.setItem('addressState',  JSON.parse(JSON.stringify(response.data.data.addressState)));
         }
-        
         return response.data.data;
     }).catch(function (error) {
         throw error;
     });
 }
+
 export const AdminLogin = ({ commit, dispatch }, data) => {
     return User.AdminLogin(data).then(function (response) {
        

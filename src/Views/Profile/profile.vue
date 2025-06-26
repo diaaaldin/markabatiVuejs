@@ -1,8 +1,10 @@
 <script>
 import { mapState, mapGetters, mapActions } from "vuex";
 import { ElLoading } from 'element-plus';
-import axios from "axios";
 import cropper from '@/components/cropper/squereCropper.vue';
+import axios from "axios";
+import { UserTypeEnum } from '@/config/config';
+
 
 export default {
     data() {
@@ -10,37 +12,48 @@ export default {
             data: {
                 id: localStorage.getItem('id'),
                 name: "",
-                nickName: "",
-                email: localStorage.getItem('email'),
+                email: "",
                 mobile: "",
-                stateId: "",
-                cityId: "",
-                statusId: 0,
-                address: "",
+                userType: localStorage.getItem('userType'),
+                ssn: "",
+                licenseNumber: "",
+                addressState: 0,
+                addressCity: 0,
+                addressInfo: "",
                 moreInfo: "",
                 password: "",
-                confirmPassword: "",
-                userTypeCFK: 0,
-                zipCode: "",
-                questionData: [],
+                confirmPassword: ""
             },
 
-            dataImage: {
-                id: 0,
-                email : localStorage.getItem('email'),
-                image: ""
+            changePasswordData: {
+                userId: 0,
+                email: "",
+                mobile: "",
+                sendWay: 0,
+                oldPassword: "",
+                newPassword: ""
             },
 
-            cityName: "",
+            userTypesData: {
+                Admin: UserTypeEnum.Admin,
+                Normal: UserTypeEnum.Normal,
+                Compony: UserTypeEnum.Compony,
+            },
 
+            confirmPassword: "",
+            imagePath: "",
+
+            stateCities : [],
             showImageCropper: false,
             imageCropperSrc: null,
             base64Images: [],
             myFiles: [],
 
-            states: [], // Will hold the list of states
-            cities: [], // Will hold the list of cities for the selected state
+            emailError: '',
         }
+    },
+    mounted() {
+
     },
 
     components: {
@@ -53,114 +66,55 @@ export default {
 
     created() {
         // Call the function from the store directly when the component is created
-        // this.fetchStates();
-        // this.setData(this.getProfileData);
-    },
-    mounted() {
-     
-    },
-    beforeUnmount() {
-        // Properly destroy the instance when the component is unmounted
-        if (this.iti) {
-            this.iti.destroy();
-        }
+        this.initFunc();
     },
 
     computed: {
-        ...mapGetters("Users", ["getProfileData"]),
+        ...mapGetters("Users", ["getUserData"]),
+        ...mapGetters("Code", ["getStatesData", "getCitiesData"]),
 
-        
         userImage() {
-            const imageUrl = this.getProfileData && this.getProfileData.image
-                ? this.getProfileData.image
+            const imageUrl = this.getUserData && this.getUserData.image
+                ? this.getUserData.image
                 : "/img/profile-icon.png";
+
             return imageUrl;
         }
     },
+
     methods: {
-        ...mapActions("Users", ["CustomerProfileInfo", "CustomerUpdate", "CustomerImageUpdate"]),
-        async setData(user) {
+        ...mapActions("Users", ["CustomerProfileInfo", "CompanyProfileInfo", "CustomerUpdate", "CompanyUpdate", "UpdateCustomerImage", "UpdateCompanyImage", "ChangePassword"]),
+        ...mapActions("Code", ["GetStates", "GetCities"]),
 
-            this.data.id = user.id;
-            this.data.name = user.name;
-            this.data.nickName = user.nickName;
-            this.data.email = user.email;
-            this.data.mobile = user.mobile;
-            this.data.address = user.address;
-            this.data.moreInfo = user.moreInfo;
-            this.data.userTypeCFK = user.userTypeCFK;
-            this.data.zipCode = user.zipCode;
-
-            console.log("user : " , user);
-            console.log("this.data : " , this.data);
-            this.data.stateId = user.stateId;
-            await this.fetchCities(user.stateId);
-            // Wait for the cities to load and then set the city ID
-            this.data.cityId = user.cityId;
-            this.data.statusId = user.statusId;
+        clearData() {
+            this.changePasswordData.userId = 0;
+            this.changePasswordData.email = "";
+            this.changePasswordData.mobile = "";
+            this.changePasswordData.sendWay = 0;
+            this.changePasswordData.oldPassword = "";
+            this.changePasswordData.newPassword = "";
+            this.confirmPassword = "";
         },
-
-        initFunc() {
-            const loading = ElLoading.service({
-                lock: true,
-                background: 'rgba(0, 0, 0, 0.7)',
-                text: "",
-            });
-
-            this.CustomerProfileInfo(this.data.email).then(Response => {
-                this.setData(Response);
-                loading.close();
-            }).catch(error => {
-                this.$moshaToast(error.response.data.message, {
-                    hideProgressBar: 'false',
-                    position: 'top-center',
-                    showIcon: 'true',
-                    swipeClose: 'true',
-                    type: 'warning',
-                    timeout: 3000,
-                });
-                loading.close();
-            });
-        },
-
-        GetData() {
-            this.CustomerProfileInfo(this.data.email).then(Response => {
-                this.setData(Response);
-
-            }).catch(error => {
-                this.$moshaToast(error.response.data.message, {
-                    hideProgressBar: 'false',
-                    position: 'top-center',
-                    showIcon: 'true',
-                    swipeClose: 'true',
-                    type: 'warning',
-                    timeout: 3000,
-                });
-            });
-        },
-
-        UpdateFunc() {
-            if (this.checkUpdateValidation()) {
-
+        ChangePasswordFunc() {
+            if (this.checkValidation()) {
                 const loading = ElLoading.service({
                     lock: true,
                     background: 'rgba(0, 0, 0, 0.7)',
                     text: "",
                 });
 
-                //console.log("this.data for update : ", this.data);
-                this.CustomerUpdate(this.data).then(Response => {
-
-                    this.$moshaToast('Updated profile successfully', {
+                this.ChangePassword(this.changePasswordData).then(Response => {
+                    // console.log(Response);
+                    this.$moshaToast(this.$t('general_update_operation_success_message'), {
                         hideProgressBar: 'false',
                         showIcon: 'true',
                         swipeClose: 'true',
                         type: 'success',
                         timeout: 3000,
                     });
+                    this.clearData();
                     loading.close();
-                    this.GetData();
-                    // $('#edit_personal_details').modal('hide');
+
                 }).catch(error => {
                     this.$moshaToast(error.response.data.message, {
                         hideProgressBar: 'false',
@@ -174,10 +128,9 @@ export default {
                 });
             }
         },
-
-        checkUpdateValidation() {
-            if (this.data.name == "") {
-                this.$moshaToast('enter a name', {
+        checkValidation() {
+            if (this.changePasswordData.oldPassword.trim() == '') {
+                this.$moshaToast(this.$t('password_old_check_message'), {
                     hideProgressBar: 'false',
                     position: 'top-center',
                     showIcon: 'true',
@@ -185,9 +138,228 @@ export default {
                     type: 'warning',
                     timeout: 3000,
                 });
+                // this.$refs.email.focus();
                 return false;
-            } else if (this.data.nickName == "") {
-                this.$moshaToast('enter nickname', {
+            } else if (this.changePasswordData.newPassword.trim() == '') {
+                this.$moshaToast(this.$t('password_new_check_message'), {
+                    hideProgressBar: 'false',
+                    position: 'top-center',
+                    showIcon: 'true',
+                    swipeClose: 'true',
+                    type: 'warning',
+                    timeout: 3000,
+                });
+                // this.$refs.email.focus();
+                return false;
+            } else if (this.changePasswordData.newPassword.trim() != this.confirmPassword.trim()) {
+                this.$moshaToast(this.$t('password_confirm_new_equal_check_message'), {
+                    hideProgressBar: 'false',
+                    position: 'top-center',
+                    showIcon: 'true',
+                    swipeClose: 'true',
+                    type: 'warning',
+                    timeout: 3000,
+                });
+                // this.$refs.nickName.focus();
+                return false;
+            }
+
+            return true;
+        },
+
+        async setData() {
+            this.data.id = this.getUserData.id;
+            this.data.name = this.getUserData.name;
+            this.data.email = this.getUserData.email;
+            this.data.mobile = this.getUserData.mobile;
+            this.data.ssn = this.getUserData.ssn;
+            this.data.licenseNumber = this.getUserData.licenseNumber;
+            await this.setStatesCities(this.getUserData.addressStateId);
+            this.data.addressState = this.getUserData.addressStateId;
+            this.data.addressCity = this.getUserData.addressCityId;
+            this.data.addressInfo = this.getUserData.addressInfo;
+            this.data.moreInfo = this.getUserData.moreInfo;
+        },
+
+
+
+        initFunc() {
+            const loading = ElLoading.service({
+                lock: true,
+                background: 'rgba(0, 0, 0, 0.7)',
+                text: "",
+            });
+            this.GetStates();
+            this.GetCities();
+            if (this.data.userType == UserTypeEnum.Normal) {
+                this.CustomerUpdate(this.data.id).then(Response => {
+                    this.setData();
+                    loading.close();
+                }).catch(error => {
+                    if (error.response && error.response.status === 401) {
+                        this.$moshaToast(this.$t('general_user_not_allow_error_message'), {
+                            hideProgressBar: 'false',
+                            position: 'top-center',
+                            showIcon: 'true',
+                            swipeClose: 'true',
+                            type: 'warning',
+                            timeout: 3000,
+                        });
+                    } else {
+                        // Handle other errors with the provided message from the response
+                        this.$moshaToast(error.response?.data?.message || 'An error occurred', {
+                            hideProgressBar: 'false',
+                            position: 'top-center',
+                            showIcon: 'true',
+                            swipeClose: 'true',
+                            type: 'warning',  // Default type is 'warning'
+                            timeout: 3000,
+                        });
+                    }
+                    loading.close();
+                });
+            } else {
+                this.CompanyProfileInfo(this.data.id).then(Response => {
+                    this.setData();
+                    loading.close();
+                }).catch(error => {
+                    if (error.response && error.response.status === 401) {
+                        this.$moshaToast(this.$t('general_user_not_allow_error_message'), {
+                            hideProgressBar: 'false',
+                            position: 'top-center',
+                            showIcon: 'true',
+                            swipeClose: 'true',
+                            type: 'warning',
+                            timeout: 3000,
+                        });
+                    } else {
+                        // Handle other errors with the provided message from the response
+                        this.$moshaToast(error.response?.data?.message || 'An error occurred', {
+                            hideProgressBar: 'false',
+                            position: 'top-center',
+                            showIcon: 'true',
+                            swipeClose: 'true',
+                            type: 'warning',  // Default type is 'warning'
+                            timeout: 3000,
+                        });
+                    }
+                    loading.close();
+                });
+            }
+
+        },
+        GetData() {
+            this.AdminProfileInfo(this.data.id).then(Response => {
+                this.setData();
+            }).catch(error => {
+                if (error.response && error.response.status === 401) {
+                    this.$moshaToast(this.$t('general_user_not_allow_error_message'), {
+                        hideProgressBar: 'false',
+                        position: 'top-center',
+                        showIcon: 'true',
+                        swipeClose: 'true',
+                        type: 'warning',
+                        timeout: 3000,
+                    });
+                } else {
+                    // Handle other errors with the provided message from the response
+                    this.$moshaToast(error.response?.data?.message || 'An error occurred', {
+                        hideProgressBar: 'false',
+                        position: 'top-center',
+                        showIcon: 'true',
+                        swipeClose: 'true',
+                        type: 'warning',  // Default type is 'warning'
+                        timeout: 3000,
+                    });
+                }
+            });
+        },
+
+        UpdateFunc() {
+            if (this.checkUpdateValidation()) {
+
+                const loading = ElLoading.service({
+                    lock: true,
+                    background: 'rgba(0, 0, 0, 0.7)',
+                    text: "",
+                });
+
+                if (this.data.userType == UserTypeEnum.Normal) {
+                    this.CustomerUpdate(this.data).then(Response => {
+                        this.$moshaToast(this.$t('general_update_operation_success_message'), {
+                            hideProgressBar: 'false',
+                            showIcon: 'true',
+                            swipeClose: 'true',
+                            type: 'success',
+                            timeout: 3000,
+                        });
+                        loading.close();
+                        this.GetData();
+                    }).catch(error => {
+                        if (error.response && error.response.status === 401) {
+                            this.$moshaToast(this.$t('general_user_not_allow_error_message'), {
+                                hideProgressBar: 'false',
+                                position: 'top-center',
+                                showIcon: 'true',
+                                swipeClose: 'true',
+                                type: 'warning',
+                                timeout: 3000,
+                            });
+                        } else {
+                            // Handle other errors with the provided message from the response
+                            this.$moshaToast(error.response?.data?.message || 'An error occurred', {
+                                hideProgressBar: 'false',
+                                position: 'top-center',
+                                showIcon: 'true',
+                                swipeClose: 'true',
+                                type: 'warning',  // Default type is 'warning'
+                                timeout: 3000,
+                            });
+                        }
+                        loading.close();
+                    });
+                } else {
+                    this.CompanyUpdate(this.data).then(Response => {
+                        this.$moshaToast(this.$t('general_update_operation_success_message'), {
+                            hideProgressBar: 'false',
+                            showIcon: 'true',
+                            swipeClose: 'true',
+                            type: 'success',
+                            timeout: 3000,
+                        });
+                        loading.close();
+                        this.GetData();
+                    }).catch(error => {
+                        if (error.response && error.response.status === 401) {
+                            this.$moshaToast(this.$t('general_user_not_allow_error_message'), {
+                                hideProgressBar: 'false',
+                                position: 'top-center',
+                                showIcon: 'true',
+                                swipeClose: 'true',
+                                type: 'warning',
+                                timeout: 3000,
+                            });
+                        } else {
+                            // Handle other errors with the provided message from the response
+                            this.$moshaToast(error.response?.data?.message || 'An error occurred', {
+                                hideProgressBar: 'false',
+                                position: 'top-center',
+                                showIcon: 'true',
+                                swipeClose: 'true',
+                                type: 'warning',  // Default type is 'warning'
+                                timeout: 3000,
+                            });
+                        }
+                        loading.close();
+                    });
+                }
+
+            }
+        },
+
+        checkUpdateValidation() {
+            if (this.data.name == "") {
+                this.$moshaToast(this.$t('user_data_check_name'), {
                     hideProgressBar: 'false',
                     position: 'top-center',
                     showIcon: 'true',
@@ -197,7 +369,7 @@ export default {
                 });
                 return false;
             } else if (this.data.email == "") {
-                this.$moshaToast('enter email', {
+                this.$moshaToast(this.$t('user_data_check_email'), {
                     hideProgressBar: 'false',
                     position: 'top-center',
                     showIcon: 'true',
@@ -207,7 +379,18 @@ export default {
                 });
                 return false;
             } else if (this.data.mobile == "") {
-                this.$moshaToast('enter mobile', {
+                this.$moshaToast(this.$t('user_data_check_mobile'), {
+                    hideProgressBar: 'false',
+                    position: 'top-center',
+                    showIcon: 'true',
+                    swipeClose: 'true',
+                    type: 'warning',
+                    timeout: 3000,
+                });
+                return false;
+            }
+            else if (this.data.ssn == "") {
+                this.$moshaToast(this.$t('user_data_check_ssn'), {
                     hideProgressBar: 'false',
                     position: 'top-center',
                     showIcon: 'true',
@@ -218,8 +401,8 @@ export default {
                 return false;
             }
 
-            else if (this.data.stateId == "") {
-                this.$moshaToast('select state', {
+            else if (this.data.addressState == 0) {
+                this.$moshaToast(this.$t('user_data_check_state'), {
                     hideProgressBar: 'false',
                     position: 'top-center',
                     showIcon: 'true',
@@ -228,8 +411,18 @@ export default {
                     timeout: 3000,
                 });
                 return false;
-            } else if (this.data.cityId == "") {
-                this.$moshaToast('select city', {
+            } else if (this.data.addressCity == 0) {
+                this.$moshaToast(this.$t('user_data_check_city'), {
+                    hideProgressBar: 'false',
+                    position: 'top-center',
+                    showIcon: 'true',
+                    swipeClose: 'true',
+                    type: 'warning',
+                    timeout: 3000,
+                });
+                return false;
+            } else if (this.data.addressInfo == "") {
+                this.$moshaToast(this.$t('user_data_check_address_info'), {
                     hideProgressBar: 'false',
                     position: 'top-center',
                     showIcon: 'true',
@@ -244,8 +437,7 @@ export default {
         },
 
         UpdateImageFunc(image) {
-            this.dataImage.image = image;
-
+            this.imagePath = image;
             if (this.checkUpdateImageValidation()) {
 
                 const loading = ElLoading.service({
@@ -254,9 +446,9 @@ export default {
                     text: "",
                 });
 
-                //console.log("this.data for update : ", this.data);
-                this.CustomerImageUpdate(this.dataImage).then(Response => {
-                    this.$moshaToast('Updated image successfully', {
+                //// console.log("this.data for update : ", this.data);
+                this.UpdateAdminImage(this.imagePath).then(Response => {
+                    this.$moshaToast(this.$t('general_update_operation_success_message'), {
                         hideProgressBar: 'false',
                         showIcon: 'true',
                         swipeClose: 'true',
@@ -265,24 +457,36 @@ export default {
                     });
                     loading.close();
                     this.GetData();
-                    $('#cropper_modal').modal('hide');
+                    $('#edit_personal_details').modal('hide');
                 }).catch(error => {
-                    this.$moshaToast(error.response.data.message, {
-                        hideProgressBar: 'false',
-                        position: 'top-center',
-                        showIcon: 'true',
-                        swipeClose: 'true',
-                        type: 'warning',
-                        timeout: 3000,
-                    });
+                    if (error.response && error.response.status === 401) {
+                        this.$moshaToast(this.$t('general_user_not_allow_error_message'), {
+                            hideProgressBar: 'false',
+                            position: 'top-center',
+                            showIcon: 'true',
+                            swipeClose: 'true',
+                            type: 'warning',
+                            timeout: 3000,
+                        });
+                    } else {
+                        // Handle other errors with the provided message from the response
+                        this.$moshaToast(error.response?.data?.message || 'An error occurred', {
+                            hideProgressBar: 'false',
+                            position: 'top-center',
+                            showIcon: 'true',
+                            swipeClose: 'true',
+                            type: 'warning',  // Default type is 'warning'
+                            timeout: 3000,
+                        });
+                    }
                     loading.close();
                 });
             }
         },
 
         checkUpdateImageValidation() {
-            if (this.dataImage.image == "") {
-                this.$moshaToast('add your image', {
+            if (this.imagePath == "") {
+                this.$moshaToast(this.$t('user_data_check_image'), {
                     hideProgressBar: 'false',
                     position: 'top-center',
                     showIcon: 'true',
@@ -294,29 +498,6 @@ export default {
             }
 
             return true;
-        },
-
-        formatCurrency(value) {
-            return new Intl.NumberFormat('en-US', {
-                style: 'currency',
-                currency: "USD",
-                minimumFractionDigits: 0, // No decimals
-                maximumFractionDigits: 0  // No decimals
-            }).format(value);
-        },
-
-        passImgAsBase64(file) {
-            var self = this;
-            var reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = function () {
-                const base64Image = reader.result;
-                this.dataImage.image = base64Image;
-                //self.base64Images.push(base64Image);
-            };
-            reader.onerror = function (error) {
-                console.log('Error: ', error);
-            };
         },
 
         toggleCropperModal() {
@@ -332,67 +513,86 @@ export default {
             //this.imageCropperSrc = URL.createObjectURL(imageFile);
         },
 
-        // Fetch the states from the API
-        async fetchStates() {
-            try {
-                const response = await axios.get("https://api.census.gov/data/2020/dec/pl?get=NAME&for=state:*", {
-                    withCredentials: false,
-                });
-                // API returns the first element as headers, so we slice it off
-                this.states = response.data;
-            } catch (error) {
-                console.error("Error fetching states:", error);
+        validateEmail(email) {
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            // Check if the input is empty
+            if (!this.data.email) {
+                this.emailError = '';
+                return false;
+            }
+            // Check if the input does not match the email format
+            else if (!emailPattern.test(this.data.email)) {
+                this.emailError = this.$t('user_data_check_email_validation');
+                return false;
+            }
+            // Clear the error if the input is valid
+            else {
+                this.emailError = '';
+                return true;
             }
         },
-
-        // Fetch cities based on the selected state
-        async fetchCities(stateId) {
-            try {
-                const response = await axios.get(
-                    `https://api.census.gov/data/2020/dec/pl?get=NAME&for=place:*&in=state:${stateId}`, {
-                    withCredentials: false,
-                });
-                this.cities = response.data;
-                //console.log(this.cities);
-            } catch (error) {
-                console.error("Error fetching cities:", error);
-            }
+        filterMobileInput(event) {
+            const input = event.target.value.replace(/\D/g, '').slice(0, 10);
+            this.data.mobile = input;
         },
-
-        getStateName(state) {
-            const selectedState = this.states.find(x => x[1] === state);
-            if (selectedState) {
-                this.getCityName(this.getProfileData.stateId, this.getProfileData.cityId);
-                return selectedState[0];
-            }
-            return "";
+        filterSSNInput(event) {
+            const input = event.target.value.replace(/\D/g, '').slice(0, 9);
+            this.data.ssn = input;
         },
-
-        async getCityName(stateId, cityId) {
-            try {
-                const response = await axios.get(
-                    `https://api.census.gov/data/2020/dec/pl?get=NAME&for=place:*&in=state:${stateId}`, {
-                    withCredentials: false,
-                });
-                // The response data is an array where the first element contains the column names
-                // and the subsequent elements contain the city data.
-                const cities = response.data;
-
-                // Find the city that matches the cityId
-                const city = cities.find(city => city[2] === cityId);
-
-                if (city) {
-                    const cityName = city[0]; // The city name is in the first column
-                    this.cityName = cityName;
-                    return cityName;
-                } else {
-                    console.error("City not found");
-                    return "";
+        checkSSN(ssn) {
+            let result = false;
+            // Check if the length is 9
+            if (ssn.length !== 9) {
+                return result;
+            }
+            // Check if ssn converts to integer as 0
+            if (parseInt(ssn) === 0) {
+                return result;
+            }
+            let b = 0;
+            for (let i = 0; i < ssn.length - 1; i++) {
+                let a = parseInt(ssn.charAt(i));
+                if (i % 2 === 1) {
+                    a *= 2;
+                    if (a > 9) {
+                        const v = a % 10;
+                        const v2 = Math.floor(a / 10);
+                        a = v + v2;
+                    }
                 }
-            } catch (error) {
-                console.error("Error fetching cities:", error);
-                return "";
+                b += a;
             }
+            b = b % 10;
+            b = 10 - b;
+            if (b === 10) {
+                b = 0;
+            }
+            if (b === parseInt(ssn.charAt(ssn.length - 1))) {
+                result = true;
+            }
+            return result;
+        },
+
+
+        setStatesCities(state) {
+            let res = this.getCitiesData.filter(x => x.state === state);
+            if (res) {
+                this.stateCities = [];
+                this.data.addressCity = 0;
+                this.stateCities = res;
+            } else this.stateCities = [];
+        },
+    
+        stateNameFunc(id) {
+            let res = this.getStatesData.find(x => x.id === id);
+            if (res) return res.name;
+            else return "";
+        },
+        cityNameFunc(id) {
+            let res = this.getCitiesData.find(x => x.id === id);
+            if (res) return res.name;
+            else return "";
         }
 
     }
@@ -404,22 +604,43 @@ export default {
         <div class="container white_card px-4 pt-4 pb-0 mt-3 mt-lg-0 right-side">
             <form method="" action="" class="mt-2">
                 <div class="row ">
-                        <div class="ads">
-                            <div class="add">
-                                <a class="option">اضافة مركبة 
-                                    <svg viewBox="0 0 24 24" width="20" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path opacity="0.4" d="M16.19 2H7.81C4.17 2 2 4.17 2 7.81V16.18C2 19.83 4.17 22 7.81 22H16.18C19.82 22 21.99 19.83 21.99 16.19V7.81C22 4.17 19.83 2 16.19 2Z" fill="#292D32"></path> <path d="M16 11.25H12.75V8C12.75 7.59 12.41 7.25 12 7.25C11.59 7.25 11.25 7.59 11.25 8V11.25H8C7.59 11.25 7.25 11.59 7.25 12C7.25 12.41 7.59 12.75 8 12.75H11.25V16C11.25 16.41 11.59 16.75 12 16.75C12.41 16.75 12.75 16.41 12.75 16V12.75H16C16.41 12.75 16.75 12.41 16.75 12C16.75 11.59 16.41 11.25 16 11.25Z" fill="#292D32"></path> </g></svg>
-                                </a>
-                                <a class="option">اضافة اعلان
-                                    <svg viewBox="0 0 24 24" width="20" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path opacity="0.4" d="M16.19 2H7.81C4.17 2 2 4.17 2 7.81V16.18C2 19.83 4.17 22 7.81 22H16.18C19.82 22 21.99 19.83 21.99 16.19V7.81C22 4.17 19.83 2 16.19 2Z" fill="#292D32"></path> <path d="M16 11.25H12.75V8C12.75 7.59 12.41 7.25 12 7.25C11.59 7.25 11.25 7.59 11.25 8V11.25H8C7.59 11.25 7.25 11.59 7.25 12C7.25 12.41 7.59 12.75 8 12.75H11.25V16C11.25 16.41 11.59 16.75 12 16.75C12.41 16.75 12.75 16.41 12.75 16V12.75H16C16.41 12.75 16.75 12.41 16.75 12C16.75 11.59 16.41 11.25 16 11.25Z" fill="#292D32"></path> </g></svg>
+                    <div class="ads">
+                        <div class="add">
+                            <a class="option">{{ $t('profile_btn_addVehicel') }}
+                                <svg viewBox="0 0 24 24" width="20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                    <g id="SVGRepo_iconCarrier">
+                                        <path opacity="0.4"
+                                            d="M16.19 2H7.81C4.17 2 2 4.17 2 7.81V16.18C2 19.83 4.17 22 7.81 22H16.18C19.82 22 21.99 19.83 21.99 16.19V7.81C22 4.17 19.83 2 16.19 2Z"
+                                            fill="#292D32"></path>
+                                        <path
+                                            d="M16 11.25H12.75V8C12.75 7.59 12.41 7.25 12 7.25C11.59 7.25 11.25 7.59 11.25 8V11.25H8C7.59 11.25 7.25 11.59 7.25 12C7.25 12.41 7.59 12.75 8 12.75H11.25V16C11.25 16.41 11.59 16.75 12 16.75C12.41 16.75 12.75 16.41 12.75 16V12.75H16C16.41 12.75 16.75 12.41 16.75 12C16.75 11.59 16.41 11.25 16 11.25Z"
+                                            fill="#292D32"></path>
+                                    </g>
+                                </svg>
+                            </a>
+                            <a class="option">{{ $t('profile_btn_addAnnouncement') }}
+                                <svg viewBox="0 0 24 24" width="20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                    <g id="SVGRepo_iconCarrier">
+                                        <path opacity="0.4"
+                                            d="M16.19 2H7.81C4.17 2 2 4.17 2 7.81V16.18C2 19.83 4.17 22 7.81 22H16.18C19.82 22 21.99 19.83 21.99 16.19V7.81C22 4.17 19.83 2 16.19 2Z"
+                                            fill="#292D32"></path>
+                                        <path
+                                            d="M16 11.25H12.75V8C12.75 7.59 12.41 7.25 12 7.25C11.59 7.25 11.25 7.59 11.25 8V11.25H8C7.59 11.25 7.25 11.59 7.25 12C7.25 12.41 7.59 12.75 8 12.75H11.25V16C11.25 16.41 11.59 16.75 12 16.75C12.41 16.75 12.75 16.41 12.75 16V12.75H16C16.41 12.75 16.75 12.41 16.75 12C16.75 11.59 16.41 11.25 16 11.25Z"
+                                            fill="#292D32"></path>
+                                    </g>
+                                </svg>
 
-                                </a>
-                            </div>
+                            </a>
                         </div>
+                    </div>
 
                     <div class="d-flex  div-img-profile px-0 justify-content-lg-start mb-4">
                         <img data-bs-toggle="modal" data-bs-target="#cropper_modal" :src="userImage"
                             alt="profile-picture" class="img-fluid hero-profile-pic" id="output">
-
                         <div
                             class="upload_profile_div d-flex align-items-center justify-content-center justify-content-lg-start">
                             <label for="file-upload file" class="custom-file-upload">
@@ -432,65 +653,72 @@ export default {
                         </div>
                     </div>
                     <div class="col-lg-6">
-                        <label class="label-form"> الاسم </label>
+                        <label class="label-form"> {{ $t('profile_input_name') }} </label>
                         <input v-model="data.name" name="name" type="text"
                             class="form-control mt-2 mb-4 py-3 text-start list_link  gray-inp" placeholder="الاسم كامل">
                     </div>
-                    
+
                     <div class="col-lg-6">
-                        <label class="label-form"> البريد الالكتروني </label>
+                        <label class="label-form"> {{ $t('profile_input_email') }} </label>
                         <input v-model="data.email" name="email" type="email"
-                            class="form-control mt-2 mb-4  py-3 text-start list_link gray-inp" placeholder="example@email.com">
+                            class="form-control mt-2 mb-4  py-3 text-start list_link gray-inp"
+                            placeholder="example@email.com">
                     </div>
                     <div class="col-lg-6">
-                        <label class="label-form"> رقم الجوال </label>
+                        <label class="label-form"> {{ $t('profile_input_mobile') }} </label>
                         <input v-model="data.mobile" name="mobile" id="phone" type="tel" ref="phoneInput"
-                                        class="form-control mt-2 mb-4  py-3 text-start list_link gray-inp" maxlength="10"
-                                        placeholder="(201) 555-0123" aria-label="" aria-describedby="basic-addon1"
-                                        required>
+                            class="form-control mt-2 mb-4  py-3 text-start list_link gray-inp" maxlength="10"
+                            placeholder="(201) 555-0123" aria-label="" aria-describedby="basic-addon1" required>
 
-                        </div>
+                    </div>
                     <div class="col-lg-6">
-                        <label class="label-form"> عنوان السكن  </label>
-                        <input v-model="data.addres" name="addres" type="text"
+                        <label class="label-form">{{ $t('profile_input_address') }} </label>
+                        <input v-model="data.addressInfo" name="addressInfo" type="text"
                             class="form-control mt-2 mb-4  py-3 text-start list_link gray-inp" placeholder="عنوان السكن"
                             required="">
                     </div>
 
                     <div class="col-lg-6">
-                        <label class="label-form"> المحافظة </label>
-                        <select v-model="data.stateId"
+                        <label class="label-form"> {{ $t('profile_input_state') }} </label>
+                        <select v-model="data.addressState"
                             class="form-control mt-2 mb-4  py-3 text-start list_link gray-inp"
-                            @change="fetchCities(data.stateId)">
-                            <option value="" key="" selected>-- اختر المحافظة --</option>
-                            <option v-for="item in states" :key="parseInt(item[1])" :value="item[1]">
-                                {{ item[0] }}
+                            @change="setStatesCities(data.addressState)">
+                            <option value="0" key="0" selected>{{ $t('profile_select_state') }}</option>
+                            <option v-for="item in getStatesData" :key="parseInt(item.id)" :value="item.id">
+                                {{ item.name }}
                             </option>
                         </select>
                     </div>
                     <div class="col-lg-6">
-                        <label class="label-form"> المدينة </label>
-                        <select v-model="data.cityId" class="form-control mt-2 mb-4  py-3 text-start list_link gray-inp"
-                            :disabled="cities.length === 0">
-                            <option value="" key="" selected>-- اختر المدينة --</option>
-                            <option v-for="item in cities" :key="parseInt(item[2])" :value="item[2]">
-                                {{ item[0] }}
+                        <label class="label-form"> {{ $t('profile_input_city') }} </label>
+                        <select v-model="data.addressCity"
+                            class="form-control mt-2 mb-4 py-3 text-start list_link gray-inp"
+                            :disabled="!stateCities || stateCities.length === 0">
+                            <option value="0" key="0" selected>{{ $t('profile_select_city') }}</option>
+                            <option v-for="item in stateCities" :key="parseInt(item.id)" :value="item.id">
+                                {{ item.name }}
                             </option>
                         </select>
                     </div>
-                    <div class="col-lg-6">
-                        <label class="label-form">  رخصة الشركة </label>
-                        <input  name="" id="phone"
-                                        class="form-control mt-2 mb-4  py-3 text-start list_link gray-inp" maxlength="10"
-                                        placeholder="(201) 555-0123" aria-label="" aria-describedby="basic-addon1"
-                                        required>
+                    <div v-if="data.userType == userTypesData.Normal" class="col-lg-6">
+                        <label class="label-form"> {{ $t('profile_input_ssn') }} </label>
+                        <input v-model="data.ssn" name="" id="ssn"
+                            class="form-control mt-2 mb-4  py-3 text-start list_link gray-inp" maxlength="10"
+                            placeholder="(201) 555-0123" aria-label="" aria-describedby="basic-addon1" required>
 
-                        </div>
+                    </div>
+                    <div v-else class="col-lg-6">
+                        <label class="label-form"> {{ $t('profile_input_licenseNumber') }} </label>
+                        <input v-model="data.licenseNumber" name="" id="licenseNumber"
+                            class="form-control mt-2 mb-4  py-3 text-start list_link gray-inp" maxlength="10"
+                            placeholder="(201) 555-0123" aria-label="" aria-describedby="basic-addon1" required>
+
+                    </div>
                     <div class="col-lg-6">
-                        <label class="label-form">  معلومات أخرى  </label>
-                        <input v-model="data.addres" name="addres" type="text"
-                            class="form-control mt-2 mb-4  py-3 text-start list_link gray-inp" placeholder="أدخل معلومات أخرى"
-                            required="">
+                        <label class="label-form"> {{ $t('profile_input_moreInfo') }} </label>
+                        <input v-model="data.moreInfo" name="moreInfo" type="text"
+                            class="form-control mt-2 mb-4  py-3 text-start list_link gray-inp"
+                            placeholder="أدخل معلومات أخرى" required="">
                     </div>
                     <hr>
                     <div class="row justify-content-start">

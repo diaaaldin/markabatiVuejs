@@ -97,25 +97,12 @@ export default {
         };
         return Api.get(`${END_POINT}/CompanyProfileInfo`, config);
     },
-    AdminProfileInfo(id) {
-        let token = localStorage.getItem("token")
-            ? JSON.parse(localStorage.getItem("token"))
-            : null;
-
-        let config = {
-            headers: { 'Authorization': token, "Access-Control-Allow-Origin": "*" },
-            params: {
-                userId: id
-            },
-        };
-        return Api.get(`${END_POINT}/AdminProfileInfo`, config);
-    },
 
 
     UserLogin(data) {
         return Api.post(`${END_POINT}/UserLogin`, data);
     },
-    
+
     AdminLogin(data) {
         return Api.post(`${END_POINT}/AdminLogin`, data);
     },
@@ -282,10 +269,10 @@ export default {
             ? JSON.parse(localStorage.getItem("token"))
             : null;
 
-            let config = {
-                // headers: { 'Authorization': token, "Access-Control-Allow-Origin": "*" },
-                headers: { 'Authorization': token, 'Content-Type': 'application/json', },
-            };
+        let config = {
+            // headers: { 'Authorization': token, "Access-Control-Allow-Origin": "*" },
+            headers: { 'Authorization': token, 'Content-Type': 'application/json', },
+        };
 
         return Api.put(`${END_POINT}/UpdateCustomerImage`, imagePath, config);
     },
@@ -310,7 +297,7 @@ export default {
             // headers: { 'Authorization': token, "Access-Control-Allow-Origin": "*" },
             headers: { 'Authorization': token, 'Content-Type': 'application/json', },
         };
-        return Api.put(`${END_POINT}/UpdateAdminImage`,imagePath, config);
+        return Api.put(`${END_POINT}/UpdateAdminImage`, imagePath, config);
     },
 
     SendUserNewPassword(data) {

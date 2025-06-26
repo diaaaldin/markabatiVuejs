@@ -24,13 +24,13 @@ export default {
   },
 
   computed: {
-    ...mapGetters("Users", ["getProfileData"]),
+    ...mapGetters("Users", ["getUserData"]),
 
     userImage() {
-      const imageUrl = this.getProfileData && this.getProfileData.image
-        ? this.getProfileData.image
+      const imageUrl = this.getUserData && this.getUserData.image
+        ? this.getUserData.image
         : "/img/profile-icon.png";
-      console.log("Computed image URL:", imageUrl);
+
       return imageUrl;
     }
   },
