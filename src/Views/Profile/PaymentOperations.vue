@@ -67,7 +67,7 @@ export default {
 	},
 	methods: {
 		...mapActions("Code", ["GetOrderStatus", "GetAnnouncementTypes"]),
-		...mapActions("Orders", ["GetStarVehiclesOrders","UpdateStarVehicleOrder","DeleteStarVehicleOrder", "UpdateStarVehicleOrderStatus"]),
+		...mapActions("Orders", ["GetStarVehiclesOrders", "UpdateStarVehicleOrder", "DeleteStarVehicleOrder", "UpdateStarVehicleOrderStatus"]),
 
 		initFunc() {
 			const loading = ElLoading.service({
@@ -78,7 +78,7 @@ export default {
 			this.GetOrderStatus();
 			this.GetStarVehiclesOrders(this.dataSearch).then(Response => {
 				loading.close();
-				console.log("getOrdersData : " , this.getOrdersData);
+				console.log("getOrdersData : ", this.getOrdersData);
 			}).catch(error => {
 				if (error.response && error.response.status === 401) {
 					this.$moshaToast(this.$t('general_user_not_allow_error_message'), {
@@ -344,7 +344,7 @@ export default {
 				this.dataStatus.orderId = foundItem.id;
 			}
 		},
-		
+
 		selectItemForUpdate(id) {
 			this.clearData();
 			const loading = ElLoading.service({
@@ -359,10 +359,10 @@ export default {
 				this.data.startDate = this.formatDate(foundItem.startDate);
 				this.data.endDate = this.formatDate(foundItem.endDate);
 				loading.close();
-			}else {
+			} else {
 				loading.close();
 			}
-				
+
 		},
 		showImages(id) {
 			console.log("images show : ", id);
@@ -415,127 +415,107 @@ export default {
 };
 </script>
 <template>
-	<!-- Page Header -->
-	<div class="page-header">
-		<div class="row ">
-			<div class="col-sm-12">
-				<h3 class="page-title">إدارة المركبات المميزة</h3>
-				<!-- <ul class="breadcrumb">
-					<li class="breadcrumb-item active">إدارة المركبات</li>
-				</ul> -->
-			</div>
-			<div class="col-12 row">
 
-				<div class="col-lg-3 col-md-6 col-sm-12  row align-items-center">
-					<div class="col-sm-12">
-						<input @input="SearchDateChange()" v-model="dateFrom" type="date" class="form-control"
-							placeholder="من تاريخ">
-					</div>
-				</div>
-				<div class="col-lg-3 col-md-6 col-sm-12  row align-items-center">
-					<div class="col-sm-12">
-						<input @input="SearchDateChange()" v-model="dateTo" type="date" class="form-control"
-							placeholder="إلى تاريخ">
-					</div>
-				</div>
-				<div class="col-lg-3 col-md-6 col-sm-12  row align-items-center">
-					<div class="col-sm-12">
-						<select v-model="dataSearch.vm.statusId" class="form-control" @change="SearchChange()"
-							data-placeholder="قم باختيار حالة طلب التمييز" name="car-status">
-							<option value="0" key="0" selected>-- حالة طلب التمييز --</option>
-							<option v-for="item in getOrderStatusData" :value="item.id" :key="item.id">{{ item.name }}
-							</option>
-						</select>
-					</div>
-				</div>
-
-				<!-- <div class="col-3 text-left">
-					<a href="javascript:void(0)" data-toggle="modal" v-on:click="goToAddAnnouncementFunc()"
-						class="btn btn-primary float-left mt-2">إضافة إعلان جديد</a>
-				</div> -->
-			</div>
-		</div>
-	</div>
-	<!-- /Page Header -->
-	<div class="row">
-		<div class="col-sm-12">
-			<div class="card">
-				<div class="card-body">
-					<div class="table-responsive">
-						<table class="datatable table table-hover table-center mb-0">
-							<thead>
-								<tr>
-									<th class="text-center">ID</th>
-									<th class="text-center">إسم المعلن</th>
-									<th class="text-center">الرسالة</th>
-									<th class="text-center">رد الرسالة</th>
-									<th class="text-center">تاريخ البداية</th>
-									<th class="text-center">تاريخ النهاية</th>
-									<th class="text-center">السعر الإجمالي</th>
-									<th class="text-center">حالة الدفع</th>
-									<th class="text-center">الفاتورة</th>
-									<th class="text-center">صورة المركبة</th>
-									<th class="text-center">الحالة</th>
-
-									<th></th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr v-for="(item, index ) in getOrdersData.orders.data">
-									<td class="text-center">{{ index + 1 }}</td>
-									<td class="text-center">{{ item.userName }}</td>
-									<td class="text-center">{{ item.message }}</td>
-									<td class="text-center">{{ item.messageReplay }}</td>
-									<td class="text-center">{{ formatDate(item.startDate) }}</td>
-									<td class="text-center">{{ formatDate(item.endDate) }}</td>
-									<td class="text-center">{{ formatCurrency(item.totalPrice) }} </td>
-									<td class="text-center">
-										<!-- مدفوع -->
-										<img v-if="item.isPayed == true" src="/images/icons_true.png" alt="show">
-										<!-- غير مدفوع -->
-										<img v-else src="/images/icons8-false.png" alt="show">
-									</td>
-									<td class="text-center">
-										<img v-on:click="OpenFullScreenBillFunc(item.id)" :src="item.billImage"
-											class="img-responsive rounded" alt="pay bill" height="80">
-									</td>
-									<td class="text-center">
-										<img v-on:click="OpenFullScreenFunc(item.id)" :src="item.vehicleImage"
-											class="img-responsive rounded" alt="announcement image" height="80">
-									</td>
-									<td class="text-center">
-										<span v-if="item.statusId == OrderStatus.accepted"
-											class="badge badge-pill bg-success inv-badge"> {{ item.statusName }}
-										</span>
-										<span v-else-if="item.statusId == OrderStatus.pending"
-											class="badge badge-pill bg-warning inv-badge">{{ item.statusName }}</span>
-										<span v-else class="badge badge-pill bg-danger inv-badge">{{ item.statusName
-											}}</span>
-									</td>
+	<div class="col-12 col-lg-9 payment">
+		<div class="container white_card px-4 pt-4 pb-0 mt-3 mt-lg-0 right-side">
+			<div class="table-responsive">
+				<table class="table text-center">
+					<thead>
+						<tr>
+							<th class="text-center">#</th>
+							<th class="text-center">المبلغ</th>
+							<th class="text-center">نوع العملية</th>
+							<th class="text-center">الاسم</th>
+							<th class="text-center">البريد الالكتروني</th>
+							<th class="text-center"> العملة</th>
+							<th class="text-center"> طريقة الدفع</th>
+							<th class="text-center">الفاتورة</th>
+							<th class="text-center"> وصف العملية </th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td class="id">1</td>
+							<td> 5000 </td>
+							<td>طلب تمييز</td>
+							<td>عبد الله المدهون</td>
+							<td>test@test.com</td>
+							<td> الدولار </td>
+							<td>
+								<!-- <span class="availabe">متاحة</span> -->
+								<span class="warning">فيزا كارد</span>
+								<!-- <span class="not-availabe">مباعة</span> -->
+							</td>
 
 
-									<td class="text-right">
-										<div class="actions">
-											<a class="btn btn-sm bg-success-light" data-toggle="modal"
-											href="#update_modal"
-												v-on:click="selectItemForUpdate(item.id)">
-												<i class="fe fe-pencil"></i> تعديل
-											</a>
-											<a class="btn btn-sm bg-success-light" data-toggle="modal"
-												href="#change_status_modal" v-on:click="selectItem(item.id)">
-												<i class="fe fe-pencil"></i> تعديل الحالة
-											</a>
-											<a data-toggle="modal" href="#delete_modal"
-												class="btn btn-sm bg-danger-light" v-on:click="selectItem(item.id)">
-												<i class="fe fe-trash"></i> حذف
-											</a>
-										</div>
-									</td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
-				</div>
+							<td>
+								<img src="/img/cars/c1.png" class="img-responsive table-img" alt="product image"
+									height="80">
+							</td>
+							<td> وصف الصف العملية صف الصف العملية </td>
+						</tr>
+						<tr>
+							<td class="id">1</td>
+							<td> 5000 </td>
+							<td>طلب تمييز</td>
+							<td>عبد الله المدهون</td>
+							<td>test@test.com</td>
+							<td> الدولار </td>
+							<td>
+								<!-- <span class="availabe">متاحة</span> -->
+								<span class="warning">فيزا كارد</span>
+								<!-- <span class="not-availabe">مباعة</span> -->
+							</td>
+
+
+							<td>
+								<img src="/img/cars/c1.png" class="img-responsive table-img" alt="product image"
+									height="80">
+							</td>
+							<td> وصف الصف العملية صف الصف العملية </td>
+						</tr>
+						<tr>
+							<td class="id">1</td>
+							<td> 5000 </td>
+							<td>طلب تمييز</td>
+							<td>عبد الله المدهون</td>
+							<td>test@test.com</td>
+							<td> الدولار </td>
+							<td>
+								<!-- <span class="availabe">متاحة</span> -->
+								<span class="warning">فيزا كارد</span>
+								<!-- <span class="not-availabe">مباعة</span> -->
+							</td>
+
+
+							<td>
+								<img src="/img/cars/c1.png" class="img-responsive table-img" alt="product image"
+									height="80">
+							</td>
+							<td> وصف الصف العملية صف الصف العملية </td>
+						</tr>
+						<tr>
+							<td class="id">1</td>
+							<td> 5000 </td>
+							<td>طلب تمييز</td>
+							<td>عبد الله المدهون</td>
+							<td>test@test.com</td>
+							<td> الدولار </td>
+							<td>
+								<!-- <span class="availabe">متاحة</span> -->
+								<span class="warning">فيزا كارد</span>
+								<!-- <span class="not-availabe">مباعة</span> -->
+							</td>
+
+
+							<td>
+								<img src="/img/cars/c1.png" class="img-responsive table-img" alt="product image"
+									height="80">
+							</td>
+							<td> وصف الصف العملية صف الصف العملية </td>
+						</tr>
+					</tbody>
+				</table>
 			</div>
 		</div>
 	</div>

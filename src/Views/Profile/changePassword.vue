@@ -148,7 +148,7 @@ export default {
                 <div class="row ">
                     <div class="col-lg-6">
                         <div class="password-container">
-                            <label class="text">Old Password</label>
+                            <label class="text">كلمة المرور القديمة</label>
                             <br>
                             <input v-model="data.oldPassword" :type="isPassword1Visible ? 'text' : 'password'"
                                 class="form-control mt-2 mb-4  py-3 text-start list_link gray-inp id_password"
@@ -160,11 +160,11 @@ export default {
                             </a>
                         </div>
                         <div class="password-container">
-                            <label class="text">New Password</label>
+                            <label class="text">كلمة المرور الجديدة</label>
                             <br>
                             <input v-model="data.newPassword" :type="isPassword2Visible ? 'text' : 'password'"
                                 class="form-control mt-2 mb-4  py-3 text-start list_link gray-inp id_password"
-                                autocomplete="current-password" placeholder="New password" required>
+                                autocomplete="current-password" placeholder="كلمة المرور الجديدة" required>
                             <a v-on:click="togglePassword2Visibility">
                                 <i
                                     :class="isPassword2Visible ? 'far fa-eye-slash togglePassword' : 'far fa-eye togglePassword'"></i>
@@ -172,11 +172,11 @@ export default {
                             </a>
                         </div>
                         <div class="password-container">
-                            <label class="text">Confirm New Password</label>
+                            <label class="text">تأكيد كلمة المرور الجديدة</label>
                             <br>
                             <input v-model="confirmPassword" :type="isPassword3Visible ? 'text' : 'password'"
                                 class="form-control mt-2 mb-4  py-3 text-start list_link gray-inp id_password"
-                                autocomplete="current-password" placeholder="Confirm Password" required>
+                                autocomplete="current-password" placeholder="تأكيد كلمة المرور الجديدة" required>
                             <a v-on:click="togglePassword3Visibility">
                                 <i
                                     :class="isPassword3Visible ? 'far fa-eye-slash togglePassword' : 'far fa-eye togglePassword'"></i>
@@ -189,7 +189,7 @@ export default {
                     <div class="row justify-content-start">
                         <div class=" col-12 col-md-4 col-lg-3">
 
-                            <input type="submit" v-on:click="ChangePasswordFunc()" class=" form-control party-btn  w-100 my-4 py-3" value="Update Data">
+                            <input type="submit" v-on:click="ChangePasswordFunc()" class=" form-control party-btn  w-100 my-4 py-3" value="تحديث كلمة المرور">
 
                         </div>
                     </div>

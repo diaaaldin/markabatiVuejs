@@ -53,23 +53,22 @@ export default {
 <template>
     <pageNav></pageNav>
 
-    <div class="header-title bg text-center ">
-        <div class="breadcrumb-outer campany">
-            <div class="container">
-                <div class="breadcrumb-content text-center">
-                    <h1 class="mb-0 white">البائعين</h1>
-                </div>
+    <div class="sellers">
+        <div class="header-title bg text-center ">
+                <div class="container">
+                    <div class="text-center">
+                        <h1>الـبـائـعـيـن</h1>
+                    </div>
 
-                <div class="d-flex justify-content-between mt-5 search_input">
-                    <div class="input-group">
-                        <input  type="text"
-                            placeholder="ابحث عن بائع..." class="form-control search_input-tab  p-3 search">
-                        <button class="input-group-text search_icon-tab"><i class="fas fa-search"></i></button>
+                    <div class="d-flex justify-content-between mt-5 search_input">
+                        <div class="input-group">
+                            <input  type="text"
+                                placeholder="ابحث عن بائع..." class="form-control search_input-tab  p-3 search">
+                            <button class="input-group-text search_icon-tab"><i class="fas fa-search"></i></button>
+                        </div>
                     </div>
                 </div>
-            </div>
         </div>
-    </div>
 
         <section class=" mt-5">
         <div class="container">
@@ -107,6 +106,8 @@ export default {
         </div>
     </section>
 
+    </div>
+    
 
     <pageFooter></pageFooter>
 </template>

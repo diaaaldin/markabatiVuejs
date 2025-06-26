@@ -57,12 +57,7 @@ export default {
         // this.setData(this.getProfileData);
     },
     mounted() {
-        // Initialize intl-tel-input on the input element
-        this.iti = window.intlTelInput(this.$refs.phoneInput, {
-            initialCountry: "us",
-            strictMode: true,
-            utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"
-        });
+     
     },
     beforeUnmount() {
         // Properly destroy the instance when the component is unmounted
@@ -78,7 +73,7 @@ export default {
         userImage() {
             const imageUrl = this.getProfileData && this.getProfileData.image
                 ? this.getProfileData.image
-                : "/img/person1.jpg";
+                : "/img/profile-icon.png";
             return imageUrl;
         }
     },
@@ -409,6 +404,18 @@ export default {
         <div class="container white_card px-4 pt-4 pb-0 mt-3 mt-lg-0 right-side">
             <form method="" action="" class="mt-2">
                 <div class="row ">
+                        <div class="ads">
+                            <div class="add">
+                                <a class="option">اضافة مركبة 
+                                    <svg viewBox="0 0 24 24" width="20" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path opacity="0.4" d="M16.19 2H7.81C4.17 2 2 4.17 2 7.81V16.18C2 19.83 4.17 22 7.81 22H16.18C19.82 22 21.99 19.83 21.99 16.19V7.81C22 4.17 19.83 2 16.19 2Z" fill="#292D32"></path> <path d="M16 11.25H12.75V8C12.75 7.59 12.41 7.25 12 7.25C11.59 7.25 11.25 7.59 11.25 8V11.25H8C7.59 11.25 7.25 11.59 7.25 12C7.25 12.41 7.59 12.75 8 12.75H11.25V16C11.25 16.41 11.59 16.75 12 16.75C12.41 16.75 12.75 16.41 12.75 16V12.75H16C16.41 12.75 16.75 12.41 16.75 12C16.75 11.59 16.41 11.25 16 11.25Z" fill="#292D32"></path> </g></svg>
+                                </a>
+                                <a class="option">اضافة اعلان
+                                    <svg viewBox="0 0 24 24" width="20" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path opacity="0.4" d="M16.19 2H7.81C4.17 2 2 4.17 2 7.81V16.18C2 19.83 4.17 22 7.81 22H16.18C19.82 22 21.99 19.83 21.99 16.19V7.81C22 4.17 19.83 2 16.19 2Z" fill="#292D32"></path> <path d="M16 11.25H12.75V8C12.75 7.59 12.41 7.25 12 7.25C11.59 7.25 11.25 7.59 11.25 8V11.25H8C7.59 11.25 7.25 11.59 7.25 12C7.25 12.41 7.59 12.75 8 12.75H11.25V16C11.25 16.41 11.59 16.75 12 16.75C12.41 16.75 12.75 16.41 12.75 16V12.75H16C16.41 12.75 16.75 12.41 16.75 12C16.75 11.59 16.41 11.25 16 11.25Z" fill="#292D32"></path> </g></svg>
+
+                                </a>
+                            </div>
+                        </div>
+
                     <div class="d-flex  div-img-profile px-0 justify-content-lg-start mb-4">
                         <img data-bs-toggle="modal" data-bs-target="#cropper_modal" :src="userImage"
                             alt="profile-picture" class="img-fluid hero-profile-pic" id="output">
@@ -423,33 +430,20 @@ export default {
                             <a class="upload_profile_input" data-bs-toggle="modal" data-bs-target="#cropper_modal">
                             </a>
                         </div>
-
-                        <div class="point">
-                            <svg width="7" height="7" viewBox="0 0 7 7" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="3.5" cy="3.5" r="3.5" fill="#e5008f"></circle>
-                            </svg>
-                            <!-- <p>Point : <span>{{ this.getProfileData.points }}</span></p> -->
-                            <div class="clearfix"></div>
-                        </div>
-
                     </div>
-                    <div class="col-lg-12">
-                        <label class="label-form"> Name </label>
+                    <div class="col-lg-6">
+                        <label class="label-form"> الاسم </label>
                         <input v-model="data.name" name="name" type="text"
-                            class="form-control mt-2 mb-4 py-3 text-start list_link  gray-inp" placeholder="Full Name">
+                            class="form-control mt-2 mb-4 py-3 text-start list_link  gray-inp" placeholder="الاسم كامل">
+                    </div>
+                    
+                    <div class="col-lg-6">
+                        <label class="label-form"> البريد الالكتروني </label>
+                        <input v-model="data.email" name="email" type="email"
+                            class="form-control mt-2 mb-4  py-3 text-start list_link gray-inp" placeholder="example@email.com">
                     </div>
                     <div class="col-lg-6">
-                        <label class="label-form">Nickname</label>
-                        <input v-model="data.nickName" name="nickname" id="mobile" type="tel"
-                            class="form-control mt-2 mb-4  py-3 text-start list_link gray-inp" value="Nickname">
-                    </div>
-                    <div class="col-lg-6">
-                        <label class="label-form"> Email </label>
-                        <input disabled v-model="data.email" name="email" type="email"
-                            class="form-control mt-2 mb-4  py-3 text-start list_link gray-inp" placeholder="Email">
-                    </div>
-                    <div class="col-lg-6">
-                        <label class="label-form"> Mobile </label>
+                        <label class="label-form"> رقم الجوال </label>
                         <input v-model="data.mobile" name="mobile" id="phone" type="tel" ref="phoneInput"
                                         class="form-control mt-2 mb-4  py-3 text-start list_link gray-inp" maxlength="10"
                                         placeholder="(201) 555-0123" aria-label="" aria-describedby="basic-addon1"
@@ -457,39 +451,53 @@ export default {
 
                         </div>
                     <div class="col-lg-6">
-                        <label class="label-form"> Zip Code </label>
-                        <input v-model="data.zipCode" name="zipCode" type="text"
-                            class="form-control mt-2 mb-4  py-3 text-start list_link gray-inp" placeholder="Zip Code"
+                        <label class="label-form"> عنوان السكن  </label>
+                        <input v-model="data.addres" name="addres" type="text"
+                            class="form-control mt-2 mb-4  py-3 text-start list_link gray-inp" placeholder="عنوان السكن"
                             required="">
                     </div>
 
                     <div class="col-lg-6">
-                        <label class="label-form"> State </label>
+                        <label class="label-form"> المحافظة </label>
                         <select v-model="data.stateId"
                             class="form-control mt-2 mb-4  py-3 text-start list_link gray-inp"
                             @change="fetchCities(data.stateId)">
-                            <option value="" key="" selected>-- select a state --</option>
+                            <option value="" key="" selected>-- اختر المحافظة --</option>
                             <option v-for="item in states" :key="parseInt(item[1])" :value="item[1]">
                                 {{ item[0] }}
                             </option>
                         </select>
                     </div>
                     <div class="col-lg-6">
-                        <label class="label-form"> City </label>
+                        <label class="label-form"> المدينة </label>
                         <select v-model="data.cityId" class="form-control mt-2 mb-4  py-3 text-start list_link gray-inp"
                             :disabled="cities.length === 0">
-                            <option value="" key="" selected>-- select a city --</option>
+                            <option value="" key="" selected>-- اختر المدينة --</option>
                             <option v-for="item in cities" :key="parseInt(item[2])" :value="item[2]">
                                 {{ item[0] }}
                             </option>
                         </select>
+                    </div>
+                    <div class="col-lg-6">
+                        <label class="label-form">  رخصة الشركة </label>
+                        <input  name="" id="phone"
+                                        class="form-control mt-2 mb-4  py-3 text-start list_link gray-inp" maxlength="10"
+                                        placeholder="(201) 555-0123" aria-label="" aria-describedby="basic-addon1"
+                                        required>
+
+                        </div>
+                    <div class="col-lg-6">
+                        <label class="label-form">  معلومات أخرى  </label>
+                        <input v-model="data.addres" name="addres" type="text"
+                            class="form-control mt-2 mb-4  py-3 text-start list_link gray-inp" placeholder="أدخل معلومات أخرى"
+                            required="">
                     </div>
                     <hr>
                     <div class="row justify-content-start">
                         <div class=" col-12 col-md-4 col-lg-3">
 
                             <input v-on:click="UpdateFunc()" type="button"
-                                class=" form-control party-btn  w-100 my-4 py-3" value="Update Data">
+                                class=" form-control party-btn  w-100 my-4 py-3" value="تحديث البيانات">
 
                         </div>
                     </div>
@@ -508,7 +516,7 @@ export default {
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Update image</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">تحديث الصورة</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">

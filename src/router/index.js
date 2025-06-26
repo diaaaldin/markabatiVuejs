@@ -12,6 +12,7 @@ import profile_announcement_orders from '@/Views/Profile/Orders/announcementOrde
 import profile_star_orders from '@/Views/Profile/Orders/starOrders.vue'
 import profile_change_password from '@/Views/Profile/changePassword.vue'
 import profile_favorit from '@/Views/Profile/favorit.vue'
+import profile_Payment from '@/Views/Profile/PaymentOperations.vue'
 
 //announcement
 import add_announcement from '@/Views/Announcement/addAnnouncement.vue'
@@ -28,6 +29,7 @@ import seller from '@/Views/seller.vue'
 import sellers from '@/Views/sellers.vue'
 import vehicle from '@/Views/vehicle.vue'
 import vehicles from '@/Views/vehicles.vue'
+import gallary from '@/Views/gallary.vue'
 
 import teckitsuccess from '@/Views/Checkout/PaymentSuccess.vue'
 import teckitfail from '@/Views/Checkout/PaymentFail.vue'
@@ -74,6 +76,11 @@ const routes = [
         path: '/vehicle/:slug',
         name: "vehicle",
         component: vehicle
+    },
+    {
+        path: '/gallary',
+        name: "gallary",
+        component: gallary
     },
 
     {
@@ -143,6 +150,12 @@ const routes = [
                 name: "profile_favorit",
                 component: profile_favorit
             },
+            {
+                path: '/PaymentOperations',
+                name: "profile_Payment",
+                component: profile_Payment
+            },
+           
         ]
     },
 

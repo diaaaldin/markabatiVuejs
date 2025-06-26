@@ -1,10 +1,13 @@
 <script>
 import { useHead } from '@vueuse/head'
 import { mapState, mapGetters, mapActions } from "vuex";
+
 import profileHeader from '@/components/Profile/profileHeader.vue';
 import profileSideMenu from '@/components/Profile/profileSideMenu.vue';
 import profileNav from '@/components/darkNavbar.vue';
 import pageFooter from '@/components/footer.vue';
+
+import pageNav from '@/components/lightNavbar.vue';
 
 export default {
 
@@ -14,23 +17,23 @@ export default {
         }
     },
     mounted() {
-        useHead({
-                // Can be static or computed
-                title: 'Profile | YallaParty',
-                meta: [
-                    {
+          useHead({
+            title: 'Profile | Markabati',
+            meta: [
+                {
                     name: `description`,
-                    content: 'Yalla Party is your go-to platform for booking events of any size, from weddings and engagements to birthdays and graduation parties.',
-                    },
-                    ],
-                
-                });
+                    content: 'Markabati is your go-to platform for booking events of any size, from weddings and engagements to birthdays and graduation parties.',
+                },
+            ],
+        });
+
     },
     components: {
         profileHeader,
         profileNav,
         profileSideMenu,
-        pageFooter
+        pageFooter,
+        pageNav
     },
 
     emits: {
@@ -52,8 +55,21 @@ export default {
 };
 </script>
 <template>
-    <profileNav></profileNav>
-    <profileHeader></profileHeader>
+    <pageNav></pageNav>
+    <div class="bread">
+        <nav>
+            <div class="container">
+                <ol class="breadcrumb">
+                     <li class="breadcrumb-item">
+                            <router-link to="/" :class="{ active: $route.path === '/' }">  {{ $t('location_menu_main') }} </router-link>
+                    </li>
+                    
+                    <li class="breadcrumb-item active" aria-current="page">الصفحة الشخصية</li>
+                </ol>
+                
+            </div>
+        </nav>
+    </div>
 
     <section class="profile mt-5">
         <div class="container">
