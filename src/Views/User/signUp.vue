@@ -321,91 +321,85 @@ export default {
                             </router-link>
                         </div>
                         <div class="text-center">
-                            <h2 class="title_log">Sign Up</h2>
+                            <h2 class="title_log">انشاء حساب</h2>
                             <div>
-                                <p class="gray_text"> Welcome to the Yalla Party </p>
+								<p class="gray_text">مرحبا بك في متجر مركبتي</p>
                             </div>
                         </div>
                         <div class="tab-content" id="myTabContent">
                             <div class="tab-pane fade show active" id="">
                                 <form class="mt-4" >
-                                    <label class="text">Name</label>
+                                    <label class="text">الاسم</label>
                                     <br>
                                     <input v-model="data.name" ref="name" name="name" type="text"
-                                        class="form-control my-3 py-3 text-start gray_text gray-inp " placeholder="Name"
+                                        class="form-control my-3 py-3 text-start gray_text gray-inp " placeholder="الاسم"
                                         required>
-                                    <label class="text">Nickname</label>
-                                    <br>
-                                    <input v-model="data.nickName" ref="nickName" name="nickname" type="text"
-                                        class="form-control my-3 py-3 text-start gray_text gray-inp "
-                                        placeholder="Nickname" required>
-
-                                    <label class="text">Email</label>
+                                    <label class="text">البريد الالكتروني</label>
                                     <br>
                                     <input v-model="data.email" ref="email" name="email" type="email" @input="validateEmail"
                                         class="form-control my-3 py-3 text-start gray_text gray-inp "
-                                        placeholder="email" required>
+                                        placeholder="البريد الالكتروني" required>
                                         <p v-if="emailError" style="color: red">{{ emailError }}</p>
 
 
-                                    <label class="text">Mobile</label>
+                                    <label class="text">رقم الهاتف</label>
                                     <br>
                                     <input v-model="data.mobile" name="mobile" id="phone" type="tel" ref="phoneInput"
                                         class="form-control my-3 py-3 text-start gray_text gray-inp"
                                         placeholder="(201) 555-0123" aria-label="" aria-describedby="basic-addon1"
                                         @input="filterMobileInput" required>
-                                    <label class="text">State</label>
+                                    <label class="text">المحافظة</label>
                                     <br>
                                     <select v-model="data.stateId"
                                         class="form-control my-3 py-3 text-start gray_text gray-inp"
                                         @change="fetchCities(data.stateId)">
-                                        <option value="" key="" selected>-- select a state --</option>
+                                        <option value="" key="" selected>-- اختر المحافظة --</option>
                                         <option v-for="item in states" :key="parseInt(item[1])" :value="item[1]">
                                             {{ item[0] }}
                                         </option>
                                     </select>
 
-                                    <label class="text">City</label>
+                                    <label class="text">المدينة</label>
                                     <br>
                                     <select v-model="data.cityId"
                                         class="form-control  my-3 py-3 text-start gray_text gray-inp"
                                         :disabled="cities.length === 0">
-                                        <option value="" key="" selected>-- select a city --</option>
+                                        <option value="" key="" selected>-- اختر المدينة --</option>
                                         <option v-for="item in cities" :key="parseInt(item[2])" :value="item[2]">
                                             {{ item[0] }}
                                         </option>
                                     </select>
 
 
-                                    <label class="text">Zip Code</label>
+                                    <label class="text">كود التفعيل</label>
                                     <br>
                                     <input v-model="data.zipCode" ref="zipCode" name="zipCode" type="text"
                                         class="form-control my-3 py-3 text-start gray_text gray-inp "
-                                        placeholder="Zip Code" @input="filterzipCdoeInput"required>
+                                        placeholder="4534" @input="filterzipCdoeInput"required>
                                     <!-- <label class="text">Company Address</label>
                                     <br>
                                     <input name="companyAddress" type="text"
                                         class="form-control my-3 py-3 text-start gray_text gray-inp "
                                         placeholder="Company Address" required> -->
                                     <div class="password-container">
-                                        <label class="text">Password</label>
+                                        <label class="text">كلمة المرور</label>
                                         <br>
                                         <input v-model="data.password" ref="password" type="password"
                                             class="form-control my-3 py-3 gray_text gray-inp id_password"
-                                            autocomplete="current-password" placeholder="password" required>
+                                            autocomplete="current-password" placeholder="كلمة المرور" required>
                                         <i class="far fa-eye togglePassword"></i>
                                     </div>
                                     <div class="password-container">
-                                        <label class="text">Confirm Password</label>
+                                        <label class="text">تأكيد كلمة المرور</label>
                                         <br>
                                         <input v-model="data.confirmPassword" ref="confirmPassword" type="Password"
                                             class="form-control my-3 py-3 gray_text gray-inp id_password"
-                                            autocomplete="current-password" placeholder="Confirm Password" required>
+                                            autocomplete="current-password" placeholder="تأكيد كلمة المرور" required>
                                         <i class="far fa-eye togglePassword"></i>
                                     </div>
 
                                     <button type="button" v-on:click="getSignUpfunc" class=" btn_submit_1 form-control mt-4 mb-3 py-3"
-                                        value="SignUp">Sign Up</button>
+                                        value="SignUp">انشاء حساب</button>
                                 </form>
                             </div>
                         </div>

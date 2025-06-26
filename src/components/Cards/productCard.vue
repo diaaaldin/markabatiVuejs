@@ -261,17 +261,15 @@ export default {
                                         </ul>
 
                                     </div>
-                                    <div class=" d-flex align-items-center ">
-                                        <a href="#" class="btn btn-light p-3 contact-with-seller w-100"> تواصل مع
-                                            البائع</a>
-                                    </div>
-
+                                  
                                 </div>
 
                             </div>
 
                         </div>
                     </div>
+                    <a href="#" class="btn btn-light p-3 contact-with-seller w-100"> تواصل مع
+                                            البائع</a>
                 </div>
             </div>
         </a>

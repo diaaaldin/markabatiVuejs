@@ -196,9 +196,9 @@ export default {
 							</router-link>
 						</div>
 						<div class="text-center">
-							<h2 class="title_log">Login</h2>
+							<h2 class="title_log">تسجيل الدخول</h2>
 							<div>
-								<p class="gray_text"> Welcome to the Yalla Party </p>
+								<p class="gray_text">مرحبا بك في متجر مركبتي</p>
 							</div>
 						</div>
 						<!--   wrap tab in mobile (need to edit in responsive) /  appear in right side in tablet //// done -->
@@ -206,20 +206,20 @@ export default {
 						<div class="tab-content" id="myTabContent">
 							<div class="tab-pane fade show active" id="user" role="tabpanel" aria-labelledby="home-tab">
 								<form class="mt-4">
-									<label class="text">Email</label>
+									<label class="text">البريد الالكتروني</label>
 									<br>
 										<input @keypress.enter="getLoginfunc()" name="email" type="email" dir="ltr"
 										v-model="user.email"
 										class="form-control my-3 py-3 text-start gray_text gray-inp "
-										placeholder="email" required >
+										placeholder="البريد الالكتروني" required >
 
 										<div class="password-container">
-											<label class="text">Password</label>
+											<label class="text">كلمة المرور</label>
 											<br />
 											<input @keypress.enter="getLoginfunc"
 											:type="isPasswordVisible ? 'text' : 'password'"
 											v-model="user.password" class="form-control my-3 py-3 gray_text gray-inp"
-											autocomplete="current-password" placeholder="password"
+											autocomplete="current-password" placeholder="كلمة المرور"
 											required @input="console.log('Current input type:', $event.target.type)" />
 											<span  @click="togglePasswordVisibility" style="cursor: pointer;">
 												<!-- <i  class="far fa-eye-slash"></i> -->
@@ -231,15 +231,15 @@ export default {
 
 									<div class="d-flex justify-content-end">
 										<a v-on:click="clearNewPasswordFunc()" data-bs-toggle="modal" data-bs-target="#forgot_password"
-											class="text text-login forgot-password">forgot your password?</a>
+											class="text text-login forgot-password">هل نسيت كلمة المرور؟</a>
 									</div>
 
 									<button type="button" v-on:click="getLoginfunc()" class="btn_submit_1 form-control mt-3 py-3" value="Login">
-										Login
+										تسجيل الدخول
 									</button>
 								</form>
 
-								<router-link to="/signUp" class="text text-login">Create Account</router-link>
+								<router-link to="/signUp" class="text text-login">إنشاء حساب</router-link>
 
 							</div>
 
@@ -250,7 +250,7 @@ export default {
 
 
 			<div class="col-12 col-lg-7  pe-lg-0 image">
-				<!-- <img src="assets/img/bg-login.jpg" class="img-fluid" alt=""> -->
+				<!-- <img src="/img/slider/bgcar.jpg" alt=""> -->
 			</div>
 
 		</div>
@@ -260,22 +260,22 @@ export default {
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabel">forgot your password? </h5>
+					<h5 class="modal-title" id="exampleModalLabel">هل نسيت كلمة المرور ؟ </h5>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
 					<form action="" method="">
-						<label class=" label-form"> Send to email </label>
+						<label class=" label-form"> أرسل البريد الالكتروني </label>
 						<div class="input-group mb-3">
-							<input type="email" class="form-control" placeholder="Email" aria-label="Email"
+							<input type="email" class="form-control" placeholder="Example@email.com" aria-label="Email"
 								aria-describedby="basic-addon1" v-model="newPasswordData.email">
 						</div>
 					</form>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-primary" v-on:click="getNewPasswordFunc()">Send
-						Password</button>
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">الغاء</button>
+					<button type="button" class="btn btn-primary" v-on:click="getNewPasswordFunc()">
+						أرسل البريد الالكتروني</button>
 				</div>
 			</div>
 		</div>
