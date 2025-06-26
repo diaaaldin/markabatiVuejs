@@ -37,7 +37,7 @@ export default {
         // ...mapGetters("Services", ["getStatisticsData"]),
         GetUserName() {
             const name = this.getUserLoginName;// just for loud this function again when name change
-            let userName = localStorage.getItem("customerName");
+            let userName = localStorage.getItem("userName");
             if (userName == null) {
                 return "";
             } else {
@@ -49,12 +49,12 @@ export default {
         ...mapActions("Users", ["CustomerProfileInfo"]),
         goToProfileFunc() {
             if (!this.isTokenValid()) {
-                this.$router.push({ name: 'profile' });
+                this.$router.push({ name: 'login' });
             } else {
                 let email = localStorage.getItem("email");
-                this.CustomerProfileInfo(email).then(Response => {
-                    this.$router.push({ name: 'profileProfile' });
-                })
+                // this.CustomerProfileInfo(email).then(Response => {
+                    this.$router.push({ name: 'profile' });
+                // })
             }
         },
 
@@ -116,23 +116,17 @@ export default {
                         </li>
                     </ul>
 
-                    <!-- <ul v-if="GetUserName == ''"
+                       <ul v-if="GetUserName == ''"
                         class="nav align-items-center mb-2 mb-lg-0 white-header justify-content-center gradiant_nav">
                         <li class="nav-item login">
-
-                            <router-link to="/login" class="px-3 py-2 align-items-center d-flex login-btn"> تسجيل دخول
-                            </router-link>
-
+                            <router-link to="/login" class="px-3 py-2 align-items-center d-flex login-btn"> {{ $t('navbar_login') }} </router-link>
                         </li>
                         <li class="nav-item sign-up">
-
-                            <router-link to="/signUp" class="px-3 py-2 align-items-center d-flex login-btn"> مستخدم جديد
-                            </router-link>
-
+                            <router-link to="/signUp" class="px-3 py-2 align-items-center d-flex login-btn">{{ $t('navbar_signup') }}</router-link>
                         </li>
-                    </ul> -->
+                    </ul>
 
-                    <ul
+                    <ul v-else
                             class="nav align-items-center mb-2 mb-lg-0 white-header justify-content-center gradiant_nav">
                             <li class="nav-item dropdown ms-2">
                                 <a href="" class="dropdown-toggle px-3 py-2 align-items-center d-flex login-btn"
@@ -140,7 +134,7 @@ export default {
                                     <div class="img">
                                         <img src="/img/profile-icon.png" class="" alt="...">
                                     </div>
-                                    {{ GetUserName }}
+                                    <!-- {{ GetUserName }} -->
                                 </a>
                                 <ul class="dropdown-menu user-ul" aria-labelledby="navbarDropdown">
                                     <li class="profile">

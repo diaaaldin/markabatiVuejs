@@ -12,7 +12,7 @@ export default {
 	mounted() {
         useHead({
                 // Can be static or computed
-                title: 'Login | YallaParty',
+                title: 'Login | Markabati',
                 meta: [
                      {
                      name: `description`,
@@ -55,43 +55,44 @@ export default {
 	},
 
 	methods: {
-		...mapActions("Users", ["GetLogin" , "GetNewPassword"]),
+		...mapActions("Users", ["UserLogin" , "GetNewPassword"]),
 		
 		getLoginfunc() {
-			this.$router.push({ name: 'profile_profile' });
+			// this.$router.push({ name: 'profile_profile' });
+			if (this.checkValidation()) {
+				const loading = ElLoading.service({
+					lock: true,
+					background: 'rgba(0, 0, 0, 0.7)',
+					text: "",
+				});
 
-			// if (this.checkValidation()) {
-			// 	const loading = ElLoading.service({
-			// 		lock: true,
-			// 		background: 'rgba(0, 0, 0, 0.7)',
-			// 		text: "",
-			// 	});
+				this.UserLogin(this.user).then(Response => {
+					
 
-			// 	this.GetLogin(this.user).then(Response => {
-			// 		this.$moshaToast('Login Success', {
-			// 			hideProgressBar: 'false',
-			// 			showIcon: 'true',
-			// 			swipeClose: 'true',
-			// 			type: 'success',
-			// 			timeout: 3000,
-			// 		});
-			// 		loading.close();
-			// 		if (Response.typeName == "Customer") {
-			// 			this.$router.push({ name: 'main' });
-			// 		}
-			// 	}).catch(error => {
-			// 		this.$moshaToast(error.response.data.message, {
-			// 			hideProgressBar: 'false',
-			// 			position: 'top-center',
-			// 			showIcon: 'true',
-			// 			swipeClose: 'true',
-			// 			type: 'warning',
-			// 			timeout: 3000,
-			// 		});
-			// 		loading.close();
-			// 	});
-			// }
-
+					this.$moshaToast('Login Success', {
+						hideProgressBar: 'false',
+						showIcon: 'true',
+						swipeClose: 'true',
+						type: 'success',
+						timeout: 3000,
+					});
+					loading.close();
+					// if (Response.typeName == "Customer") {
+					// 	this.$router.push({ name: 'main' });
+					// }
+					this.$router.push({ name: 'profile' });
+				}).catch(error => {
+					this.$moshaToast(error.response.data.message, {
+						hideProgressBar: 'false',
+						position: 'top-center',
+						showIcon: 'true',
+						swipeClose: 'true',
+						type: 'warning',
+						timeout: 3000,
+					});
+					loading.close();
+				});
+			}
 		},
 
 		checkValidation() {

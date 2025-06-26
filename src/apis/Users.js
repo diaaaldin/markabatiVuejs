@@ -115,6 +115,7 @@ export default {
     UserLogin(data) {
         return Api.post(`${END_POINT}/UserLogin`, data);
     },
+    
     AdminLogin(data) {
         return Api.post(`${END_POINT}/AdminLogin`, data);
     },

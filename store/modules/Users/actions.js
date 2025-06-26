@@ -47,13 +47,15 @@ export const AdminProfileInfo = ({ commit, dispatch }, userId) => {
 export const UserLogin = ({ commit, dispatch }, data) => {
     return User.UserLogin(data).then(function (response) {
         if (response.data.data.id > 0) {
-            commit('USER_LOGINNAME', response.data.data.fullName);
+        //    console.log("response : " , response);
+            commit('USER_LOGINNAME', response.data.data.name);
             localStorage.setItem("token", JSON.stringify(response.data.data.token));
             response.data.data.token = "";
-            localStorage.setItem('userName', JSON.parse(JSON.stringify(response.data.data.fullName)));
+            localStorage.setItem('userName', JSON.parse(JSON.stringify(response.data.data.name)));
             localStorage.setItem('id', JSON.parse(JSON.stringify(response.data.data.id)));
             // localStorage.setItem('addressState',  JSON.parse(JSON.stringify(response.data.data.addressState)));
         }
+        
         return response.data.data;
     }).catch(function (error) {
         throw error;
