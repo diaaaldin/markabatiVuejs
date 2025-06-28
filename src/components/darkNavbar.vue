@@ -84,12 +84,11 @@ export default {
             <div class="container">
 
                 <div class="navbar-brand">
-
                     <router-link to="/">
                         <img src="/img/logo.png" width="100" alt="" />
                     </router-link>
-
-                </div> 
+                </div>
+                
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
@@ -132,8 +131,12 @@ export default {
                     <ul v-else
                             class="nav align-items-center mb-2 mb-lg-0 white-header justify-content-center gradiant_nav">
                             <li class="nav-item dropdown ms-2">
-                                <a href="" class="dropdown-toggle px-3 py-2 align-items-center d-flex login-btn"
+                                <a href="" class="dropdown-toggle px-3 py-2 align-items-center d-flex"
                                     id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
+                                    class="" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z" />
+                                </svg>
                                     <div class="img">
                                         <img src="/img/profile-icon.png" class="" alt="...">
                                     </div>
@@ -160,5 +163,16 @@ export default {
     </div>
 </template>
 <style scoped>
-
+.dropdown-toggle svg {
+    margin-left: 8px;
+}
+.dropdown-toggle svg path{
+    fill: white !important;;
+}
+.dropdown-toggle:hover svg path, .dropdown-toggle:focus svg path{
+    fill: var(--main-color) !important;
+}
+.dropdown-toggle::after {
+    display: none;
+}
 </style>

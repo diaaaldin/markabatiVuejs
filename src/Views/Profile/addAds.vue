@@ -660,7 +660,6 @@ function debounce(func, wait) {
 					</div>
 		
 
-	
 				<div class="box-addition  px-3 mb-3 ">
 					<div id="additionGroup" class="form-group">
 						<label for="title" class="page-title"> اضافات جديدة </label>
