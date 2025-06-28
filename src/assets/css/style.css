@@ -3559,6 +3559,71 @@ footer .copy-write {
 }
 /*************** end footer style   ******************************/
 
+
+/******************Start Cropper ******************/
+#cropButton {
+  color: white !important;;
+  border-radius: 30px !important;;
+     padding: 8px 30px !important;;
+	 background-color: var(--main-color) !important;;
+   transition: var(--main-transition);
+}
+
+#cropButton:hover {
+  background-color: black !important;
+}
+.header {
+  background-color: #EEE !important;}
+
+  .custom-file-upload-c {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  color: #26d829;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  border: 1px solid #EEE;
+
+  transition: var(--main-transition);
+}
+
+.custom-file-upload-c:hover {
+  border-color: #0bc00e;
+}
+.uploudedImageContaner h2 {
+  font-weight: 400;
+  margin-top: 40px;
+}
+#cropper_modal .close{
+background-color: #fff;
+  border: navajowhite;
+  width: 29px;
+  height: 29px;
+  border-radius: 50%;
+ 
+}
+#fileInput-c {
+  display: none;
+}
+
+.custom-file-upload-c svg {
+  width: 16px;
+  height: 16px;
+  fill: var(--main-color) !important;
+}
+.add-img-c{
+  background-color: #ddf9dd;
+  cursor: pointer;
+}
+#show_360 img{
+  width: 100%;
+  border-radius: 20px;
+}
+/******************End Cropper ******************/
+
 /*******************************start style provider ********************/
 .provider-title {
   color: var(--second-color);

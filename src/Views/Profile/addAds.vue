@@ -698,7 +698,7 @@ function debounce(func, wait) {
 						<label class="w-100 h-100">
 							<div class="icon"></div>
 							<h5 class="page-title">أضف الصورة الرئيسية للمركبة</h5>
-							<img src="/images/plus-icon.svg" alt="" class="d-block mx-auto rounded-circle p-2" />
+							<img src="/images/green-add-button.png" alt="" class="d-block mx-auto rounded-circle p-2 add-img-c" />
 							<p class="mb-0 text-center">صورة المركبة.</p>
 						</label>
 					</div>
@@ -734,7 +734,7 @@ function debounce(func, wait) {
 			
 
 		<div class="mb-5">
-			<button v-on:click="createFunc()" class="add full">إضافة اعلان جديد</button>
+			<button  class="add full" data-bs-toggle="modal" data-bs-target="#confirm">إضافة اعلان جديد</button>
 		</div>
 
 
@@ -766,9 +766,32 @@ function debounce(func, wait) {
 		</div>
 	</div>
 
-
+<div class="modal fade" id="confirm" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel"> تأكيد العملية </h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<p>هل أنت متأكد من اضافة الاعلان وصحة محتواه!</p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary">
+						 تأكيد
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
 </template>
 <style scoped>
+.modal-footer .btn-primary {
+     border-radius: 30px;
+     padding: 8px 30px;
+    margin: 0 auto;
+}
+
 .imageCropper {
 	background-color: #f1f0ef;
 	/* White background for the box */

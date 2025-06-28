@@ -61,7 +61,7 @@ export default {
       imageSrc: null,
       imageres: null,
       cropper: null,
-      imageCropper:null,
+      imageCropper: null,
       ImageCropperBase64: '',
 
 
@@ -98,9 +98,9 @@ export default {
   },
 
   components: {
-   // FilePond,
+    // FilePond,
   },
-  emits: ['IsShow', 'b64image' , 'copperImage'],
+  emits: ['IsShow', 'b64image', 'copperImage'],
 
   methods: {
     ...mapActions("Users", ["UserProfileInfo", "UpdateImageProfile"]),
@@ -108,12 +108,12 @@ export default {
     closeModal(image) {
       this.$emit('b64image', image);
       this.$emit('IsShow', false);
-      this.$emit('copperImage' , this.imageCropper);
+      this.$emit('copperImage', this.imageCropper);
     },
 
 
     fileChanged(e) {
-      console.log("image befor cropper : " , e);
+      console.log("image befor cropper : ", e);
       const files = e.target.files || e.dataTransfer.files;
       if (files.length) {
         this.selectedFile = files[0];
@@ -177,7 +177,7 @@ export default {
       cropBoxResizable: true,
 
     }
-  );
+    );
   },
 
   beforeDestroy() {
@@ -197,19 +197,37 @@ export default {
 </script>
 
 <template>
-<!-- <FilePond ref="pond" 
+  <!-- <FilePond ref="pond" 
 			label-idle="Drop file here..."
 		  accepted-file-types="image/jpeg, image/png"
 			:imageEditor="myEditor" 
 /> -->
   <div class="header">
-    <input type="file" v-on:change="fileChanged" ref="imageInput" accept="image/*">
+    <label for="fileInput-c" class="custom-file-upload-c">
+      <!-- SVG Icon -->
+      <svg viewBox="0 0 24 24" width="20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+        <g id="SVGRepo_iconCarrier">
+          <path opacity="0.4"
+            d="M16.19 2H7.81C4.17 2 2 4.17 2 7.81V16.18C2 19.83 4.17 22 7.81 22H16.18C19.82 22 21.99 19.83 21.99 16.19V7.81C22 4.17 19.83 2 16.19 2Z"
+            fill="#24d627"></path>
+          <path
+            d="M16 11.25H12.75V8C12.75 7.59 12.41 7.25 12 7.25C11.59 7.25 11.25 7.59 11.25 8V11.25H8C7.59 11.25 7.25 11.59 7.25 12C7.25 12.41 7.59 12.75 8 12.75H11.25V16C11.25 16.41 11.59 16.75 12 16.75C12.41 16.75 12.75 16.41 12.75 16V12.75H16C16.41 12.75 16.75 12.41 16.75 12C16.75 11.59 16.41 11.25 16 11.25Z"
+            fill="#24d627"></path>
+        </g>
+      </svg>
+      تحميل الصور
+    </label>
+
+    <input type="file" v-on:change="fileChanged" id="fileInput-c" ref="imageInput" accept="image/*">
+
   </div>
 
   <div id="container">
     <div class="uploudedImageContaner">
       <h2>{{ $t('cropper_title') }}</h2>
-      <img id="uploadedImage" ref="img" :src="imageSrc" alt="Uploaded Image">
+      <img id="uploadedImage" ref="img" :src="imageSrc" >
     </div>
   </div>
 
@@ -219,14 +237,8 @@ export default {
 
 </template>
 <style scoped>
- /* General Styles */
-body {
-  font-family: Arial, sans-serif;
-  background-color: #f0f0f0;
-  color: #333;
-  margin: 0;
-  padding: 0;
-}
+/* General Styles */
+
 
 /* Header */
 .header {
@@ -251,6 +263,7 @@ body {
   border-radius: 5px;
   border: 1px solid #ddd;
 }
+
 /* Container */
 #container {
   display: flex;
@@ -289,7 +302,8 @@ body {
   max-width: 600px;
 }
 
-#cropButton, #cancelButton {
+#cropButton,
+#cancelButton {
   padding: 12px 20px;
   border: none;
   border-radius: 5px;
@@ -300,8 +314,10 @@ body {
 }
 
 #cropButton {
-  background-color: #4CAF50;
   color: white;
+  border-radius: 30px;
+  padding: 8px 30px;
+  background-color: var(--main-color);
 }
 
 #cropButton:hover {
@@ -332,7 +348,8 @@ body {
     flex-direction: column;
   }
 
-  #cropButton, #cancelButton {
+  #cropButton,
+  #cancelButton {
     margin: 5px 0;
   }
 }
@@ -346,7 +363,8 @@ body {
     font-size: 1.2em;
   }
 
-  #cropButton, #cancelButton {
+  #cropButton,
+  #cancelButton {
     font-size: 0.9em;
     padding: 10px;
   }
