@@ -170,6 +170,9 @@ export default {
                         <a href="common.html">
                             <span class="text_footer">{{ $t('footer_sellers') }} </span>
                         </a>
+                        <a href="common.html">
+                            <span class="text_footer">ادفع للموقع</span>
+                        </a>
                     </div>
                     
                 </div>
