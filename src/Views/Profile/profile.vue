@@ -43,7 +43,7 @@ export default {
             confirmPassword: "",
             imagePath: "",
 
-            stateCities : [],
+            stateCities: [],
             showImageCropper: false,
             imageCropperSrc: null,
             base64Images: [],
@@ -83,7 +83,7 @@ export default {
     },
 
     methods: {
-        ...mapActions("Users", ["CustomerProfileInfo", "CompanyProfileInfo", "CustomerUpdate", "CompanyUpdate", "UpdateCustomerImage", "UpdateCompanyImage", "ChangePassword"]),
+        ...mapActions("Users", ["CustomerProfileInfo", "CompanyProfileInfo", "CustomerProfileUpdate", "CompanyProfileUpdate", "UpdateCustomerImage", "UpdateCompanyImage", "ChangePassword"]),
         ...mapActions("Code", ["GetStates", "GetCities"]),
 
         clearData() {
@@ -179,9 +179,10 @@ export default {
             this.data.addressCity = this.getUserData.addressCityId;
             this.data.addressInfo = this.getUserData.addressInfo;
             this.data.moreInfo = this.getUserData.moreInfo;
+
+            console.log("this.getUserData.id : ",this.getUserData.id);
+            console.log("localStorage.getItem('id') : " , localStorage.getItem('id'));
         },
-
-
 
         initFunc() {
             const loading = ElLoading.service({
@@ -192,7 +193,7 @@ export default {
             this.GetStates();
             this.GetCities();
             if (this.data.userType == UserTypeEnum.Normal) {
-                this.CustomerUpdate(this.data.id).then(Response => {
+                this.CustomerProfileInfo(this.data.id).then(Response => {
                     this.setData();
                     loading.close();
                 }).catch(error => {
@@ -249,30 +250,57 @@ export default {
 
         },
         GetData() {
-            this.AdminProfileInfo(this.data.id).then(Response => {
-                this.setData();
-            }).catch(error => {
-                if (error.response && error.response.status === 401) {
-                    this.$moshaToast(this.$t('general_user_not_allow_error_message'), {
-                        hideProgressBar: 'false',
-                        position: 'top-center',
-                        showIcon: 'true',
-                        swipeClose: 'true',
-                        type: 'warning',
-                        timeout: 3000,
-                    });
-                } else {
-                    // Handle other errors with the provided message from the response
-                    this.$moshaToast(error.response?.data?.message || 'An error occurred', {
-                        hideProgressBar: 'false',
-                        position: 'top-center',
-                        showIcon: 'true',
-                        swipeClose: 'true',
-                        type: 'warning',  // Default type is 'warning'
-                        timeout: 3000,
-                    });
-                }
-            });
+            if (this.data.userType == UserTypeEnum.Normal) {
+                this.CustomerProfileInfo(this.data.id).then(Response => {
+                    this.setData();
+                }).catch(error => {
+                    if (error.response && error.response.status === 401) {
+                        this.$moshaToast(this.$t('general_user_not_allow_error_message'), {
+                            hideProgressBar: 'false',
+                            position: 'top-center',
+                            showIcon: 'true',
+                            swipeClose: 'true',
+                            type: 'warning',
+                            timeout: 3000,
+                        });
+                    } else {
+                        // Handle other errors with the provided message from the response
+                        this.$moshaToast(error.response?.data?.message || 'An error occurred', {
+                            hideProgressBar: 'false',
+                            position: 'top-center',
+                            showIcon: 'true',
+                            swipeClose: 'true',
+                            type: 'warning',  // Default type is 'warning'
+                            timeout: 3000,
+                        });
+                    }
+                });
+            } else {
+                this.CompanyProfileInfo(this.data.id).then(Response => {
+                    this.setData();
+                }).catch(error => {
+                    if (error.response && error.response.status === 401) {
+                        this.$moshaToast(this.$t('general_user_not_allow_error_message'), {
+                            hideProgressBar: 'false',
+                            position: 'top-center',
+                            showIcon: 'true',
+                            swipeClose: 'true',
+                            type: 'warning',
+                            timeout: 3000,
+                        });
+                    } else {
+                        // Handle other errors with the provided message from the response
+                        this.$moshaToast(error.response?.data?.message || 'An error occurred', {
+                            hideProgressBar: 'false',
+                            position: 'top-center',
+                            showIcon: 'true',
+                            swipeClose: 'true',
+                            type: 'warning',  // Default type is 'warning'
+                            timeout: 3000,
+                        });
+                    }
+                });
+            }
         },
 
         UpdateFunc() {
@@ -285,7 +313,7 @@ export default {
                 });
 
                 if (this.data.userType == UserTypeEnum.Normal) {
-                    this.CustomerUpdate(this.data).then(Response => {
+                    this.CustomerProfileUpdate(this.data).then(Response => {
                         this.$moshaToast(this.$t('general_update_operation_success_message'), {
                             hideProgressBar: 'false',
                             showIcon: 'true',
@@ -319,7 +347,7 @@ export default {
                         loading.close();
                     });
                 } else {
-                    this.CompanyUpdate(this.data).then(Response => {
+                    this.CompanyProfileUpdate(this.data).then(Response => {
                         this.$moshaToast(this.$t('general_update_operation_success_message'), {
                             hideProgressBar: 'false',
                             showIcon: 'true',
@@ -583,7 +611,7 @@ export default {
                 this.stateCities = res;
             } else this.stateCities = [];
         },
-    
+
         stateNameFunc(id) {
             let res = this.getStatesData.find(x => x.id === id);
             if (res) return res.name;
@@ -606,7 +634,7 @@ export default {
                 <div class="row ">
                     <div class="ads">
                         <div class="add">
-                            <a class="option">{{ $t('profile_btn_addVehicel') }}
+                            <router-link :to="{ name: 'profile_add_vehicle' }" class="option">{{ $t('profile_btn_addVehicel') }}
                                 <svg viewBox="0 0 24 24" width="20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                                     <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
@@ -619,8 +647,8 @@ export default {
                                             fill="#292D32"></path>
                                     </g>
                                 </svg>
-                            </a>
-                            <a class="option">{{ $t('profile_btn_addAnnouncement') }}
+                            </router-link>
+                            <router-link :to="{ name: 'profile_add_ads' }" class="option">{{ $t('profile_btn_addAnnouncement') }}
                                 <svg viewBox="0 0 24 24" width="20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                                     <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
@@ -634,7 +662,7 @@ export default {
                                     </g>
                                 </svg>
 
-                            </a>
+                            </router-link>
                         </div>
                     </div>
 

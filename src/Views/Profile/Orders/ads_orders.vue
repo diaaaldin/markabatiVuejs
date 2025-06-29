@@ -39,9 +39,9 @@ export default {
 
 			toggler: false,
 
-			OrderStatus: OrderStatusEnum,
+			orderStatus: OrderStatusEnum,
 
-			testData:[],
+			testData: [],
 		}
 	},
 	mounted() {
@@ -57,7 +57,7 @@ export default {
 
 	created() {
 		// Call the function from the store directly when the component is created
-		// this.initFunc();
+		this.initFunc();
 	},
 
 	computed: {
@@ -66,7 +66,7 @@ export default {
 	},
 	methods: {
 		...mapActions("Code", ["GetOrderStatus", "GetAnnouncementTypes"]),
-		...mapActions("Orders", ["GetAnnouncementOrder","GetAnnouncementOrders", "DeleteAnnouncementOrder", "UpdateAnnouncementOrderStatus"]),
+		...mapActions("Orders", ["GetAnnouncementOrder", "GetUserAnnouncementOrders", "CreateAnnouncementOrder", "UpdateAnnouncementOrder", "DeleteAnnouncementOrder"]),
 
 		initFunc() {
 			const loading = ElLoading.service({
@@ -76,7 +76,7 @@ export default {
 			});
 			this.GetOrderStatus();
 			this.GetAnnouncementTypes();
-			this.GetAnnouncementOrders(this.dataSearch).then(Response => {
+			this.GetUserAnnouncementOrders(this.dataSearch).then(Response => {
 				loading.close();
 			}).catch(error => {
 				if (error.response && error.response.status === 401) {
@@ -103,7 +103,7 @@ export default {
 			});
 		},
 		GetData() {
-			this.GetAnnouncementOrders(this.dataSearch).then(Response => {
+			this.GetUserAnnouncementOrders(this.dataSearch).then(Response => {
 
 			}).catch(error => {
 				if (error.response && error.response.status === 401) {
@@ -133,9 +133,9 @@ export default {
 		},
 		SearchDateChange() {
 			if (this.dateFrom != null && this.dateTo != null) {
-					this.dataSearch.vm.dateFrom = this.dateFrom;
-					this.dataSearch.vm.dateTo = this.dateTo;
-					this.SearchChange();
+				this.dataSearch.vm.dateFrom = this.dateFrom;
+				this.dataSearch.vm.dateTo = this.dateTo;
+				this.SearchChange();
 			}
 		},
 		DeleteFunc() {
@@ -199,74 +199,6 @@ export default {
 			return true;
 		},
 
-		ChangeStatusFunc() {
-			if (this.checkChangeStatusValidation()) {
-				const loading = ElLoading.service({
-					lock: true,
-					background: 'rgba(0, 0, 0, 0.7)',
-					text: "",
-				});
-				this.UpdateAnnouncementOrderStatus(this.dataStatus).then(Response => {
-					this.$moshaToast('تمت عملية تعديل الحالة بنجاح', {
-						hideProgressBar: 'false',
-						showIcon: 'true',
-						swipeClose: 'true',
-						type: 'success',
-						timeout: 3000,
-					});
-					loading.close();
-					this.GetAnnouncementOrders(this.dataSearch);
-					$('#change_status_modal').modal('hide');
-				}).catch(error => {
-					if (error.response && error.response.status === 401) {
-						this.$moshaToast(this.$t('general_user_not_allow_error_message'), {
-							hideProgressBar: 'false',
-							position: 'top-center',
-							showIcon: 'true',
-							swipeClose: 'true',
-							type: 'warning',
-							timeout: 3000,
-						});
-					} else {
-						// Handle other errors with the provided message from the response
-						this.$moshaToast(error.response?.data?.message || 'An error occurred', {
-							hideProgressBar: 'false',
-							position: 'top-center',
-							showIcon: 'true',
-							swipeClose: 'true',
-							type: 'warning',  // Default type is 'warning'
-							timeout: 3000,
-						});
-					}
-					loading.close();
-				});
-			}
-		},
-		checkChangeStatusValidation() {
-			if (this.dataStatus.orderId === 0) {
-				this.$moshaToast('هنالك خطأ في تحديد المركبة', {
-					hideProgressBar: 'false',
-					position: 'top-center',
-					showIcon: 'true',
-					swipeClose: 'true',
-					type: 'warning',
-					timeout: 3000,
-				});
-				return false;
-			} else if (this.dataStatus.statusId === 0) {
-				this.$moshaToast('إختر نوع الحالة المرادة', {
-					hideProgressBar: 'false',
-					position: 'top-center',
-					showIcon: 'true',
-					swipeClose: 'true',
-					type: 'warning',
-					timeout: 3000,
-				});
-				return false;
-			}
-			return true;
-		},
-
 		selectItem(id) {
 			const foundItem = this.getOrdersData.orders.data.find(element => element.id === id);
 			if (foundItem) {
@@ -313,6 +245,7 @@ export default {
 		clearData() {
 			this.data.orderId = 0;
 		},
+		
 		OpenFullScreenFunc(id) {
 			this.selectedOrder.image = [];
 			const foundItem = this.getOrdersData.orders.data.find(element => element.id === id);
@@ -323,7 +256,7 @@ export default {
 				this.selectedOrder.image.push(foundItem.image);
 				this.toggler = !this.toggler;
 			}
-			
+
 		},
 		OpenFullScreenBillFunc(id) {
 			this.selectedOrder.image = [];
@@ -335,7 +268,7 @@ export default {
 				this.selectedOrder.image.push(foundItem.billImage);
 				this.toggler = !this.toggler;
 			}
-			
+
 		},
 		goToAddAnnouncementFunc() {
 			this.$router.push({ name: "add_announcement" });
@@ -345,134 +278,98 @@ export default {
 			const date = new Date(`${dateString}Z`);
 			return date.toISOString().split('T')[0];
 		},
-		formatCurrency(value) {
+
+		formatCurrency(value, currency) {
+			let currencyCode = "";
+
+			switch (currency) {
+				case CurrenceEnum.USD:
+					currencyCode = "ILS";
+					break;
+				case CurrenceEnum.JOD:
+					currencyCode = "JOD";
+					break;
+				default:
+					currencyCode = "ILS";
+			}
+
 			return new Intl.NumberFormat('en-US', {
 				style: 'currency',
-				currency: "ILS",
+				currency: currencyCode,
 				// Allows up to 1 decimal digit
-				maximumFractionDigits: 0
+				maximumFractionDigits: 1
 			}).format(value);
-		}
+		},
 
 	}
 };
 </script>
 <template>
 
-			<div class="col-12 col-lg-9 order">
-				<div class="container white_card px-4 pt-4 pb-0 mt-3 mt-lg-0 right-side">
-					<div class="table-responsive">
-						<table class="table text-center">
-							<thead>
-								<tr>
-									<th class="text-center" >#</th>
-									<th class="text-center" >إسم المعلن</th>
-									<th class="text-center" >الرسالة</th>
-									<th class="text-center" >رد الرسالة</th>
-									<th class="text-center" >تاريخ البداية</th>
-									<th class="text-center" >تاريخ النهاية</th>
-									<th class="text-center" >السعر الإجمالي</th>
-									<th class="text-center" >حالة الدفع</th>
-									<th class="text-center" >الفاتورة</th>
-									<th class="text-center" >صورة الإعلان</th>
-									<th class="text-center" >الحالة</th>
-									<th class="text-center" >خيارات</th>
+	<div class="col-12 col-lg-9 order">
+		<div class="container white_card px-4 pt-4 pb-0 mt-3 mt-lg-0 right-side">
+			<div class="table-responsive">
+				<table class="table text-center">
+					<thead>
+						<tr>
+							<th class="text-center">#</th>
+							<th class="text-center">إسم المعلن</th>
+							<th class="text-center">نوع الإعلان</th>
+							<th class="text-center">الرسالة</th>
+							<th class="text-center">رد الرسالة</th>
+							<th class="text-center">تاريخ البداية</th>
+							<th class="text-center">تاريخ النهاية</th>
+							<th class="text-center">السعر الإجمالي</th>
+							<!-- <th class="text-center">حالة الدفع</th> -->
+							<th class="text-center">الفاتورة</th>
+							<th class="text-center">صورة الإعلان</th>
+							<th class="text-center">الحالة</th>
+							<th class="text-center">خيارات</th>
 
-									<th></th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td  class="id">1</td>
-									<td>عبد الله المدهون</td>
-									<td>أريد طلب اعلان مميز</td>
-									<td>تمت الموافقة</td>
-									<td>22/10/2014</td>
-									<td>22/11/2014</td>
-									<td>5000</td>
-									<td><span class="availabe">مقبولة</span></td>
-									<td><img src="/img/cars/c1.png" class="img-responsive table-img" alt="product image" height="80"></td>
-									<td><img src="/img/cars/c1.png" class="img-responsive table-img" alt="product image" height="80"></td>
-									<td>قيد المعاينة</td>
-									<td>
-										<a class="option">تعديل</a>
-										<a class="option del">حذف</a>
-									</td>
-								</tr>
-								<tr>
-									<td  class="id">1</td>
-									<td>عبد الله المدهون</td>
-									<td>أريد طلب اعلان مميز</td>
-									<td>تمت الموافقة</td>
-									<td>22/10/2014</td>
-									<td>22/11/2014</td>
-									<td>5000</td>
-									<td><span class="availabe">مقبولة</span></td>
-									<td><img src="/img/cars/c1.png" class="img-responsive table-img" alt="product image" height="80"></td>
-									<td><img src="/img/cars/c1.png" class="img-responsive table-img" alt="product image" height="80"></td>
-									<td>قيد المعاينة</td>
-									<td>
-										<a class="option">تعديل</a>
-										<a class="option del">حذف</a>
-									</td>
-								</tr>
-								<tr>
-									<td  class="id">1</td>
-									<td>عبد الله المدهون</td>
-									<td>أريد طلب اعلان مميز</td>
-									<td>تمت الموافقة</td>
-									<td>22/10/2014</td>
-									<td>22/11/2014</td>
-									<td>5000</td>
-									<td><span class="availabe">مقبولة</span></td>
-									<td><img src="/img/cars/c1.png" class="img-responsive table-img" alt="product image" height="80"></td>
-									<td><img src="/img/cars/c1.png" class="img-responsive table-img" alt="product image" height="80"></td>
-									<td>قيد المعاينة</td>
-									<td>
-										<a class="option">تعديل</a>
-										<a class="option del">حذف</a>
-									</td>
-								</tr>
-								<tr>
-									<td  class="id">1</td>
-									<td>عبد الله المدهون</td>
-									<td>أريد طلب اعلان مميز</td>
-									<td>تمت الموافقة</td>
-									<td>22/10/2014</td>
-									<td>22/11/2014</td>
-									<td>5000</td>
-									<td><span class="availabe">مقبولة</span></td>
-									<td><img src="/img/cars/c1.png" class="img-responsive table-img" alt="product image" height="80"></td>
-									<td><img src="/img/cars/c1.png" class="img-responsive table-img" alt="product image" height="80"></td>
-									<td>قيد المعاينة</td>
-									<td>
-										<a class="option">تعديل</a>
-										<a class="option del">حذف</a>
-									</td>
-								</tr>
-								<tr>
-									<td  class="id">1</td>
-									<td>عبد الله المدهون</td>
-									<td>أريد طلب اعلان مميز</td>
-									<td>تمت الموافقة</td>
-									<td>22/10/2014</td>
-									<td>22/11/2014</td>
-									<td>5000</td>
-									<td><span class="availabe">مقبولة</span></td>
-									<td><img src="/img/cars/c1.png" class="img-responsive table-img" alt="product image" height="80"></td>
-									<td><img src="/img/cars/c1.png" class="img-responsive table-img" alt="product image" height="80"></td>
-									<td>قيد المعاينة</td>
-									<td>
-										<a class="option">تعديل</a>
-										<a class="option del">حذف</a>
-									</td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
-				</div>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr v-for="(item, index) in getOrdersData.orders.data">
+							<td class="id">{{ index+1 }}</td>
+							<td>{{ item.userName }}</td>
+							<td>{{ item.announcementTypeName }}</td>
+							<td>{{ item.message }}</td>
+							<td>{{ item.messageReplay }}</td>
+							<td>{{ formatDate(item.startDate) }}</td>
+							<td>{{ formatDate(item.endDate) }}</td>
+							<td>{{ formatCurrency(item.totalPrice, 0) }}</td>
+							<!-- <td class="text-center"> -->
+							<!-- مدفوع -->
+							<!-- <img v-if="item.isPayed == true" src="/images/icons_true.png" alt="show"> -->
+							<!-- غير مدفوع -->
+							<!-- <img v-else src="/images/icons8-false.png" alt="show"> -->
+							<!-- </td> -->
+							<td><img v-on:click="OpenFullScreenFunc(item.id)" :src="item.billImage"
+									class="img-responsive table-img" alt="bill image" height="80">
+							</td>
+							<td><img v-on:click="OpenFullScreenBillFunc(item.id)" :src="item.image"
+									class="img-responsive table-img" alt="image" height="80"></td>
+
+							<td>
+								<span v-if="item.statusId == orderStatus.accepted" class="availabe">{{ item.statusName
+								}}</span>
+								<span v-else-if="item.statusId == orderStatus.pending" class="warning">{{
+									item.statusName }}</span>
+								<span v-else class="not-availabe">{{ item.statusName }}</span>
+							</td>
+							<td>
+								<a class="option">تعديل</a>
+								<a class="option del">حذف</a>
+							</td>
+						</tr>
+
+					</tbody>
+				</table>
 			</div>
-	
+		</div>
+	</div>
+
 
 
 	<!-- status change -->
@@ -502,7 +399,8 @@ export default {
 							<div class="col-12 col-sm-12">
 								<div class="form-group">
 									<label>رسالة الرد</label>
-									<textarea v-model="dataStatus.messageReplay" type="text" class="form-control" maxlength="255"></textarea>
+									<textarea v-model="dataStatus.messageReplay" type="text" class="form-control"
+										maxlength="255"></textarea>
 								</div>
 							</div>
 						</div>

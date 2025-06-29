@@ -145,7 +145,7 @@ export default {
 							timeout: 3000,
 						});
 						loading.close();
-						this.$router.push({ name: "vehicle_managment" });
+						this.$router.push({ name: "profile_my_vehicles" });
 					});
 				}
 			} catch (error) {
@@ -479,7 +479,7 @@ function debounce(func, wait) {
 }
 </script>
 <template>
-	<div class="col-12 col-lg-9 addVehicle">
+	<div class="col-12 col-lg-9 add_vehicle">
 		<div class="container white_card px-4 pt-4 pb-0 mt-3 mt-lg-0 right-side">
 
 			<!-- Page Header -->
@@ -648,6 +648,7 @@ function debounce(func, wait) {
                                 class="form-control"></textarea> -->
 							<CKEditorComponent v-model="data.moreInfo" rows="3"
 								class="form-control mt-2 mb-4  py-3 text-start list_link gray-inp" />
+
 						</div>
 					</div>
 					<!-- aa -->
@@ -810,10 +811,10 @@ function debounce(func, wait) {
 	margin-top: .25rem;
 	font-size: 80%;
 }
-.addVehicle .page-header {
+.add_vehicle .page-header {
 	margin-bottom: 20px;
 }
-.addVehicle .page-title{
+.add_vehicle .page-title{
 	font-size: 22px;
 	font-weight: 400;
 	color: #26d829;
@@ -823,7 +824,7 @@ function debounce(func, wait) {
 		color: #26d829;
 
 }
-.addVehicle .add {
+.add_vehicle .add {
   background-color: #ddf9dd;
   padding: 0 8px;
   border-radius: 5px;
@@ -834,13 +835,13 @@ function debounce(func, wait) {
   border: none;
   padding: 5px 10px;
 }
-.addVehicle .add.full {
+.add_vehicle .add.full {
   width: 100%;
   margin-bottom: 20px;
   padding: 15px 0;
   font-weight: bold;
 }
-.addVehicle .add:hover {
+.add_vehicle .add:hover {
 background-color: var(--main-color);
   color: white;
 }

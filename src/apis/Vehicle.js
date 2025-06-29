@@ -66,7 +66,7 @@ export default {
         return responce;
     },
 
-    GetVehiclesManagment(data) {
+    GetMyVehicles(statusId) {
         let token = localStorage.getItem("token")
             ? JSON.parse(localStorage.getItem("token"))
             : null;
@@ -77,14 +77,11 @@ export default {
                 'Access-Control-Allow-Origin': '*'
             },
             params: {
-                ...data.vm, // Spread the VehicleManagmentSearch object properties as query parameters
-                page: data.page, // Add the page query parameter
-                pageSize: data.pageSize // Add the pageSize query parameter
+                statusId: statusId,
             }
         };
 
-        console.log("config: ", config);
-        const response = Api.get(`${END_POINT}/GetVehiclesManagment`, config);
+        const response = Api.get(`${END_POINT}/GetMyVehicles`, config);
         return response;
     },
 

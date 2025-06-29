@@ -30,7 +30,17 @@
     "vehicles_title":"المركبات",
 
     "location_menu_main":"الرئيسية",
-    "location_menu_vehicles":"سياراتنا",
+    "location_menu_vehicles":"مركباتنا",
+    "location_menu_profile":"الصفحة الشخصية",
+    "location_menu_my_vehicles":"مركباتي",
+    "location_menu_favorite":"المفضلة",
+    "location_menu_ads_orders":"طلبات الإعلان",
+    "location_menu_star_orders":"طلبات التمييز",
+    "location_menu_payment_operations":"عملياتي المالية",
+    "location_menu_change_password":"تغيير كلمة المرور",
+    "location_menu_add_vehicle":"إضافة مركبة",
+    "location_menu_update_vehicle":"تعديل المركبة",
+    "location_menu_add_ads":"إضافة إعلان",
 
     "vehicle_btn_contact_with_seller":"تواصل مع البائع",
     "vehicle_btn_get_in":"اركب المركبة",
@@ -148,6 +158,16 @@
     
     "profile_select_state":"-- اختر المحافظة --",
     "profile_select_city":"-- اختر المدينة --",
+
+    "profile_sidemenu_profile":"الصفحة الشخصية",
+    "profile_sidemenu_vehicles":"مركباتي",
+    "profile_sidemenu_favorite":"المفضلة",
+    "profile_sidemenu_orders":"الطلبات",
+    "profile_sidemenu_orders_star":"طلبات التمييز",
+    "profile_sidemenu_orders_ads":"طلبات الإعلان",
+    "profile_sidemenu_payment_operation":"عملياتي المالية",
+    "profile_sidemenu_change_password":"تغيير كلمة المرور",
+    "profile_sidemenu_logout":"تسجيل خروج",
 
 
     

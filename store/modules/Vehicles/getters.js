@@ -6,8 +6,8 @@ export const getVehiclesData = (state) => {
     return state.VehiclesData;
 }
 
-export const getVehicleManegmentData = (state) => {
-    return state.vehicleManegmentData;
+export const getMyVehiclesData = (state) => {
+    return state.myVehiclesData;
 }
 
 export const getCreateUpdateVehicleData = (state) => {

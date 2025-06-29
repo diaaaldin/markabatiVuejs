@@ -99,8 +99,8 @@ export const CustomerCreate = ({ commit, dispatch }, data) => {
         throw error;
     });
 }
-export const CustomerUpdate = ({ commit, dispatch }, data) => {
-    return User.CustomerUpdate(data).then(function (response) {
+export const CustomerProfileUpdate = ({ commit, dispatch }, data) => {
+    return User.CustomerProfileUpdate(data).then(function (response) {
         commit('SET_USER_DATA', response.data.data);
         return response.data.data;
     }).catch(function (error) {
@@ -130,8 +130,8 @@ export const CompanyCreate = ({ commit, dispatch }, data) => {
         throw error;
     });
 }
-export const CompanyUpdate = ({ commit, dispatch }, data) => {
-    return User.CompanyUpdate(data).then(function (response) {
+export const CompanyProfileUpdate = ({ commit, dispatch }, data) => {
+    return User.CompanyProfileUpdate(data).then(function (response) {
         commit('SET_USER_DATA', response.data.data);
         return response.data.data;
     }).catch(function (error) {

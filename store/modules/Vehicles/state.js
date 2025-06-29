@@ -1,6 +1,6 @@
 export default{
     VehicleData:{},
     VehiclesData:{},
-    vehicleManegmentData:{},
+    myVehiclesData:{},
     createUpdateVehicleData:{},
 }

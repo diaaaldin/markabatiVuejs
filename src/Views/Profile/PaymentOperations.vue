@@ -58,16 +58,16 @@ export default {
 
 	created() {
 		// Call the function from the store directly when the component is created
-		// this.initFunc();
+		 this.initFunc();
 	},
 
 	computed: {
 		...mapGetters("Code", ["getOrderStatusData", "getAnnouncementTypesData"]),
-		...mapGetters("Orders", ["getOrdersData", "getOrderDateTime"]),
+		...mapGetters("Payment", ["getPaymentMovementsData"]),
 	},
 	methods: {
 		...mapActions("Code", ["GetOrderStatus", "GetAnnouncementTypes"]),
-		...mapActions("Orders", ["GetStarVehiclesOrders", "UpdateStarVehicleOrder", "DeleteStarVehicleOrder", "UpdateStarVehicleOrderStatus"]),
+		...mapActions("Payment", ["GetUserPaymentMovements"]),
 
 		initFunc() {
 			const loading = ElLoading.service({
@@ -76,9 +76,8 @@ export default {
 				text: "",
 			});
 			this.GetOrderStatus();
-			this.GetStarVehiclesOrders(this.dataSearch).then(Response => {
+			this.GetUserPaymentMovements().then(Response => {
 				loading.close();
-				console.log("getOrdersData : ", this.getOrdersData);
 			}).catch(error => {
 				if (error.response && error.response.status === 401) {
 					this.$moshaToast(this.$t('general_user_not_allow_error_message'), {
@@ -104,7 +103,7 @@ export default {
 			});
 		},
 		GetData() {
-			this.GetStarVehiclesOrders(this.dataSearch).then(Response => {
+			this.GetUserPaymentMovements().then(Response => {
 
 			}).catch(error => {
 				if (error.response && error.response.status === 401) {
@@ -132,247 +131,7 @@ export default {
 		SearchChange() {
 			this.GetData();
 		},
-		SearchDateChange() {
-			if (this.dateFrom != null && this.dateTo != null) {
-				this.dataSearch.vm.dateFrom = this.dateFrom;
-				this.dataSearch.vm.dateTo = this.dateTo;
-				this.SearchChange();
-			}
-		},
 
-		updateFunc() {
-			if (this.checkUpdateValidation()) {
-				const loading = ElLoading.service({
-					lock: true,
-					background: 'rgba(0, 0, 0, 0.7)',
-					text: "",
-				});
-				try {
-					this.UpdateStarVehicleOrder(this.data).then((Response) => {
-						this.$moshaToast('تم تعديل الطلب بنجاح', {
-							hideProgressBar: 'false',
-							showIcon: 'true',
-							swipeClose: 'true',
-							type: 'success',
-							timeout: 3000,
-						});
-						loading.close();
-						this.GetData();
-						$('#update_modal').modal('hide');
-					});
-				} catch (error) {
-					this.$moshaToast(error.response?.data?.message || 'An error occurred', {
-						hideProgressBar: 'false',
-						position: 'top-center',
-						showIcon: 'true',
-						swipeClose: 'true',
-						type: 'warning',
-						timeout: 3000,
-					});
-					loading.close();
-				}
-			}
-		},
-		checkUpdateValidation() {
-			if (this.data.startDate == null) {
-				this.$moshaToast('أدخل تاريخ بداية الإعلان', {
-					hideProgressBar: 'false',
-					position: 'top-center',
-					showIcon: 'true',
-					swipeClose: 'true',
-					type: 'warning',
-					timeout: 3000,
-				});
-				return false;
-			} else if (this.data.endDate == null) {
-				this.$moshaToast('أدخل تاريخ نهاية الإعلان', {
-					hideProgressBar: 'false',
-					position: 'top-center',
-					showIcon: 'true',
-					swipeClose: 'true',
-					type: 'warning',
-					timeout: 3000,
-				});
-				return false;
-			} else if (this.data.endDate < this.data.startDate) {
-				this.$moshaToast('قم بإدخال تاريخ العرض بشكل صحيح', {
-					hideProgressBar: 'false',
-					position: 'top-center',
-					showIcon: 'true',
-					swipeClose: 'true',
-					type: 'warning',
-					timeout: 3000,
-				});
-				return false;
-			}
-			return true;
-		},
-
-		DeleteFunc() {
-			if (this.checkDeleteValidation()) {
-
-				const loading = ElLoading.service({
-					lock: true,
-					background: 'rgba(0, 0, 0, 0.7)',
-					text: "",
-				});
-
-				this.DeleteStarVehicleOrder(this.data.id).then(Response => {
-					this.$moshaToast('تمت عملية الحذف بنجاح', {
-						hideProgressBar: 'false',
-						showIcon: 'true',
-						swipeClose: 'true',
-						type: 'success',
-						timeout: 3000,
-					});
-
-					loading.close();
-					this.GetData();
-					$('#delete_modal').modal('hide');
-				}).catch(error => {
-					if (error.response && error.response.status === 401) {
-						this.$moshaToast(this.$t('general_user_not_allow_error_message'), {
-							hideProgressBar: 'false',
-							position: 'top-center',
-							showIcon: 'true',
-							swipeClose: 'true',
-							type: 'warning',
-							timeout: 3000,
-						});
-					} else {
-						// Handle other errors with the provided message from the response
-						this.$moshaToast(error.response?.data?.message || 'An error occurred', {
-							hideProgressBar: 'false',
-							position: 'top-center',
-							showIcon: 'true',
-							swipeClose: 'true',
-							type: 'warning',  // Default type is 'warning'
-							timeout: 3000,
-						});
-					}
-					loading.close();
-				});
-			}
-		},
-		checkDeleteValidation() {
-			if (this.data.orderId == 0) {
-				this.$moshaToast('هنالك خطأ في التحديد', {
-					hideProgressBar: 'false',
-					position: 'top-center',
-					showIcon: 'true',
-					swipeClose: 'true',
-					type: 'warning',
-					timeout: 3000,
-				});
-				return false;
-			}
-			return true;
-		},
-
-		ChangeStatusFunc() {
-			if (this.checkChangeStatusValidation()) {
-				const loading = ElLoading.service({
-					lock: true,
-					background: 'rgba(0, 0, 0, 0.7)',
-					text: "",
-				});
-				this.UpdateStarVehicleOrderStatus(this.dataStatus).then(Response => {
-					this.$moshaToast('تمت عملية تعديل الحالة بنجاح', {
-						hideProgressBar: 'false',
-						showIcon: 'true',
-						swipeClose: 'true',
-						type: 'success',
-						timeout: 3000,
-					});
-					loading.close();
-					this.GetData();
-					$('#change_status_modal').modal('hide');
-				}).catch(error => {
-					if (error.response && error.response.status === 401) {
-						this.$moshaToast(this.$t('general_user_not_allow_error_message'), {
-							hideProgressBar: 'false',
-							position: 'top-center',
-							showIcon: 'true',
-							swipeClose: 'true',
-							type: 'warning',
-							timeout: 3000,
-						});
-					} else {
-						// Handle other errors with the provided message from the response
-						this.$moshaToast(error.response?.data?.message || 'An error occurred', {
-							hideProgressBar: 'false',
-							position: 'top-center',
-							showIcon: 'true',
-							swipeClose: 'true',
-							type: 'warning',  // Default type is 'warning'
-							timeout: 3000,
-						});
-					}
-					loading.close();
-				});
-			}
-		},
-		checkChangeStatusValidation() {
-			if (this.dataStatus.orderId === 0) {
-				this.$moshaToast('هنالك خطأ في تحديد الطلب', {
-					hideProgressBar: 'false',
-					position: 'top-center',
-					showIcon: 'true',
-					swipeClose: 'true',
-					type: 'warning',
-					timeout: 3000,
-				});
-				return false;
-			} else if (this.dataStatus.statusId === 0) {
-				this.$moshaToast('إختر نوع الحالة المرادة', {
-					hideProgressBar: 'false',
-					position: 'top-center',
-					showIcon: 'true',
-					swipeClose: 'true',
-					type: 'warning',
-					timeout: 3000,
-				});
-				return false;
-			}
-			return true;
-		},
-
-		selectItem(id) {
-			const foundItem = this.getOrdersData.orders.data.find(element => element.id === id);
-			if (foundItem) {
-				this.data.id = foundItem.id;
-				this.dataStatus.orderId = foundItem.id;
-			}
-		},
-
-		selectItemForUpdate(id) {
-			this.clearData();
-			const loading = ElLoading.service({
-				lock: true,
-				background: 'rgba(0, 0, 0, 0.7)',
-				text: "",
-			});
-			const foundItem = this.getOrdersData.orders.data.find(element => element.id === id);
-			if (foundItem) {
-				this.data.id = foundItem.id;
-				this.data.messageReplay = foundItem.messageReplay;
-				this.data.startDate = this.formatDate(foundItem.startDate);
-				this.data.endDate = this.formatDate(foundItem.endDate);
-				loading.close();
-			} else {
-				loading.close();
-			}
-
-		},
-		showImages(id) {
-			console.log("images show : ", id);
-		},
-		clearData() {
-			this.data.id = 0;
-			this.data.messageReplay = "";
-			this.data.startDate = null;
-			this.data.endDate = null;
-		},
 		OpenFullScreenFunc(id) {
 			this.selectedOrder.image = [];
 			const foundItem = this.getOrdersData.orders.data.find(element => element.id === id);
@@ -387,30 +146,57 @@ export default {
 		},
 		OpenFullScreenBillFunc(id) {
 			this.selectedOrder.image = [];
-			const foundItem = this.getOrdersData.orders.data.find(element => element.id === id);
-			if (foundItem && foundItem.billImage != "") {
-				if (!Array.isArray(this.selectedOrder.image)) {
+			const foundItem = this.getPaymentMovementsData.find(element => element.id === id);
+			if (foundItem && foundItem.payingBilImage != "") {
+				if (!Array.isArray(this.selectedOrder.payingBilImage)) {
 					this.selectedOrder.image = []; // Initialize as an empty array if not already
 				}
-				this.selectedOrder.image.push(foundItem.billImage);
+				this.selectedOrder.image.push(foundItem.payingBilImage);
 				this.toggler = !this.toggler;
 			}
 
+		},
+		selectPaymentMethod(id) {
+			paymentMethod = "";
+			switch (id) {
+				case 1:
+					paymentMethod = "كاش";
+					break;
+				case 2:
+					paymentMethod = "فيزا كارد";
+					break;
+				default:
+					paymentMethod = "التطبيق البنكي";
+			}
+			return paymentMethod;
 		},
 		formatDate(dateString) {
 			// Convert the date string to yyyy-MM-dd
 			const date = new Date(`${dateString}Z`);
 			return date.toISOString().split('T')[0];
 		},
-		formatCurrency(value) {
+
+		formatCurrency(value, currency) {
+			let currencyCode = "";
+
+			switch (currency) {
+				case CurrenceEnum.USD:
+					currencyCode = "ILS";
+					break;
+				case CurrenceEnum.JOD:
+					currencyCode = "JOD";
+					break;
+				default:
+					currencyCode = "ILS";
+			}
+
 			return new Intl.NumberFormat('en-US', {
 				style: 'currency',
-				currency: "ILS",
+				currency: currencyCode,
 				// Allows up to 1 decimal digit
-				maximumFractionDigits: 0
+				maximumFractionDigits: 1
 			}).format(value);
-		}
-
+		},
 	}
 };
 </script>
@@ -424,96 +210,31 @@ export default {
 						<tr>
 							<th class="text-center">#</th>
 							<th class="text-center">المبلغ</th>
-							<th class="text-center">نوع العملية</th>
+							<!-- <th class="text-center">نوع العملية</th> -->
 							<th class="text-center">الاسم</th>
 							<th class="text-center">البريد الالكتروني</th>
-							<th class="text-center"> العملة</th>
 							<th class="text-center"> طريقة الدفع</th>
 							<th class="text-center">الفاتورة</th>
 							<th class="text-center"> وصف العملية </th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
-							<td class="id">1</td>
-							<td> 5000 </td>
-							<td>طلب تمييز</td>
-							<td>عبد الله المدهون</td>
-							<td>test@test.com</td>
-							<td> الدولار </td>
+						<tr v-for="(item, index) in getPaymentMovementsData">
+							<td class="id">{{ index + 1 }}</td>
+							<td> {{ formatCurrency(item.totalPrice, item.currency) }} </td>
+							<!-- <td>طلب تمييز</td> -->
+							<td>{{ item.paidname }}</td>
+							<td>{{ item.paidEmail }}</td>
 							<td>
-								<!-- <span class="availabe">متاحة</span> -->
-								<span class="warning">فيزا كارد</span>
-								<!-- <span class="not-availabe">مباعة</span> -->
+								{{ selectPaymentMethod(item.paymentMethod) }}
 							</td>
 
+							<td><img v-on:click="OpenFullScreenBillFunc(item.id)" :src="item.PayingBilImage"
+									class="img-responsive table-img" alt="image" height="80"></td>
 
-							<td>
-								<img src="/img/cars/c1.png" class="img-responsive table-img" alt="product image"
-									height="80">
-							</td>
-							<td> وصف الصف العملية صف الصف العملية </td>
+							<td> {{ item.description }} </td>
 						</tr>
-						<tr>
-							<td class="id">1</td>
-							<td> 5000 </td>
-							<td>طلب تمييز</td>
-							<td>عبد الله المدهون</td>
-							<td>test@test.com</td>
-							<td> الدولار </td>
-							<td>
-								<!-- <span class="availabe">متاحة</span> -->
-								<span class="warning">فيزا كارد</span>
-								<!-- <span class="not-availabe">مباعة</span> -->
-							</td>
-
-
-							<td>
-								<img src="/img/cars/c1.png" class="img-responsive table-img" alt="product image"
-									height="80">
-							</td>
-							<td> وصف الصف العملية صف الصف العملية </td>
-						</tr>
-						<tr>
-							<td class="id">1</td>
-							<td> 5000 </td>
-							<td>طلب تمييز</td>
-							<td>عبد الله المدهون</td>
-							<td>test@test.com</td>
-							<td> الدولار </td>
-							<td>
-								<!-- <span class="availabe">متاحة</span> -->
-								<span class="warning">فيزا كارد</span>
-								<!-- <span class="not-availabe">مباعة</span> -->
-							</td>
-
-
-							<td>
-								<img src="/img/cars/c1.png" class="img-responsive table-img" alt="product image"
-									height="80">
-							</td>
-							<td> وصف الصف العملية صف الصف العملية </td>
-						</tr>
-						<tr>
-							<td class="id">1</td>
-							<td> 5000 </td>
-							<td>طلب تمييز</td>
-							<td>عبد الله المدهون</td>
-							<td>test@test.com</td>
-							<td> الدولار </td>
-							<td>
-								<!-- <span class="availabe">متاحة</span> -->
-								<span class="warning">فيزا كارد</span>
-								<!-- <span class="not-availabe">مباعة</span> -->
-							</td>
-
-
-							<td>
-								<img src="/img/cars/c1.png" class="img-responsive table-img" alt="product image"
-									height="80">
-							</td>
-							<td> وصف الصف العملية صف الصف العملية </td>
-						</tr>
+						
 					</tbody>
 				</table>
 			</div>

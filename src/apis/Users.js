@@ -128,6 +128,16 @@ export default {
         };
         return Api.put(`${END_POINT}/CustomerUpdate`, data, config);
     },
+    CustomerProfileUpdate(data) {
+        let token = localStorage.getItem("token")
+            ? JSON.parse(localStorage.getItem("token"))
+            : null;
+
+        let config = {
+            headers: { 'Authorization': token, "Access-Control-Allow-Origin": "*" },
+        };
+        return Api.put(`${END_POINT}/CustomerProfileUpdate`, data, config);
+    },
     ChangeStatusCustomer(data) {
         let token = localStorage.getItem("token")
             ? JSON.parse(localStorage.getItem("token"))
@@ -179,6 +189,17 @@ export default {
             headers: { 'Authorization': token, "Access-Control-Allow-Origin": "*" },
         };
         return Api.put(`${END_POINT}/CompanyUpdate`, data, config);
+    },
+    CompanyProfileUpdate(data) {
+        console.log(data);
+        let token = localStorage.getItem("token")
+            ? JSON.parse(localStorage.getItem("token"))
+            : null;
+
+        let config = {
+            headers: { 'Authorization': token, "Access-Control-Allow-Origin": "*" },
+        };
+        return Api.put(`${END_POINT}/CompanyProfileUpdate`, data, config);
     },
     ChangeStatusCompany(data) {
         let token = localStorage.getItem("token")

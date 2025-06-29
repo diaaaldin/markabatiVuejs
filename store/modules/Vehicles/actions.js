@@ -21,16 +21,16 @@ export const GetVehiclesRandomly = ({ commit, dispatch },data) => {
 export const GetVehicelForUpdate = ({ commit, dispatch },id) => {
     // console.log("action run ");
     return Vehicle.GetVehicelForUpdate(id).then(function (response) {
-        commit('SET_VEHICEL_DATA', response.data.data);
+        commit('SET_CREATE_UPDATE_VEHICEL_DATA', response.data.data);
         return response.data.data;
     }).catch(function (error) {
             throw error;
     });
 }
 
-export const GetVehiclesManagment = ({ commit, dispatch },data) => {
-    return Vehicle.GetVehiclesManagment(data).then(function (response) {
-        commit('SET_VEHICLES_MANEGMENT_DATA', response.data.data);
+export const GetMyVehicles = ({ commit, dispatch },statusId) => {
+    return Vehicle.GetMyVehicles(statusId).then(function (response) {
+        commit('SET_MY_VEHICLES_DATA', response.data.data);
         return response.data.data; 
     }).catch(function (error) {
             throw error;

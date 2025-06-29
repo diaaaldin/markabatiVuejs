@@ -60,11 +60,47 @@ export default {
         <nav>
             <div class="container">
                 <ol class="breadcrumb">
-                     <li class="breadcrumb-item">
-                            <router-link to="/" :class="{ active: $route.path === '/' }">  {{ $t('location_menu_main') }} </router-link>
+                     <li class="breadcrumb-item" :class="{ active: $route.path === '/' }">
+                            <router-link :to="{ name: 'main' }" >  {{ $t('location_menu_main') }} </router-link>
                     </li>
-                    
-                    <li class="breadcrumb-item active" aria-current="page">الصفحة الشخصية</li>
+                    <li v-if="$route.path === '/profile'" class="breadcrumb-item active" aria-current="page" >
+                        {{ $t('location_menu_profile') }}
+                    </li>
+                    <li v-else class="breadcrumb-item" aria-current="page" :class="{ active: $route.path === '/profile' }">
+                        <router-link :to="{ name: 'profile_profile' }" >  {{ $t('location_menu_profile') }} </router-link>
+                    </li>
+                     <li v-if="$route.path === '/my_vehicles'" class="breadcrumb-item active" aria-current="page" >
+                         {{ $t('location_menu_my_vehicles') }} 
+                    </li>
+                     <li v-if="$route.path === '/update_vehicle'" class="breadcrumb-item" >
+                            <router-link :to="{ name: 'profile_my_vehicles' }" >  {{ $t('location_menu_my_vehicles') }} </router-link>
+                    </li>
+                     <li v-if="$route.path === '/favorit'" class="breadcrumb-item active" aria-current="page" >
+                        {{ $t('location_menu_favorite') }}
+                    </li>
+                    <li v-if="$route.path === '/ads_orders'" class="breadcrumb-item active" aria-current="page" >
+                        {{ $t('location_menu_ads_orders') }}
+                    </li>
+                    <li v-if="$route.path === '/star_orders'" class="breadcrumb-item active" aria-current="page" >
+                        {{ $t('location_menu_star_orders') }}
+                    </li>
+                     <li v-if="$route.path === '/payment_operation'" class="breadcrumb-item active" aria-current="page" >
+                         {{ $t('location_menu_payment_operations') }}
+                    </li>
+                     <li v-if="$route.path === '/change_password'" class="breadcrumb-item active" aria-current="page" >
+                         {{ $t('location_menu_change_password') }} 
+                    </li>
+
+                    <li v-if="$route.path === '/add_vehicle'" class="breadcrumb-item active" aria-current="page" >
+                          {{ $t('location_menu_add_vehicle') }} 
+                    </li>
+                     <li v-if="$route.path === '/update_vehicle'" class="breadcrumb-item active" aria-current="page" >
+                          {{ $t('location_menu_update_vehicle') }} 
+                    </li>
+
+                    <li v-if="$route.path === '/add_ads'" class="breadcrumb-item active" aria-current="page" >
+                          {{ $t('location_menu_add_ads') }}
+                    </li>
                 </ol>
                 
             </div>

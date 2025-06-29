@@ -3,5 +3,4 @@ export default{
     UsersData:{},
 
     UserLoginName:"",
-
 }

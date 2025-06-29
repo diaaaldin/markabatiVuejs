@@ -44,7 +44,7 @@ export default {
 
 			OrderStatus: OrderStatusEnum,
 
-			testData:[]
+			testData: []
 		}
 	},
 	mounted() {
@@ -60,7 +60,7 @@ export default {
 
 	created() {
 		// Call the function from the store directly when the component is created
-		// this.initFunc();
+		this.initFunc();
 	},
 
 	computed: {
@@ -69,7 +69,7 @@ export default {
 	},
 	methods: {
 		...mapActions("Code", ["GetOrderStatus", "GetAnnouncementTypes"]),
-		...mapActions("Orders", ["GetStarVehiclesOrders","UpdateStarVehicleOrder","DeleteStarVehicleOrder", "UpdateStarVehicleOrderStatus"]),
+		...mapActions("Orders", ["GetUserStarVehiclesOrders", "UpdateStarVehicleOrder", "DeleteStarVehicleOrder", "UpdateStarVehicleOrderStatus"]),
 
 		initFunc() {
 			const loading = ElLoading.service({
@@ -78,9 +78,8 @@ export default {
 				text: "",
 			});
 			this.GetOrderStatus();
-			this.GetStarVehiclesOrders(this.dataSearch).then(Response => {
+			this.GetUserStarVehiclesOrders(this.dataSearch).then(Response => {
 				loading.close();
-				console.log("getOrdersData : " , this.getOrdersData);
 			}).catch(error => {
 				if (error.response && error.response.status === 401) {
 					this.$moshaToast(this.$t('general_user_not_allow_error_message'), {
@@ -106,7 +105,7 @@ export default {
 			});
 		},
 		GetData() {
-			this.GetStarVehiclesOrders(this.dataSearch).then(Response => {
+			this.GetUserStarVehiclesOrders(this.dataSearch).then(Response => {
 
 			}).catch(error => {
 				if (error.response && error.response.status === 401) {
@@ -346,7 +345,7 @@ export default {
 				this.dataStatus.orderId = foundItem.id;
 			}
 		},
-		
+
 		selectItemForUpdate(id) {
 			this.clearData();
 			const loading = ElLoading.service({
@@ -361,10 +360,10 @@ export default {
 				this.data.startDate = this.formatDate(foundItem.startDate);
 				this.data.endDate = this.formatDate(foundItem.endDate);
 				loading.close();
-			}else {
+			} else {
 				loading.close();
 			}
-				
+
 		},
 		showImages(id) {
 			console.log("images show : ", id);
@@ -404,14 +403,28 @@ export default {
 			const date = new Date(`${dateString}Z`);
 			return date.toISOString().split('T')[0];
 		},
-		formatCurrency(value) {
+
+		formatCurrency(value, currency) {
+			let currencyCode = "";
+
+			switch (currency) {
+				case CurrenceEnum.USD:
+					currencyCode = "ILS";
+					break;
+				case CurrenceEnum.JOD:
+					currencyCode = "JOD";
+					break;
+				default:
+					currencyCode = "ILS";
+			}
+
 			return new Intl.NumberFormat('en-US', {
 				style: 'currency',
-				currency: "ILS",
+				currency: currencyCode,
 				// Allows up to 1 decimal digit
-				maximumFractionDigits: 0
+				maximumFractionDigits: 1
 			}).format(value);
-		}
+		},
 
 	}
 };
@@ -419,118 +432,62 @@ export default {
 <template>
 
 	<div class="col-12 col-lg-9 order">
-				<div class="container white_card px-4 pt-4 pb-0 mt-3 mt-lg-0 right-side">
-					<div class="table-responsive">
-						<table class="table text-center">
-							<thead>
-								<tr>
-									<th class="text-center" >#</th>
-									<th class="text-center" >إسم المعلن</th>
-									<th class="text-center" >الرسالة</th>
-									<th class="text-center" >رد الرسالة</th>
-									<th class="text-center" >تاريخ البداية</th>
-									<th class="text-center" >تاريخ النهاية</th>
-									<th class="text-center" >السعر الإجمالي</th>
-									<th class="text-center" >حالة الدفع</th>
-									<th class="text-center" >الفاتورة</th>
-									<th class="text-center" >صورة الإعلان</th>
-									<th class="text-center" >الحالة</th>
-									<th class="text-center" >خيارات</th>
+		<div class="container white_card px-4 pt-4 pb-0 mt-3 mt-lg-0 right-side">
+			<div class="table-responsive">
+				<table class="table text-center">
+					<thead>
+						<tr>
+							<th class="text-center">#</th>
+							<th class="text-center">إسم المعلن</th>
+							<th class="text-center">الرسالة</th>
+							<th class="text-center">رد الرسالة</th>
+							<th class="text-center">تاريخ البداية</th>
+							<th class="text-center">تاريخ النهاية</th>
+							<th class="text-center">السعر الإجمالي</th>
+							<th class="text-center">حالة الدفع</th>
+							<th class="text-center">الفاتورة</th>
+							<th class="text-center">صورة المركبة</th>
+							<th class="text-center">الحالة</th>
+							<th class="text-center">خيارات</th>
 
-									<th></th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td  class="id">1</td>
-									<td>عبد الله المدهون</td>
-									<td>أريد طلب اعلان مميز</td>
-									<td>تمت الموافقة</td>
-									<td>22/10/2014</td>
-									<td>22/11/2014</td>
-									<td>5000</td>
-									<td><span class="availabe">مقبولة</span></td>
-									<td><img src="/img/cars/c1.png" class="img-responsive table-img" alt="product image" height="80"></td>
-									<td><img src="/img/cars/c1.png" class="img-responsive table-img" alt="product image" height="80"></td>
-									<td>قيد المعاينة</td>
-									<td>
-										<a class="option">تعديل</a>
-										<a class="option del">حذف</a>
-									</td>
-								</tr>
-								<tr>
-									<td  class="id">1</td>
-									<td>عبد الله المدهون</td>
-									<td>أريد طلب اعلان مميز</td>
-									<td>تمت الموافقة</td>
-									<td>22/10/2014</td>
-									<td>22/11/2014</td>
-									<td>5000</td>
-									<td><span class="availabe">مقبولة</span></td>
-									<td><img src="/img/cars/c1.png" class="img-responsive table-img" alt="product image" height="80"></td>
-									<td><img src="/img/cars/c1.png" class="img-responsive table-img" alt="product image" height="80"></td>
-									<td>قيد المعاينة</td>
-									<td>
-										<a class="option">تعديل</a>
-										<a class="option del">حذف</a>
-									</td>
-								</tr>
-								<tr>
-									<td  class="id">1</td>
-									<td>عبد الله المدهون</td>
-									<td>أريد طلب اعلان مميز</td>
-									<td>تمت الموافقة</td>
-									<td>22/10/2014</td>
-									<td>22/11/2014</td>
-									<td>5000</td>
-									<td><span class="availabe">مقبولة</span></td>
-									<td><img src="/img/cars/c1.png" class="img-responsive table-img" alt="product image" height="80"></td>
-									<td><img src="/img/cars/c1.png" class="img-responsive table-img" alt="product image" height="80"></td>
-									<td>قيد المعاينة</td>
-									<td>
-										<a class="option">تعديل</a>
-										<a class="option del">حذف</a>
-									</td>
-								</tr>
-								<tr>
-									<td  class="id">1</td>
-									<td>عبد الله المدهون</td>
-									<td>أريد طلب اعلان مميز</td>
-									<td>تمت الموافقة</td>
-									<td>22/10/2014</td>
-									<td>22/11/2014</td>
-									<td>5000</td>
-									<td><span class="availabe">مقبولة</span></td>
-									<td><img src="/img/cars/c1.png" class="img-responsive table-img" alt="product image" height="80"></td>
-									<td><img src="/img/cars/c1.png" class="img-responsive table-img" alt="product image" height="80"></td>
-									<td>قيد المعاينة</td>
-									<td>
-										<a class="option">تعديل</a>
-										<a class="option del">حذف</a>
-									</td>
-								</tr>
-								<tr>
-									<td  class="id">1</td>
-									<td>عبد الله المدهون</td>
-									<td>أريد طلب اعلان مميز</td>
-									<td>تمت الموافقة</td>
-									<td>22/10/2014</td>
-									<td>22/11/2014</td>
-									<td>5000</td>
-									<td><span class="availabe">مقبولة</span></td>
-									<td><img src="/img/cars/c1.png" class="img-responsive table-img" alt="product image" height="80"></td>
-									<td><img src="/img/cars/c1.png" class="img-responsive table-img" alt="product image" height="80"></td>
-									<td>قيد المعاينة</td>
-									<td>
-										<a class="option">تعديل</a>
-										<a class="option del">حذف</a>
-									</td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
-				</div>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr v-for="(item, index) in getOrdersData.orders.data">
+							<td class="id">{{ index + 1 }}</td>
+							<td>{{ item.userName }}</td>
+							<td>{{ item.message }}</td>
+							<td>{{ item.messageReplay }}</td>
+							<td>{{ formatDate(item.startDate) }}</td>
+							<td>{{ formatDate(item.endDate) }}</td>
+							<td>{{ formatCurrency(item.totalPrice, 0) }}</td>
+							<!-- <td class="text-center"> -->
+							<!-- مدفوع -->
+							<!-- <img v-if="item.isPayed == true" src="/images/icons_true.png" alt="show"> -->
+							<!-- غير مدفوع -->
+							<!-- <img v-else src="/images/icons8-false.png" alt="show"> -->
+							<!-- </td> -->
+							<td><img v-on:click="OpenFullScreenFunc(item.id)" :src="item.billImage"
+									class="img-responsive table-img" alt="bill image" height="80">
+							</td>
+							<td><img v-on:click="OpenFullScreenBillFunc(item.id)" :src="item.image"
+									class="img-responsive table-img" alt="image" height="80"></td>
+							<td>
+								<span v-if="item.statusId == orderStatus.accepted" class="availabe">{{ item.statusName }}</span>
+								<span v-else-if="item.statusId == orderStatus.pending" class="warning">{{ item.statusName }}</span>
+								<span v-else class="not-availabe">{{ item.statusName }}</span>
+							</td>
+							<td>
+								<a class="option">تعديل</a>
+								<a class="option del">حذف</a>
+							</td>
+						</tr>
+					</tbody>
+				</table>
 			</div>
+		</div>
+	</div>
 
 
 	<!-- update order -->
