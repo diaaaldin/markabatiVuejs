@@ -3487,7 +3487,7 @@ footer .copy-write {
 .hero-notification-div {
   position: relative;
 }
-.hero-notification-div::before {
+.hero-notification-div .account {
   position: absolute;
   content: "5";
   width: 13px;
@@ -3504,16 +3504,41 @@ footer .copy-write {
 .notification[data-bs-popper] {
   left: 0;
   transform: translateX(38%);
-  width: 21rem;
-  height: auto;
-  max-height: 55vh;
-  overflow-y: scroll;
+  width: 21rem !important;
   background: #ffffff;
   box-shadow: 0 0 30px rgb(0 0 0 / 8%);
   border-radius: 16px;
   top: 2.5rem;
+  border: none;
+  padding-bottom: 15px !important;
+}
+.notification .container {
+  height: auto;
+  max-height: 55vh;
+  overflow-y: scroll;
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: var(--main-color) #fff; /* Firefox: thumb and track */
 }
 
+/* Chrome, Edge, Safari */
+.notification .container::-webkit-scrollbar {
+  width: 10px;
+}
+
+.notification .container::-webkit-scrollbar-track {
+  background: #fff;        /* track background color */
+  border-radius: 10px;
+}
+
+.notification .container::-webkit-scrollbar-thumb {
+  background-color: var(--main-color);     /* thumb color */
+  border-radius: 10px;        /* thumb corner rounding */
+  border: 2px solid #f0f0f0;  /* padding effect */
+}
+
+.notification .container::-webkit-scrollbar-thumb:hover {
+  background-color: #555;
+}
 /*start scrollbar */
 .notification[data-bs-popper] ::-webkit-scrollbar {
   width: 7px;
@@ -3528,8 +3553,76 @@ footer .copy-write {
   border-radius: 20px;
   border-width: 3px;
 }
-
+.notification .container h6{
+  font-weight: 400;
+  color: var(--main-color);
+}
 /*************** end footer style   ******************************/
+
+
+/******************Start Cropper ******************/
+#cropButton {
+  color: white !important;;
+  border-radius: 30px !important;;
+     padding: 8px 30px !important;;
+	 background-color: var(--main-color) !important;;
+   transition: var(--main-transition);
+}
+
+#cropButton:hover {
+  background-color: black !important;
+}
+.header {
+  background-color: #EEE !important;}
+
+  .custom-file-upload-c {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  color: #26d829;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  border: 1px solid #EEE;
+
+  transition: var(--main-transition);
+}
+
+.custom-file-upload-c:hover {
+  border-color: #0bc00e;
+}
+.uploudedImageContaner h2 {
+  font-weight: 400;
+  margin-top: 40px;
+}
+#cropper_modal .close{
+background-color: #fff;
+  border: navajowhite;
+  width: 29px;
+  height: 29px;
+  border-radius: 50%;
+ 
+}
+#fileInput-c {
+  display: none;
+}
+
+.custom-file-upload-c svg {
+  width: 16px;
+  height: 16px;
+  fill: var(--main-color) !important;
+}
+.add-img-c{
+  background-color: #ddf9dd;
+  cursor: pointer;
+}
+#show_360 img{
+  width: 100%;
+  border-radius: 20px;
+}
+/******************End Cropper ******************/
 
 /*******************************start style provider ********************/
 .provider-title {

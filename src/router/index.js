@@ -35,6 +35,7 @@ import sellers from '@/Views/sellers.vue'
 import vehicle from '@/Views/vehicle.vue'
 import vehicles from '@/Views/vehicles.vue'
 import gallary from '@/Views/gallary.vue'
+import payForUs from '@/Views/payForUs.vue'
 
 import teckitsuccess from '@/Views/Checkout/PaymentSuccess.vue'
 import teckitfail from '@/Views/Checkout/PaymentFail.vue'
@@ -86,6 +87,11 @@ const routes = [
         path: '/gallary',
         name: "gallary",
         component: gallary
+    },
+    {
+        path: '/payForUs',
+        name: "payForUs",
+        component: payForUs
     },
 
     // {

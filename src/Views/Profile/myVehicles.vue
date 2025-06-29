@@ -259,7 +259,7 @@ export default {
           </thead>
           <tbody>
             <tr v-for="(item, index) in getMyVehiclesData">
-              <td class="id">{{ index+1 }}</td>
+              <td class="id">{{ index + 1 }}</td>
               <td>{{ item.brandName }} </td>
               <td>{{ item.modelName }}</td>
               <td>{{ item.meals }}</td>
@@ -343,6 +343,7 @@ export default {
 
           </tbody>
         </table>
+
       </div>
 
       <!-- <div v-if="!getCustomerBuyProductsOrdersData || getCustomerBuyProductsOrdersData.length === 0" class="alert alert-danger mt-3">
@@ -370,8 +371,32 @@ export default {
     </div>
   </div>
 
+  <div class="modal fade" id="show_360" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel"> صورة 360 درجة </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <img src="/img/login-bg.jpg" alt="">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary">
+            اغلاق
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 
-	<FsLightbox :toggler="toggler" :sources="selectedVehicle.images" type="image" />
+  <FsLightbox :toggler="toggler" :sources="selectedVehicle.images" type="image" />
 
 </template>
-<style scoped></style>
+<style scoped>
+.modal-footer .btn-primary {
+  border-radius: 30px;
+  padding: 8px 30px;
+  margin: 0 auto;
+}
+</style>

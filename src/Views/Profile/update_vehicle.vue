@@ -683,50 +683,28 @@ function debounce(func, wait) {
 					</div>
 
 
-
-					<div class="box-addition  px-3 mb-3 ">
-						<div id="additionGroup" class="form-group">
-							<label for="title" class="page-title"> اضافات جديدة </label>
-							<div v-for="(ex, index) in data.extinsionCategory" :key="index" :id="'addition' + index"
-								id="addition" class="row">
-								<div class="col">
-									<!-- <label for="email">اسم الاضافة </label> -->
-									<input v-model="ex.extensionName" asp-for="addition" type="text"
-										placeholder="اسم الاضافة"
-										class="form-control mt-2 mb-4  py-3 text-start list_link gray-inp" />
-								</div>
-								<div class="col">
-									<!-- <label for="email"> القيمة </label> -->
-									<input v-model="ex.extentionValue" asp-for="value" type="text" placeholder="القيمة"
-										class="form-control mt-2 mb-4  py-3 text-start list_link gray-inp" />
-								</div>
-								<div class="col-auto p-0 remove">
-									<button id="removeaddition" type="button"
-										class="form-control mt-2 mb-4  py-3 text-start list_link gray-inp text-danger"
-										v-on:click="removeAddition(index)">
-										<svg viewBox="0 0 24 24" width="26" fill="none"
-											xmlns="http://www.w3.org/2000/svg">
-											<g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-											<g id="SVGRepo_tracerCarrier" stroke-linecap="round"
-												stroke-linejoin="round"></g>
-											<g id="SVGRepo_iconCarrier">
-												<path
-													d="M3 6.38597C3 5.90152 3.34538 5.50879 3.77143 5.50879L6.43567 5.50832C6.96502 5.49306 7.43202 5.11033 7.61214 4.54412C7.61688 4.52923 7.62232 4.51087 7.64185 4.44424L7.75665 4.05256C7.8269 3.81241 7.8881 3.60318 7.97375 3.41617C8.31209 2.67736 8.93808 2.16432 9.66147 2.03297C9.84457 1.99972 10.0385 1.99986 10.2611 2.00002H13.7391C13.9617 1.99986 14.1556 1.99972 14.3387 2.03297C15.0621 2.16432 15.6881 2.67736 16.0264 3.41617C16.1121 3.60318 16.1733 3.81241 16.2435 4.05256L16.3583 4.44424C16.3778 4.51087 16.3833 4.52923 16.388 4.54412C16.5682 5.11033 17.1278 5.49353 17.6571 5.50879H20.2286C20.6546 5.50879 21 5.90152 21 6.38597C21 6.87043 20.6546 7.26316 20.2286 7.26316H3.77143C3.34538 7.26316 3 6.87043 3 6.38597Z"
-													fill="#ff0000"></path>
-												<path fill-rule="evenodd" clip-rule="evenodd"
-													d="M9.42543 11.4815C9.83759 11.4381 10.2051 11.7547 10.2463 12.1885L10.7463 17.4517C10.7875 17.8855 10.4868 18.2724 10.0747 18.3158C9.66253 18.3592 9.29499 18.0426 9.25378 17.6088L8.75378 12.3456C8.71256 11.9118 9.01327 11.5249 9.42543 11.4815Z"
-													fill="#ff0000"></path>
-												<path fill-rule="evenodd" clip-rule="evenodd"
-													d="M14.5747 11.4815C14.9868 11.5249 15.2875 11.9118 15.2463 12.3456L14.7463 17.6088C14.7051 18.0426 14.3376 18.3592 13.9254 18.3158C13.5133 18.2724 13.2126 17.8855 13.2538 17.4517L13.7538 12.1885C13.795 11.7547 14.1625 11.4381 14.5747 11.4815Z"
-													fill="#ff0000"></path>
-												<path opacity="0.5"
-													d="M11.5956 22.0001H12.4044C15.1871 22.0001 16.5785 22.0001 17.4831 21.1142C18.3878 20.2283 18.4803 18.7751 18.6654 15.8686L18.9321 11.6807C19.0326 10.1037 19.0828 9.31524 18.6289 8.81558C18.1751 8.31592 17.4087 8.31592 15.876 8.31592H8.12405C6.59127 8.31592 5.82488 8.31592 5.37105 8.81558C4.91722 9.31524 4.96744 10.1037 5.06788 11.6807L5.33459 15.8686C5.5197 18.7751 5.61225 20.2283 6.51689 21.1142C7.42153 22.0001 8.81289 22.0001 11.5956 22.0001Z"
-													fill="#ff0000"></path>
-											</g>
-										</svg>
-									</button>
-								</div>
+				<div class="box-addition  px-3 mb-3 ">
+					<div id="additionGroup" class="form-group">
+						<label for="title" class="page-title"> اضافات جديدة </label>
+						<div v-for="(ex, index) in data.extinsionCategory" :key="index" :id="'addition' + index"
+							id="addition" class="row">
+							<div class="col">
+								<!-- <label for="email">اسم الاضافة </label> -->
+								<input v-model="ex.extensionName" asp-for="addition" type="text"
+									placeholder="اسم الاضافة" class="form-control mt-2 mb-4  py-3 text-start list_link gray-inp" />
 							</div>
+							<div class="col">
+								<!-- <label for="email"> القيمة </label> -->
+								<input v-model="ex.extentionValue" asp-for="value" type="text" placeholder="القيمة"
+									class="form-control mt-2 mb-4  py-3 text-start list_link gray-inp" />
+							</div>
+							<div class="col-auto p-0 remove">
+								<button id="removeaddition" type="button" class="form-control mt-2 mb-4  py-3 text-start list_link gray-inp text-danger"
+									v-on:click="removeAddition(index)">
+								<svg viewBox="0 0 24 24" width="26" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M3 6.38597C3 5.90152 3.34538 5.50879 3.77143 5.50879L6.43567 5.50832C6.96502 5.49306 7.43202 5.11033 7.61214 4.54412C7.61688 4.52923 7.62232 4.51087 7.64185 4.44424L7.75665 4.05256C7.8269 3.81241 7.8881 3.60318 7.97375 3.41617C8.31209 2.67736 8.93808 2.16432 9.66147 2.03297C9.84457 1.99972 10.0385 1.99986 10.2611 2.00002H13.7391C13.9617 1.99986 14.1556 1.99972 14.3387 2.03297C15.0621 2.16432 15.6881 2.67736 16.0264 3.41617C16.1121 3.60318 16.1733 3.81241 16.2435 4.05256L16.3583 4.44424C16.3778 4.51087 16.3833 4.52923 16.388 4.54412C16.5682 5.11033 17.1278 5.49353 17.6571 5.50879H20.2286C20.6546 5.50879 21 5.90152 21 6.38597C21 6.87043 20.6546 7.26316 20.2286 7.26316H3.77143C3.34538 7.26316 3 6.87043 3 6.38597Z" fill="#ff0000"></path> <path fill-rule="evenodd" clip-rule="evenodd" d="M9.42543 11.4815C9.83759 11.4381 10.2051 11.7547 10.2463 12.1885L10.7463 17.4517C10.7875 17.8855 10.4868 18.2724 10.0747 18.3158C9.66253 18.3592 9.29499 18.0426 9.25378 17.6088L8.75378 12.3456C8.71256 11.9118 9.01327 11.5249 9.42543 11.4815Z" fill="#ff0000"></path> <path fill-rule="evenodd" clip-rule="evenodd" d="M14.5747 11.4815C14.9868 11.5249 15.2875 11.9118 15.2463 12.3456L14.7463 17.6088C14.7051 18.0426 14.3376 18.3592 13.9254 18.3158C13.5133 18.2724 13.2126 17.8855 13.2538 17.4517L13.7538 12.1885C13.795 11.7547 14.1625 11.4381 14.5747 11.4815Z" fill="#ff0000"></path> <path opacity="0.5" d="M11.5956 22.0001H12.4044C15.1871 22.0001 16.5785 22.0001 17.4831 21.1142C18.3878 20.2283 18.4803 18.7751 18.6654 15.8686L18.9321 11.6807C19.0326 10.1037 19.0828 9.31524 18.6289 8.81558C18.1751 8.31592 17.4087 8.31592 15.876 8.31592H8.12405C6.59127 8.31592 5.82488 8.31592 5.37105 8.81558C4.91722 9.31524 4.96744 10.1037 5.06788 11.6807L5.33459 15.8686C5.5197 18.7751 5.61225 20.2283 6.51689 21.1142C7.42153 22.0001 8.81289 22.0001 11.5956 22.0001Z" fill="#ff0000"></path> </g></svg>
+								</button>
+							</div>
+						</div>
 
 						</div>
 						<div class="form-group add_addition">
@@ -737,20 +715,20 @@ function debounce(func, wait) {
 
 
 
-
-					<div class="col-12" v-on:click="toggleCropperModal()">
-						<div class="box py-2 px-3 mb-3 rounded-3 cropper">
-							<label class="w-100 h-100">
-								<div class="icon"></div>
-								<h5 class="page-title">أضف الصورة الرئيسية للمركبة</h5>
-								<img src="/images/plus-icon.svg" alt="" class="d-block mx-auto rounded-circle p-2" />
-								<p class="mb-0 text-center">صورة المركبة.</p>
-							</label>
-						</div>
-						<div v-if="imageCropperSrc" class="imageCropper">
-							<img :src="imageCropperSrc" alt="imageCropper">
-						</div>
+		
+				<div class="col-12" v-on:click="toggleCropperModal()">
+					<div class="box py-2 px-3 mb-3 rounded-3 cropper">
+						<label class="w-100 h-100">
+							<div class="icon"></div>
+							<h5 class="page-title">أضف الصورة الرئيسية للمركبة</h5>
+							<img src="/images/green-add-button.png" alt="" class="d-block mx-auto rounded-circle p-2 add-img-c" />
+							<p class="mb-0 text-center">صورة المركبة.</p>
+						</label>
 					</div>
+					<div v-if="imageCropperSrc" class="imageCropper">
+						<img :src="imageCropperSrc" alt="imageCropper">
+					</div>
+				</div>
 
 					<div class="col-12">
 						<div class="box py-2 px-3 mb-3 rounded-3 drop-images">
@@ -766,9 +744,9 @@ function debounce(func, wait) {
 
 
 
-			<div class="mb-5">
-				<button v-on:click="updateFunc()" class="add full">تعديل المركبة</button>
-			</div>
+		<div class="mb-5">
+			<button  class="add full" data-bs-toggle="modal" data-bs-target="#confirm">إضافة اعلان جديد</button>
+		</div>
 
 
 
@@ -799,9 +777,32 @@ function debounce(func, wait) {
 		</div>
 	</div>
 
-
+<div class="modal fade" id="confirm" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel"> تأكيد العملية </h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<p>هل أنت متأكد من اضافة الاعلان وصحة محتواه!</p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary">
+						 تأكيد
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
 </template>
 <style scoped>
+.modal-footer .btn-primary {
+     border-radius: 30px;
+     padding: 8px 30px;
+    margin: 0 auto;
+}
+
 .imageCropper {
 	background-color: #f1f0ef;
 	/* White background for the box */
