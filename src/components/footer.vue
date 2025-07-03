@@ -159,20 +159,20 @@ export default {
                 <div class="col-lg-3 col-md-3 ps-lg-5">
                     <div class="d-flex flex-column flex-lg-column justify-content-center">
                         <h4 class="text_footer-title"> {{ $t('footer_important_links') }} </h4>
-                        <a href="#">
+                        <router-link :to="{ name: 'main' }">
                             <span class="text_footer">{{ $t('footer_main') }} </span>
-                        </a>
+                        </router-link>
 
-                        <a href="about-us.html">
+                        <router-link :to="{ name: 'vehicles' }">
                             <span class="text_footer">{{ $t('footer_vehicles') }} </span>
-                        </a>
+                        </router-link>
 
-                        <a href="common.html">
+                        <router-link :to="{ name: 'sellers' }">
                             <span class="text_footer">{{ $t('footer_sellers') }} </span>
-                        </a>
-                        <a href="common.html">
+                        </router-link>
+                        <router-link :to="{ name: 'main' }">
                             <span class="text_footer">ادفع للموقع</span>
-                        </a>
+                        </router-link>
                     </div>
                     
                 </div>

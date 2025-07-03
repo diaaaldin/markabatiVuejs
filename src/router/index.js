@@ -84,7 +84,7 @@ const routes = [
         component: vehicle
     },
     {
-        path: '/gallary',
+        path: '/gallary/:slug',
         name: "gallary",
         component: gallary
     },
@@ -93,27 +93,6 @@ const routes = [
         name: "payForUs",
         component: payForUs
     },
-
-    // {
-    //     path: '/add_announcement',
-    //     name: "add_announcement",
-    //     component: add_announcement
-    // },
-    // {
-    //     path: '/update_announcement',
-    //     name: "update_announcement",
-    //     component: update_announcement
-    // },
-    // {
-    //     path: '/add_vehicle',
-    //     name: "add_vehicle",
-    //     component: add_vehicle
-    // },
-    // {
-    //     path: '/update_vehicle',
-    //     name: "update_vehicle",
-    //     component: update_vehicle
-    // },
     {
         path: '/teckitfail',
         name: "teckitfail",

@@ -63,7 +63,6 @@ export default {
                     });
                     this.clearData();
                     loading.close();
-                    
                 }).catch(error => {
                     this.$moshaToast(error.response.data.message, {
                         hideProgressBar: 'false',

@@ -17,7 +17,6 @@ export default {
     },
 
     GetVehiclesRandomly(data) {
-
         const queryString = new URLSearchParams({
             ownerId: data.ownerId,
             vehicleBrandId: data.vehicleBrandId,
@@ -46,7 +45,19 @@ export default {
         };
         return Api.get(`${END_POINT}/GetVehiclesRandomly`, config);
     },
-  
+
+    GetUserVehicles(data) {
+        let config = {
+            params: {
+                userId: data.userId,
+                page: data.page,
+                pageSize: data.pageSize,
+            },
+
+        };
+        return Api.get(`${END_POINT}/GetUserVehicles`, config);
+    },
+
 
 
     GetVehicelForUpdate(id) {

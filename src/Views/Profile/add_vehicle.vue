@@ -127,6 +127,8 @@ export default {
 		},
 
 		createFunc() {
+
+
 			const loading = ElLoading.service({
 				lock: true,
 				background: 'rgba(0, 0, 0, 0.7)',
@@ -145,6 +147,7 @@ export default {
 							timeout: 3000,
 						});
 						loading.close();
+						$('#swear').modal('hide');
 						this.$router.push({ name: "profile_my_vehicles" });
 					});
 				}
@@ -790,7 +793,7 @@ function debounce(func, wait) {
 					<p>هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص .</p>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-primary">
+					<button @click="createFunc()" type="button" class="btn btn-primary">
 						 تأكيد
 					</button>
 				</div>

@@ -69,6 +69,16 @@ export default {
         };
         return Api.get(`${END_POINT}/GetCompanyUsers`, config);
     },
+    GetSellers(data) {
+        let config = {
+            params: {
+                name: data.name,
+                page: data.page,
+                pageSize: data.pageSize,
+            },
+        };
+        return Api.get(`${END_POINT}/GetSellers`, config);
+    },
 
 
     CustomerProfileInfo(id) {

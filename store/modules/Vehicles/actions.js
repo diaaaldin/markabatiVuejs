@@ -18,6 +18,15 @@ export const GetVehiclesRandomly = ({ commit, dispatch },data) => {
     });
 }
 
+export const GetUserVehicles = ({ commit, dispatch },data) => {
+    return Vehicle.GetUserVehicles(data).then(function (response) {
+        commit('SET_USER_VEHICELS_DATA', response.data.data);
+        return response.data.data;
+    }).catch(function (error) {
+            throw error;
+    });
+}
+
 export const GetVehicelForUpdate = ({ commit, dispatch },id) => {
     // console.log("action run ");
     return Vehicle.GetVehicelForUpdate(id).then(function (response) {
@@ -48,7 +57,7 @@ export const GetVehicleUpdateInfo = ({ commit, dispatch },VehicleId) => {
 
 export const UpdateVehicle = ({ commit, dispatch },data) => {
     return Vehicle.UpdateVehicle(data).then(function (response) {
-        commit('SET_CREATE_UPDATE_VEHICEL_DATA', response.data.data);
+        // commit('SET_CREATE_UPDATE_VEHICEL_DATA', response.data.data);
         return response.data.data;
     }).catch(function (error) {
             throw error;
@@ -57,7 +66,7 @@ export const UpdateVehicle = ({ commit, dispatch },data) => {
 
 export const CreateVehicle = ({ commit, dispatch },data) => {
      return Vehicle.CreateVehicle(data).then(function (response) {
-         commit('SET_CREATE_UPDATE_VEHICEL_DATA', response.data.data);
+        //  commit('SET_CREATE_UPDATE_VEHICEL_DATA', response.data.data);
          return response.data.data; 
      }).catch(function (error) {
              throw error;

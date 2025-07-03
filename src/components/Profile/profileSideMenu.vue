@@ -30,7 +30,6 @@ export default {
       const imageUrl = this.getUserData && this.getUserData.image
         ? this.getUserData.image
         : "/img/profile-icon.png";
-
       return imageUrl;
     }
   },

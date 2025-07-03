@@ -16,7 +16,6 @@ export default {
         return {
 
             dataSearch: {
-                // exceptionIds: [],
                 ownerId: 0,
                 vehicleBrandId: 0,
                 vehicleModelId: 0,
@@ -35,7 +34,14 @@ export default {
                 oilType: 0,
 
                 page: 1,
-                pageSize: 12
+                pageSize: 6
+            },
+
+            pagination: {
+                currentPage: 1,
+                pageCount: 3,
+                pageSize: 3,
+                rowCount: 9,
             },
         }
     },
@@ -66,26 +72,25 @@ export default {
 
     },
 
-    async created() {
+    created() {
 
         this.initFunc();
 
     },
     watch: {
-        // Watch for changes in the event prop's stateId
-        // "getCompanyData.stateId": {
-        //     immediate: true,
-        //     handler(newStateId) {
-        //         if (newStateId) {
-        //             this.fetchSearchCities(newStateId);
-        //         }
-        //     }
-        // }
+
     },
 
     computed: {
         ...mapGetters("Announcement", ["getVerticalAnnouncementData", "getHorizontalAnnouncementData"]),
         ...mapGetters("Vehicles", ["getVehiclesData"]),
+
+        startItem() {
+            return (this.pagination.currentPage - 1) * this.pagination.pageSize + 1;
+        },
+        endItem() {
+            return Math.min(this.pagination.currentPage * this.pagination.pageSize, this.pagination.rowCount);
+        }
 
     },
     methods: {
@@ -101,7 +106,9 @@ export default {
 
             this.GetHorizontalAnnouncementActiveOrder();
             this.GetVehiclesRandomly(this.dataSearch).then(Response => {
-                console.log("vehicles : ", this.getVehiclesData);
+                this.pagination = this.getVehiclesData.vehicles.pagination;
+                // console.log("vehicles : ", this.getVehiclesData);
+                // console.log("this.pagination : ", this.pagination);
                 loading.close();
             }).catch(error => {
                 this.$moshaToast(error.response.data.message, {
@@ -126,6 +133,7 @@ export default {
             });
 
             this.GetVehiclesRandomly(this.dataSearch).then(Response => {
+                this.pagination = this.getVehiclesData.vehicles.pagination;
                 loading.close();
             }).catch(error => {
                 this.$moshaToast(error.response.data.message, {
@@ -260,6 +268,13 @@ export default {
             this.SearchChangeFunc();
         },
 
+        goToPage(page) {
+            if (page < 1 || page > this.pagination.pageCount) return;
+            this.dataSearch.page = page;
+            this.SearchChangeFunc();
+        },
+       
+
     },
     beforeDestroy() {
         document.removeEventListener('click', this.closeDropdown);
@@ -308,9 +323,10 @@ export default {
                         </select> -->
                         <div class="clearfix"></div>
                         <div class="row">
-                            <productCard v-for="item in this.getVehiclesData.vehicles.data" :product='item' ></productCard>
+                            <productCard v-for="item in this.getVehiclesData.vehicles.data" :product='item'>
+                            </productCard>
                         </div>
-                        <div class="row">
+                        <!-- <div class="row">
                             <div class="pag">
                                 <p class="count">أظهر 1 من 5</p>
                                 <ul class="pagination">
@@ -321,7 +337,33 @@ export default {
                                     <li><a href="#"><i class="fa-solid fa-arrow-left"></i></a></li>
                                 </ul>
                             </div>
+                        </div> -->
+                        <div class="row" >
+                            <div class="pag" >
+                                <p class="count">
+                                    أظهر {{ startItem }} إلى {{ endItem }} من {{ pagination.rowCount }}
+                                </p>
+                                <ul class="pagination">
+                                    <li :class="{ disabled: pagination.currentPage === 1 }">
+                                        <a href="#" @click.prevent="goToPage(pagination.currentPage - 1)">
+                                            <i class="fa-solid fa-arrow-right"></i>
+                                        </a>
+                                    </li>
+                                    <li v-for="page in pagination.pageCount" :key="page"
+                                        :class="{ active: pagination.currentPage === page }">
+                                        <a href="#" @click.prevent="goToPage(page)">
+                                            {{ page }}
+                                        </a>
+                                    </li>
+                                    <li :class="{ disabled: pagination.currentPage === pagination.pageCount }">
+                                        <a href="#" @click.prevent="goToPage(pagination.currentPage + 1)">
+                                            <i class="fa-solid fa-arrow-left"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
+
                     </div>
                 </div>
 
@@ -329,9 +371,11 @@ export default {
             </div>
         </div>
     </section>
-    
+
     <lowerAnnouncement></lowerAnnouncement>
 
     <pageFooter></pageFooter>
 </template>
-<style scoped></style>
+<style scoped>
+
+</style>
