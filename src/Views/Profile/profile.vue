@@ -180,8 +180,8 @@ export default {
             this.data.addressInfo = this.getUserData.addressInfo;
             this.data.moreInfo = this.getUserData.moreInfo;
 
-            console.log("this.getUserData.id : ",this.getUserData.id);
-            console.log("localStorage.getItem('id') : " , localStorage.getItem('id'));
+            console.log("this.getUserData.id : ", this.getUserData.id);
+            console.log("localStorage.getItem('id') : ", localStorage.getItem('id'));
         },
 
         initFunc() {
@@ -190,6 +190,7 @@ export default {
                 background: 'rgba(0, 0, 0, 0.7)',
                 text: "",
             });
+
             this.GetStates();
             this.GetCities();
             if (this.data.userType == UserTypeEnum.Normal) {
@@ -473,42 +474,76 @@ export default {
                     background: 'rgba(0, 0, 0, 0.7)',
                     text: "",
                 });
-
-                //// console.log("this.data for update : ", this.data);
-                this.UpdateAdminImage(this.imagePath).then(Response => {
-                    this.$moshaToast(this.$t('general_update_operation_success_message'), {
-                        hideProgressBar: 'false',
-                        showIcon: 'true',
-                        swipeClose: 'true',
-                        type: 'success',
-                        timeout: 3000,
+                if (this.data.userType == UserTypeEnum.Normal) {
+                    this.UpdateCustomerImage(this.imagePath).then(Response => {
+                        this.$moshaToast(this.$t('general_update_operation_success_message'), {
+                            hideProgressBar: 'false',
+                            showIcon: 'true',
+                            swipeClose: 'true',
+                            type: 'success',
+                            timeout: 3000,
+                        });
+                        loading.close();
+                        this.GetData();
+                    }).catch(error => {
+                        if (error.response && error.response.status === 401) {
+                            this.$moshaToast(this.$t('general_user_not_allow_error_message'), {
+                                hideProgressBar: 'false',
+                                position: 'top-center',
+                                showIcon: 'true',
+                                swipeClose: 'true',
+                                type: 'warning',
+                                timeout: 3000,
+                            });
+                        } else {
+                            // Handle other errors with the provided message from the response
+                            this.$moshaToast(error.response?.data?.message || 'An error occurred', {
+                                hideProgressBar: 'false',
+                                position: 'top-center',
+                                showIcon: 'true',
+                                swipeClose: 'true',
+                                type: 'warning',  // Default type is 'warning'
+                                timeout: 3000,
+                            });
+                        }
+                        loading.close();
                     });
-                    loading.close();
-                    this.GetData();
-                    $('#edit_personal_details').modal('hide');
-                }).catch(error => {
-                    if (error.response && error.response.status === 401) {
-                        this.$moshaToast(this.$t('general_user_not_allow_error_message'), {
+                } else {
+                    this.UpdateCompanyImage(this.imagePath).then(Response => {
+                        this.$moshaToast(this.$t('general_update_operation_success_message'), {
                             hideProgressBar: 'false',
-                            position: 'top-center',
                             showIcon: 'true',
                             swipeClose: 'true',
-                            type: 'warning',
+                            type: 'success',
                             timeout: 3000,
                         });
-                    } else {
-                        // Handle other errors with the provided message from the response
-                        this.$moshaToast(error.response?.data?.message || 'An error occurred', {
-                            hideProgressBar: 'false',
-                            position: 'top-center',
-                            showIcon: 'true',
-                            swipeClose: 'true',
-                            type: 'warning',  // Default type is 'warning'
-                            timeout: 3000,
-                        });
-                    }
-                    loading.close();
-                });
+                        loading.close();
+                        this.GetData();
+                    }).catch(error => {
+                        if (error.response && error.response.status === 401) {
+                            this.$moshaToast(this.$t('general_user_not_allow_error_message'), {
+                                hideProgressBar: 'false',
+                                position: 'top-center',
+                                showIcon: 'true',
+                                swipeClose: 'true',
+                                type: 'warning',
+                                timeout: 3000,
+                            });
+                        } else {
+                            // Handle other errors with the provided message from the response
+                            this.$moshaToast(error.response?.data?.message || 'An error occurred', {
+                                hideProgressBar: 'false',
+                                position: 'top-center',
+                                showIcon: 'true',
+                                swipeClose: 'true',
+                                type: 'warning',  // Default type is 'warning'
+                                timeout: 3000,
+                            });
+                        }
+                        loading.close();
+                    });
+                }
+
             }
         },
 
@@ -634,7 +669,8 @@ export default {
                 <div class="row ">
                     <div class="ads">
                         <div class="add">
-                            <router-link :to="{ name: 'profile_add_vehicle' }" class="option">{{ $t('profile_btn_addVehicel') }}
+                            <router-link :to="{ name: 'profile_add_vehicle' }" class="option">{{
+                                $t('profile_btn_addVehicel') }}
                                 <svg viewBox="0 0 24 24" width="20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                                     <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
@@ -648,7 +684,8 @@ export default {
                                     </g>
                                 </svg>
                             </router-link>
-                            <router-link :to="{ name: 'profile_add_ads' }" class="option">{{ $t('profile_btn_addAnnouncement') }}
+                            <router-link :to="{ name: 'profile_add_ads' }" class="option">{{
+                                $t('profile_btn_addAnnouncement') }}
                                 <svg viewBox="0 0 24 24" width="20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                                     <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>

@@ -28,6 +28,9 @@ export default {
 
 	data() {
 		return {
+			
+			userSlug:localStorage.getItem("slug"),
+
 			user: {
 				email: "",
 				password: "",
@@ -67,8 +70,6 @@ export default {
 				});
 
 				this.UserLogin(this.user).then(Response => {
-					
-
 					this.$moshaToast('Login Success', {
 						hideProgressBar: 'false',
 						showIcon: 'true',
@@ -80,7 +81,7 @@ export default {
 					// if (Response.typeName == "Customer") {
 					// 	this.$router.push({ name: 'main' });
 					// }
-					this.$router.push({ name: 'profile' });
+               		this.$router.push({ name: "profile_profile" });
 				}).catch(error => {
 					this.$moshaToast(error.response.data.message, {
 						hideProgressBar: 'false',
@@ -221,7 +222,7 @@ export default {
 											:type="isPasswordVisible ? 'text' : 'password'"
 											v-model="user.password" class="form-control my-3 py-3 gray_text gray-inp"
 											autocomplete="current-password" placeholder="كلمة المرور"
-											required @input="console.log('Current input type:', $event.target.type)" />
+											required />
 											<span  @click="togglePasswordVisibility" style="cursor: pointer;">
 												<!-- <i  class="far fa-eye-slash"></i> -->
 												<i  class="far fa-eye"></i>

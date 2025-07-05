@@ -52,12 +52,21 @@ export default {
     },
 
     computed: {
+        ...mapGetters("Code", ["getStatesData", "getCitiesData"]),
         ...mapGetters("Products", ["getFavoritProductsData"]),
 
     },
     methods: {
+        ...mapActions("Code", ["GetStates", "GetCities"]),
         ...mapActions("Products", ["ToggleProductInBasket"]),
+        
+        ownerImageFunc(imgae) {
+            const imageUrl = imgae
+                ? imgae
+                : "/img/seller/seller.png";
 
+            return imageUrl;
+        },
         chickIsFavoritFunc() {
             if (this.getFavoritProductsData && this.getFavoritProductsData.some(x => x.id === this.product.id)) {
                 this.isFilled = true;
@@ -122,12 +131,11 @@ export default {
         },
 
         toProductFunc() {
-
             this.$router.push({ name: "vehicle", params: { slug: this.product.slug } });
         },
 
-        toMarketFunc() {
-            this.$router.push({ name: 'productsmarket', params: { id: this.product.userId } });
+        toSellerGallaryFunc() {
+            this.$router.push({ name: "gallary", params: { slug: this.product.ownerSlug } });
         },
 
         stripHtml(html) {
@@ -158,7 +166,18 @@ export default {
                 minimumFractionDigits: 0, // No decimals
                 maximumFractionDigits: 0  // No decimals
             }).format(value);
-        }
+        },
+
+        stateNameFunc(id) {
+            let res = this.getStatesData.find(x => x.id === id);
+            if (res) return res.name;
+            else return "";
+        },
+        cityNameFunc(id) {
+            let res = this.getCitiesData.find(x => x.id === id);
+            if (res) return res.name;
+            else return "";
+        },
 
     }
 };
@@ -285,17 +304,21 @@ export default {
                 </div>
                 <div class="modal-body">
                     <div class="card seller_card">
-                        <div class="img"><img src="/img/seller/seller.png" class="" alt="..."></div>
+                        <div class="img">
+                            <img v-on:click="toSellerGallaryFunc()" :src="ownerImageFunc(product.ownerImage)" class=""
+                                alt="...">
+                        </div>
                         <div class="card-body">
                             <div class="d-flex justify-content-center align-items-baseline mb-2">
-                                <h6 class="card-title justify-content-center">عبد الله المدهون</h6>
+                                <h6 class="card-title justify-content-center">{{ product.ownerName }} </h6>
                             </div>
                             <div class="d-flex justify-content-center">
                                 <div class="d-flex flex-column">
                                     <div class="d-flex align-items-center mb-2">
                                         <ul class="addresul text-center">
-                                            <li>قطاع غزة / تل الهوا</li>
-                                            <li>شارع الجلاء - بالقرب من الزهارنة</li>
+                                            <li>{{ cityNameFunc(product.ownerAddressCityId) }} / {{
+                                                stateNameFunc(product.ownerAddressStateId) }} </li>
+                                            <li>{{ product.ownerAddressInfo }}</li>
                                         </ul>
                                     </div>
                                     <div class="card-show">
@@ -306,10 +329,10 @@ export default {
                                                         <path
                                                             d="M14 0.666748C21.3637 0.666748 27.3333 6.63628 27.3333 14.0001C27.3333 21.3638 21.3637 27.3334 14 27.3334C6.6362 27.3334 0.666666 21.3638 0.666666 14.0001C0.666666 6.63628 6.6362 0.666748 14 0.666748ZM18.2929 9.95964L12.3333 15.9191L9.7071 13.293C9.31659 12.9025 8.68341 12.9025 8.29289 13.293C7.90237 13.6835 7.90237 14.3166 8.29289 14.7071L11.6263 18.0405C12.0168 18.431 12.6499 18.431 13.0404 18.0405L19.7071 11.3738C20.0976 10.9833 20.0976 10.3502 19.7071 9.95964C19.3165 9.56912 18.6835 9.56912 18.2929 9.95964Z"
                                                             fill="#24DC26"></path>
-                                                    </svg> للتواصل: 0598266845 </li>
+                                                    </svg> للتواصل: {{ product.ownerMobile }} </li>
                                             </ul>
                                         </div>
-                                        
+
                                     </div>
                                 </div>
                             </div>
@@ -318,7 +341,7 @@ export default {
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary">
-                                                راسل البائع
+                        راسل البائع
                         <svg viewBox="0 0 24 24" width="24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
                             <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
@@ -339,21 +362,25 @@ export default {
     cursor: pointer;
     /* Change cursor to pointer for better UX */
 }
-.seller_card{
+
+.seller_card {
     border: none;
     padding-bottom: 0;
 }
+
 .modal-footer .btn-primary {
     /* width: 50px;
     height: 50px;
      */
-     border-radius: 30px;
-     padding: 8px 30px;
+    border-radius: 30px;
+    padding: 8px 30px;
     margin: 0 auto;
 }
+
 .modal-footer .btn-primary svg {
     margin-right: 10px;
 }
+
 .modal-footer .btn-primary svg path {
     fill: white;
 }

@@ -69,8 +69,7 @@ export default {
     GetStarVehicleOrderDate() {
         return Api.get(`${END_POINT}/GetStarVehicleOrderDate`);
     },
-
-    GetAnnouncementOrderDate(announcementType) {
+    GetAnnouncementOrderDate(announcementType ) {
         let config = {
             params: {
                 announcementType: announcementType,

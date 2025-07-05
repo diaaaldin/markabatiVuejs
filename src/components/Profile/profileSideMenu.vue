@@ -24,14 +24,20 @@ export default {
   },
 
   computed: {
-    ...mapGetters("Users", ["getUserData"]),
+    ...mapGetters("Users", ["getUserData" ]),
 
     userImage() {
       const imageUrl = this.getUserData && this.getUserData.image
         ? this.getUserData.image
         : "/img/profile-icon.png";
       return imageUrl;
-    }
+    },
+    userName(){
+      const name = this.getUserData && this.getUserData.name
+        ? this.getUserData.name
+        : "";
+        return name;
+    },
   },
   methods: {
     // ...mapActions("Services", ["GetStatistics"]),
@@ -57,13 +63,13 @@ export default {
               <img :src="userImage" class="img-fluid hero-profile-pic1" alt="profile pic">
               <div class="d-flex flex-column">
 
-                <router-link to="/profile" class="list_link ms-2" style="color: black">ضياء</router-link>
+                <router-link to="/profile" class="list_link ms-2" style="color: black">{{ userName }}</router-link>
 
                 <div class=" align-items-center d-flex ms-2">
                   <svg width="7" height="7" viewBox="0 0 7 7" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <circle cx="3.5" cy="3.5" r="3.5" fill="#0AB905" />
                   </svg>
-                  <span class="gray_text ms-1 " style="font-size: 10px">حساب نشط </span>
+                  <span class="gray_text ms-1 " style="font-size: 10px"> حساب نشط </span>
                 </div>
               </div>
             </div>

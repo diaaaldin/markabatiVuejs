@@ -106,6 +106,7 @@ export default {
 				// Execute all methods in parallel
 				await Promise.all([
 					this.GetBrands(),
+					this.GetBrandModels(this.getCreateUpdateVehicleData.brandIdFk),
 					this.GetPaintedStatus(),
 					this.GetSpecification(),
 					this.GetBodyType(),
@@ -117,7 +118,7 @@ export default {
 					this.mapData(),
 				]);
 
-				console.log("vehicle : ", this.getCreateUpdateVehicleData);
+				// console.log("vehicle : ", this.getCreateUpdateVehicleData);
 
 			} catch (error) {
 				console.error("An error occurred during initialization:", error);
@@ -127,8 +128,29 @@ export default {
 			}
 		},
 
-		mapData() {
+		async mapData() {
 			this.data = this.getCreateUpdateVehicleData;
+
+			// this.data.id = this.getCreateUpdateVehicleData.id;
+			// this.data.brandIdFk = this.getCreateUpdateVehicleData.brandIdFk;
+			// this.data.modelIdFk = this.getCreateUpdateVehicleData.modelIdFk;
+			// this.data.year = this.getCreateUpdateVehicleData.year;
+			// this.data.numOfMeals = this.getCreateUpdateVehicleData.numOfMeals;
+			// this.data.bodyTypeIdCfk = this.getCreateUpdateVehicleData.bodyTypeIdCfk;
+			// this.data.colorIdCFK = this.getCreateUpdateVehicleData.colorIdCFK;
+			// this.data.paintedTypeIdCfk = this.getCreateUpdateVehicleData.paintedTypeIdCfk;
+			// this.data.paintedStatusIdCfk = this.getCreateUpdateVehicleData.paintedStatusIdCfk;
+			// this.data.specificationIdCfk = this.getCreateUpdateVehicleData.specificationIdCfk;
+			// this.data.price = this.getCreateUpdateVehicleData.price;
+			// this.data.currency = this.getCreateUpdateVehicleData.currency;
+			// this.data.gearTypeIdCfk = this.getCreateUpdateVehicleData.gearTypeIdCfk;
+			// this.data.oilTypeIdCfk = this.getCreateUpdateVehicleData.oilTypeIdCfk;
+			// this.data.image = this.getCreateUpdateVehicleData.image;
+			// this.data.images = this.getCreateUpdateVehicleData.images;
+			// this.data.bestThreeCategories = this.getCreateUpdateVehicleData.bestThreeCategories;
+			// this.data.moreInfo = this.getCreateUpdateVehicleData.moreInfo;
+			// this.data.extinsionCategory = this.getCreateUpdateVehicleData.extinsionCategory;
+
 		},
 
 		checkUserAllowFunc() {

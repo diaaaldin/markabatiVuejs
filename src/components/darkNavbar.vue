@@ -6,6 +6,7 @@ export default {
     data() {
         return {
 
+
             dashUrl: {
                 login: Urls.login,
                 addProduct: Urls.addProduct,
@@ -34,27 +35,34 @@ export default {
     },
 
     computed: {
-        // ...mapGetters("Services", ["getStatisticsData"]),
-        GetUserName() {
+        ...mapGetters("Users", ["getUserData"]),
+
+        userImage() {
+            const imageUrl = this.getUserData && this.getUserData.image
+                ? this.getUserData.image
+                : "/img/profile-icon.png";
+
+           return "/img/profile-icon.png";
+            // return imageUrl;
+        },
+        userHaveToken() {
             const name = this.getUserLoginName;// just for loud this function again when name change
-            let userName = localStorage.getItem("userName");
-            if (userName == null) {
-                return "";
+            let token = localStorage.getItem("token");
+            if (token == null) {
+                return false;
             } else {
-                return userName;
+                return true;
             }
         },
     },
     methods: {
         ...mapActions("Users", ["CustomerProfileInfo"]),
+
         goToProfileFunc() {
             if (!this.isTokenValid()) {
                 this.$router.push({ name: 'login' });
             } else {
-                let email = localStorage.getItem("email");
-                // this.CustomerProfileInfo(email).then(Response => {
-                this.$router.push({ name: 'profile' });
-                // })
+                this.$router.push({ name: "profile_profile" });
             }
         },
 
@@ -123,7 +131,7 @@ export default {
                     </ul>
                 </div>
 
-                <ul v-if="GetUserName == ''"
+                <ul v-if="userHaveToken == false"
                     class="nav align-items-center mb-2 mb-lg-0 white-header justify-content-center gradiant_nav">
                     <li class="nav-item login">
                         <router-link to="/login" class="px-3 py-2 align-items-center d-flex login-btn"> {{

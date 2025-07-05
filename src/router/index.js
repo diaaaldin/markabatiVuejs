@@ -169,14 +169,15 @@ const routes = [
 const router = createRouter({
     history: createWebHistory(),
     routes,
+    
       // to scroll to the top if any route happen
-    //   scrollBehavior(to, from, savedPosition) {
-    //     if (savedPosition) {
-    //         return savedPosition;
-    //     } else {
-    //         return { left: 0, top: 0 }; // Always scroll to the top
-    //     }
-    // }
+      scrollBehavior(to, from, savedPosition) {
+        if (savedPosition) {
+            return savedPosition;
+        } else {
+            return {  top: 0 }; // Always scroll to the top
+        }
+    }
 });
 
 export default router 

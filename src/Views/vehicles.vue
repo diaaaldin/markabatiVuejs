@@ -219,44 +219,54 @@ export default {
         handleYearSelection({ from, to }) {
             this.dataSearch.yearFrom = from;
             this.dataSearch.yearTo = to;
+            this.dataSearch.page = 1;
             this.SearchChangeFunc();
         },
         handlePriceSelection({ from, to }) {
             this.dataSearch.priceFrom = from;
             this.dataSearch.priceTo = to;
+            this.dataSearch.page = 1;
             this.SearchChangeFunc();
         },
         handleMealSelection({ from, to }) {
             this.dataSearch.mealsFrom = from;
             this.dataSearch.mealsTo = to;
+            this.dataSearch.page = 1;
             this.SearchChangeFunc();
         },
         handleBrandSelection(id) {
             this.dataSearch.vehicleBrandId = id;
+            this.dataSearch.page = 1;
             this.SearchChangeFunc();
         },
         handleBrandModelSelection(id) {
             this.dataSearch.vehicleModelId = id;
+            this.dataSearch.page = 1;
             this.SearchChangeFunc();
         },
         handlePaintedStatusSelection(id) {
             this.dataSearch.paintedStatus = id;
+            this.dataSearch.page = 1;
             this.SearchChangeFunc();
         },
         handleSpecificationSelection(id) {
             this.dataSearch.specification = id;
+            this.dataSearch.page = 1;
             this.SearchChangeFunc();
         },
         handleBodyTypeSelection(id) {
             this.dataSearch.bodyType = id;
+            this.dataSearch.page = 1;
             this.SearchChangeFunc();
         },
         handleColorSelection(id) {
             this.dataSearch.color = id;
+            this.dataSearch.page = 1;
             this.SearchChangeFunc();
         },
         handlePaintedTypeSelection(id) {
             this.dataSearch.paintedType = id;
+            this.dataSearch.page = 1;
             this.SearchChangeFunc();
         },
         handleGearTypeSelection(id) {
@@ -265,6 +275,7 @@ export default {
         },
         handleOilTypeSelection(id) {
             this.dataSearch.oilType = id;
+            this.dataSearch.page = 1;
             this.SearchChangeFunc();
         },
 

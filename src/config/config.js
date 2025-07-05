@@ -9,8 +9,8 @@ export const socialUrlData = {
 };
 
 export const Urls = {
-  //cpSite : 'https://localhost:44347',
-  cpSite : 'https://cp.markabatistore.com',
+   cpSite : 'https://localhost:44347',
+  //cpSite : 'https://cp.markabatistore.com',
   //cpSite : 'http://localhost:4000',
 
   dashboard: 'https://dash.markabatistore.com',
@@ -102,4 +102,11 @@ export const InterfacesEnum = {
   aboutUs : 92,
   fotter : 93,
   modals : 94,
+};
+
+export const OrderMaxConcurrentEnum = {
+  starAnnouncement: 95,
+  mainAnnouncement: 96,
+  verticalAnnouncement: 97,
+  horizontalAnnouncement: 98,
 };

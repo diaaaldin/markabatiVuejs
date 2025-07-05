@@ -232,16 +232,27 @@ export default {
 			this.orderDate = "";
 			this.imageCropperSrc = null;
 			this.GetAnnouncementOrderDate(this.data.announcementType).then((Response) => {
+				console.log("Response : ", Response);
 				let stringDate = this.formatDate(Response);
 				this.orderDate = stringDate;
 			});
+
 		},
 
+		// formatDate(dateString) {
+		// 	// Convert the date string to yyyy-MM-dd
+		// 	const date = new Date(`${dateString}Z`);
+		// 	return date.toISOString().split('T')[0];
+		// },
+
 		formatDate(dateString) {
-			// Convert the date string to yyyy-MM-dd
-			const date = new Date(`${dateString}Z`);
-			return date.toISOString().split('T')[0];
+			const date = new Date(dateString);
+			if (isNaN(date)) return '';
+			return date.getFullYear() + '-' +
+				String(date.getMonth() + 1).padStart(2, '0') + '-' +
+				String(date.getDate()).padStart(2, '0');
 		},
+
 		formatCurrency(value) {
 			return new Intl.NumberFormat('en-US', {
 				style: 'currency',
@@ -285,7 +296,7 @@ export default {
 					<div class="col-12 col-md-12">
 						<div class="form-group">
 							<label>نوع الإعلان</label>
-							<select v-model="data.announcementType"
+							<select v-model="data.announcementType" v-on:change="changeAnnouncementTypeFunc()"
 								class="form-control mt-2 mb-4  py-3 text-start list_link gray-inp">
 								<option value="0" key="0" selected>--إختر نوع الإعلان المرادة --</option>
 								<option v-for="item in getAnnouncementTypesData" :key="item.id" :value="item.id">
@@ -411,7 +422,7 @@ export default {
 									</g>
 								</g>
 							</svg>
-							التاريخ المرجح أن يعرض به الإعلان في حال تمت الموافقة 2025-07-12
+							التاريخ المرجح أن يعرض به الإعلان في حال تمت الموافقة {{ this.orderDate }}
 						</p>
 					</div>
 

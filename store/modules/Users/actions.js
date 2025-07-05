@@ -1,4 +1,6 @@
 import User from "@/apis/Users";
+import { UserTypeEnum } from '@/config/config';
+
 
 
 export const GetUsers = ({ commit, dispatch }, data) => {
@@ -65,14 +67,14 @@ export const CompanyProfileInfo = ({ commit, dispatch }, userId) => {
 export const UserLogin = ({ commit, dispatch }, data) => {
     return User.UserLogin(data).then(function (response) {
         if (response.data.data.id > 0) {
-        //    console.log("response : " , response);
-            commit('USER_LOGINNAME', response.data.data.name);
+            // console.log("response : " , response);
+            // commit('USER_LOGINNAME', response.data.data.name);
             localStorage.setItem("token", JSON.stringify(response.data.data.token));
+            // localStorage.setItem("slug", response.data.data.slug);
             response.data.data.token = "";
             localStorage.setItem('userName', JSON.parse(JSON.stringify(response.data.data.name)));
             localStorage.setItem('userType', JSON.parse(JSON.stringify(response.data.data.userType)));
             localStorage.setItem('id', JSON.parse(JSON.stringify(response.data.data.id)));
-            // localStorage.setItem('addressState',  JSON.parse(JSON.stringify(response.data.data.addressState)));
         }
         return response.data.data;
     }).catch(function (error) {

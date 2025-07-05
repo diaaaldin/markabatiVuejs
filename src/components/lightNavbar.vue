@@ -34,14 +34,23 @@ export default {
     },
 
     computed: {
-        // ...mapGetters("Services", ["getStatisticsData"]),
-        GetUserName() {
+        ...mapGetters("Users", ["getUserData"]),
+
+        userImage() {
+            const imageUrl = this.getUserData && this.getUserData.image
+                ? this.getUserData.image
+                : "/img/profile-icon.png";
+
+            return "/img/profile-icon.png";
+            // return imageUrl;
+        },
+        userHaveToken() {
             const name = this.getUserLoginName;// just for loud this function again when name change
-            let userName = localStorage.getItem("userName");
-            if (userName == null) {
-                return "";
+            let token = localStorage.getItem("token");
+            if (token == null) {
+                return false;
             } else {
-                return userName;
+                return true;
             }
         },
     },
@@ -51,10 +60,7 @@ export default {
             if (!this.isTokenValid()) {
                 this.$router.push({ name: 'login' });
             } else {
-                let email = localStorage.getItem("email");
-                // this.CustomerProfileInfo(email).then(Response => {
-                this.$router.push({ name: 'profile' });
-                // })
+                this.$router.push({ name: "profile_profile"});
             }
         },
 
@@ -121,7 +127,7 @@ export default {
                         </li>
                     </ul>
 
-                    <ul v-if="GetUserName == ''"
+                    <ul v-if="userHaveToken == false"
                         class="nav align-items-center mb-2 mb-lg-0 white-header justify-content-center gradiant_nav">
                         <li class="nav-item login">
                             <router-link to="/login" class="px-3 py-2 align-items-center d-flex login-btn"> {{
@@ -284,7 +290,7 @@ export default {
                                     <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z" />
                                 </svg>
                                 <div class="img">
-                                    <img src="/img/profile-icon.png" class="" alt="...">
+                                    <img :src="userImage" class="" alt="...">
                                 </div>
                                 
                                 <!-- {{ GetUserName }} -->
