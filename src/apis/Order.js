@@ -78,6 +78,19 @@ export default {
         return Api.get(`${END_POINT}/GetAnnouncementOrderDate`, config);
     },
 
+     GetStarVehicleOrderDailyPrice() {
+        return Api.get(`${END_POINT}/GetStarVehicleOrderDailyPrice`);
+    },
+    GetAnnouncementOrderDailyPrice(announcementType ) {
+        let config = {
+            params: {
+                announcementType: announcementType,
+            },
+        };
+        return Api.get(`${END_POINT}/GetAnnouncementOrderDailyPrice`, config);
+    },
+
+
     CreateStarVehicleOrder(data) {
         let token = localStorage.getItem("token")
             ? JSON.parse(localStorage.getItem("token"))

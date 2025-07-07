@@ -9,8 +9,8 @@ export const socialUrlData = {
 };
 
 export const Urls = {
-   cpSite : 'https://localhost:44347',
-  //cpSite : 'https://cp.markabatistore.com',
+  cpSite: 'https://localhost:44347',
+  // cpSite : 'https://cp.markabatistore.com',
   //cpSite : 'http://localhost:4000',
 
   dashboard: 'https://dash.markabatistore.com',
@@ -18,9 +18,9 @@ export const Urls = {
 };
 
 export const AnnouncementTypeEnum = {
-  main: 76,
-  vertical: 77,
-  horizontal: 78,
+  main: 89,
+  vertical: 90,
+  horizontal: 91,
 };
 
 export const UserTypeEnum = {
@@ -39,18 +39,18 @@ export const OrderStatusEnum = {
 };
 
 export const VehicleStatusEnum = {
-  pending: 82,
-  accepted: 83,
-  failed: 84,
-  canceled: 85,
-  saled: 86,
+  pending: 95,
+  accepted: 96,
+  failed: 97,
+  canceled: 98,
+  saled: 99,
 };
 
 export const UserStatusEnum = {
-  pending : 87,
-  accepted : 88,
-  canceled : 89,
-  stoped : 90,
+  pending: 100,
+  accepted: 101,
+  canceled: 102,
+  stoped: 103,
 };
 
 export const OrderTypeEnum = {
@@ -68,8 +68,8 @@ export const ParentEnum = {
   GearType: 7,
   OilType: 8,
   UserType: 9,
-  State: 10,
-  city: 11,
+  Constants: 10,
+  AnnouncementsConstants: 11,
   Currency: 12,
   AnnouncementType: 13,
   SendMessageWay: 14,
@@ -77,15 +77,15 @@ export const ParentEnum = {
 };
 
 export const CurrenceEnum = {
-  NIS: 73,
-  USD: 74,
-  JOD: 75,
+  NIS: 86,
+  USD: 87,
+  JOD: 88,
 };
 
 export const SendMessageWayEnum = {
-  mobile: 79,
-  email: 80,
-  both: 81,
+  mobile: 92,
+  email: 93,
+  both: 94,
 };
 
 export const MessageWayEnum = {
@@ -95,18 +95,22 @@ export const MessageWayEnum = {
 };
 
 export const ConstantsEnum = {
-  imageDefoult: 91,
+  imageDefoult: 73,
 };
 
 export const InterfacesEnum = {
-  aboutUs : 92,
-  fotter : 93,
-  modals : 94,
+  aboutUs: 104,
+  fotter: 105,
+  modals: 106,
 };
 
 export const OrderMaxConcurrentEnum = {
-  starAnnouncement: 95,
-  mainAnnouncement: 96,
-  verticalAnnouncement: 97,
-  horizontalAnnouncement: 98,
+  maximumStarAnnouncements: 76,
+  maximumMainAnnouncements: 77,
+  maximunVirticalAnnouncements: 78,
+  maximumHorizontalAnnouncements: 79,
+  starAnnouncementDailyPrice: 80,
+  mainAnnouncementDailyPrice: 81,
+  virticalAnnouncementDailyPrice: 82,
+  horizontalAnnouncementDailyPrice: 83,
 };

@@ -48,85 +48,10 @@ export default {
 
     computed: {
         ...mapGetters("Users", ["getUserData"]),
-        userImage() {
-            const imageUrl = this.getUserData && this.getUserData.image
-                ? this.getUserData.image
-                : "/img/profile-icon.png";
-
-            return imageUrl;
-        }
     },
     methods: {
         ...mapActions("Users", ["CustomerProfileInfo", "CompanyProfileInfo" ]),
-
-        initFunc() {
-            const loading = ElLoading.service({
-                lock: true,
-                background: 'rgba(0, 0, 0, 0.7)',
-                text: "",
-            });
-
-            const path = window.location.pathname;
-            const lastSection = path.split('/').pop(); // Get the last section of the URL
-            const idMatch = lastSection.match(/^\d+/); // Match numbers at the start of the string
-            const id = idMatch ? idMatch[0] : null; // Extract the first number if it exists
-
-            if ( localStorage.getItem('userType') == UserTypeEnum.Normal) {
-                this.CustomerProfileInfo(id).then(Response => {
-                    // this.setData();
-                    loading.close();
-                }).catch(error => {
-                    if (error.response && error.response.status === 401) {
-                        this.$moshaToast(this.$t('general_user_not_allow_error_message'), {
-                            hideProgressBar: 'false',
-                            position: 'top-center',
-                            showIcon: 'true',
-                            swipeClose: 'true',
-                            type: 'warning',
-                            timeout: 3000,
-                        });
-                    } else {
-                        // Handle other errors with the provided message from the response
-                        this.$moshaToast(error.response?.data?.message || 'An error occurred', {
-                            hideProgressBar: 'false',
-                            position: 'top-center',
-                            showIcon: 'true',
-                            swipeClose: 'true',
-                            type: 'warning',  // Default type is 'warning'
-                            timeout: 3000,
-                        });
-                    }
-                    loading.close();
-                });
-            } else {
-                this.CompanyProfileInfo(id).then(Response => {
-                    // this.setData();
-                    loading.close();
-                }).catch(error => {
-                    if (error.response && error.response.status === 401) {
-                        this.$moshaToast(this.$t('general_user_not_allow_error_message'), {
-                            hideProgressBar: 'false',
-                            position: 'top-center',
-                            showIcon: 'true',
-                            swipeClose: 'true',
-                            type: 'warning',
-                            timeout: 3000,
-                        });
-                    } else {
-                        // Handle other errors with the provided message from the response
-                        this.$moshaToast(error.response?.data?.message || 'An error occurred', {
-                            hideProgressBar: 'false',
-                            position: 'top-center',
-                            showIcon: 'true',
-                            swipeClose: 'true',
-                            type: 'warning',  // Default type is 'warning'
-                            timeout: 3000,
-                        });
-                    }
-                    loading.close();
-                });
-            }
-        },
+       
     }
 };
 </script>

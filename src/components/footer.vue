@@ -171,7 +171,10 @@ export default {
                             <span class="text_footer">{{ $t('footer_sellers') }} </span>
                         </router-link>
                         <router-link :to="{ name: 'main' }">
-                            <span class="text_footer">ادفع للموقع</span>
+                            <span class="text_footer">{{ $t('footer_pay_for_website') }} </span>
+                        </router-link>
+                         <router-link :to="{ name: 'main' }">
+                            <span class="text_footer">{{ $t('footer_comunicaation_with_us') }} </span>
                         </router-link>
                     </div>
                     

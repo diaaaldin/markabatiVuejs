@@ -2,6 +2,8 @@
 import { useHead } from '@vueuse/head'
 import { mapState, mapGetters, mapActions } from "vuex";
 import { ElLoading } from 'element-plus';
+import Vehicle360View from "@/components/Image360/Vehicle360View.vue";
+
 
 
 import pageNav from '@/components/lightNavbar.vue';
@@ -59,6 +61,7 @@ export default {
         },
     },
     mounted() {
+        this.recordVisit();
 
         useHead({
             // Can be static or computed
@@ -81,7 +84,9 @@ export default {
         pageNav,
         pageFooter,
         ImageSlider,
-        productSemilerCard
+        productSemilerCard,
+        Vehicle360View,
+
     },
 
     emits: {
@@ -96,15 +101,11 @@ export default {
         ...mapGetters("Vehicles", ["getVehicleData"]),
         ...mapGetters("Code", ["getStatesData", "getCitiesData"]),
 
-        userImage() {
-            const imageUrl = this.getUserData && this.getUserData.image
-                ? this.getUserData.image
-                : "/img/profile-icon.png";
-            return imageUrl;
-        }
     },
     methods: {
         ...mapActions("Vehicles", ["GetVehicle"]),
+        ...mapActions("Visit", ["RecordVisit"]),
+
 
         initFunc() {
             const loading = ElLoading.service({
@@ -112,7 +113,7 @@ export default {
                 background: 'rgba(0, 0, 0, 0.7)',
                 text: "",
             });
-           
+
             const path = window.location.pathname;
             const lastSection = path.split('/').pop(); // Get the last section of the URL
             const idMatch = lastSection.match(/^\d+/); // Match numbers at the start of the string
@@ -120,7 +121,6 @@ export default {
 
             this.GetVehicle(id).then(Response => {
                 this.data = this.getVehicleData;
-                console.log(this.data);
                 loading.close();
             }).catch(error => {
                 this.$moshaToast(error.response.data.message, {
@@ -210,6 +210,26 @@ export default {
             let res = this.getCitiesData.find(x => x.id === id);
             if (res) return res.name;
             else return "";
+        },
+
+        async recordVisit() {
+            try {
+                // Create the visitData object 	
+                const visitData = {
+                    ip: "", // Get the user's IP from the fetched data
+                    userAgent: navigator.userAgent,
+                    route: this.$route.path
+                };
+                // Log the visitData for debugging
+                // If needed, send the data to your backend
+                this.RecordVisit(visitData).then(Response => {
+                }).catch(error => {
+                    console.log(error.response.data.message);
+                });
+            } catch (error) {
+                // Handle any errors (network issues, API failure, etc.)
+                console.error("Error fetching IP:", error);
+            }
         },
 
     }
@@ -303,8 +323,16 @@ export default {
                                     </a>
                                 </div>
                                 <div class="col-6 text-center">
-                                    <a href="javascript:void(0)">
+                                    <!-- <a data-bs-toggle="modal" data-bs-target="#image360_modal"
+                                        href="javascript:void(0)">
                                         <p class="call"> {{ $t('vehicle_btn_get_in') }} </p>
+                                    </a> -->
+                                    <a :class="{ 'link-disabled': !data.image360 }"
+                                        :style="{ pointerEvents: !data.image360 ? 'none' : 'auto' }"
+                                        :data-bs-toggle="data.image360 ? 'modal' : null"
+                                        :data-bs-target="data.image360 ? '#image360_modal' : null"
+                                        href="javascript:void(0)">
+                                        <p class="call">{{ $t('vehicle_btn_get_in') }}</p>
                                     </a>
                                 </div>
                             </div>
@@ -486,5 +514,33 @@ export default {
         </div>
     </div>
 
+    <div class="modal fade" id="image360_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel"> صورة 360 درجة </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body" v-if="data.image360 != ''">
+                    <Vehicle360View :panorama="data.image360"></Vehicle360View>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" aria-label="Close">
+                        اغلاق
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </template>
-<style scoped></style>
+<style scoped>
+.link-disabled {
+    color: #999 !important;
+    /* Your custom color */
+    cursor: not-allowed;
+    text-decoration: none;
+    opacity: 0.7;
+}
+</style>

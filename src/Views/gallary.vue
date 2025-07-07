@@ -21,15 +21,17 @@ export default {
 			},
 
 			pagination: {
-                currentPage: 1,
-                pageCount: 3,
-                pageSize: 3,
-                rowCount: 9,
-            },
+				currentPage: 1,
+				pageCount: 3,
+				pageSize: 3,
+				rowCount: 9,
+			},
 		}
 	},
 
 	mounted() {
+		this.recordVisit();
+
 		useHead({
 			title: 'Gallary | Markabati',
 			meta: [
@@ -67,16 +69,17 @@ export default {
 		},
 
 		startItem() {
-            return (this.pagination.currentPage - 1) * this.pagination.pageSize + 1;
-        },
-        endItem() {
-            return Math.min(this.pagination.currentPage * this.pagination.pageSize, this.pagination.rowCount);
-        }
+			return (this.pagination.currentPage - 1) * this.pagination.pageSize + 1;
+		},
+		endItem() {
+			return Math.min(this.pagination.currentPage * this.pagination.pageSize, this.pagination.rowCount);
+		}
 	},
 
 	methods: {
 		...mapActions("Code", ["GetStates", "GetCities"]),
 		...mapActions("Vehicles", ["GetUserVehicles"]),
+        ...mapActions("Visit", ["RecordVisit"]),
 
 		initFunc() {
 			const loading = ElLoading.service({
@@ -94,7 +97,7 @@ export default {
 
 			this.GetUserVehicles(this.dataSearch).then(Response => {
 				this.pagination = this.getUserVehiclesData.vehicles.pagination;
-		
+
 				loading.close();
 			}).catch(error => {
 				this.$moshaToast(error.response.data.message, {
@@ -150,6 +153,26 @@ export default {
 			this.dataSearch.page = page;
 			this.SearchChangeFunc();
 		},
+
+		async recordVisit() {
+            try {
+                // Create the visitData object 	
+                const visitData = {
+                    ip: "", // Get the user's IP from the fetched data
+                    userAgent: navigator.userAgent,
+                    route: this.$route.path
+                };
+                // Log the visitData for debugging
+                // If needed, send the data to your backend
+                this.RecordVisit(visitData).then(Response => {
+                }).catch(error => {
+                    console.log(error.response.data.message);
+                });
+            } catch (error) {
+                // Handle any errors (network issues, API failure, etc.)
+                console.error("Error fetching IP:", error);
+            }
+        },
 
 	}
 };
@@ -208,8 +231,8 @@ export default {
 							</ul>
 						</div>
 					</div> -->
-					<div class="row" >
-						<div class="pag" >
+					<div class="row">
+						<div class="pag">
 							<p class="count">
 								أظهر {{ startItem }} إلى {{ endItem }} من {{ pagination.rowCount }}
 							</p>
@@ -245,6 +268,4 @@ export default {
 	<pageFooter></pageFooter>
 
 </template>
-<style scoped>
-
-</style>
+<style scoped></style>

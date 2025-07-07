@@ -28,6 +28,7 @@ export default {
 			AnnouncementType: AnnouncementTypeEnum,
 			announcementPriceInDay: 0,
 			orderDate: "",
+			orderDailyPrice: 0,
 			// editor: null,
 		}
 	},
@@ -52,11 +53,11 @@ export default {
 
 	computed: {
 		...mapGetters("Code", ["getAnnouncementTypesData"]),
-		...mapGetters("Orders", ["getOrderDateTime"]),
+		...mapGetters("Orders", ["getOrderDateTime", "getOrderDailyPrice"]),
 	},
 	methods: {
 		...mapActions("Code", ["GetAnnouncementTypes"]),
-		...mapActions("Orders", ["CreateAnnouncementOrder", "GetAnnouncementOrderDate"]),
+		...mapActions("Orders", ["CreateAnnouncementOrder", "GetAnnouncementOrderDate", "GetAnnouncementOrderDailyPrice"]),
 
 		async initFunc() {
 			this.GetAnnouncementTypes();
@@ -213,8 +214,6 @@ export default {
 			}
 		},
 
-
-
 		toggleCropperModal() {
 			if ($('#cropper_modal').is(':visible')) {
 				$('#cropper_modal').modal('hide');
@@ -227,15 +226,25 @@ export default {
 			this.imageCropperSrc = URL.createObjectURL(imageFile);
 		},
 
-		changeAnnouncementTypeFunc() {
+		async changeAnnouncementTypeFunc() {
 			this.data.image = "";
 			this.orderDate = "";
 			this.imageCropperSrc = null;
-			this.GetAnnouncementOrderDate(this.data.announcementType).then((Response) => {
-				console.log("Response : ", Response);
-				let stringDate = this.formatDate(Response);
-				this.orderDate = stringDate;
-			});
+			try {
+				await Promise.all([
+					this.GetAnnouncementOrderDailyPrice(this.data.announcementType).then((Response) => {
+						this.orderDailyPrice = Response;
+					}),
+					this.GetAnnouncementOrderDate(this.data.announcementType).then((Response) => {
+						this.orderDate = Response;
+					}),
+
+				]);
+			} catch (error) {
+				console.error("Error loading data:", error);
+			} finally {
+			}
+			this.countTotalPriceFunc();
 
 		},
 
@@ -260,8 +269,11 @@ export default {
 				// Allows up to 1 decimal digit
 				maximumFractionDigits: 0
 			}).format(value);
-		}
+		},
 
+		countTotalPriceFunc() {
+			this.data.totalPrice = this.orderDailyPrice * this.data.durationDay;
+		},
 
 
 	}
@@ -309,8 +321,8 @@ export default {
 					<div class="col-12 col-md-12">
 						<div class="form-group">
 							<label>مدة الطلب بالأيام</label>
-							<input v-model="data.durationDay" asp-for="addition" type="number"
-								placeholder="عدد أيام الطلب"
+							<input @input="countTotalPriceFunc" v-model="data.durationDay" asp-for="addition"
+								type="number" placeholder="عدد أيام الطلب"
 								class="form-control mt-2 mb-4  py-3 text-start list_link gray-inp" />
 
 						</div>
@@ -388,7 +400,8 @@ export default {
 									</g>
 								</g>
 							</svg>
-							تكلفة الإعلان لليوم ₪0 والتكلفة الإجمالية للإعلان ₪0
+							تكلفة الإعلان لليوم {{ formatCurrency(this.orderDailyPrice) }} والتكلفة الإجمالية للإعلان {{
+								formatCurrency(this.data.totalPrice) }}
 						</p>
 						<p class="warning">
 							<svg width="22px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
@@ -422,7 +435,7 @@ export default {
 									</g>
 								</g>
 							</svg>
-							التاريخ المرجح أن يعرض به الإعلان في حال تمت الموافقة {{ this.orderDate }}
+							التاريخ المرجح أن يعرض به الإعلان في حال تمت الموافقة {{ formatDate(this.orderDate) }}
 						</p>
 					</div>
 

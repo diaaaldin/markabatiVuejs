@@ -28,7 +28,6 @@ export default {
 
 	data() {
 		return {
-			
 			userSlug:localStorage.getItem("slug"),
 
 			user: {
@@ -132,6 +131,7 @@ export default {
 				this.newPasswordData.oldPassword="";
 				this.newPasswordData.newPassword="";
 		},
+
 		getNewPasswordFunc() {
 			if (this.checkNewPasswordValidation()) {
 				const loading = ElLoading.service({
@@ -267,7 +267,7 @@ export default {
 				</div>
 				<div class="modal-body">
 					<form action="" method="">
-						<label class=" label-form"> أرسل البريد الالكتروني </label>
+						<label class=" label-form"> أدخل بريدك الالكتروني </label>
 						<div class="input-group mb-3">
 							<input type="email" class="form-control" placeholder="Example@email.com" aria-label="Email"
 								aria-describedby="basic-addon1" v-model="newPasswordData.email">
@@ -277,7 +277,7 @@ export default {
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">الغاء</button>
 					<button type="button" class="btn btn-primary" v-on:click="getNewPasswordFunc()">
-						أرسل البريد الالكتروني</button>
+						أرسل كلمة المرور الجديدة </button>
 				</div>
 			</div>
 		</div>

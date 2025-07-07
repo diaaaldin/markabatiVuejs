@@ -19,6 +19,11 @@ export default {
 
             },
 
+            dataNotification: {
+                page: 1,
+                pageSize: 1000
+            },
+
         }
     },
     components: {
@@ -87,6 +92,7 @@ export default {
                     this.GetVerticalAnnouncementActiveOrder(),
                     this.GetHorizontalAnnouncementActiveOrder(),
                     this.GetStarActiveVehicles(),
+
                 ]);
             } catch (error) {
                 console.error("Error loading data:", error);
@@ -196,23 +202,23 @@ export default {
     <div class="home">
         <!-- start header section -->
         <darkNavbar> </darkNavbar>
-        
+
         <mainAnnouncement></mainAnnouncement>
-        
+
         <section class="cars">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-9">
                         <div class="row">
-                            <productCard v-for="item in getStarActiveVehicleData" :product='item' ></productCard>
-                         
+                            <productCard v-for="item in getStarActiveVehicleData" :product='item'></productCard>
+
 
                         </div>
                         <div class="row justify-content-center see-more">
                             <div class="col-6 col-lg-4">
                                 <div class=" d-flex align-items-center justify-content-center ">
-                                    <router-link to="/vehicles"class="btn btn-light p-3  show-more-btn w-100">
-                                       {{ $t('main_show_all') }}
+                                    <router-link to="/vehicles" class="btn btn-light p-3  show-more-btn w-100">
+                                        {{ $t('main_show_all') }}
                                     </router-link>
                                 </div>
                             </div>

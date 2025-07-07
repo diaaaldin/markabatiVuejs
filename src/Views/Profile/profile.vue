@@ -179,9 +179,6 @@ export default {
             this.data.addressCity = this.getUserData.addressCityId;
             this.data.addressInfo = this.getUserData.addressInfo;
             this.data.moreInfo = this.getUserData.moreInfo;
-
-            console.log("this.getUserData.id : ", this.getUserData.id);
-            console.log("localStorage.getItem('id') : ", localStorage.getItem('id'));
         },
 
         initFunc() {
@@ -223,6 +220,8 @@ export default {
             } else {
                 this.CompanyProfileInfo(this.data.id).then(Response => {
                     this.setData();
+                    console.log("getUserData : ", this.getUserData);
+
                     loading.close();
                 }).catch(error => {
                     if (error.response && error.response.status === 401) {

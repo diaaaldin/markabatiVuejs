@@ -60,6 +60,23 @@ export const GetAnnouncementOrderDate = ({ commit, dispatch },announcementType) 
    });
 }
 
+export const GetStarVehicleOrderDailyPrice = ({ commit, dispatch }) => {
+   return Order.GetStarVehicleOrderDailyPrice().then(function (response) {
+       commit('SET_ORDER_DAILY_PRICE', response.data.data);
+       return response.data.data; 
+   }).catch(function (error) {
+           throw error;
+   });
+}
+export const GetAnnouncementOrderDailyPrice = ({ commit, dispatch },announcementType) => {
+   return Order.GetAnnouncementOrderDailyPrice(announcementType).then(function (response) {
+       commit('SET_ORDER_DAILY_PRICE', response.data.data);
+       return response.data.data; 
+   }).catch(function (error) {
+           throw error;
+   });
+}
+
 export const CreateStarVehicleOrder = ({ commit, dispatch },data) => {
    return Order.CreateStarVehicleOrder(data).then(function (response) {
        commit('SET_ORDER_CREATE_UPDATE_DATA', response.data.data);
