@@ -232,6 +232,32 @@ export default {
             }
         },
 
+        whatsAppLinkFunc() {
+            // const encodedMsg = encodeURIComponent(this.message);
+            // return `https://wa.me/${this.phone}?text=${encodedMsg}`;
+
+            let rawNumber = this.data.ownerMobile;
+
+            // Clean and normalize the number
+            let cleanNumber = rawNumber
+                .replace(/\D/g, '')         // remove all non-digit characters
+                .replace(/^00/, '')         // remove leading 00 if exists
+                .replace(/^0+/, '')         // remove local leading 0 if needed
+                ;
+
+            // Add country code manually if needed
+            // if (!cleanNumber.startsWith('970')) {
+            //     cleanNumber = '970' + cleanNumber;
+            // } 
+            // else if (!cleanNumber.startsWith('970')) {
+            //     cleanNumber = '970' + cleanNumber;
+            // }
+
+            const link = `https://wa.me/${cleanNumber}`;
+            console.log('Final WhatsApp link:', link);
+            window.open(link, '_blank');
+        },
+
     }
 };
 </script>
@@ -497,7 +523,7 @@ export default {
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary">
+                    <button v-on:click="whatsAppLinkFunc()" type="button" class="btn btn-primary">
                         راسل البائع
                         <svg viewBox="0 0 24 24" width="24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <g id="SVGRepo_bgCarrier" stroke-width="0"></g>

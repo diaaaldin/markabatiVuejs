@@ -159,6 +159,32 @@ export default {
             else return "";
         },
 
+        whatsAppLinkFunc() {
+            // const encodedMsg = encodeURIComponent(this.message);
+            // return `https://wa.me/${this.phone}?text=${encodedMsg}`;
+
+            let rawNumber = this.getSiteComunicationData.mobile;
+
+            // Clean and normalize the number
+            let cleanNumber = rawNumber
+                .replace(/\D/g, '')         // remove all non-digit characters
+                .replace(/^00/, '')         // remove leading 00 if exists
+                .replace(/^0+/, '')         // remove local leading 0 if needed
+                ;
+
+            // Add country code manually if needed
+            // if (!cleanNumber.startsWith('970')) {
+            //     cleanNumber = '970' + cleanNumber;
+            // } 
+            // else if (!cleanNumber.startsWith('970')) {
+            //     cleanNumber = '970' + cleanNumber;
+            // }
+
+            const link = `https://wa.me/${cleanNumber}`;
+            console.log('Final WhatsApp link:', link);
+            window.open(link, '_blank');
+        },
+
     }
 };
 </script>
@@ -195,7 +221,8 @@ export default {
                         <router-link :to="{ name: 'main' }">
                             <span class="text_footer">{{ $t('footer_pay_for_website') }} </span>
                         </router-link>
-                        <a  href="#" data-bs-toggle="modal" :data-bs-target="'#contact_with_seller_' + getSiteComunicationData.id">
+                        <a href="#" data-bs-toggle="modal"
+                            :data-bs-target="'#contact_with_seller_' + getSiteComunicationData.id">
                             <span class="text_footer">{{ $t('footer_comunicaation_with_us') }} </span>
                         </a>
                     </div>
@@ -294,7 +321,7 @@ export default {
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary">
+                    <button v-on:click="whatsAppLinkFunc()" type="button" class="btn btn-primary">
                         راسلنا
                         <svg viewBox="0 0 24 24" width="24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
