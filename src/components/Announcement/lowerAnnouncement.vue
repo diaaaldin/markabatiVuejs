@@ -78,7 +78,8 @@ export default {
 </script>
 
 <template>
-  <section class="slider-main ads-main">
+    <div class="container">
+<section class="slider-main ads-main">
             <div class="slider">
                 <div v-for="item in getHorizontalAnnouncementData" class="card-slider">
                     <img :src="item.image" class="card-img-top" alt="...">
@@ -158,6 +159,8 @@ export default {
 
             </div>
         </section>
+    </div>
+  
 </template>
 
 <style scoped>

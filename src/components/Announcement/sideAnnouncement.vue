@@ -42,9 +42,9 @@ export default {
                             <div v-for="item in getVerticalAnnouncementData" class="col-12 col-lg-12 col-md-6 mt-4"
                                 data-aos="fade-up" data-aos-delay="100" data-aos-duration="700">
                                 <a href="service_details.html" style="color:black;">
-                                    <div class="card custom_card">
+                                    <div class="sideads">
                                         <div class="image">
-                                            <img :src="item.image" class="card-img-top index-img-card" alt="...">
+                                            <img :src="item.image" class="" alt="...">
                                         </div>
                                         <!-- <div class="card-body">
                                         <div class=" mb-2">
@@ -175,5 +175,12 @@ export default {
 <style scoped>
 .imageTest{
     background-image:"C:/img\markabatiComponent\homeHeader.png";
+}
+.sideads{}
+
+.sideads img{
+    width: 100%;
+    border-radius: 10px;
+    
 }
 </style>
