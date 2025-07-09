@@ -13,8 +13,6 @@ export default {
     return {
       data: {
         statusId: 0,
-
-
       },
 
       dataimg360: {

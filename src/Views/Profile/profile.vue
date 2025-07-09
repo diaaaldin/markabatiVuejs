@@ -188,8 +188,6 @@ export default {
                 text: "",
             });
 
-            this.GetStates();
-            this.GetCities();
             if (this.data.userType == UserTypeEnum.Normal) {
                 this.CustomerProfileInfo(this.data.id).then(Response => {
                     this.setData();

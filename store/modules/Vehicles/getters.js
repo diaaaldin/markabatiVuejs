@@ -6,6 +6,14 @@ export const getVehiclesData = (state) => {
     return state.VehiclesData;
 }
 
+export const getFavoriteVehiclesData = (state) => {
+    return state.favoriteVehiclesData;
+}
+
+export const getFavoriteVehiclesIdData = (state) => {
+    return state.favoriteVehiclesIdData;
+}
+
 export const getUserVehiclesData = (state) => {
     return state.userVehiclesData;
 }

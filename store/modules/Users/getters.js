@@ -2,6 +2,11 @@ export const getUserLoginName = (state) => {
     return state.UserLoginName;
 }
 
+export const getSiteComunicationData = (state) => {
+    return state.siteComunicationData;
+}
+
+
 export const getUserProfileInfo = (state) => {
     return state.userProfileInfo;
 }

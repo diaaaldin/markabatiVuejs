@@ -34,7 +34,7 @@ export default {
 
     created() {
         // Call the function from the store directly when the component is created
-        this.initFunc();
+        // this.initFunc();
 
     },
 
@@ -64,20 +64,20 @@ export default {
         ...mapActions("Users", ["CustomerProfileInfo"]),
         ...mapActions("NotificationsAndMessages", ["GetUserNotifications", "ReadNotReadNotifications"]),
 
-        initFunc() {
-            this.GetUserNotifications(this.dataNotification).then(Response => {
-                console.log("getUserNotificationsData :", this.getUserNotificationsData);
-            }).catch(error => {
-                this.$moshaToast(error.response.data.message, {
-                    hideProgressBar: 'false',
-                    position: 'top-center',
-                    showIcon: 'true',
-                    swipeClose: 'true',
-                    type: 'warning',
-                    timeout: 3000,
-                });
-            });
-        },
+        // initFunc() {
+        //     this.GetUserNotifications(this.dataNotification).then(Response => {
+        //         console.log("getUserNotificationsData :", this.getUserNotificationsData);
+        //     }).catch(error => {
+        //         this.$moshaToast(error.response.data.message, {
+        //             hideProgressBar: 'false',
+        //             position: 'top-center',
+        //             showIcon: 'true',
+        //             swipeClose: 'true',
+        //             type: 'warning',
+        //             timeout: 3000,
+        //         });
+        //     });
+        // },
 
         ReadNotReadNotificationsFunc() {
             this.ReadNotReadNotifications().then(Response => {

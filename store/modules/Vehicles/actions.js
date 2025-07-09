@@ -18,6 +18,32 @@ export const GetVehiclesRandomly = ({ commit, dispatch },data) => {
     });
 }
 
+export const GetVehiclesFavorite = ({ commit, dispatch }) => {
+    return Vehicle.GetVehiclesFavorite().then(function (response) {
+        commit('SET_FAVORITE_VEHICELS_DATA', response.data.data);
+        return response.data.data;
+    }).catch(function (error) {
+            throw error;
+    });
+}
+
+export const GetVehiclesFavoriteId = ({ commit, dispatch }) => {
+    return Vehicle.GetVehiclesFavoriteId().then(function (response) {
+        commit('SET_FAVORITE_VEHICELS_ID_DATA', response.data.data);
+        return response.data.data;
+    }).catch(function (error) {
+            throw error;
+    });
+}
+
+export const ToggleVehicleFavorite = ({ commit, dispatch },id) => {
+    return Vehicle.ToggleVehicleFavorite(id).then(function (response) {
+        return response.data.data;
+    }).catch(function (error) {
+            throw error;
+    });
+}
+
 export const GetUserVehicles = ({ commit, dispatch },data) => {
     return Vehicle.GetUserVehicles(data).then(function (response) {
         commit('SET_USER_VEHICELS_DATA', response.data.data);

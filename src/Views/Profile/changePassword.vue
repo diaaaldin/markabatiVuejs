@@ -44,7 +44,6 @@ export default {
     methods: {
         ...mapActions("Users", ["ChangePassword"]),
 
-
         ChangePasswordFunc() {
             if (this.checkValidation()) {
                 const loading = ElLoading.service({

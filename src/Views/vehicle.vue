@@ -317,7 +317,7 @@ export default {
                             </div>
                             <div class="row">
                                 <div class="col-6 text-center">
-                                    <a data-bs-toggle="modal" data-bs-target="#contact_with_seller"
+                                    <a data-bs-toggle="modal" :data-bs-target="'#contact_with_seller_' + data.id"
                                         href="javascript:void(0)">
                                         <p class="contact">{{ $t('vehicle_btn_contact_with_seller') }} </p>
                                     </a>
@@ -451,7 +451,7 @@ export default {
 
     <pageFooter></pageFooter>
 
-    <div class="modal fade" id="contact_with_seller" tabindex="-1" aria-labelledby="exampleModalLabel"
+    <div class="modal fade" :id="'contact_with_seller_' + data.id" tabindex="-1" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">

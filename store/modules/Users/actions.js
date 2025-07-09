@@ -2,7 +2,14 @@ import User from "@/apis/Users";
 import { UserTypeEnum } from '@/config/config';
 
 
-
+export const GetWebSiteComunicationInfo = ({ commit, dispatch }) => {
+    return User.GetWebSiteComunicationInfo().then(function (response) {
+        commit('SET_SITE_COMUNICATION_DATA', response.data.data);
+        return response.data.data;
+    }).catch(function (error) {
+        throw error;
+    });
+}
 export const GetUsers = ({ commit, dispatch }, data) => {
     return User.GetUsers(data).then(function (response) {
         commit('SET_USERS_DATA', response.data.data);

@@ -5,6 +5,11 @@ const END_POINT = 'User';
 
 
 export default {
+
+    GetWebSiteComunicationInfo() {
+        return Api.get(`${END_POINT}/GetWebSiteComunicationInfo`);
+    },
+
     GetUsers(data) {
         let token = localStorage.getItem("token")
             ? JSON.parse(localStorage.getItem("token"))

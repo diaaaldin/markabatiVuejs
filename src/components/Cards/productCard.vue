@@ -7,8 +7,8 @@ import { CurrenceEnum } from '@/config/config.js';
 export default {
     data() {
         return {
-            isFilled: false // Track if the heart is filled or not
-        }
+            isFavorite: false, // Track if the heart is filled or not
+        };
     },
     props: {
         product: {
@@ -35,7 +35,8 @@ export default {
             }
         }
     },
-    mounted() {
+
+    watch: {
 
     },
     components: {
@@ -46,20 +47,23 @@ export default {
 
     },
 
+    mounted() {
+        // this.chickIsFavoritFunc();
+    },
     created() {
         // Call the function from the store directly when the component is created
-        // this.chickIsFavoritFunc();
+
     },
 
     computed: {
         ...mapGetters("Code", ["getStatesData", "getCitiesData"]),
-        ...mapGetters("Products", ["getFavoritProductsData"]),
+        ...mapGetters("Vehicles", ["getFavoriteVehiclesIdData"]),
 
     },
     methods: {
         ...mapActions("Code", ["GetStates", "GetCities"]),
-        ...mapActions("Products", ["ToggleProductInBasket"]),
-        
+        ...mapActions("Vehicles", ["ToggleVehicleFavorite", "GetVehiclesFavoriteId"]),
+
         ownerImageFunc(imgae) {
             const imageUrl = imgae
                 ? imgae
@@ -67,57 +71,35 @@ export default {
 
             return imageUrl;
         },
+
         chickIsFavoritFunc() {
-            if (this.getFavoritProductsData && this.getFavoritProductsData.some(x => x.id === this.product.id)) {
-                this.isFilled = true;
+            if (this.getFavoriteVehiclesIdData && this.getFavoriteVehiclesIdData.any(x => x === this.product.id)) {
+                this.isFavorite = true;
             } else {
-                this.isFilled = false;
+                this.isFavorite = false;
             }
         },
 
-        toggleHeartFill() {
+        toggleFavoriteFunc() {
             const loading = ElLoading.service({
                 lock: true,
                 background: 'rgba(0, 0, 0, 0.7)',
                 text: "",
             });
-            let token = localStorage.getItem("token");
-            if (token) {
-                this.ToggleProductInBasket(this.product.id).then(Response => {
-                    if (Response.isInBasket) {
-                        this.$moshaToast('Added to favourites', {
-                            hideProgressBar: 'false',
-                            showIcon: 'true',
-                            swipeClose: 'true',
-                            type: 'success',
-                            timeout: 3000,
-                        });
-                        this.isFilled = true;
-                    } else {
-                        this.$moshaToast('Removed from favourites', {
-                            hideProgressBar: 'false',
-                            showIcon: 'true',
-                            swipeClose: 'true',
-                            type: 'danger',
-                            timeout: 3000,
-                        });
-                        this.isFilled = false;
-                    }
 
-                    loading.close();
-                }).catch(error => {
-                    this.$moshaToast(error.response.data.message, {
-                        hideProgressBar: 'false',
-                        position: 'top-center',
-                        showIcon: 'true',
-                        swipeClose: 'true',
-                        type: 'warning',
-                        timeout: 3000,
-                    });
-                    loading.close();
+            this.ToggleVehicleFavorite(this.product.id).then(response => {
+                this.$moshaToast(response.message, {
+                    hideProgressBar: 'false',
+                    showIcon: 'true',
+                    swipeClose: 'true',
+                    type: 'danger',
+                    timeout: 3000,
                 });
-            } else {
-                this.$moshaToast("login first", {
+                this.GetVehiclesFavoriteId();
+                this.isFavorite = response.isFavorite;
+                loading.close();
+            }).catch(error => {
+                this.$moshaToast(error.response.data.message, {
                     hideProgressBar: 'false',
                     position: 'top-center',
                     showIcon: 'true',
@@ -126,7 +108,8 @@ export default {
                     timeout: 3000,
                 });
                 loading.close();
-            }
+            });
+
 
         },
 
@@ -169,11 +152,14 @@ export default {
         },
 
         stateNameFunc(id) {
+            // console.log("this.getStatesData : ",id);
             let res = this.getStatesData.find(x => x.id === id);
             if (res) return res.name;
             else return "";
         },
+
         cityNameFunc(id) {
+            // console.log("this.getCitiesData : ", id);
             let res = this.getCitiesData.find(x => x.id === id);
             if (res) return res.name;
             else return "";
@@ -193,13 +179,19 @@ export default {
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-baseline mb-2">
                         <h6 class="card-title justify-content-start">{{ product.brandName }}</h6>
-                        <a href="javascript:void(0)" class="justify-content-end">
+                        <a v-on:click="toggleFavoriteFunc()" href="javascript:void(0)" class="justify-content-end">
                             <!-- <img src="/img/icons/star2.svg"> -->
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            <svg v-if="isFavorite == false" width="24" height="24" viewBox="0 0 24 24" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
                                 <path
                                     d="M10.7878 3.10215C11.283 2.09877 12.7138 2.09876 13.209 3.10215L15.567 7.87987L20.8395 8.64601C21.9468 8.80691 22.3889 10.1677 21.5877 10.9487L17.7724 14.6676L18.6731 19.9189C18.8622 21.0217 17.7047 21.8627 16.7143 21.342L11.9984 18.8627L7.28252 21.342C6.29213 21.8627 5.13459 21.0217 5.32374 19.9189L6.2244 14.6676L2.40916 10.9487C1.60791 10.1677 2.05005 8.80691 3.15735 8.64601L8.42988 7.87987L10.7878 3.10215ZM11.9984 4.03854L9.74008 8.61443C9.54344 9.01288 9.16332 9.28904 8.72361 9.35294L3.67382 10.0867L7.32788 13.6486C7.64606 13.9587 7.79125 14.4055 7.71614 14.8435L6.85353 19.8729L11.3702 17.4983C11.7635 17.2915 12.2333 17.2915 12.6266 17.4983L17.1433 19.8729L16.2807 14.8435C16.2056 14.4055 16.3508 13.9587 16.6689 13.6486L20.323 10.0867L15.2732 9.35294C14.8335 9.28904 14.4534 9.01288 14.2568 8.61443L11.9984 4.03854Z"
                                     fill="#999999" />
+                            </svg>
+                            <svg v-else width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M10.7878 3.10215C11.283 2.09877 12.7138 2.09876 13.209 3.10215L15.567 7.87987L20.8395 8.64601C21.9468 8.80691 22.3889 10.1677 21.5877 10.9487L17.7724 14.6676L18.6731 19.9189C18.8622 21.0217 17.7047 21.8627 16.7143 21.342L11.9984 18.8627L7.28252 21.342C6.29213 21.8627 5.13459 21.0217 5.32374 19.9189L6.2244 14.6676L2.40916 10.9487C1.60791 10.1677 2.05005 8.80691 3.15735 8.64601L8.42988 7.87987L10.7878 3.10215ZM11.9984 4.03854L9.74008 8.61443C9.54344 9.01288 9.16332 9.28904 8.72361 9.35294L3.67382 10.0867L7.32788 13.6486C7.64606 13.9587 7.79125 14.4055 7.71614 14.8435L6.85353 19.8729L11.3702 17.4983C11.7635 17.2915 12.2333 17.2915 12.6266 17.4983L17.1433 19.8729L16.2807 14.8435C16.2056 14.4055 16.3508 13.9587 16.6689 13.6486L20.323 10.0867L15.2732 9.35294C14.8335 9.28904 14.4534 9.01288 14.2568 8.61443L11.9984 4.03854Z"
+                                    fill="#000000" />
                             </svg>
                         </a>
                     </div>
@@ -288,13 +280,13 @@ export default {
                         </div>
                     </div>
                     <a href="#" class="btn btn-light p-3 contact-with-seller w-100" data-bs-toggle="modal"
-                        data-bs-target="#contact_with_seller"> تواصل مع
+                        :data-bs-target="'#contact_with_seller_' + product.id"> تواصل مع
                         البائع</a>
                 </div>
             </div>
         </a>
     </div>
-    <div class="modal fade" id="contact_with_seller" tabindex="-1" aria-labelledby="exampleModalLabel"
+    <div class="modal fade" :id="'contact_with_seller_' + product.id" tabindex="-1" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">

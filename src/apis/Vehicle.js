@@ -58,7 +58,52 @@ export default {
         return Api.get(`${END_POINT}/GetUserVehicles`, config);
     },
 
+    GetVehiclesFavorite() {
+        let token = localStorage.getItem("token")
+            ? JSON.parse(localStorage.getItem("token"))
+            : null;
 
+        let config = {
+            headers: {
+                'Authorization': token,
+                'Access-Control-Allow-Origin': '*'
+            },
+        };
+        return Api.get(`${END_POINT}/GetVehiclesFavorite`, config);
+    },
+
+     GetVehiclesFavoriteId() {
+        let token = localStorage.getItem("token")
+            ? JSON.parse(localStorage.getItem("token"))
+            : null;
+
+        let config = {
+            headers: {
+                'Authorization': token,
+                'Access-Control-Allow-Origin': '*'
+            },
+          
+        };
+        return Api.get(`${END_POINT}/GetVehiclesFavoriteId`, config);
+    },
+    
+    ToggleVehicleFavorite(id) {
+        let token = localStorage.getItem("token")
+            ? JSON.parse(localStorage.getItem("token"))
+            : null;
+
+        let config = {
+            headers: {
+                'Authorization': token,
+                'Access-Control-Allow-Origin': '*'
+            },
+             params: {
+                vehicleId: id,
+            },
+        };
+        return Api.get(`${END_POINT}/ToggleVehicleFavorite`, config);
+    },
+    
 
     GetVehicelForUpdate(id) {
 

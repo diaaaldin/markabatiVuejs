@@ -36,7 +36,7 @@ export default {
         }
     },
     mounted() {
-
+        // this.chickIsFavoritFunc();
     },
     components: {
 
@@ -48,7 +48,6 @@ export default {
 
     created() {
         // Call the function from the store directly when the component is created
-        // this.chickIsFavoritFunc();
     },
 
     computed: {
@@ -288,13 +287,13 @@ export default {
                         </div>
                     </div>
                     <a href="#" class="btn btn-light p-3 contact-with-seller w-100" data-bs-toggle="modal"
-                        data-bs-target="#contact_with_seller"> تواصل مع
+                        :data-bs-target="'#contact_with_seller_' + product.id"> تواصل مع
                         البائع</a>
                 </div>
             </div>
         </a>
     </div>
-    <div class="modal fade" id="contact_with_seller" tabindex="-1" aria-labelledby="exampleModalLabel"
+    <div class="modal fade" :id="'contact_with_seller_' + product.id" tabindex="-1" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">

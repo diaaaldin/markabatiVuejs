@@ -40,8 +40,6 @@ export default {
         },
 
         created() {
-            this.GetStates();
-            this.GetCities();
              console.log("this.seller : ",this.seller);
         },
 
@@ -54,6 +52,7 @@ export default {
                 return imageUrl;
             }
         },
+        
         methods: {
             ...mapActions("Code", ["GetStates", "GetCities"]),
 
