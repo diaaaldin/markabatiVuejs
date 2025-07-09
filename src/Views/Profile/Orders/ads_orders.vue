@@ -245,7 +245,7 @@ export default {
 		clearData() {
 			this.data.orderId = 0;
 		},
-		
+
 		OpenFullScreenFunc(id) {
 			this.selectedOrder.image = [];
 			const foundItem = this.getOrdersData.orders.data.find(element => element.id === id);
@@ -307,6 +307,27 @@ export default {
 <template>
 
 	<div class="col-12 col-lg-9 order">
+		<div class="ads">
+			<div class="add">
+				<router-link :to="{ name: 'profile_add_ads' }" class="option">{{
+					$t('profile_btn_addAnnouncement') }}
+					<svg viewBox="0 0 24 24" width="20" fill="none" xmlns="http://www.w3.org/2000/svg">
+						<g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+						<g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+						<g id="SVGRepo_iconCarrier">
+							<path opacity="0.4"
+								d="M16.19 2H7.81C4.17 2 2 4.17 2 7.81V16.18C2 19.83 4.17 22 7.81 22H16.18C19.82 22 21.99 19.83 21.99 16.19V7.81C22 4.17 19.83 2 16.19 2Z"
+								fill="#292D32"></path>
+							<path
+								d="M16 11.25H12.75V8C12.75 7.59 12.41 7.25 12 7.25C11.59 7.25 11.25 7.59 11.25 8V11.25H8C7.59 11.25 7.25 11.59 7.25 12C7.25 12.41 7.59 12.75 8 12.75H11.25V16C11.25 16.41 11.59 16.75 12 16.75C12.41 16.75 12.75 16.41 12.75 16V12.75H16C16.41 12.75 16.75 12.41 16.75 12C16.75 11.59 16.41 11.25 16 11.25Z"
+								fill="#292D32"></path>
+						</g>
+					</svg>
+
+				</router-link>
+
+			</div>
+		</div>
 		<div class="container white_card px-4 pt-4 pb-0 mt-3 mt-lg-0 right-side">
 			<div class="table-responsive">
 				<table class="table text-center">
@@ -331,7 +352,7 @@ export default {
 					</thead>
 					<tbody>
 						<tr v-for="(item, index) in getOrdersData.orders.data">
-							<td class="id">{{ index+1 }}</td>
+							<td class="id">{{ index + 1 }}</td>
 							<td>{{ item.userName }}</td>
 							<td>{{ item.announcementTypeName }}</td>
 							<td>{{ item.message }}</td>
@@ -445,5 +466,9 @@ export default {
 
 .modal-body button {
 	margin: 5px;
+}
+
+.profile .ads {
+	margin-bottom: 77px;
 }
 </style>

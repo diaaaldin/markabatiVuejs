@@ -238,8 +238,8 @@ body {
 }
 
 .pagination li  {
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   margin: 0 5px;
   background-color: white;
   color: white;
@@ -253,9 +253,10 @@ body {
 
 .pagination li a {
   color: #000;
-  line-height: 3;
-  padding:0 9px;
+  line-height: 2.3;
+  padding:0 4px;
 }
+
 .pagination li a svg {
   margin-right: -4px;
 }
@@ -3558,7 +3559,36 @@ footer .copy-write {
   color: var(--main-color);
 }
 /*************** end footer style   ******************************/
-
+.btn-contact{
+  background-color: black;
+  font-weight: 400;
+  color: white;
+  font-size: 16px;
+  border-radius: 13px;
+  transition: all 0.3s ease-in-out;
+  border: none;
+  padding: 10px 40px;
+}
+.btn-contact:hover{
+  background-color: var(--main-color);
+  color: white;
+  
+}
+.btn-contact-x{
+  background-color: var(--main-color);
+  font-weight: 400;
+  color: white;
+  font-size: 16px;
+  border-radius: 13px;
+  transition: all 0.3s ease-in-out;
+  border: none;
+  padding: 10px 40px;
+}
+.btn-contact-x:hover{
+  background-color: black;
+  color: white;
+  
+}
 
 /******************Start Cropper ******************/
 #cropButton {

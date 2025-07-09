@@ -41,7 +41,7 @@ export default {
       },
 
       orderDate: "",
-      orderDailyPrice : 0,
+      orderDailyPrice: 0,
     }
   },
 
@@ -67,7 +67,7 @@ export default {
 
   computed: {
     ...mapGetters("Vehicles", ["getMyVehiclesData"]),
-		...mapGetters("Orders", ["getOrderDateTime", "getOrderDailyPrice"]),
+    ...mapGetters("Orders", ["getOrderDateTime", "getOrderDailyPrice"]),
 
 
   },
@@ -75,7 +75,7 @@ export default {
   methods: {
     ...mapActions("Vehicles", ["GetMyVehicles", "GetVehicelForUpdate", "UpdateVehicleImage360", "DeleteVehicle"]),
     ...mapActions("Orders", ["CreateStarVehicleOrder"]),
-    ...mapActions("Orders", ["CreateAnnouncementOrder", "GetStarVehicleOrderDate","GetStarVehicleOrderDailyPrice"]),
+    ...mapActions("Orders", ["CreateAnnouncementOrder", "GetStarVehicleOrderDate", "GetStarVehicleOrderDailyPrice"]),
 
 
     initFunc() {
@@ -351,8 +351,8 @@ export default {
           this.orderDate = stringDate;
         });
         this.GetStarVehicleOrderDailyPrice().then((Response) => {
-						this.orderDailyPrice = Response;
-					});
+          this.orderDailyPrice = Response;
+        });
       }
 
     },
@@ -396,13 +396,13 @@ export default {
       }).format(value);
     },
     formatCurrencyStarOrder(value) {
-			return new Intl.NumberFormat('en-US', {
-				style: 'currency',
-				currency: "ILS",
-				// Allows up to 1 decimal digit
-				maximumFractionDigits: 0
-			}).format(value);
-		},
+      return new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: "ILS",
+        // Allows up to 1 decimal digit
+        maximumFractionDigits: 0
+      }).format(value);
+    },
 
     OpenFullScreenFunc(id) {
       this.selectedVehicle.images = null;
@@ -448,6 +448,26 @@ export default {
 
   <!-- right side container -->
   <div class="col-12 col-lg-9 myvehicles">
+    <div class="ads">
+      <div class="add">
+        <router-link :to="{ name: 'profile_add_vehicle' }" class="option">{{
+          $t('profile_btn_addVehicel') }}
+          <svg viewBox="0 0 24 24" width="20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+            <g id="SVGRepo_iconCarrier">
+              <path opacity="0.4"
+                d="M16.19 2H7.81C4.17 2 2 4.17 2 7.81V16.18C2 19.83 4.17 22 7.81 22H16.18C19.82 22 21.99 19.83 21.99 16.19V7.81C22 4.17 19.83 2 16.19 2Z"
+                fill="#292D32"></path>
+              <path
+                d="M16 11.25H12.75V8C12.75 7.59 12.41 7.25 12 7.25C11.59 7.25 11.25 7.59 11.25 8V11.25H8C7.59 11.25 7.25 11.59 7.25 12C7.25 12.41 7.59 12.75 8 12.75H11.25V16C11.25 16.41 11.59 16.75 12 16.75C12.41 16.75 12.75 16.41 12.75 16V12.75H16C16.41 12.75 16.75 12.41 16.75 12C16.75 11.59 16.41 11.25 16 11.25Z"
+                fill="#292D32"></path>
+            </g>
+          </svg>
+        </router-link>
+
+      </div>
+    </div>
     <div class="container white_card px-4 pt-4 pb-0 mt-3 mt-lg-0 right-side">
       <div class="table-responsive">
         <table class="table text-center">
@@ -578,7 +598,6 @@ export default {
         </div>
         <div class="modal-footer">
           <button type="button" v-on:click="DeleteFunc()" class="btn btn-primary">حـذف</button>
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
         </div>
       </div>
     </div>
@@ -664,8 +683,8 @@ export default {
                   </g>
                 </g>
               </svg>
-             	تكلفة تمييز المركبة لليوم {{ formatCurrencyStarOrder(this.orderDailyPrice) }} والتكلفة الإجمالية {{
-								formatCurrencyStarOrder(this.dataStar.totalPrice) }}
+              تكلفة تمييز المركبة لليوم {{ formatCurrencyStarOrder(this.orderDailyPrice) }} والتكلفة الإجمالية {{
+                formatCurrencyStarOrder(this.dataStar.totalPrice) }}
             </p>
             <p class="warning">
               <svg width="22px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
@@ -705,7 +724,6 @@ export default {
         </div>
         <div class="modal-footer">
           <button type="button" v-on:click="StarFunc()" class="btn btn-primary">إكمال عملية الدفع</button>
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
         </div>
       </div>
     </div>
@@ -739,7 +757,6 @@ export default {
         </div>
         <div class="modal-footer">
           <button type="button" v-on:click="Changeimg360Func()" class="btn btn-primary">حفظ</button>
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
         </div>
       </div>
     </div>
@@ -755,4 +772,6 @@ export default {
   padding: 8px 30px;
   margin: 0 auto;
 }
+.profile .ads {
+  margin-bottom: 77px;}
 </style>

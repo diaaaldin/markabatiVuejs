@@ -543,4 +543,20 @@ export default {
     text-decoration: none;
     opacity: 0.7;
 }
+.modal-footer .btn-primary {
+    /* width: 50px;
+    height: 50px;
+     */
+    border-radius: 30px;
+    padding: 8px 30px;
+    margin: 0 auto;
+}
+
+.modal-footer .btn-primary svg {
+    margin-right: 10px;
+}
+
+.modal-footer .btn-primary svg path {
+    fill: white;
+}
 </style>

@@ -362,7 +362,7 @@ export default {
                                     d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z" />
                             </svg>
                             <div class="img">
-                                <img src="/img/profile-icon.png" class="" alt="...">
+                                <img src="/img/profile-icon.png" width="48" height="" class="profile-icon" alt="...">
                             </div>
                             <!-- {{ GetUserName }} -->
                         </a>
@@ -406,5 +406,8 @@ export default {
 
 .hero-notification-div svg path {
     fill: #fff;
+}
+.profile-icon{
+    border-radius: 8px;
 }
 </style>

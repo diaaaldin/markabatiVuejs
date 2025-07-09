@@ -858,11 +858,11 @@ function debounce(func, wait) {
 	font-size: 80%;
 }
 
-.addVehicle .page-header {
+.add_vehicle .page-header {
 	margin-bottom: 20px;
 }
 
-.addVehicle .page-title {
+.add_vehicle .page-title {
 	font-size: 22px;
 	font-weight: 400;
 	color: #26d829;
@@ -874,7 +874,7 @@ function debounce(func, wait) {
 
 }
 
-.addVehicle .add {
+.add_vehicle .add {
 	background-color: #ddf9dd;
 	padding: 0 8px;
 	border-radius: 5px;
@@ -888,14 +888,14 @@ function debounce(func, wait) {
 	text-align: center;
 }
 
-.addVehicle .add.full {
+.add_vehicle .add.full {
 	width: 100%;
 	margin-bottom: 20px;
 	padding: 15px 0;
 	font-weight: bold;
 }
 
-.addVehicle .add:hover {
+.add_vehicle .add:hover {
 	background-color: var(--main-color);
 	color: white;
 }

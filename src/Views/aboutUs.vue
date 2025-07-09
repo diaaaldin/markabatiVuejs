@@ -149,6 +149,9 @@ export default {
                             </ul>
 
                         </div>
+                        <div class="mt-5">
+                            <button class="btn-contact">تواصل معنا</button>
+                        </div>
                     </div>
                     <div class="col-12 col-lg-6 img-about-us">
                         <div class="row">

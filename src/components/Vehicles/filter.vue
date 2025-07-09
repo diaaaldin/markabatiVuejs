@@ -150,8 +150,9 @@ export default {
                 <div class="title-fill">
                     <img src="/img/icons/fillter.svg">
                     <span>الفلترة</span>
-                </div>
+                    <svg fill="#000" width="30" viewBox="0 0 32 32" id="iconfilter" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <defs>  </defs> <path d="M22.5,9A7.4522,7.4522,0,0,0,16,12.792V8H14v8h8V14H17.6167A5.4941,5.4941,0,1,1,22.5,22H22v2h.5a7.5,7.5,0,0,0,0-15Z"></path> <path d="M26,6H4V9.171l7.4142,7.4143L12,17.171V26h4V24h2v2a2,2,0,0,1-2,2H12a2,2,0,0,1-2-2V18L2.5858,10.5853A2,2,0,0,1,2,9.171V6A2,2,0,0,1,4,4H26Z"></path> <rect id="_Transparent_Rectangle_" data-name="&lt;Transparent Rectangle&gt;" fill="none" class="cls-1" width="32" height="32"></rect> </g></svg>                </div>
             </div>
+            <div class="clear-fix"></div>
             <div class="accordion-item customize-according">
                 <h2 class="accordion-header" id="headingOne">
                     <button class="accordion-button  btn " type="button" data-bs-toggle="collapse"
@@ -498,6 +499,9 @@ export default {
     margin-top: 10px;
     /* Optional: Space above the scrollable area */
 }
-
+#iconfilter{
+    float: left;
+    cursor: pointer;
+}
 /* Optional: Add custom styles for your viewer component */
 </style>

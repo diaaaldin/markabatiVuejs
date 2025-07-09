@@ -190,19 +190,22 @@ export default {
 					<div class="d-flex justify-content-center">
 						<div class="d-flex flex-column">
 							<div class="d-flex align-items-center mb-2">
-								<ul class="addresul">
+								<ul class="addresul text-center">
 									<li>{{ cityNameFunc(this.getUserVehiclesData.addressCityId) }} / {{
 										stateNameFunc(this.getUserVehiclesData.addressStateId) }}</li>
 									<li>{{ this.getUserVehiclesData.AddressInfo }}</li>
 								</ul>
 							</div>
-							<div class="card-show">
+							<div class="card-show ">
 								<div class="d-flex justify-content-center">
 									<ul class="contact text-center">
 										<li> للتواصل: {{ this.getUserVehiclesData.mobile }} </li>
 									</ul>
 								</div>
 
+							</div>
+							<div class="d-flex justify-content-center">
+=                          		  <button class="btn-contact-x">تواصل معنا</button>
 							</div>
 						</div>
 					</div>

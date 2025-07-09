@@ -167,4 +167,21 @@ export default {
 .imageTest{
     background-image: "C:/img\markabatiComponent\bottomAnnouncement.png";
 }
+.slick-list {
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px !important;
+    border-radius: 20px;
+}
+.slider-main .slider .card-slider img{
+    border-radius: 20px;
+    width: 100%;
+}
+
+.slider-main.ads-main .slider .card-slider {
+  height: 500px;
+  
+}
+.slider-main.ads-main {
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
 </style>

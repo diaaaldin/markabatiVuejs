@@ -250,11 +250,13 @@ export default {
 
                                                     </div>
                                                 </div>
-                                                <div class="col-8 ps-0 ">
+                                                <div class="col-8 ps-0" :class="{'is-not-read': !item.isRead}" >
                                                     <span class="gray_text">{{ item.title }}</span>
                                                     <p class="gray_text">{{ formatDateTime(item.createdAt) }}</p>
                                                 </div>
+                                                <div class="" :class="{'is-not-read': !item.isRead}">
                                                 <p class="gray_text">{{ item.message }}</p>
+                                                </div>
 
                                             </div>
                                         </div>
@@ -362,7 +364,7 @@ export default {
                                         d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z" />
                                 </svg>
                                 <div class="img">
-                                    <img :src="userImage" class="" alt="...">
+                                    <img :src="userImage" width="48" height="48" class="profile-icon" alt="...">
                                 </div>
 
                                 <!-- {{ GetUserName }} -->
@@ -405,5 +407,11 @@ export default {
 
 .dropdown-toggle::after {
     display: none;
+}
+.profile-icon{
+    border-radius: 8px;
+}
+.is-not-read p , .is-not-read span{
+    font-weight: bold;
 }
 </style>
