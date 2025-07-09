@@ -5,6 +5,11 @@ const END_POINT = 'User';
 
 
 export default {
+
+    GetWebSiteComunicationInfo() {
+        return Api.get(`${END_POINT}/GetWebSiteComunicationInfo`);
+    },
+
     GetUsers(data) {
         let token = localStorage.getItem("token")
             ? JSON.parse(localStorage.getItem("token"))
@@ -69,6 +74,16 @@ export default {
         };
         return Api.get(`${END_POINT}/GetCompanyUsers`, config);
     },
+    GetSellers(data) {
+        let config = {
+            params: {
+                name: data.name,
+                page: data.page,
+                pageSize: data.pageSize,
+            },
+        };
+        return Api.get(`${END_POINT}/GetSellers`, config);
+    },
 
 
     CustomerProfileInfo(id) {
@@ -128,6 +143,16 @@ export default {
         };
         return Api.put(`${END_POINT}/CustomerUpdate`, data, config);
     },
+    CustomerProfileUpdate(data) {
+        let token = localStorage.getItem("token")
+            ? JSON.parse(localStorage.getItem("token"))
+            : null;
+
+        let config = {
+            headers: { 'Authorization': token, "Access-Control-Allow-Origin": "*" },
+        };
+        return Api.put(`${END_POINT}/CustomerProfileUpdate`, data, config);
+    },
     ChangeStatusCustomer(data) {
         let token = localStorage.getItem("token")
             ? JSON.parse(localStorage.getItem("token"))
@@ -179,6 +204,17 @@ export default {
             headers: { 'Authorization': token, "Access-Control-Allow-Origin": "*" },
         };
         return Api.put(`${END_POINT}/CompanyUpdate`, data, config);
+    },
+    CompanyProfileUpdate(data) {
+        console.log(data);
+        let token = localStorage.getItem("token")
+            ? JSON.parse(localStorage.getItem("token"))
+            : null;
+
+        let config = {
+            headers: { 'Authorization': token, "Access-Control-Allow-Origin": "*" },
+        };
+        return Api.put(`${END_POINT}/CompanyProfileUpdate`, data, config);
     },
     ChangeStatusCompany(data) {
         let token = localStorage.getItem("token")

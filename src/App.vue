@@ -1,22 +1,70 @@
-<script >
-import {reactive , provide} from 'vue'
+<script>
+import { reactive, provide } from 'vue'
 import { mapState, mapGetters, mapActions } from "vuex";
+import { ElLoading } from 'element-plus';
 
-export default{
- 
-components:{
-},
-computed:{
 
-},
+export default {
+	data() {
+		return {
+			data: {
+			},
+			dataNotification: {
+				page: 1,
+				pageSize: 1000
+			},
+		}
+	},
+	components: {
+	},
+	computed: {
 
-mounted(){
-  this.recordVisit();
-},
-methods:{
-  ...mapActions("Visit", ["RecordVisit"]),
-  /////////// for visit ///////////
-  async recordVisit() {
+	},
+
+	mounted() {
+
+	},
+	created() {
+		// Call the function from the store directly when the component is created
+		this.initFunc();
+	},
+
+	methods: {
+		...mapActions("Visit", ["RecordVisit"]),
+		...mapActions("Announcement", ["GetMainAnnouncementActiveOrder", "GetVerticalAnnouncementActiveOrder", "GetHorizontalAnnouncementActiveOrder"]),
+		...mapActions("Orders", ["GetStarActiveVehicles"]),
+		...mapActions("NotificationsAndMessages", ["GetUserNotifications", "ReadNotReadNotifications"]),
+		...mapActions("Code", ["GetStates", "GetCities"]),
+		...mapActions("Users", ["GetWebSiteComunicationInfo"]),
+
+		async initFunc() {
+			const loading = ElLoading.service({
+				lock: true,
+				background: 'rgba(0, 0, 0, 0.7)',
+				text: "",
+			});
+			this.GetStates();
+			this.GetCities();
+			try {
+				await Promise.all([
+					this.recordVisit(),
+					this.GetMainAnnouncementActiveOrder(),
+					this.GetVerticalAnnouncementActiveOrder(),
+					this.GetHorizontalAnnouncementActiveOrder(),
+					this.GetStarActiveVehicles(),
+					this.GetUserNotifications(this.dataNotification),
+					this.GetWebSiteComunicationInfo(),
+
+				]);
+			} catch (error) {
+				console.error("Error loading data:", error);
+			} finally {
+				loading.close();
+			}
+		},
+
+		/////////// for visit ///////////
+		async recordVisit() {
 			try {
 				// Create the visitData object 	
 				const visitData = {
@@ -28,22 +76,19 @@ methods:{
 				// If needed, send the data to your backend
 				this.RecordVisit(visitData).then(Response => {
 				}).catch(error => {
-				    console.log(error.response.data.message);
+					console.log(error.response.data.message);
 				});
 			} catch (error) {
 				// Handle any errors (network issues, API failure, etc.)
 				console.error("Error fetching IP:", error);
 			}
 		},
-}
+	}
 };
 </script>
 
 <template>
-	<router-view/> 
+	<router-view />
 </template>
 
-<style scoped>
-
-</style>
-
+<style scoped></style>

@@ -1,6 +1,15 @@
 import User from "@/apis/Users";
+import { UserTypeEnum } from '@/config/config';
 
 
+export const GetWebSiteComunicationInfo = ({ commit, dispatch }) => {
+    return User.GetWebSiteComunicationInfo().then(function (response) {
+        commit('SET_SITE_COMUNICATION_DATA', response.data.data);
+        return response.data.data;
+    }).catch(function (error) {
+        throw error;
+    });
+}
 export const GetUsers = ({ commit, dispatch }, data) => {
     return User.GetUsers(data).then(function (response) {
         commit('SET_USERS_DATA', response.data.data);
@@ -35,6 +44,15 @@ export const GetCompanyUsers = ({ commit, dispatch }, data) => {
     });
 }
 
+export const GetSellers = ({ commit, dispatch }, data) => {
+    return User.GetSellers(data).then(function (response) {
+        commit('SET_USERS_DATA', response.data.data);
+        return response.data.data;
+    }).catch(function (error) {
+        throw error;
+    });
+}
+
 export const CustomerProfileInfo = ({ commit, dispatch }, userId) => {
     return User.CustomerProfileInfo(userId).then(function (response) {
         commit('SET_USER_DATA', response.data.data);
@@ -56,14 +74,14 @@ export const CompanyProfileInfo = ({ commit, dispatch }, userId) => {
 export const UserLogin = ({ commit, dispatch }, data) => {
     return User.UserLogin(data).then(function (response) {
         if (response.data.data.id > 0) {
-        //    console.log("response : " , response);
-            commit('USER_LOGINNAME', response.data.data.name);
+            // console.log("response : " , response);
+            // commit('USER_LOGINNAME', response.data.data.name);
             localStorage.setItem("token", JSON.stringify(response.data.data.token));
+            // localStorage.setItem("slug", response.data.data.slug);
             response.data.data.token = "";
             localStorage.setItem('userName', JSON.parse(JSON.stringify(response.data.data.name)));
             localStorage.setItem('userType', JSON.parse(JSON.stringify(response.data.data.userType)));
             localStorage.setItem('id', JSON.parse(JSON.stringify(response.data.data.id)));
-            // localStorage.setItem('addressState',  JSON.parse(JSON.stringify(response.data.data.addressState)));
         }
         return response.data.data;
     }).catch(function (error) {
@@ -99,8 +117,8 @@ export const CustomerCreate = ({ commit, dispatch }, data) => {
         throw error;
     });
 }
-export const CustomerUpdate = ({ commit, dispatch }, data) => {
-    return User.CustomerUpdate(data).then(function (response) {
+export const CustomerProfileUpdate = ({ commit, dispatch }, data) => {
+    return User.CustomerProfileUpdate(data).then(function (response) {
         commit('SET_USER_DATA', response.data.data);
         return response.data.data;
     }).catch(function (error) {
@@ -130,8 +148,8 @@ export const CompanyCreate = ({ commit, dispatch }, data) => {
         throw error;
     });
 }
-export const CompanyUpdate = ({ commit, dispatch }, data) => {
-    return User.CompanyUpdate(data).then(function (response) {
+export const CompanyProfileUpdate = ({ commit, dispatch }, data) => {
+    return User.CompanyProfileUpdate(data).then(function (response) {
         commit('SET_USER_DATA', response.data.data);
         return response.data.data;
     }).catch(function (error) {

@@ -44,7 +44,6 @@ export default {
     methods: {
         ...mapActions("Users", ["ChangePassword"]),
 
-
         ChangePasswordFunc() {
             if (this.checkValidation()) {
                 const loading = ElLoading.service({
@@ -63,7 +62,6 @@ export default {
                     });
                     this.clearData();
                     loading.close();
-                    
                 }).catch(error => {
                     this.$moshaToast(error.response.data.message, {
                         hideProgressBar: 'false',

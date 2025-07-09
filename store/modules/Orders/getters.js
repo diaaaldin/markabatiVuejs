@@ -13,3 +13,7 @@ export const getOrdersData = (state) => {
 export const getOrderDateTime = (state) => {
     return state.orderDateTime;
 }
+
+export const getOrderDailyPrice = (state) => {
+    return state.orderDailyPrice;
+}

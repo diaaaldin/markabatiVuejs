@@ -16,9 +16,11 @@ export default {
     data() {
         return {
             data: {
-
             },
-
+            dataNotification: {
+                page: 1,
+                pageSize: 1000
+            },
         }
     },
     components: {
@@ -44,7 +46,7 @@ export default {
         });
         //console.log("this.getQuestionsData : ", this.getQuestionsData);
         // Initialize intl-tel-input on the input element
-        this.initFunc();
+        // this.initFunc();
     },
     beforeUnmount() {
         // Properly destroy the instance when the component is unmounted
@@ -72,6 +74,9 @@ export default {
     methods: {
         ...mapActions("Announcement", ["GetMainAnnouncementActiveOrder", "GetVerticalAnnouncementActiveOrder", "GetHorizontalAnnouncementActiveOrder"]),
         ...mapActions("Orders", ["GetStarActiveVehicles"]),
+        ...mapActions("NotificationsAndMessages", ["GetUserNotifications", "ReadNotReadNotifications"]),
+        ...mapActions("Code", ["GetStates", "GetCities"]),
+        ...mapActions("Users", ["GetWebSiteComunicationInfo"]),
 
 
         async initFunc() {
@@ -87,11 +92,32 @@ export default {
                     this.GetVerticalAnnouncementActiveOrder(),
                     this.GetHorizontalAnnouncementActiveOrder(),
                     this.GetStarActiveVehicles(),
+                    this.getNotificationFunc(),
+                    this.GetStates(),
+                    this.GetCities(),
+                    this.GetWebSiteComunicationInfo(),
+
                 ]);
             } catch (error) {
                 console.error("Error loading data:", error);
             } finally {
                 loading.close();
+            }
+        },
+
+        getNotificationFunc() {
+            if (this.isTokenValid()) {
+                this.GetUserNotifications(this.dataNotification).then(Response => {
+                }).catch(error => {
+                    this.$moshaToast(error.response.data.message, {
+                        hideProgressBar: 'false',
+                        position: 'top-center',
+                        showIcon: 'true',
+                        swipeClose: 'true',
+                        type: 'warning',
+                        timeout: 3000,
+                    });
+                });
             }
         },
 
@@ -196,23 +222,23 @@ export default {
     <div class="home">
         <!-- start header section -->
         <darkNavbar> </darkNavbar>
-        
+
         <mainAnnouncement></mainAnnouncement>
-        
+
         <section class="cars">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-9">
                         <div class="row">
-                            <productCard v-for="item in getStarActiveVehicleData" :product='item' ></productCard>
-                         
+                            <productCard v-for="item in getStarActiveVehicleData" :product='item'></productCard>
+
 
                         </div>
                         <div class="row justify-content-center see-more">
                             <div class="col-6 col-lg-4">
                                 <div class=" d-flex align-items-center justify-content-center ">
-                                    <router-link to="/vehicles"class="btn btn-light p-3  show-more-btn w-100">
-                                       {{ $t('main_show_all') }}
+                                    <router-link to="/vehicles" class="btn btn-light p-3  show-more-btn w-100">
+                                        {{ $t('main_show_all') }}
                                     </router-link>
                                 </div>
                             </div>

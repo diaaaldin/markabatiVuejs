@@ -57,7 +57,7 @@ export default {
                 text: "",
             });
             this.GetInterfaceItems(this.interfaceId).then(Response => {
-                console.log(this.getInterfaceItemsData);
+                console.log("this.getInterfaceItemsData : ",this.getInterfaceItemsData);
                 console.log("about_us_mobile1_data : " , this.getTitleByCode("about_us_mobile1_data"));
                 loading.close();
             }).catch(error => {

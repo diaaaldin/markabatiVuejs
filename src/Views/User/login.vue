@@ -28,6 +28,8 @@ export default {
 
 	data() {
 		return {
+			userSlug:localStorage.getItem("slug"),
+
 			user: {
 				email: "",
 				password: "",
@@ -67,8 +69,6 @@ export default {
 				});
 
 				this.UserLogin(this.user).then(Response => {
-					
-
 					this.$moshaToast('Login Success', {
 						hideProgressBar: 'false',
 						showIcon: 'true',
@@ -80,7 +80,7 @@ export default {
 					// if (Response.typeName == "Customer") {
 					// 	this.$router.push({ name: 'main' });
 					// }
-					this.$router.push({ name: 'profile' });
+               		this.$router.push({ name: "profile_profile" });
 				}).catch(error => {
 					this.$moshaToast(error.response.data.message, {
 						hideProgressBar: 'false',
@@ -131,6 +131,7 @@ export default {
 				this.newPasswordData.oldPassword="";
 				this.newPasswordData.newPassword="";
 		},
+
 		getNewPasswordFunc() {
 			if (this.checkNewPasswordValidation()) {
 				const loading = ElLoading.service({
@@ -221,7 +222,7 @@ export default {
 											:type="isPasswordVisible ? 'text' : 'password'"
 											v-model="user.password" class="form-control my-3 py-3 gray_text gray-inp"
 											autocomplete="current-password" placeholder="كلمة المرور"
-											required @input="console.log('Current input type:', $event.target.type)" />
+											required />
 											<span  @click="togglePasswordVisibility" style="cursor: pointer;">
 												<!-- <i  class="far fa-eye-slash"></i> -->
 												<i  class="far fa-eye"></i>
@@ -266,7 +267,7 @@ export default {
 				</div>
 				<div class="modal-body">
 					<form action="" method="">
-						<label class=" label-form"> أرسل البريد الالكتروني </label>
+						<label class=" label-form"> أدخل بريدك الالكتروني </label>
 						<div class="input-group mb-3">
 							<input type="email" class="form-control" placeholder="Example@email.com" aria-label="Email"
 								aria-describedby="basic-addon1" v-model="newPasswordData.email">
@@ -276,7 +277,7 @@ export default {
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">الغاء</button>
 					<button type="button" class="btn btn-primary" v-on:click="getNewPasswordFunc()">
-						أرسل البريد الالكتروني</button>
+						أرسل كلمة المرور الجديدة </button>
 				</div>
 			</div>
 		</div>

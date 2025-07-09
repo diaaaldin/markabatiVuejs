@@ -18,5 +18,9 @@ export const SET_ORDER_DATE = (state , data ) => {
     state.orderDateTime = data;
 }
 
+export const SET_ORDER_DAILY_PRICE = (state , data ) => {
+    state.orderDailyPrice = data;
+}
+
 
 

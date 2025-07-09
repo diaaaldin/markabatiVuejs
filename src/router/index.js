@@ -8,14 +8,15 @@ import signUp from '@/Views/User/signUp.vue'
 import profile from '@/Views/profile.vue'
 import profile_profile from '@/Views/Profile/profile.vue'
 import profile_my_vehicles from '@/Views/Profile/myVehicles.vue'
-import profile_announcement_orders from '@/Views/Profile/Orders/announcementOrders.vue'
-import profile_star_orders from '@/Views/Profile/Orders/starOrders.vue'
+import profile_ads_orders from '@/Views/Profile/Orders/ads_orders.vue'
+import profile_star_orders from '@/Views/Profile/Orders/star_orders.vue'
 import profile_change_password from '@/Views/Profile/changePassword.vue'
 import profile_favorit from '@/Views/Profile/favorit.vue'
 import profile_Payment from '@/Views/Profile/PaymentOperations.vue'
 
-import profile_addVehicle from '@/Views/Profile/addVehicle.vue'
-import profile_addAds from '@/Views/Profile/addAds.vue'
+import profile_add_vehicle from '@/Views/Profile/add_vehicle.vue'
+import profile_update_vehicle from '@/Views/Profile/update_vehicle.vue'
+import profile_add_ads from '@/Views/Profile/add_ads.vue'
 
 
 //announcement
@@ -23,8 +24,8 @@ import add_announcement from '@/Views/Announcement/addAnnouncement.vue'
 import update_announcement from '@/Views/Announcement/updateAnnouncement.vue'
 
 //vehicle
-import add_vehicle from '@/Views/Vehicle/addVehicle.vue'
-import update_vehicle from '@/Views/Vehicle/updateVehicle.vue'
+// import add_vehicle from '@/Views/Vehicle/add_vehicle.vue'
+// import update_vehicle from '@/Views/Vehicle/updateVehicle.vue'
 
 //main
 import main from '@/Views/main.vue'
@@ -83,7 +84,7 @@ const routes = [
         component: vehicle
     },
     {
-        path: '/gallary',
+        path: '/gallary/:slug',
         name: "gallary",
         component: gallary
     },
@@ -91,27 +92,6 @@ const routes = [
         path: '/payForUs',
         name: "payForUs",
         component: payForUs
-    },
-
-    {
-        path: '/add_announcement',
-        name: "add_announcement",
-        component: add_announcement
-    },
-    {
-        path: '/update_announcement',
-        name: "update_announcement",
-        component: update_announcement
-    },
-    {
-        path: '/add_vehicle',
-        name: "add_vehicle",
-        component: add_vehicle
-    },
-    {
-        path: '/update_vehicle',
-        name: "update_vehicle",
-        component: update_vehicle
     },
     {
         path: '/teckitfail',
@@ -140,9 +120,9 @@ const routes = [
                 component: profile_my_vehicles
             },
             {
-                path: '/announcement_orders',
-                name: "profile_announcement_orders",
-                component: profile_announcement_orders
+                path: '/ads_orders',
+                name: "profile_ads_orders",
+                component: profile_ads_orders
             },
             {
                 path: '/star_orders',
@@ -160,19 +140,24 @@ const routes = [
                 component: profile_favorit
             },
             {
-                path: '/PaymentOperations',
+                path: '/payment_operation',
                 name: "profile_Payment",
                 component: profile_Payment
             },
             {
-                path: '/addVehicle',
-                name: "profile_addVehicle",
-                component: profile_addVehicle
+                path: '/add_vehicle',
+                name: "profile_add_vehicle",
+                component: profile_add_vehicle
+            },
+             {
+                path: '/update_vehicle',
+                name: "profile_update_vehicle",
+                component: profile_update_vehicle
             },
             {
-                path: '/addAds',
-                name: "profile_addAds",
-                component: profile_addAds
+                path: '/add_ads',
+                name: "profile_add_ads",
+                component: profile_add_ads
             },
            
         ]
@@ -184,14 +169,15 @@ const routes = [
 const router = createRouter({
     history: createWebHistory(),
     routes,
+    
       // to scroll to the top if any route happen
-    //   scrollBehavior(to, from, savedPosition) {
-    //     if (savedPosition) {
-    //         return savedPosition;
-    //     } else {
-    //         return { left: 0, top: 0 }; // Always scroll to the top
-    //     }
-    // }
+      scrollBehavior(to, from, savedPosition) {
+        if (savedPosition) {
+            return savedPosition;
+        } else {
+            return {  top: 0 }; // Always scroll to the top
+        }
+    }
 });
 
 export default router 

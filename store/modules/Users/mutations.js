@@ -1,3 +1,6 @@
+export const SET_SITE_COMUNICATION_DATA = (state , data ) => {
+    state.siteComunicationData = data;
+}
 export const SET_USER_DATA = (state , data ) => {
     state.UserData = data;
 }

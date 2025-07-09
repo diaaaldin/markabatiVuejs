@@ -13,6 +13,11 @@ export default {
                 storeSignup: Urls.storeSignup,
                 companySignup: Urls.companySignup,
                 partnerSignup: Urls.partnerSignup,
+            },
+
+            dataNotification: {
+                page: 1,
+                pageSize: 1000
             }
         }
     },
@@ -29,32 +34,89 @@ export default {
 
     created() {
         // Call the function from the store directly when the component is created
-        // this.GetStatistics();
+        // this.initFunc();
 
     },
 
     computed: {
-        // ...mapGetters("Services", ["getStatisticsData"]),
-        GetUserName() {
+        ...mapGetters("Users", ["getUserData"]),
+        ...mapGetters("NotificationsAndMessages", ["getUserNotificationsData"]),
+
+        userImage() {
+            const imageUrl = this.getUserData && this.getUserData.image
+                ? this.getUserData.image
+                : "/img/profile-icon.png";
+
+            return "/img/profile-icon.png";
+            // return imageUrl;
+        },
+        userHaveToken() {
             const name = this.getUserLoginName;// just for loud this function again when name change
-            let userName = localStorage.getItem("userName");
-            if (userName == null) {
-                return "";
+            let token = localStorage.getItem("token");
+            if (token == null) {
+                return false;
             } else {
-                return userName;
+                return true;
             }
         },
     },
     methods: {
         ...mapActions("Users", ["CustomerProfileInfo"]),
+        ...mapActions("NotificationsAndMessages", ["GetUserNotifications", "ReadNotReadNotifications"]),
+
+        // initFunc() {
+        //     this.GetUserNotifications(this.dataNotification).then(Response => {
+        //         console.log("getUserNotificationsData :", this.getUserNotificationsData);
+        //     }).catch(error => {
+        //         this.$moshaToast(error.response.data.message, {
+        //             hideProgressBar: 'false',
+        //             position: 'top-center',
+        //             showIcon: 'true',
+        //             swipeClose: 'true',
+        //             type: 'warning',
+        //             timeout: 3000,
+        //         });
+        //     });
+        // },
+
+        ReadNotReadNotificationsFunc() {
+            this.ReadNotReadNotifications().then(Response => {
+            }).catch(error => {
+                this.$moshaToast(error.response.data.message, {
+                    hideProgressBar: 'false',
+                    position: 'top-center',
+                    showIcon: 'true',
+                    swipeClose: 'true',
+                    type: 'warning',
+                    timeout: 3000,
+                });
+            });
+        },
+       
+        formatDateTime(dateString) {
+            const date = new Date(dateString);
+            if (isNaN(date)) return '';
+
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+
+            let hours = date.getHours();
+            const minutes = String(date.getMinutes()).padStart(2, '0');
+
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12;
+            hours = hours ? hours : 12; // Convert 0 to 12
+            const formattedHours = String(hours).padStart(2, '0');
+
+            return `${year}-${month}-${day} ${formattedHours}:${minutes} ${ampm}`;
+        },
+
         goToProfileFunc() {
             if (!this.isTokenValid()) {
                 this.$router.push({ name: 'login' });
             } else {
-                let email = localStorage.getItem("email");
-                // this.CustomerProfileInfo(email).then(Response => {
-                this.$router.push({ name: 'profile' });
-                // })
+                this.$router.push({ name: "profile_profile" });
             }
         },
 
@@ -121,7 +183,7 @@ export default {
                         </li>
                     </ul>
 
-                    <ul v-if="GetUserName == ''"
+                    <ul v-if="userHaveToken == false"
                         class="nav align-items-center mb-2 mb-lg-0 white-header justify-content-center gradiant_nav">
                         <li class="nav-item login">
                             <router-link to="/login" class="px-3 py-2 align-items-center d-flex login-btn"> {{
@@ -138,8 +200,10 @@ export default {
 
                         <li class="nav-item">
                             <div class="dropdown hero-notification-div ">
-                                <span class="account">4</span>
-                                <svg class="noti-svg dropdown-toggle" id="dropdownMenuButton1" data-bs-toggle="dropdown"
+                                <span v-if="(getUserNotificationsData.notReadNum ?? 0) > 0" class="account">
+                                {{ getUserNotificationsData.notReadNum ?? 0 }}
+                                </span>
+                                <svg v-on:click="ReadNotReadNotificationsFunc()" class="noti-svg dropdown-toggle" id="dropdownMenuButton1" data-bs-toggle="dropdown"
                                     aria-expanded="false" width="24" height="24" viewBox="0 0 24 24" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path fill-rule="evenodd" clip-rule="evenodd"
@@ -149,39 +213,52 @@ export default {
 
                                 <ul class="dropdown-menu notification pt-3" aria-labelledby="dropdownMenuButton1">
                                     <div class="container">
-                                        <h6> الاشعارات</h6>
-                                        <div class="gray-inp mt-4">
+                                        <h6> {{ $t('navbar_notifications') }} </h6>
+                                        <div class="gray-inp mt-4" v-for="(item, index) in (getUserNotificationsData.notifications?.data || [])">
                                             <div class=" p-2 row">
                                                 <div class="col-3 ">
                                                     <div class="notification_icon_div px-1 py-3 mx-0 d-flex align-items-center justify-content-center"
                                                         style="background: #E5F2ED;">
-                                                        <svg width="21" height="21" viewBox="0 0 21 21" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <path
-                                                                d="M9.795 19H3C2.46957 19 1.96086 18.7893 1.58579 18.4142C1.21071 18.0391 1 17.5304 1 17V5C1 4.46957 1.21071 3.96086 1.58579 3.58579C1.96086 3.21071 2.46957 3 3 3H15C15.5304 3 16.0391 3.21071 16.4142 3.58579C16.7893 3.96086 17 4.46957 17 5V9"
-                                                                stroke="#47D697" stroke-width="2" stroke-linecap="round"
-                                                                stroke-linejoin="round" />
-                                                            <path
-                                                                d="M16 20C18.2091 20 20 18.2091 20 16C20 13.7909 18.2091 12 16 12C13.7909 12 12 13.7909 12 16C12 18.2091 13.7909 20 16 20Z"
-                                                                stroke="#47D697" stroke-width="2" stroke-linecap="round"
-                                                                stroke-linejoin="round" />
-                                                            <path d="M16 14.496V16L17 17M13 1V5V1ZM5 1V5V1ZM1 9H17H1Z"
-                                                                stroke="#47D697" stroke-width="2" stroke-linecap="round"
-                                                                stroke-linejoin="round" />
-                                                        </svg>
+                                                            <svg v-if="item.isRead" width="21" height="21" viewBox="0 0 21 21"
+                                                        fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path
+                                                            d="M9.795 19H3C2.46957 19 1.96086 18.7893 1.58579 18.4142C1.21071 18.0391 1 17.5304 1 17V5C1 4.46957 1.21071 3.96086 1.58579 3.58579C1.96086 3.21071 2.46957 3 3 3H15C15.5304 3 16.0391 3.21071 16.4142 3.58579C16.7893 3.96086 17 4.46957 17 5V9"
+                                                            stroke="#F2851D" stroke-width="2" stroke-linecap="round"
+                                                            stroke-linejoin="round" />
+                                                        <path
+                                                            d="M16 20C18.2091 20 20 18.2091 20 16C20 13.7909 18.2091 12 16 12C13.7909 12 12 13.7909 12 16C12 18.2091 13.7909 20 16 20Z"
+                                                            stroke="#F2851D" stroke-width="2" stroke-linecap="round"
+                                                            stroke-linejoin="round" />
+                                                        <path d="M16 14.496V16L17 17M13 1V5V1ZM5 1V5V1ZM1 9H17H1Z"
+                                                            stroke="#F2851D" stroke-width="2" stroke-linecap="round"
+                                                            stroke-linejoin="round" />
+                                                    </svg>
+                                                    <svg v-else width="21" height="21" viewBox="0 0 21 21" fill="none"
+                                                        xmlns="http://www.w3.org/2000/svg">
+                                                        <path
+                                                            d="M9.795 19H3C2.46957 19 1.96086 18.7893 1.58579 18.4142C1.21071 18.0391 1 17.5304 1 17V5C1 4.46957 1.21071 3.96086 1.58579 3.58579C1.96086 3.21071 2.46957 3 3 3H15C15.5304 3 16.0391 3.21071 16.4142 3.58579C16.7893 3.96086 17 4.46957 17 5V9"
+                                                            stroke="#47D697" stroke-width="2" stroke-linecap="round"
+                                                            stroke-linejoin="round" />
+                                                        <path
+                                                            d="M16 20C18.2091 20 20 18.2091 20 16C20 13.7909 18.2091 12 16 12C13.7909 12 12 13.7909 12 16C12 18.2091 13.7909 20 16 20Z"
+                                                            stroke="#47D697" stroke-width="2" stroke-linecap="round"
+                                                            stroke-linejoin="round" />
+                                                        <path d="M16 14.496V16L17 17M13 1V5V1ZM5 1V5V1ZM1 9H17H1Z"
+                                                            stroke="#47D697" stroke-width="2" stroke-linecap="round"
+                                                            stroke-linejoin="round" />
+                                                    </svg>
 
                                                     </div>
                                                 </div>
                                                 <div class="col-8 ps-0 ">
-                                                    <span class="gray_text">طلب مكتمل</span>
-                                                    <p class="gray_text">اليوم 19:10</p>
+                                                    <span class="gray_text">{{ item.title }}</span>
+                                                    <p class="gray_text">{{ formatDateTime(item.createdAt) }}</p>
                                                 </div>
-                                                <p class="gray_text">تهانينا ، تم الانتهاء من خدمة حجز فندق الامل بنجاح
-                                                    ، يرجى تقييم الاوتيل .</p>
+                                                <p class="gray_text">{{ item.message }}</p>
 
                                             </div>
                                         </div>
-                                        <div class="gray-inp mt-2">
+                                        <!-- <div class="gray-inp mt-2">
                                             <div class=" p-2 row">
                                                 <div class="col-3 ">
                                                     <div class="notification_icon_div px-1 py-3 mx-0 d-flex align-items-center justify-content-center"
@@ -268,7 +345,7 @@ export default {
                                                     ، يرجى تقييم الاوتيل .</p>
 
                                             </div>
-                                        </div>
+                                        </div> -->
 
                                     </div>
                                 </ul>
@@ -277,16 +354,17 @@ export default {
                         </li>
 
                         <li class="nav-item dropdown ms-2">
-                            <a href="" class="dropdown-toggle px-3 py-2 align-items-center d-flex"
-                                id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <a href="" class="dropdown-toggle px-3 py-2 align-items-center d-flex" id="navbarDropdown"
+                                role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"
                                     class="" viewBox="0 0 16 16">
-                                    <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z" />
+                                    <path fill-rule="evenodd"
+                                        d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z" />
                                 </svg>
                                 <div class="img">
-                                    <img src="/img/profile-icon.png" class="" alt="...">
+                                    <img :src="userImage" class="" alt="...">
                                 </div>
-                                
+
                                 <!-- {{ GetUserName }} -->
                             </a>
                             <ul class="dropdown-menu user-ul" aria-labelledby="navbarDropdown">
@@ -311,18 +389,21 @@ export default {
     </div>
 </template>
 <style scoped>
-
 .dropdown-toggle svg {
     margin-left: 8px;
 }
-.dropdown-toggle svg path{
-    fill: black !important;;
+
+.dropdown-toggle svg path {
+    fill: black !important;
+    ;
 }
-.dropdown-toggle:hover svg path, .dropdown-toggle:focus svg path{
+
+.dropdown-toggle:hover svg path,
+.dropdown-toggle:focus svg path {
     fill: var(--main-color) !important;
 }
+
 .dropdown-toggle::after {
     display: none;
 }
-
 </style>

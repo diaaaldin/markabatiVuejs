@@ -17,7 +17,6 @@ export default {
     },
 
     GetVehiclesRandomly(data) {
-
         const queryString = new URLSearchParams({
             ownerId: data.ownerId,
             vehicleBrandId: data.vehicleBrandId,
@@ -46,8 +45,65 @@ export default {
         };
         return Api.get(`${END_POINT}/GetVehiclesRandomly`, config);
     },
-  
 
+    GetUserVehicles(data) {
+        let config = {
+            params: {
+                userId: data.userId,
+                page: data.page,
+                pageSize: data.pageSize,
+            },
+
+        };
+        return Api.get(`${END_POINT}/GetUserVehicles`, config);
+    },
+
+    GetVehiclesFavorite() {
+        let token = localStorage.getItem("token")
+            ? JSON.parse(localStorage.getItem("token"))
+            : null;
+
+        let config = {
+            headers: {
+                'Authorization': token,
+                'Access-Control-Allow-Origin': '*'
+            },
+        };
+        return Api.get(`${END_POINT}/GetVehiclesFavorite`, config);
+    },
+
+     GetVehiclesFavoriteId() {
+        let token = localStorage.getItem("token")
+            ? JSON.parse(localStorage.getItem("token"))
+            : null;
+
+        let config = {
+            headers: {
+                'Authorization': token,
+                'Access-Control-Allow-Origin': '*'
+            },
+          
+        };
+        return Api.get(`${END_POINT}/GetVehiclesFavoriteId`, config);
+    },
+    
+    ToggleVehicleFavorite(id) {
+        let token = localStorage.getItem("token")
+            ? JSON.parse(localStorage.getItem("token"))
+            : null;
+
+        let config = {
+            headers: {
+                'Authorization': token,
+                'Access-Control-Allow-Origin': '*'
+            },
+             params: {
+                vehicleId: id,
+            },
+        };
+        return Api.get(`${END_POINT}/ToggleVehicleFavorite`, config);
+    },
+    
 
     GetVehicelForUpdate(id) {
 
@@ -66,7 +122,7 @@ export default {
         return responce;
     },
 
-    GetVehiclesManagment(data) {
+    GetMyVehicles(statusId) {
         let token = localStorage.getItem("token")
             ? JSON.parse(localStorage.getItem("token"))
             : null;
@@ -77,14 +133,11 @@ export default {
                 'Access-Control-Allow-Origin': '*'
             },
             params: {
-                ...data.vm, // Spread the VehicleManagmentSearch object properties as query parameters
-                page: data.page, // Add the page query parameter
-                pageSize: data.pageSize // Add the pageSize query parameter
+                statusId: statusId,
             }
         };
 
-        console.log("config: ", config);
-        const response = Api.get(`${END_POINT}/GetVehiclesManagment`, config);
+        const response = Api.get(`${END_POINT}/GetMyVehicles`, config);
         return response;
     },
 

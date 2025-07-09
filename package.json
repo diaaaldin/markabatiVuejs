@@ -9,6 +9,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@microsoft/signalr": "^8.0.7",
+    "@photo-sphere-viewer/core": "^5.13.3",
     "@vueuse/head": "^2.0.0",
     "axios": "^1.7.7",
     "cropperjs": "^1.5.13",

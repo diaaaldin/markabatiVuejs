@@ -4244,3 +4244,38 @@ background-color: #fff;
   color: var(--main-color);
   background-color: #e9ecef;
 }
+
+.imageCropper {
+    background-color: #f1f0ef;
+    /* White background for the box */
+    border: 1px solid #ddd;
+    /* Light grey border for subtle separation */
+    border-radius: 8px;
+    /* Rounded corners for a softer look */
+    padding: 10px;
+    /* Padding around the image */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    /* Subtle shadow for depth */
+    display: flex;
+    /* Flexbox for centering content */
+    justify-content: center;
+    /* Center horizontally */
+    align-items: center;
+    /* Center vertically */
+    max-width: 100%;
+    /* Ensure it does not exceed container width */
+    max-height: 1000px;
+    /* Limit height to maintain aspect ratio */
+    overflow: hidden;
+    /* Hide overflow for better image handling */
+}
+
+/* Style for the image inside the box */
+.imageCropper img {
+    max-width: 100%;
+    /* Responsive width */
+    max-height: 100%;
+    /* Responsive height */
+    border-radius: 4px;
+    /* Slightly rounded corners on the image */
+}

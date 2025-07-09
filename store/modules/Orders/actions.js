@@ -17,8 +17,8 @@ export const GetStarVehicleOrder = ({ commit, dispatch },orderId) => {
            throw error;
    });
 }
-export const GetStarVehiclesOrders = ({ commit, dispatch },data) => {
-   return Order.GetStarVehiclesOrders(data).then(function (response) {
+export const GetUserStarVehiclesOrders = ({ commit, dispatch },data) => {
+   return Order.GetUserStarVehiclesOrders(data).then(function (response) {
        commit('SET_ORDERS_DATA', response.data.data);
        return response.data.data; 
    }).catch(function (error) {
@@ -34,8 +34,8 @@ export const GetAnnouncementOrder = ({ commit, dispatch },orderId) => {
            throw error;
    });
 }
-export const GetAnnouncementOrders = ({ commit, dispatch },data) => {
-   return Order.GetAnnouncementOrders(data).then(function (response) {
+export const GetUserAnnouncementOrders = ({ commit, dispatch },data) => {
+   return Order.GetUserAnnouncementOrders(data).then(function (response) {
        commit('SET_ORDERS_DATA', response.data.data);
        return response.data.data; 
    }).catch(function (error) {
@@ -54,6 +54,23 @@ export const GetStarVehicleOrderDate = ({ commit, dispatch }) => {
 export const GetAnnouncementOrderDate = ({ commit, dispatch },announcementType) => {
    return Order.GetAnnouncementOrderDate(announcementType).then(function (response) {
        commit('SET_ORDER_DATE', response.data.data);
+       return response.data.data; 
+   }).catch(function (error) {
+           throw error;
+   });
+}
+
+export const GetStarVehicleOrderDailyPrice = ({ commit, dispatch }) => {
+   return Order.GetStarVehicleOrderDailyPrice().then(function (response) {
+       commit('SET_ORDER_DAILY_PRICE', response.data.data);
+       return response.data.data; 
+   }).catch(function (error) {
+           throw error;
+   });
+}
+export const GetAnnouncementOrderDailyPrice = ({ commit, dispatch },announcementType) => {
+   return Order.GetAnnouncementOrderDailyPrice(announcementType).then(function (response) {
+       commit('SET_ORDER_DAILY_PRICE', response.data.data);
        return response.data.data; 
    }).catch(function (error) {
            throw error;

@@ -24,15 +24,20 @@ export default {
   },
 
   computed: {
-    ...mapGetters("Users", ["getUserData"]),
+    ...mapGetters("Users", ["getUserData" ]),
 
     userImage() {
       const imageUrl = this.getUserData && this.getUserData.image
         ? this.getUserData.image
         : "/img/profile-icon.png";
-
       return imageUrl;
-    }
+    },
+    userName(){
+      const name = this.getUserData && this.getUserData.name
+        ? this.getUserData.name
+        : "";
+        return name;
+    },
   },
   methods: {
     // ...mapActions("Services", ["GetStatistics"]),
@@ -40,9 +45,10 @@ export default {
       localStorage.clear();
       this.$router.push({ name: 'main' });
     },
+
     toggleDropdown(menu) {
-    this.activeDropdown = this.activeDropdown === menu ? null : menu;
-  }
+      this.activeDropdown = this.activeDropdown === menu ? null : menu;
+    }
   }
 };
 </script>
@@ -57,13 +63,14 @@ export default {
               <img :src="userImage" class="img-fluid hero-profile-pic1" alt="profile pic">
               <div class="d-flex flex-column">
 
-                <router-link to="/profile" class="list_link ms-2" style="color: black">ضياء</router-link>
+                <router-link to="/profile" class="list_link ms-2" style="color: black">{{ userName }}</router-link>
 
                 <div class=" align-items-center d-flex ms-2">
                   <svg width="7" height="7" viewBox="0 0 7 7" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <circle cx="3.5" cy="3.5" r="3.5" fill="#0AB905" />
                   </svg>
-                  <span class="gray_text ms-1 " style="font-size: 10px">حساب نشط </span>
+                  <!-- <span class="gray_text ms-1 " style="font-size: 10px"> حساب نشط </span> -->
+                  <span class="gray_text ms-1 " style="font-size: 10px"> {{ $t('profile_monthly_visits_count') }} {{ this.getUserData.monthlyVisitsCount }} </span>
                 </div>
               </div>
             </div>
@@ -90,7 +97,7 @@ export default {
                     d="M9 3C9 2.44772 9.44772 2 10 2H14C14.5523 2 15 2.44772 15 3V4C15 4.55228 14.5523 5 14 5H10C9.44772 5 9 4.55228 9 4V3Z"
                     fill="#26d829" />
                 </svg>
-                <router-link to="/profile" class="list_link ms-2"> البروفايل </router-link>
+                <router-link to="/profile" class="list_link ms-2"> {{ $t('profile_sidemenu_profile') }}  </router-link>
               </div>
             </div>
             <div class="justify-content-end  d-flex">
@@ -114,7 +121,7 @@ export default {
                       fill="#26d829"></path> 
                       <path d="M18 15.75H15C14.59 15.75 14.25 15.41 14.25 15C14.25 14.59 14.59 14.25 15 14.25H18C18.41 14.25 18.75 14.59 18.75 15C18.75 15.41 18.41 15.75 18 15.75Z"
                    fill="#26d829"></path> </g></svg>
-                <router-link to="/my_vehicles" class="list_link ms-2"> مركباتي </router-link>
+                <router-link to="/my_vehicles" class="list_link ms-2"> {{ $t('profile_sidemenu_vehicles') }} </router-link>
               </div>
             </div>
             <div class="justify-content-end  d-flex">
@@ -135,7 +142,7 @@ export default {
                     d="M15.7071 7.29289C16.0976 7.68342 16.0976 8.31658 15.7071 8.70711L11.7071 12.7071C11.3166 13.0976 10.6834 13.0976 10.2929 12.7071L8.29289 10.7071C7.90237 10.3166 7.90237 9.68342 8.29289 9.29289C8.68342 8.90237 9.31658 8.90237 9.70711 9.29289L11 10.5858L14.2929 7.29289C14.6834 6.90237 15.3166 6.90237 15.7071 7.29289Z"
                     fill="#26d829" />
                 </svg>
-                <router-link to="/favorit" class="list_link ms-2"> المفضلة </router-link>
+                <router-link to="/favorit" class="list_link ms-2"> {{ $t('profile_sidemenu_favorite') }} </router-link>
               </div>
             </div>
             <div class="justify-content-end  d-flex">
@@ -154,7 +161,7 @@ export default {
                 <g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M7.5 4.5H7.25V2C7.25 1.59 6.91 1.25 6.5 1.25C6.09 1.25 5.75 1.59 5.75 2V4.5H5.5C3.91 4.5 3 5.41 3 7V13C3 14.59 3.91 15.5 5.5 15.5H5.75V22C5.75 22.41 6.09 22.75 6.5 22.75C6.91 22.75 7.25 22.41 7.25 22V15.5H7.5C9.09 15.5 10 14.59 10 13V7C10 5.41 9.09 4.5 7.5 4.5Z" 
                   fill="none"></path> <path d="M18.5 8.5H18.25V2C18.25 1.59 17.91 1.25 17.5 1.25C17.09 1.25 16.75 1.59 16.75 2V8.5H16.5C14.91 8.5 14 9.41 14 11V17C14 18.59 14.91 19.5 16.5 19.5H16.75V22C16.75 22.41 17.09 22.75 17.5 22.75C17.91 22.75 18.25 22.41 18.25 22V19.5H18.5C20.09 19.5 21 18.59 21 17V11C21 9.41 20.09 8.5 18.5 8.5Z"
                  fill="#26d829"></path> </g></svg>
-                <a class="list_link ms-2"> الطلبات </a>
+                <a class="list_link ms-2"> {{ $t('profile_sidemenu_orders') }} </a>
               </div>
             </div>
             <div class="justify-content-end  d-flex">
@@ -167,7 +174,7 @@ export default {
         <div class="justify-content-start  d-flex">
               <div class="d-flex align-items-center">
                <svg viewBox="0 0 24 24" width="24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path opacity="0.5" d="M18 9.32993V14.6699C18 17.9899 15.65 19.3399 12.78 17.6899L11.5 16.9499C11.19 16.7699 11 16.4399 11 16.0799V7.91993C11 7.55993 11.19 7.22993 11.5 7.04993L12.78 6.30992C15.65 4.65992 18 6.00993 18 9.32993Z" fill="#26d829"></path> <path  d="M10.0005 8.79006V15.2201C10.0005 15.6101 9.58055 15.8501 9.25055 15.6501L8.15055 15.0101C5.28055 13.3601 5.28055 10.6401 8.15055 8.99006L9.25055 8.35006C9.58055 8.16006 10.0005 8.40006 10.0005 8.79006Z" fill="#26d829"></path> </g></svg>
-                <router-link to="/announcement_orders"  class="list_link">طلبات الاعلان</router-link>
+                <router-link to="/ads_orders"  class="list_link">{{ $t('profile_sidemenu_orders_ads') }}</router-link>
               </div>
           </div>
       </li>
@@ -175,11 +182,11 @@ export default {
               <div class="justify-content-start  d-flex">
               <div class="d-flex align-items-center">
                <svg viewBox="0 0 24 24" width="24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path opacity="0.5" d="M18 9.32993V14.6699C18 17.9899 15.65 19.3399 12.78 17.6899L11.5 16.9499C11.19 16.7699 11 16.4399 11 16.0799V7.91993C11 7.55993 11.19 7.22993 11.5 7.04993L12.78 6.30992C15.65 4.65992 18 6.00993 18 9.32993Z" fill="#26d829"></path> <path  d="M10.0005 8.79006V15.2201C10.0005 15.6101 9.58055 15.8501 9.25055 15.6501L8.15055 15.0101C5.28055 13.3601 5.28055 10.6401 8.15055 8.99006L9.25055 8.35006C9.58055 8.16006 10.0005 8.40006 10.0005 8.79006Z" fill="#26d829"></path> </g></svg>
-                <router-link to="/star_orders" class="list_link">طلبات التميز</router-link>
+                <router-link to="/star_orders" class="list_link">{{ $t('profile_sidemenu_orders_star') }}</router-link>
               </div>
           </div>      
     </li>
- <li class="list-group-item" :class="{ active: $route.path === '/PaymentOperations' }">
+ <li class="list-group-item" :class="{ active: $route.path === '/payment_operation' }">
           <div class="d-flex justify-content-between align-items-center py-2">
             <div class="justify-content-start  d-flex">
               <div class="d-flex align-items-center">
@@ -188,7 +195,7 @@ export default {
                   fill="#26d829"></path> <path d="M22.5608 13.9702V16.0302C22.5608 16.5802 22.1208 17.0302 21.5608 17.0502H19.6008C18.5208 17.0502 17.5308 16.2602 17.4408 15.1802C17.3808 14.5502 17.6208 13.9602 18.0408 13.5502C18.4108 13.1702 18.9208 12.9502 19.4808 12.9502H21.5608C22.1208 12.9702 22.5608 13.4202 22.5608 13.9702Z" 
                   fill="#26d829"></path> <path d="M14 12.75H7C6.59 12.75 6.25 12.41 6.25 12C6.25 11.59 6.59 11.25 7 11.25H14C14.41 11.25 14.75 11.59 14.75 12C14.75 12.41 14.41 12.75 14 12.75Z" 
                   fill="#26d829"></path> </g></svg>
-                <router-link to="/PaymentOperations" class="list_link ms-2"> عملياتي المالية </router-link>
+                <router-link to="/payment_operation" class="list_link ms-2"> {{ $t('profile_sidemenu_payment_operation') }} </router-link>
               </div>
             </div>
             <div class="justify-content-end  d-flex">
@@ -211,7 +218,7 @@ export default {
                     fill="#26d829" />
                 </svg>
 
-                <router-link to="/change_password" class="list_link ms-2"> تغيير كلمة المرور </router-link>
+                <router-link to="/change_password" class="list_link ms-2"> {{ $t('profile_sidemenu_change_password') }} </router-link>
               </div>
             </div>
             <div class="justify-content-end  d-flex">
@@ -234,7 +241,7 @@ export default {
                     fill="#ff0101" stroke="#26d829" stroke-width="0.1" />
                 </svg>
 
-                <a href="javascript:void(0)" v-on:click="logOutFunc()" class="list_link ms-2"> تسجيل خروج </a>
+                <a href="javascript:void(0)" v-on:click="logOutFunc()" class="list_link ms-2"> {{ $t('profile_sidemenu_logout') }} </a>
               </div>
             </div>
             <div class="justify-content-end  d-flex">

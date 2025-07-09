@@ -23,13 +23,12 @@ export const ReadNotReadNotifications = ({ commit, getters }) => {
         let notiIds = response.data.data;
         
         let notificationsData = getters.getUserNotificationsData;
-        console.log("notiIds : ", notiIds);
-        console.log("Notification befor : ", notificationsData);
+        // console.log("notiIds : ", notiIds);
+        // console.log("Notification befor : ", notificationsData);
         let notificationArray = notificationsData.notifications.data;
-        console.log("notificationArray : ", notificationArray);
-
+        // console.log("notificationArray : ", notificationArray);
         notificationsData.notReadNum = 0;
-        console.log("Notification after : ", notificationsData);
+        // console.log("Notification after : ", notificationsData);
         commit('SET_USER_NOTIFICATIONS_DATA', notificationsData);
         return response.data.data;
     }).catch(function (error) {

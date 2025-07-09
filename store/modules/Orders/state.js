@@ -5,4 +5,5 @@ export default{
    orderCreateUpdateData :{},
    ordersData :{}, 
    orderDateTime : {},
+   orderDailyPriceData : {},
 }

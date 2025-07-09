@@ -1,13 +1,11 @@
 <script>
-//import { mapState, mapGetters, mapActions } from "vuex";
 import { mapState, mapGetters, mapActions } from "vuex";
 import { ElLoading } from 'element-plus';
-import favoritProduct from '@/components/Favorit/favoritProduct.vue';
+import favoritProduct from '@/components/Cards/favoritProduct.vue';
 
 export default {
   data() {
     return {
-
     }
   },
 
@@ -25,16 +23,37 @@ export default {
 
   created() {
     // Call the function from the store directly when the component is created
-    // this.GetProductInBasket();
+    this.initFunc();
   },
 
   computed: {
-    ...mapGetters("Products", ["getFavoritProductsData"]),
-
+    ...mapGetters("Vehicles", ["getFavoriteVehiclesData"]),
   },
 
   methods: {
-    ...mapActions("Products", ["GetProductInBasket"]),
+    ...mapActions("Vehicles", ["GetVehiclesFavorite"]),
+
+    initFunc() {
+      const loading = ElLoading.service({
+        lock: true,
+        background: 'rgba(0, 0, 0, 0.7)',
+        text: "",
+      });
+      this.GetVehiclesFavorite().then(response => {
+        //  console.log("getFavoriteVehiclesData : ", this.getFavoriteVehiclesData);
+        loading.close();
+      }).catch(error => {
+        this.$moshaToast(error.response.data.message, {
+          hideProgressBar: 'false',
+          position: 'top-center',
+          showIcon: 'true',
+          swipeClose: 'true',
+          type: 'warning',
+          timeout: 3000,
+        });
+        loading.close();
+      });
+    },
 
   }
 };
@@ -46,7 +65,11 @@ export default {
       <div class="tab-content px-0" id="myTabContent">
         <div class="favorite-product" id="">
           <!-- start card link -->
-          <favoritProduct ></favoritProduct>
+          <favoritProduct v-for="(item, index) in getFavoriteVehiclesData.vehicles.data" :product='item'></favoritProduct>
+          <!-- <favoritProduct></favoritProduct>
+          <favoritProduct></favoritProduct>
+          <favoritProduct></favoritProduct>
+          <favoritProduct></favoritProduct> -->
           <!-- end card link -->
 
         </div>

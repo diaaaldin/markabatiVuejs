@@ -16,6 +16,8 @@ import Interfaces from "./modules/Interfaces/index";
 
 import Vuex from "vuex";
 import createPersistedState from 'vuex-persistedstate';
+import callHubPlugin from './CullHubPlugin.js';
+
 
 const app = createApp();
 app.use(Vuex);
@@ -48,7 +50,8 @@ const store = new Vuex.Store({
      plugins: [
         createPersistedState({
           paths: ['Users','Code','Orders','NotificationsAndMessages','Visit','Payment','Roles','Vehicles','Announcement'],
-        })
+        }),
+        callHubPlugin
       ],
 });
 
