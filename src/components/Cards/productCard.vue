@@ -59,6 +59,8 @@ export default {
         ...mapGetters("Code", ["getStatesData", "getCitiesData"]),
         ...mapGetters("Vehicles", ["getFavoriteVehiclesIdData"]),
 
+
+
     },
     methods: {
         ...mapActions("Code", ["GetStates", "GetCities"]),
@@ -163,6 +165,32 @@ export default {
             let res = this.getCitiesData.find(x => x.id === id);
             if (res) return res.name;
             else return "";
+        },
+
+        whatsAppLinkFunc() {
+            // const encodedMsg = encodeURIComponent(this.message);
+            // return `https://wa.me/${this.phone}?text=${encodedMsg}`;
+
+            let rawNumber = this.product.ownerMobile;
+
+            // Clean and normalize the number
+            let cleanNumber = rawNumber
+                .replace(/\D/g, '')         // remove all non-digit characters
+                .replace(/^00/, '')         // remove leading 00 if exists
+                .replace(/^0+/, '')         // remove local leading 0 if needed
+                ;
+
+            // Add country code manually if needed
+            // if (!cleanNumber.startsWith('970')) {
+            //     cleanNumber = '970' + cleanNumber;
+            // } 
+            // else if (!cleanNumber.startsWith('970')) {
+            //     cleanNumber = '970' + cleanNumber;
+            // }
+
+            const link = `https://wa.me/${cleanNumber}`;
+            console.log('Final WhatsApp link:', link);
+            window.open(link, '_blank');
         },
 
     }
@@ -272,7 +300,8 @@ export default {
                     </div>
                     <a href="#" class="btn btn-light p-3 contact-with-seller w-100" data-bs-toggle="modal"
                         :data-bs-target="'#contact_with_seller_' + product.id"> تواصل مع
-                        البائع</a>
+                        البائع
+                    </a>
                 </div>
             </div>
         </a>
@@ -323,7 +352,7 @@ export default {
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary">
+                    <button v-on:click="whatsAppLinkFunc()" type="button" class="btn btn-primary">
                         راسل البائع
                         <svg viewBox="0 0 24 24" width="24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
