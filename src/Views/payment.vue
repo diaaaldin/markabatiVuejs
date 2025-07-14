@@ -4,22 +4,33 @@ import { ElLoading } from 'element-plus';
 
 import pageNav from '@/components/lightNavbar.vue';
 import pageFooter from '@/components/footer.vue';
+import { PaymentWayEnum, PaymentInformationsEnum } from '@/config/config.js'
+
 export default {
   data() {
     return {
       activeTab: 'waiting',
+
+      dataWallet: {
+        inputValue: '',
+        qrValue: ''
+      },
+
+      paymentWay: PaymentWayEnum,
     }
   },
+
   props: {
 
   },
+
   mounted() {
 
   },
+
   components: {
     pageNav,
     pageFooter,
-
   },
 
   emits: {
@@ -27,13 +38,66 @@ export default {
   },
 
   created() {
-
   },
 
   computed: {
+    ...mapGetters("Code", ["getConstantsData"]),
 
   },
   methods: {
+
+    selectPaymentWayFunc(id) {
+      switch (id) {
+        case this.paymentWay.palestineBank:
+          return this.paymentSelectedDataFunc(PaymentInformationsEnum.palestineBankNumber, PaymentInformationsEnum.palestineBankQR);
+        case this.paymentWay.palPayWallet:
+          return this.paymentSelectedDataFunc(PaymentInformationsEnum.palPayWalletMobileNumber, PaymentInformationsEnum.palPayWalletQR);
+        case this.paymentWay.jawwalPayWallet:
+          return this.paymentSelectedDataFunc(PaymentInformationsEnum.jawwalPayWalletMobileNumber, PaymentInformationsEnum.jawwalPayWalletQR);
+        case this.paymentWay.usdtWallet:
+          return this.paymentSelectedDataFunc(PaymentInformationsEnum.usdtWalletCode, PaymentInformationsEnum.usdtWalletQR);
+
+        // default:
+        //   return "غير معروف";
+
+      }
+    },
+
+    paymentSelectedDataFunc(value1, value2) {
+      const foundItem = this.getConstantsData.find(element => element.id === value1);
+      const foundItemQR = this.getConstantsData.find(element => element.id === value2);
+      if (foundItem && foundItemQR) {
+        this.dataWallet.inputValue = foundItem.valueSt;
+        this.dataWallet.qrValue = foundItemQR.valueSt;
+      }
+    },
+
+    copyMobileNumber() {
+      const stValue = this.dataWallet.inputValue || ''; // You can also use a static or v-model value
+      if (stValue) {
+        navigator.clipboard.writeText(stValue)
+          .then(() => {
+           this.$moshaToast('تم النسخ إلى الحافظة', {
+							hideProgressBar: 'false',
+							showIcon: 'true',
+							swipeClose: 'true',
+							type: 'success',
+							timeout: 3000,
+						});
+          })
+          .catch(err => {
+            this.$moshaToast('فشل النسخ الى الحافظة', {
+							hideProgressBar: 'false',
+							showIcon: 'true',
+							swipeClose: 'true',
+							type: 'warning',
+							timeout: 3000,
+						});
+          });
+
+      }
+    },
+
 
   }
 };
@@ -90,38 +154,41 @@ export default {
               <div class="label-title">طرق الدفع</div>
               <div class="radio-group">
                 <label>
-                  <input type="radio" name="type" value="normal" checked>
+                  <input type="radio" name="type" value="normal"
+                    @change="selectPaymentWayFunc(paymentWay.palestineBank)" checked>
                   <div class="radio-label">
                     <p>بنك فلسطين</p>
                     <img src="/img/payBrand/bank.png" width="50" height="50" alt="">
                   </div>
                 </label>
                 <label>
-                  <input type="radio" name="type" value="outline">
-                  <div class="radio-label">
+                  <input type="radio" name="type" value="outline"
+                    @change="selectPaymentWayFunc(paymentWay.palPayWallet)">
+                  <div class=" radio-label">
                     <p>PalPay</p>
                     <img src="/img/payBrand/palpay.jpg" width="50" height="50" alt="">
 
                   </div>
                 </label>
                 <label>
-                  <input type="radio" name="type" value="outline">
-                  <div class="radio-label">
+                  <input type="radio" name="type" value="outline"
+                    @change="selectPaymentWayFunc(paymentWay.jawwalPayWallet)">
+                  <div class=" radio-label">
                     <p>Jawwal Pay</p>
                     <img src="/img/payBrand/jawwalpay.png" width="50" height="50" alt="">
 
                   </div>
                 </label>
-                <label>
-                  <input type="radio" name="type" value="outline">
+                <!-- <label>
+                  <input type="radio" name="type" value="outline" @change="selectPaymentWayFunc(paymentWay.palestineBank)">
                   <div class="radio-label">
                     <p>بطاقة ائتمان</p>
                     <img src="/img/payBrand/visa.jpg" width="50" height="50" alt="">
                   </div>
-                </label>
+                </label> -->
                 <label>
-                  <input type="radio" name="type" value="outline">
-                  <div class="radio-label">
+                  <input type="radio" name="type" value="outline" @change="selectPaymentWayFunc(paymentWay.usdtWallet)">
+                  <div class=" radio-label">
                     <p>USDT</p>
                     <img src="/img/payBrand/TetherUSDT.png" width="50" height="50" alt="">
                   </div>
@@ -141,6 +208,17 @@ export default {
           <div v-show="activeTab === 'on-progress'" class="tab-pane fade show active">
 
             <form class="mt-4">
+
+              <div class="d-flex align-items-center gap-2">
+                <input name="phone" id="phone" type="text" class="form-control my-3 py-3 text-start gray_text gray-inp"
+                  placeholder="05xx-xxxxxx" :value="dataWallet.inputValue" readonly />
+                <button type="button" class="btn btn-outline-success" @click="copyMobileNumber">
+                  نسخ
+                </button>
+                <img :src="dataWallet.qrValue" alt="QR Code" width="100" />
+
+              </div>
+              <br>
               <label class="text"> الاسم كامل</label>
               <br>
               <input name="name" id="name" type="text" class="form-control my-3 py-3 text-start gray_text gray-inp"
@@ -191,9 +269,12 @@ export default {
                 </button>
               </li>
               <li class="nav-item" role="presentation">
-                <button class="nav-link btn-order confirmbtn" >
-                  <svg width="20" height="20" class="me-1" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path fill-rule="evenodd" clip-rule="evenodd" d="M0 10C0 4.477 4.477 0 10 0C11.595 0 13.105 0.374 14.445 1.04C14.5636 1.09784 14.6696 1.17858 14.7568 1.27756C14.8441 1.37654 14.9109 1.49181 14.9533 1.61673C14.9958 1.74164 15.0132 1.87373 15.0044 2.00538C14.9956 2.13703 14.9609 2.26565 14.9022 2.38381C14.8434 2.50196 14.7619 2.60734 14.6623 2.69385C14.5627 2.78036 14.4469 2.8463 14.3217 2.88787C14.1965 2.92944 14.0642 2.94581 13.9327 2.93605C13.8011 2.92629 13.6727 2.89059 13.555 2.831C11.9626 2.04121 10.1525 1.80425 8.41039 2.15755C6.66833 2.51084 5.09354 3.43425 3.93461 4.78202C2.77568 6.12979 2.09862 7.82515 2.01031 9.60048C1.922 11.3758 2.42746 13.13 3.44692 14.5861C4.46637 16.0423 5.94175 17.1174 7.64015 17.6418C9.33855 18.1663 11.1632 18.1101 12.8262 17.4823C14.4891 16.8544 15.8956 15.6906 16.8236 14.1745C17.7516 12.6585 18.1483 10.8765 17.951 9.11C17.9366 8.97947 17.948 8.84737 17.9846 8.72124C18.0212 8.59511 18.0823 8.47743 18.1644 8.37492C18.3301 8.16788 18.5714 8.03517 18.835 8.006C19.0986 7.97683 19.363 8.05357 19.5701 8.21935C19.6726 8.30144 19.7579 8.40292 19.8212 8.51799C19.8845 8.63306 19.9246 8.75947 19.939 8.89C19.979 9.255 20 9.625 20 10C20 15.523 15.523 20 10 20C4.477 20 0 15.523 0 10ZM19.707 2.293C19.8945 2.48053 19.9998 2.73484 19.9998 3C19.9998 3.26516 19.8945 3.51947 19.707 3.707L10.707 12.707C10.5195 12.8945 10.2652 12.9998 10 12.9998C9.73484 12.9998 9.48053 12.8945 9.293 12.707L6.293 9.707C6.19749 9.61475 6.12131 9.50441 6.0689 9.38241C6.01649 9.2604 5.9889 9.12918 5.98775 8.9964C5.9866 8.86362 6.0119 8.73194 6.06218 8.60905C6.11246 8.48615 6.18671 8.3745 6.28061 8.28061C6.3745 8.18671 6.48615 8.11246 6.60905 8.06218C6.73194 8.0119 6.86362 7.9866 6.9964 7.98775C7.12918 7.9889 7.2604 8.01649 7.38241 8.0689C7.50441 8.12131 7.61475 8.19749 7.707 8.293L10 10.586L18.293 2.293C18.4805 2.10553 18.7348 2.00021 19 2.00021C19.2652 2.00021 19.5195 2.10553 19.707 2.293Z" fill="#0B3D74"></path>
+                <button class="nav-link btn-order confirmbtn">
+                  <svg width="20" height="20" class="me-1" viewBox="0 0 20 20" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" clip-rule="evenodd"
+                      d="M0 10C0 4.477 4.477 0 10 0C11.595 0 13.105 0.374 14.445 1.04C14.5636 1.09784 14.6696 1.17858 14.7568 1.27756C14.8441 1.37654 14.9109 1.49181 14.9533 1.61673C14.9958 1.74164 15.0132 1.87373 15.0044 2.00538C14.9956 2.13703 14.9609 2.26565 14.9022 2.38381C14.8434 2.50196 14.7619 2.60734 14.6623 2.69385C14.5627 2.78036 14.4469 2.8463 14.3217 2.88787C14.1965 2.92944 14.0642 2.94581 13.9327 2.93605C13.8011 2.92629 13.6727 2.89059 13.555 2.831C11.9626 2.04121 10.1525 1.80425 8.41039 2.15755C6.66833 2.51084 5.09354 3.43425 3.93461 4.78202C2.77568 6.12979 2.09862 7.82515 2.01031 9.60048C1.922 11.3758 2.42746 13.13 3.44692 14.5861C4.46637 16.0423 5.94175 17.1174 7.64015 17.6418C9.33855 18.1663 11.1632 18.1101 12.8262 17.4823C14.4891 16.8544 15.8956 15.6906 16.8236 14.1745C17.7516 12.6585 18.1483 10.8765 17.951 9.11C17.9366 8.97947 17.948 8.84737 17.9846 8.72124C18.0212 8.59511 18.0823 8.47743 18.1644 8.37492C18.3301 8.16788 18.5714 8.03517 18.835 8.006C19.0986 7.97683 19.363 8.05357 19.5701 8.21935C19.6726 8.30144 19.7579 8.40292 19.8212 8.51799C19.8845 8.63306 19.9246 8.75947 19.939 8.89C19.979 9.255 20 9.625 20 10C20 15.523 15.523 20 10 20C4.477 20 0 15.523 0 10ZM19.707 2.293C19.8945 2.48053 19.9998 2.73484 19.9998 3C19.9998 3.26516 19.8945 3.51947 19.707 3.707L10.707 12.707C10.5195 12.8945 10.2652 12.9998 10 12.9998C9.73484 12.9998 9.48053 12.8945 9.293 12.707L6.293 9.707C6.19749 9.61475 6.12131 9.50441 6.0689 9.38241C6.01649 9.2604 5.9889 9.12918 5.98775 8.9964C5.9866 8.86362 6.0119 8.73194 6.06218 8.60905C6.11246 8.48615 6.18671 8.3745 6.28061 8.28061C6.3745 8.18671 6.48615 8.11246 6.60905 8.06218C6.73194 8.0119 6.86362 7.9866 6.9964 7.98775C7.12918 7.9889 7.2604 8.01649 7.38241 8.0689C7.50441 8.12131 7.61475 8.19749 7.707 8.293L10 10.586L18.293 2.293C18.4805 2.10553 18.7348 2.00021 19 2.00021C19.2652 2.00021 19.5195 2.10553 19.707 2.293Z"
+                      fill="#0B3D74"></path>
                   </svg>
                   تأكيد العملية
                 </button>
@@ -308,6 +389,7 @@ export default {
   font-weight: 400;
 
 }
+
 .next .confirmbtn {
   padding: 15px 30px;
   background-color: #26d829;
@@ -324,12 +406,14 @@ export default {
   color: #fff;
 
 }
+
 .next .confirmbtn:hover {
   background-color: #000;
   color: #fff;
 
 }
-.next .confirmbtn svg path{
+
+.next .confirmbtn svg path {
   fill: #fff;
 }
 

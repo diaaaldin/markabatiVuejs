@@ -78,33 +78,6 @@ export default {
         ...mapActions("Code", ["GetStates", "GetCities"]),
         ...mapActions("Users", ["GetWebSiteComunicationInfo"]),
 
-
-        async initFunc() {
-            const loading = ElLoading.service({
-                lock: true,
-                background: 'rgba(0, 0, 0, 0.7)',
-                text: "",
-            });
-
-            try {
-                await Promise.all([
-                    this.GetMainAnnouncementActiveOrder(),
-                    this.GetVerticalAnnouncementActiveOrder(),
-                    this.GetHorizontalAnnouncementActiveOrder(),
-                    this.GetStarActiveVehicles(),
-                    this.getNotificationFunc(),
-                    this.GetStates(),
-                    this.GetCities(),
-                    this.GetWebSiteComunicationInfo(),
-
-                ]);
-            } catch (error) {
-                console.error("Error loading data:", error);
-            } finally {
-                loading.close();
-            }
-        },
-
         getNotificationFunc() {
             if (this.isTokenValid()) {
                 this.GetUserNotifications(this.dataNotification).then(Response => {

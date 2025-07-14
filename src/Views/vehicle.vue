@@ -17,35 +17,38 @@ import { CurrenceEnum } from '@/config/config.js';
 export default {
     data() {
         return {
+            isFavorite: false, // Track if the heart is filled or not
+
             emailError: '',
+
             data: {
-                id: 2,
-                ownerName: "Super Admin Diaa",
-                ownerId: 1,
-                ownerImage: "http://localhost:4000/UserImage\\bd20458f15ae4526b09923128071bb02Logo.png",
-                ownerMobile: "123456789",
-                ownerSlug: "1_test",
-                brandId: 4,
-                brandName: "هيونداي",
-                modelId: 59,
-                modelName: "اكسنت",
-                year: 2121,
-                price: 121212,
-                currency: 74,
-                meals: 31231231,
-                color: "برتقالي",
-                bodyType: "شاحنة صغيرة",
-                specification: "أمريكي",
-                paintedType: "اللؤلؤي",
-                paintedStatus: "جيدة جداً",
-                gearType: "الإثنين معاً",
-                oilType: "سولار",
-                description: "                                            فيراري 488 جي تي بي هي سيارة رياضية فائقة الأداء (سوبر كار) من إنتاج شركة                                            فيراري الإيطالية، وتم الكشف عنها لأول مرة في عام 2015 كخلفية لطراز فيراري                                            458. تعتبر 488 جي تي بي مزيجا مثاليا من الأدالء العالي، التصمي الجذاب،                                            والتفنيات الحديثة. ",
-                slug: "2_507_بي_ام_دبليو",
-                image: "http://localhost:4000/VehicleImages\\c479870b10204787851df96f2e33a875Logo.png",
+                id: 0,
+                ownerName: "",
+                ownerId: 0,
+                ownerImage: "",
+                ownerMobile: "",
+                ownerSlug: "",
+                brandId: 0,
+                brandName: "",
+                modelId: 0,
+                modelName: "",
+                year: 0,
+                price: 0,
+                currency: 0,
+                meals: 0,
+                color: "",
+                bodyType: "",
+                specification: "",
+                paintedType: "",
+                paintedStatus: "",
+                gearType: "",
+                oilType: "",
+                description: "",
+                slug: "",
+                image: "",
                 image360: "",
-                vehicleImages: ['http://localhost:4000/VehicleImages\\5d56a9319e41424485c19dfc69f3f716Logo.png', 'http://localhost:4000/VehicleImages\\746d719ece1940858229f53e13f38d0fLogo.png', 'http://localhost:4000/VehicleImages\\bc1916969ef84f14adb3156084377b88Logo.png', 'http://localhost:4000/VehicleImages\\733dbe7c4bbb4f18a7760b0c00acd74bLogo.png', 'http://localhost:4000/VehicleImages\\9b15e3f182eb4c90a770903f167b2b93Logo.png'],
-                bestThreeCategories: ['sdfsdf', 'sdfsdf', 'sdfsdf'],
+                vehicleImages: [],
+                bestThreeCategories: [],
                 cardOfVehicle: [],
                 vehicleCategoryExtension: [],
             },
@@ -59,8 +62,21 @@ export default {
             },
             immediate: false,
         },
+
+        data: {
+            immediate: true,
+            handler() {
+                this.chickIsFavoritFunc();
+            }
+        },
+        getFavoriteVehiclesIdData: {
+            handler() {
+                this.chickIsFavoritFunc();
+            }
+        }
     },
     mounted() {
+        this.chickIsFavoritFunc();
         this.recordVisit();
 
         useHead({
@@ -98,13 +114,15 @@ export default {
     },
 
     computed: {
-        ...mapGetters("Vehicles", ["getVehicleData"]),
+        ...mapGetters("Vehicles", ["getVehicleData", "getFavoriteVehiclesIdData"]),
         ...mapGetters("Code", ["getStatesData", "getCitiesData"]),
+
 
     },
     methods: {
-        ...mapActions("Vehicles", ["GetVehicle"]),
+        ...mapActions("Vehicles", ["GetVehicle", "ToggleVehicleFavorite", "GetVehiclesFavoriteId"]),
         ...mapActions("Visit", ["RecordVisit"]),
+
 
 
         initFunc() {
@@ -120,7 +138,11 @@ export default {
             const id = idMatch ? idMatch[0] : null; // Extract the first number if it exists
 
             this.GetVehicle(id).then(Response => {
+
                 this.data = this.getVehicleData;
+                this.GetVehiclesFavoriteId();
+                this.chickIsFavoritFunc();
+
                 loading.close();
             }).catch(error => {
                 this.$moshaToast(error.response.data.message, {
@@ -258,6 +280,38 @@ export default {
             window.open(link, '_blank');
         },
 
+        chickIsFavoritFunc() {
+            this.isFavorite = this.getFavoriteVehiclesIdData.includes(this.data.id);
+        },
+        async toggleFavoriteFunc() {
+            const loading = ElLoading.service({
+                lock: true,
+                background: 'rgba(0, 0, 0, 0.7)',
+                text: '',
+            });
+
+            try {
+                const response = await this.ToggleVehicleFavorite(this.data.id);
+                this.$moshaToast(response.message, {
+                    type: 'danger',
+                    timeout: 3000,
+                    showIcon: true,
+                });
+
+                await this.GetVehiclesFavoriteId(); // wait for fresh data
+                this.chickIsFavoritFunc(); // re-evaluate
+            } catch (error) {
+                this.$moshaToast(error.response?.data?.message || 'حدث خطأ', {
+                    type: 'warning',
+                    timeout: 3000,
+                    showIcon: true,
+                });
+            } finally {
+                loading.close();
+            }
+        },
+
+
     }
 };
 </script>
@@ -291,12 +345,15 @@ export default {
                     <div class="info">
                         <div class="d-flex justify-content-between align-items-baseline mb-2">
                             <h6 class="justify-content-start">{{ data.brandName }}</h6>
-                            <a href="javascript:void(0)" class="justify-content-end">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            <a v-on:click="toggleFavoriteFunc()" href="javascript:void(0)" class="justify-content-end">
+                                <svg viewBox="0 0 24 24" width="24" height="24" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
-                                    <path
-                                        d="M10.7878 3.10215C11.283 2.09877 12.7138 2.09876 13.209 3.10215L15.567 7.87987L20.8395 8.64601C21.9468 8.80691 22.3889 10.1677 21.5877 10.9487L17.7724 14.6676L18.6731 19.9189C18.8622 21.0217 17.7047 21.8627 16.7143 21.342L11.9984 18.8627L7.28252 21.342C6.29213 21.8627 5.13459 21.0217 5.32374 19.9189L6.2244 14.6676L2.40916 10.9487C1.60791 10.1677 2.05005 8.80691 3.15735 8.64601L8.42988 7.87987L10.7878 3.10215ZM11.9984 4.03854L9.74008 8.61443C9.54344 9.01288 9.16332 9.28904 8.72361 9.35294L3.67382 10.0867L7.32788 13.6486C7.64606 13.9587 7.79125 14.4055 7.71614 14.8435L6.85353 19.8729L11.3702 17.4983C11.7635 17.2915 12.2333 17.2915 12.6266 17.4983L17.1433 19.8729L16.2807 14.8435C16.2056 14.4055 16.3508 13.9587 16.6689 13.6486L20.323 10.0867L15.2732 9.35294C14.8335 9.28904 14.4534 9.01288 14.2568 8.61443L11.9984 4.03854Z"
-                                        fill="#999999"></path>
+                                    <g id="SVGRepo_iconCarrier">
+                                        <path
+                                            d="M9.15316 5.40838C10.4198 3.13613 11.0531 2 12 2C12.9469 2 13.5802 3.13612 14.8468 5.40837L15.1745 5.99623C15.5345 6.64193 15.7144 6.96479 15.9951 7.17781C16.2757 7.39083 16.6251 7.4699 17.3241 7.62805L17.9605 7.77203C20.4201 8.32856 21.65 8.60682 21.9426 9.54773C22.2352 10.4886 21.3968 11.4691 19.7199 13.4299L19.2861 13.9372C18.8096 14.4944 18.5713 14.773 18.4641 15.1177C18.357 15.4624 18.393 15.8341 18.465 16.5776L18.5306 17.2544C18.7841 19.8706 18.9109 21.1787 18.1449 21.7602C17.3788 22.3417 16.2273 21.8115 13.9243 20.7512L13.3285 20.4768C12.6741 20.1755 12.3469 20.0248 12 20.0248C11.6531 20.0248 11.3259 20.1755 10.6715 20.4768L10.0757 20.7512C7.77268 21.8115 6.62118 22.3417 5.85515 21.7602C5.08912 21.1787 5.21588 19.8706 5.4694 17.2544L5.53498 16.5776C5.60703 15.8341 5.64305 15.4624 5.53586 15.1177C5.42868 14.773 5.19043 14.4944 4.71392 13.9372L4.2801 13.4299C2.60325 11.4691 1.76482 10.4886 2.05742 9.54773C2.35002 8.60682 3.57986 8.32856 6.03954 7.77203L6.67589 7.62805C7.37485 7.4699 7.72433 7.39083 8.00494 7.17781C8.28555 6.96479 8.46553 6.64194 8.82547 5.99623L9.15316 5.40838Z"
+                                            :stroke="isFavorite ? '#FFD700' : '#a09c9c'"
+                                            :fill="isFavorite ? '#FFD700' : 'none'" stroke-width="1.5" />
+                                    </g>
                                 </svg>
                             </a>
                         </div>
@@ -569,6 +626,7 @@ export default {
     text-decoration: none;
     opacity: 0.7;
 }
+
 .modal-footer .btn-primary {
     /* width: 50px;
     height: 50px;
