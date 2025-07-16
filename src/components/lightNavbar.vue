@@ -195,8 +195,7 @@ export default {
                         </li>
                     </ul>
 
-                    <ul v-else
-                        class="nav align-items-center mb-2 mb-lg-0 white-header justify-content-center gradiant_nav">
+                    <ul v-else class="nav align-items-center mb-2 mb-lg-0 white-header justify-content-center gradiant_nav">
 
                         <li class="nav-item">
                             <div class="dropdown hero-notification-div ">

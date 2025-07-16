@@ -135,4 +135,16 @@ export default {
 .imageTest{
     background-image:"C:/img\markabatiComponent\homeHeader.png";
 }
+
+@media (max-width: 992px) {
+.slider-main .slider .card-slider{
+    height: 500px;
+}
+}
+@media (max-width: 767px) {
+    .slider-main .slider .card-slider{
+        height: 230px;
+    }
+
+}
 </style>

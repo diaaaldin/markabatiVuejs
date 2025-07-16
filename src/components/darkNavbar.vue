@@ -212,7 +212,7 @@ export default {
                                 {{ $t('navbar_aboutus') }} </router-link>
                         </li>
                     </ul>
-                </div>
+                
 
                 <ul v-if="userHaveToken == false"
                     class="nav align-items-center mb-2 mb-lg-0 white-header justify-content-center gradiant_nav">
@@ -225,6 +225,7 @@ export default {
                             $t('navbar_signup') }}</router-link>
                     </li>
                 </ul>
+
                 <ul v-else class="nav align-items-center mb-2 mb-lg-0 white-header justify-content-center gradiant_nav">
                     <li class="nav-item">
                         <div class="dropdown hero-notification-div ">
@@ -410,6 +411,7 @@ export default {
                         </ul>
                     </li>
                 </ul>
+                </div>
             </div>
         </nav>
     </div>

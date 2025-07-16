@@ -4028,9 +4028,7 @@ background-color: #fff;
 }
 
 @media (max-width: 992px) {
-  .home .header-div {
-    min-height: 55vh;
-  }
+ 
   .header-div .panner .sub-index-title {
     padding: 0 0 45px 0;
   }
@@ -4086,6 +4084,9 @@ background-color: #fff;
   .info .text_footer_hero {
     text-align: left;
   }
+  .slider-main .slider .slick-dots{
+        bottom: 8px;
+    }
 }
 @media (max-width: 450px) {
   .upload_profile_div {
@@ -4184,6 +4185,9 @@ background-color: #fff;
     /* height: 100%;
             width: 100%; */
   }
+  .slider-main .slider .slick-dots{
+        bottom: 5px;
+    }
 }
 
 @media (max-width: 767px) {
