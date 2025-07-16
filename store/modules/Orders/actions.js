@@ -141,5 +141,14 @@ export const UpdateAnnouncementOrderStatus = ({ commit, dispatch },data) => {
    });
 }
 
+export const SaveOrderData = ({ commit, dispatch },data) => {
+     commit('SET_ORDER_CREATE_UPDATE_DATA', response.data.data);
+   return Order.UpdateAnnouncementOrderStatus(data).then(function (response) {
+       return response.data.data; 
+   }).catch(function (error) {
+           throw error;
+   });
+}
+
 
 

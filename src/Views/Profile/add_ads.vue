@@ -62,28 +62,13 @@ export default {
 			this.GetAnnouncementTypes();
 		},
 
-		createFunc() {
-			if (this.checkAddValidation()) {
+		ToPaymentFunc() {
+			$('#confirm_modal').modal('hide');
+            this.$router.push({ name: "payment"});
 
-				// Proceed only if validation passes
-
-				// this.CreateAnnouncementOrder(this.data).then((Response) => {
-				// 	this.$moshaToast('تم إضافة الإعلان بنجاح', {
-				// 		hideProgressBar: 'false',
-				// 		showIcon: 'true',
-				// 		swipeClose: 'true',
-				// 		type: 'success',
-				// 		timeout: 3000,
-				// 	});
-				// 	loading.close();
-				// 	this.$router.push({ name: "profile_ads_orders" });
-				// });
-
-
-			}
 		},
 
-		checkAddValidationAnd() {
+		checkAddValidationAndShowConfirmModal() {
 			if (this.data.announcementType == 0) {
 				this.$moshaToast('إختر نوع الإعلان', {
 					hideProgressBar: 'false',
@@ -423,10 +408,8 @@ export default {
 			</div>
 
 
-
-
 			<div class="mb-5">
-				<button v-on:click="createFunc()" class="add full">إضافة اعلان جديد</button>
+				<button v-on:click="checkAddValidationAndShowConfirmModal()" class="add full">إضافة اعلان جديد</button>
 			</div>
 
 
@@ -478,7 +461,7 @@ export default {
 					<p>سيتم الإنتقال إلى واجهة الدفع لتأكيد الطلب .</p>
 				</div>
 				<div class="modal-footer">
-					<button @click="createFunc()" type="button" class="btn btn-primary">
+					<button @click="ToPaymentFunc()" type="button" class="btn btn-primary">
 						تأكيد
 					</button>
 				</div>
