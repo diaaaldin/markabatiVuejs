@@ -214,7 +214,7 @@ export default {
 
 
         </ul>
-        <div class="tab-content px-0" id="myTabContent">
+        <div class="tab-content px-0 mb-5" id="myTabContent">
           <div v-show="activeTab === 'waiting'" class="tab-pane fade show active ">
             <div class="radio-container text-center">
               <div class="label-title">طرق الدفع</div>
@@ -323,7 +323,7 @@ export default {
 
               </div>
               <div class="uploudedImageContaner">
-                <img id="uploadedImage" ref="img" :src="data.payBilImage" alt="الصورة المحملة ">
+                <img id="uploadedImage" ref="img" width="100" :src="data.payBilImage" alt="الصورة المحملة ">
               </div>
             </form>
 
@@ -581,7 +581,10 @@ input[type="radio"]:checked+.radio-label {
 .btn-order.active {
   color: #fff;
 }
-
+.uploudedImageContaner img{
+  width: 100%;
+  border-radius: 8px;
+}
 @media (max-width: 767px) {
   .custom_cardd {
     padding: 15px;
