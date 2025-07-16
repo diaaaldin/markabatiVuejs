@@ -47,7 +47,6 @@ export default {
 
 	created() {
 		// Call the function from the store directly when the component is created
-		//this.checkUserAllowFunc();
 		this.initFunc();
 	},
 
@@ -59,53 +58,32 @@ export default {
 		...mapActions("Code", ["GetAnnouncementTypes"]),
 		...mapActions("Orders", ["CreateAnnouncementOrder", "GetAnnouncementOrderDate", "GetAnnouncementOrderDailyPrice"]),
 
-		async initFunc() {
+		initFunc() {
 			this.GetAnnouncementTypes();
-		},
-
-		checkUserAllowFunc() {
-			// if (localStorage.getItem('typeName') != "Store") {
-			//     this.$router.push({ name: 'storeLogin' });
-			// }
 		},
 
 		createFunc() {
 			if (this.checkAddValidation()) {
-				const loading = ElLoading.service({
-					lock: true,
-					background: 'rgba(0, 0, 0, 0.7)',
-					text: "",
-				});
 
-				try {
-					// Proceed only if validation passes
+				// Proceed only if validation passes
 
-					this.CreateAnnouncementOrder(this.data).then((Response) => {
-						this.$moshaToast('تم إضافة الإعلان بنجاح', {
-							hideProgressBar: 'false',
-							showIcon: 'true',
-							swipeClose: 'true',
-							type: 'success',
-							timeout: 3000,
-						});
-						loading.close();
-						this.$router.push({ name: "profile_ads_orders" });
-					});
+				// this.CreateAnnouncementOrder(this.data).then((Response) => {
+				// 	this.$moshaToast('تم إضافة الإعلان بنجاح', {
+				// 		hideProgressBar: 'false',
+				// 		showIcon: 'true',
+				// 		swipeClose: 'true',
+				// 		type: 'success',
+				// 		timeout: 3000,
+				// 	});
+				// 	loading.close();
+				// 	this.$router.push({ name: "profile_ads_orders" });
+				// });
 
-				} catch (error) {
-					this.$moshaToast(error.response?.data?.message || 'An error occurred', {
-						hideProgressBar: 'false',
-						position: 'top-center',
-						showIcon: 'true',
-						swipeClose: 'true',
-						type: 'warning',
-						timeout: 3000,
-					});
-					loading.close();
-				}
+
 			}
 		},
-		checkAddValidation() {
+
+		checkAddValidationAnd() {
 			if (this.data.announcementType == 0) {
 				this.$moshaToast('إختر نوع الإعلان', {
 					hideProgressBar: 'false',
@@ -147,6 +125,7 @@ export default {
 				});
 				return false;
 			}
+			$('#confirm_modal').modal('show'); 
 			return true;
 		},
 
@@ -483,6 +462,25 @@ export default {
 							</cropperHorizentalAnnouncement>
 						</div>
 					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="confirm_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel"> تأكيد الطلب </h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<p>سيتم الإنتقال إلى واجهة الدفع لتأكيد الطلب .</p>
+				</div>
+				<div class="modal-footer">
+					<button @click="createFunc()" type="button" class="btn btn-primary">
+						تأكيد
+					</button>
 				</div>
 			</div>
 		</div>
