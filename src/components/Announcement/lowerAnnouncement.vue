@@ -184,4 +184,16 @@ export default {
   margin-top: 50px;
   margin-bottom: 50px;
 }
+
+@media (max-width: 992px) {
+.slider-main.ads-main .slider .card-slider{
+    height: 400px;
+}
+}
+@media (max-width: 767px) {
+    .slider-main.ads-main .slider .card-slider{
+        height: 230px;
+    }
+
+}
 </style>
