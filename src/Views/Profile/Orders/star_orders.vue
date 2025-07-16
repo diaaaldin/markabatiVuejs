@@ -42,12 +42,13 @@ export default {
 
 			toggler: false,
 
-			OrderStatus: OrderStatusEnum,
+			orderStatus: OrderStatusEnum,
 
 			testData: []
 		}
 	},
 	mounted() {
+		console.log("this.orderStatus : " , this.orderStatus);
 
 	},
 	components: {

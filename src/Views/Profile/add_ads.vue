@@ -20,6 +20,7 @@ export default {
 				payBilImage: "",
 				paymentMethod: 0,
 			},
+			
 
 			//////////////////////////
 			imageCropperSrc: null,

@@ -33,15 +33,16 @@ export default {
       dataStar: {
         id: 0,
         message: "",
+        image : "",
         vehicleId: 0,
         durationDay: 0,
+        dailyPrice: 0,
         totalPrice: 0,
         payBilImage: "",
         paymentMethod: 0,
       },
 
       orderDate: "",
-      orderDailyPrice: 0,
     }
   },
 
@@ -75,7 +76,7 @@ export default {
   methods: {
     ...mapActions("Vehicles", ["GetMyVehicles", "GetVehicelForUpdate", "UpdateVehicleImage360", "DeleteVehicle"]),
     ...mapActions("Orders", ["CreateStarVehicleOrder"]),
-    ...mapActions("Orders", ["CreateAnnouncementOrder", "GetStarVehicleOrderDate", "GetStarVehicleOrderDailyPrice"]),
+    ...mapActions("Orders", ["CreateAnnouncementOrder", "GetStarVehicleOrderDate", "GetStarVehicleOrderDailyPrice" , "SaveOrderDataToState"]),
 
 
     initFunc() {
@@ -165,54 +166,18 @@ export default {
       return true;
     },
 
-    StarFunc() {
+    starToPaymentFunc() {
       if (this.checkStarValidation()) {
-
-        const loading = ElLoading.service({
-          lock: true,
-          background: 'rgba(0, 0, 0, 0.7)',
-          text: "",
-        });
-
-        this.CreateStarVehicleOrder(this.dataStar).then(Response => {
-          // this.$moshaToast('تمت إرسال طلب تمييز بنجاح', {
-          //   hideProgressBar: 'false',
-          //   showIcon: 'true',
-          //   swipeClose: 'true',
-          //   type: 'success',
-          //   timeout: 3000,
-          // });
-
-          loading.close();
+        this.SaveOrderDataToState(this.dataStar).then((Response) => {
           $('#vehicle_star_modal').modal('hide');
-        }).catch(error => {
-          if (error.response && error.response.status === 401) {
-            this.$moshaToast(this.$t('general_user_not_allow_error_message'), {
-              hideProgressBar: 'false',
-              position: 'top-center',
-              showIcon: 'true',
-              swipeClose: 'true',
-              type: 'warning',
-              timeout: 3000,
-            });
-          } else {
-            // Handle other errors with the provided message from the response
-            this.$moshaToast(error.response?.data?.message || 'An error occurred', {
-              hideProgressBar: 'false',
-              position: 'top-center',
-              showIcon: 'true',
-              swipeClose: 'true',
-              type: 'warning',  // Default type is 'warning'
-              timeout: 3000,
-            });
-          }
-          loading.close();
+          this.$router.push({ name: "payment" });
         });
       }
     },
+
     checkStarValidation() {
-      if (this.data.id == 0) {
-        this.$moshaToast('هنالك خطأ في التحديد', {
+      if (this.dataStar.vehicleId == 0) {
+        this.$moshaToast('هنالك خطأ في تحديد المركبة', {
           hideProgressBar: 'false',
           position: 'top-center',
           showIcon: 'true',
@@ -221,7 +186,7 @@ export default {
           timeout: 3000,
         });
         return false;
-      } else if (this.data.durationDay == 0) {
+      } else if (this.dataStar.durationDay == 0) {
         this.$moshaToast('حددالطلب بالأيام ', {
           hideProgressBar: 'false',
           position: 'top-center',
@@ -279,6 +244,7 @@ export default {
         });
       }
     },
+
     checkChangeimg360Validation() {
       if (this.dataimg360.id === 0) {
         this.$moshaToast('هنالك خطأ في تحديد المركبة', {
@@ -344,14 +310,14 @@ export default {
 
       if (selectedVehicle) {
         this.dataStar.vehicleId = selectedVehicle.id;
-
+        this.dataStar.image = selectedVehicle.image;
         this.orderDate = "";
         this.GetStarVehicleOrderDate().then((Response) => {
           let stringDate = this.formatDate(Response);
           this.orderDate = stringDate;
         });
         this.GetStarVehicleOrderDailyPrice().then((Response) => {
-          this.orderDailyPrice = Response;
+          this.dataStar.dailyPrice = Response;
         });
       }
 
@@ -395,6 +361,7 @@ export default {
         maximumFractionDigits: 1
       }).format(value);
     },
+    
     formatCurrencyStarOrder(value) {
       return new Intl.NumberFormat('en-US', {
         style: 'currency',
@@ -438,7 +405,7 @@ export default {
     },
 
     countTotalPriceFunc() {
-      this.dataStar.totalPrice = this.orderDailyPrice * this.dataStar.durationDay;
+      this.dataStar.totalPrice = this.dataStar.dailyPrice * this.dataStar.durationDay;
     },
 
   }
@@ -683,7 +650,7 @@ export default {
                   </g>
                 </g>
               </svg>
-              تكلفة تمييز المركبة لليوم {{ formatCurrencyStarOrder(this.orderDailyPrice) }} والتكلفة الإجمالية {{
+              تكلفة تمييز المركبة لليوم {{ formatCurrencyStarOrder(this.dataStar.dailyPrice) }} والتكلفة الإجمالية {{
                 formatCurrencyStarOrder(this.dataStar.totalPrice) }}
             </p>
             <p class="warning">
@@ -723,7 +690,7 @@ export default {
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" v-on:click="StarFunc()" class="btn btn-primary">إكمال عملية الدفع</button>
+          <button type="button" v-on:click="starToPaymentFunc()" class="btn btn-primary">إكمال عملية الدفع لتأكيد الطلب</button>
         </div>
       </div>
     </div>
@@ -772,6 +739,8 @@ export default {
   padding: 8px 30px;
   margin: 0 auto;
 }
+
 .profile .ads {
-  margin-bottom: 77px;}
+  margin-bottom: 77px;
+}
 </style>

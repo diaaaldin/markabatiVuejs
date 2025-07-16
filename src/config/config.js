@@ -10,8 +10,8 @@ export const socialUrlData = {
 
 
 export const Urls = {
-  // cpSite: 'https://localhost:44347',
-   cpSite : 'https://cp.markabatistore.com',
+  cpSite: 'https://localhost:44347',
+  //cpSite : 'https://cp.markabatistore.com',
   //cpSite : 'http://localhost:4000',
 
   dashboard: 'https://dash.markabatistore.com',
@@ -27,12 +27,6 @@ export const MessageWayEnum = {
   sms: 3,
 };
 
-export const PaymentWayEnum = {
-  palestineBank: 1,
-  palPayWallet: 2,
-  jawwalPayWallet: 3,
-  usdtWallet : 4,
-};
 
 
 export const OrderTypeEnum = {
@@ -148,4 +142,12 @@ export const PaymentInformationsEnum = {
   palPayWalletQR: 112,
   jawwalPayWalletQR: 113,
   usdtWalletQR: 114,
+};
+
+export const PaymentMethodsEnum = {
+  palestineBank: 120,
+  palPayWallet: 121,
+  jawwalPayWallet: 122,
+  usdtWallet: 123,
+  creditCard: 124
 };
