@@ -79,7 +79,7 @@ export const GetAnnouncementOrderDailyPrice = ({ commit, dispatch },announcement
 
 export const CreateStarVehicleOrder = ({ commit, dispatch },data) => {
    return Order.CreateStarVehicleOrder(data).then(function (response) {
-       commit('SET_ORDER_CREATE_UPDATE_DATA', response.data.data);
+    //    commit('SET_ORDER_CREATE_UPDATE_DATA', response.data.data);
        return response.data.data; 
    }).catch(function (error) {
            throw error;
@@ -87,7 +87,7 @@ export const CreateStarVehicleOrder = ({ commit, dispatch },data) => {
 }
 export const UpdateStarVehicleOrder = ({ commit, dispatch },data) => {
    return Order.UpdateStarVehicleOrder(data).then(function (response) {
-       commit('SET_ORDER_CREATE_UPDATE_DATA', response.data.data);
+    //    commit('SET_ORDER_CREATE_UPDATE_DATA', response.data.data);
        return response.data.data; 
    }).catch(function (error) {
            throw error;
@@ -112,7 +112,7 @@ export const UpdateStarVehicleOrderStatus = ({ commit, dispatch },data) => {
 
 export const CreateAnnouncementOrder = ({ commit, dispatch },data) => {
    return Order.CreateAnnouncementOrder(data).then(function (response) {
-       commit('SET_ORDER_CREATE_UPDATE_DATA', response.data.data);
+    //    commit('SET_ORDER_CREATE_UPDATE_DATA', response.data.data);
        return response.data.data; 
    }).catch(function (error) {
            throw error;
@@ -120,7 +120,7 @@ export const CreateAnnouncementOrder = ({ commit, dispatch },data) => {
 }
 export const UpdateAnnouncementOrder = ({ commit, dispatch },data) => {
    return Order.UpdateAnnouncementOrder(data).then(function (response) {
-       commit('SET_ORDER_CREATE_UPDATE_DATA', response.data.data);
+    //    commit('SET_ORDER_CREATE_UPDATE_DATA', response.data.data);
        return response.data.data; 
    }).catch(function (error) {
            throw error;

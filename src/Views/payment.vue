@@ -4,7 +4,7 @@ import { ElLoading } from 'element-plus';
 
 import pageNav from '@/components/lightNavbar.vue';
 import pageFooter from '@/components/footer.vue';
-import { PaymentWayEnum, PaymentInformationsEnum } from '@/config/config.js'
+import { PaymentMethodsEnum, PaymentInformationsEnum } from '@/config/config.js'
 
 export default {
   data() {
@@ -12,18 +12,20 @@ export default {
       activeTab: 'waiting',
 
       data: {
-        Id: 0,
-        message: "",
-        image: "",
-        durationDay: 0,
-        announcementType: 0,
-        dailyPrice: 0,
-        totalPrice: 0,
-        payBilImage: "",
-        paymentMethod: 0,
+
       },
 
-      userData:
+      dataAnnouncement: {
+
+      },
+
+      dataStar: {
+
+      },
+
+
+
+      dataUser:
       {
         id: 0,
         email: "",
@@ -38,7 +40,7 @@ export default {
         qrValue: ''
       },
 
-      paymentWay: PaymentWayEnum,
+      PaymentMethods: PaymentMethodsEnum,
     }
   },
 
@@ -61,17 +63,18 @@ export default {
 
   created() {
     this.initFunc();
-    //  console.log("this.getOrderData : ", this.data);
+    console.log("this.getOrderData : ", this.data);
     // console.log("this.getUserData : ", this.getUserData);
   },
 
   computed: {
-    ...mapGetters("Code", ["getConstantsData","getAnnouncementTypesData"]),
+    ...mapGetters("Code", ["getConstantsData", "getAnnouncementTypesData"]),
     ...mapGetters("Orders", ["getOrderData"]),
     ...mapGetters("Users", ["getUserData"]),
 
   },
   methods: {
+    ...mapActions("Orders", ["CreateAnnouncementOrder", "CreateStarVehicleOrder"]),
 
     initFunc() {
       this.mapData();
@@ -79,18 +82,19 @@ export default {
 
     mapData() {
       this.data = this.getOrderData;
-      this.userData = this.getUserData;
+      this.dataUser = this.getUserData;
     },
 
-    selectPaymentWayFunc(id) {
+    selectPaymentMethodsFunc(id) {
+      this.data.paymentMethod = id;
       switch (id) {
-        case this.paymentWay.palestineBank:
+        case this.PaymentMethods.palestineBank:
           return this.paymentSelectedDataFunc(PaymentInformationsEnum.palestineBankNumber, PaymentInformationsEnum.palestineBankQR);
-        case this.paymentWay.palPayWallet:
+        case this.PaymentMethods.palPayWallet:
           return this.paymentSelectedDataFunc(PaymentInformationsEnum.palPayWalletMobileNumber, PaymentInformationsEnum.palPayWalletQR);
-        case this.paymentWay.jawwalPayWallet:
+        case this.PaymentMethods.jawwalPayWallet:
           return this.paymentSelectedDataFunc(PaymentInformationsEnum.jawwalPayWalletMobileNumber, PaymentInformationsEnum.jawwalPayWalletQR);
-        case this.paymentWay.usdtWallet:
+        case this.PaymentMethods.usdtWallet:
           return this.paymentSelectedDataFunc(PaymentInformationsEnum.usdtWalletCode, PaymentInformationsEnum.usdtWalletQR);
 
         // default:
@@ -99,10 +103,116 @@ export default {
       }
     },
 
+    async createFunc() {
+      const loading = ElLoading.service({
+        lock: true,
+        background: 'rgba(0, 0, 0, 0.7)',
+        text: "",
+      });
+
+      try {
+        // Proceed only if validation passes
+        if (this.checkAddValidation()) {
+          if (this.isOrderAnnouncementType()) {
+            await this.mapDataOrderAnnouncementFunc();
+            this.CreateAnnouncementOrder(this.dataAnnouncement).then((Response) => {
+              this.$moshaToast(this.$t('general_operation_success_message'), {
+                hideProgressBar: 'false',
+                showIcon: 'true',
+                swipeClose: 'true',
+                type: 'success',
+                timeout: 3000,
+              });
+              loading.close();
+              this.$router.push({ name: "profile_ads_orders" });
+            });
+          } else {
+            await this.mapDataOrderStarFunc();
+            this.CreateStarVehicleOrder(this.dataStar).then((Response) => {
+              this.$moshaToast(this.$t('general_operation_success_message'), {
+                hideProgressBar: 'false',
+                showIcon: 'true',
+                swipeClose: 'true',
+                type: 'success',
+                timeout: 3000,
+              });
+              loading.close();
+              this.$router.push({ name: "profile_star_orders" });
+            });
+          }
+
+
+        }
+      } catch (error) {
+        this.$moshaToast(error.response?.data?.message || 'An error occurred', {
+          hideProgressBar: 'false',
+          position: 'top-center',
+          showIcon: 'true',
+          swipeClose: 'true',
+          type: 'warning',
+          timeout: 3000,
+        });
+      } finally {
+        loading.close();
+      }
+    },
+
+    checkAddValidation() {
+      if (this.dataStar.paymentMethod == 0) {
+        this.$moshaToast('قم بتحديد وسيلة الدفع ', {
+          hideProgressBar: 'false',
+          position: 'top-center',
+          showIcon: 'true',
+          swipeClose: 'true',
+          type: 'warning',
+          timeout: 3000,
+        });
+        return false;
+      } else if (this.data.payBilImage == "") {
+        this.$moshaToast('أضق صورة الحوالة لإثبات عملية الدفع', {
+          hideProgressBar: 'false',
+          position: 'top-center',
+          showIcon: 'true',
+          swipeClose: 'true',
+          type: 'warning',
+          timeout: 3000,
+        });
+        return false;
+      }
+      return true;
+    },
+
+    mapDataOrderAnnouncementFunc() {
+      this.dataAnnouncement.message = this.data.message;
+      this.dataAnnouncement.image = this.data.image;
+      this.dataAnnouncement.durationDay = this.data.durationDay;
+      this.dataAnnouncement.announcementType = this.data.announcementType;
+      this.dataAnnouncement.totalPrice = this.data.totalPrice;
+      this.dataAnnouncement.payBilImage = this.data.payBilImage;
+      this.dataAnnouncement.paymentMethod = this.data.paymentMethod;
+    },
+    mapDataOrderStarFunc() {
+      this.dataStar.message = this.data.message;
+      this.dataStar.vehicleId = this.data.vehicleId;
+      this.dataStar.durationDay = this.data.durationDay;
+      this.dataStar.totalPrice = this.data.totalPrice;
+      this.dataStar.payBilImage = this.data.payBilImage;
+      this.dataStar.paymentMethod = this.data.paymentMethod;
+    },
+
+
+    isOrderAnnouncementType() {
+      if (this.data.announcementType) {
+        return true;
+      }
+      return false;
+    },
+
     paymentSelectedDataFunc(value1, value2) {
       const foundItem = this.getConstantsData.find(element => element.id === value1);
       const foundItemQR = this.getConstantsData.find(element => element.id === value2);
       if (foundItem && foundItemQR) {
+        
         this.dataWallet.inputValue = foundItem.valueSt;
         this.dataWallet.qrValue = foundItemQR.valueSt;
       }
@@ -135,34 +245,34 @@ export default {
     },
 
     formatCurrency(value) {
-			return new Intl.NumberFormat('en-US', {
-				style: 'currency',
-				currency: "ILS",
-				// Allows up to 1 decimal digit
-				maximumFractionDigits: 0
-			}).format(value);
-		},
+      return new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: "ILS",
+        // Allows up to 1 decimal digit
+        maximumFractionDigits: 0
+      }).format(value);
+    },
 
-    	handleImageUpload(event) {
-			const file = event.target.files[0];
-			if (file) {
-				const reader = new FileReader();
-				reader.onload = async (e) => {
-					try {
-						
-							this.data.payBilImage = e.target.result;
-							// this.imageCropperSrc = e.target.result; // Update with the file's data URL
-					
-					} catch (err) {
-						console.error("Error checking image dimensions:", err);
-					}
-				};
-				reader.onerror = () => {
-					console.error("Failed to read the file.");
-				};
-				reader.readAsDataURL(file);
-			}
-		},
+    handleImageUpload(event) {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = async (e) => {
+          try {
+
+            this.data.payBilImage = e.target.result;
+            // this.imageCropperSrc = e.target.result; // Update with the file's data URL
+
+          } catch (err) {
+            console.error("Error checking image dimensions:", err);
+          }
+        };
+        reader.onerror = () => {
+          console.error("Failed to read the file.");
+        };
+        reader.readAsDataURL(file);
+      }
+    },
 
 
   }
@@ -221,7 +331,7 @@ export default {
               <div class="radio-group">
                 <label>
                   <input type="radio" name="type" value="normal"
-                    @change="selectPaymentWayFunc(paymentWay.palestineBank)" >
+                    @change="selectPaymentMethodsFunc(PaymentMethods.palestineBank)">
                   <div class="radio-label">
                     <p>بنك فلسطين</p>
                     <img src="/img/payBrand/bank.png" width="50" height="50" alt="">
@@ -229,7 +339,7 @@ export default {
                 </label>
                 <label>
                   <input type="radio" name="type" value="outline"
-                    @change="selectPaymentWayFunc(paymentWay.palPayWallet)">
+                    @change="selectPaymentMethodsFunc(PaymentMethods.palPayWallet)">
                   <div class=" radio-label">
                     <p>PalPay</p>
                     <img src="/img/payBrand/palpay.jpg" width="50" height="50" alt="">
@@ -238,7 +348,7 @@ export default {
                 </label>
                 <label>
                   <input type="radio" name="type" value="outline"
-                    @change="selectPaymentWayFunc(paymentWay.jawwalPayWallet)">
+                    @change="selectPaymentMethodsFunc(PaymentMethods.jawwalPayWallet)">
                   <div class=" radio-label">
                     <p>Jawwal Pay</p>
                     <img src="/img/payBrand/jawwalpay.png" width="50" height="50" alt="">
@@ -246,14 +356,14 @@ export default {
                   </div>
                 </label>
                 <!-- <label>
-                  <input type="radio" name="type" value="outline" @change="selectPaymentWayFunc(paymentWay.palestineBank)">
+                  <input type="radio" name="type" value="outline" @change="selectPaymentMethodsFunc(PaymentMethods.palestineBank)">
                   <div class="radio-label">
                     <p>بطاقة ائتمان</p>
                     <img src="/img/payBrand/visa.jpg" width="50" height="50" alt="">
                   </div>
                 </label> -->
                 <label>
-                  <input type="radio" name="type" value="outline" @change="selectPaymentWayFunc(paymentWay.usdtWallet)">
+                  <input type="radio" name="type" value="outline" @change="selectPaymentMethodsFunc(PaymentMethods.usdtWallet)">
                   <div class=" radio-label">
                     <p>USDT</p>
                     <img src="/img/payBrand/TetherUSDT.png" width="50" height="50" alt="">
@@ -287,18 +397,19 @@ export default {
               <br>
               <label class="text"> الاسم كامل</label>
               <br>
-              <input v-model="userData.name" name="name" id="name" type="text" class="form-control my-3 py-3 text-start gray_text gray-inp"
-                placeholder="الاسم" required="">
+              <input v-model="dataUser.name" name="name" id="name" type="text"
+                class="form-control my-3 py-3 text-start gray_text gray-inp" placeholder="الاسم" required="">
 
               <label class="text"> البريد الالكتروني</label>
               <br>
-              <input v-model="userData.email" name="name" id="name" type="text" class="form-control my-3 py-3 text-start gray_text gray-inp"
-                placeholder="البريد الالكتروني" required="">
+              <input v-model="dataUser.email" name="name" id="name" type="text"
+                class="form-control my-3 py-3 text-start gray_text gray-inp" placeholder="البريد الالكتروني"
+                required="">
 
               <label class="text"> رقم الجوال</label>
               <br>
-              <input v-model="userData.mobile" name="name" id="name" type="text" class="form-control my-3 py-3 text-start gray_text gray-inp"
-                placeholder="05xx-xxxxxx" required="">
+              <input v-model="dataUser.mobile" name="name" id="name" type="text"
+                class="form-control my-3 py-3 text-start gray_text gray-inp" placeholder="05xx-xxxxxx" required="">
 
 
               <div class="header">
@@ -316,7 +427,7 @@ export default {
                         fill="#24d627"></path>
                     </g>
                   </svg>
-                   تحميل الصور الحوالة لإثبات العملية
+                  تحميل الصور الحوالة لإثبات العملية
                 </label>
 
                 <input type="file" @change="handleImageUpload" id="fileInput-c" ref="imageInput" accept="image/*">
@@ -335,7 +446,7 @@ export default {
                 </button>
               </li>
               <li class="nav-item" role="presentation">
-                <button class="nav-link btn-order confirmbtn">
+                <button @click="createFunc()" class="nav-link btn-order confirmbtn">
                   <svg width="20" height="20" class="me-1" viewBox="0 0 20 20" fill="none"
                     xmlns="http://www.w3.org/2000/svg">
                     <path fill-rule="evenodd" clip-rule="evenodd"
@@ -581,10 +692,12 @@ input[type="radio"]:checked+.radio-label {
 .btn-order.active {
   color: #fff;
 }
-.uploudedImageContaner img{
+
+.uploudedImageContaner img {
   width: 100%;
   border-radius: 8px;
 }
+
 @media (max-width: 767px) {
   .custom_cardd {
     padding: 15px;

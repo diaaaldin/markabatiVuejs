@@ -139,6 +139,7 @@
     "general_add_image":"أضف صورة",
     "general_update_image":"أضف صورة جديدة",
 
+    "general_operation_success_message":"تمت عملية الإضافة بنجاح",
     "general_add_operation_success_message":"تمت عملية الإضافة بنجاح",
     "general_update_operation_success_message":"تمت عملية التعديل بنجاح",
     "general_update_image_success_message":"تمت عملية تعديل الصورة بنجاح",
