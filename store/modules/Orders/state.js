@@ -6,4 +6,5 @@ export default{
    ordersData :{}, 
    orderDateTime : {},
    orderDailyPriceData : {},
+   
 }

@@ -11,6 +11,28 @@ export default {
     return {
       activeTab: 'waiting',
 
+      data: {
+        Id: 0,
+        message: "",
+        image: "",
+        durationDay: 0,
+        announcementType: 0,
+        dailyPrice: 0,
+        totalPrice: 0,
+        payBilImage: "",
+        paymentMethod: 0,
+      },
+
+      userData:
+      {
+        id: 0,
+        email: "",
+        name: "",
+        mobile: "",
+        licenseNumber: "",
+        slug: "",
+      },
+
       dataWallet: {
         inputValue: '',
         qrValue: ''
@@ -38,13 +60,27 @@ export default {
   },
 
   created() {
+    this.initFunc();
+    //  console.log("this.getOrderData : ", this.data);
+    // console.log("this.getUserData : ", this.getUserData);
   },
 
   computed: {
-    ...mapGetters("Code", ["getConstantsData"]),
+    ...mapGetters("Code", ["getConstantsData","getAnnouncementTypesData"]),
+    ...mapGetters("Orders", ["getOrderData"]),
+    ...mapGetters("Users", ["getUserData"]),
 
   },
   methods: {
+
+    initFunc() {
+      this.mapData();
+    },
+
+    mapData() {
+      this.data = this.getOrderData;
+      this.userData = this.getUserData;
+    },
 
     selectPaymentWayFunc(id) {
       switch (id) {
@@ -77,26 +113,56 @@ export default {
       if (stValue) {
         navigator.clipboard.writeText(stValue)
           .then(() => {
-           this.$moshaToast('تم النسخ إلى الحافظة', {
-							hideProgressBar: 'false',
-							showIcon: 'true',
-							swipeClose: 'true',
-							type: 'success',
-							timeout: 3000,
-						});
+            this.$moshaToast('تم النسخ إلى الحافظة', {
+              hideProgressBar: 'false',
+              showIcon: 'true',
+              swipeClose: 'true',
+              type: 'success',
+              timeout: 3000,
+            });
           })
           .catch(err => {
             this.$moshaToast('فشل النسخ الى الحافظة', {
-							hideProgressBar: 'false',
-							showIcon: 'true',
-							swipeClose: 'true',
-							type: 'warning',
-							timeout: 3000,
-						});
+              hideProgressBar: 'false',
+              showIcon: 'true',
+              swipeClose: 'true',
+              type: 'warning',
+              timeout: 3000,
+            });
           });
 
       }
     },
+
+    formatCurrency(value) {
+			return new Intl.NumberFormat('en-US', {
+				style: 'currency',
+				currency: "ILS",
+				// Allows up to 1 decimal digit
+				maximumFractionDigits: 0
+			}).format(value);
+		},
+
+    	handleImageUpload(event) {
+			const file = event.target.files[0];
+			if (file) {
+				const reader = new FileReader();
+				reader.onload = async (e) => {
+					try {
+						
+							this.data.payBilImage = e.target.result;
+							// this.imageCropperSrc = e.target.result; // Update with the file's data URL
+					
+					} catch (err) {
+						console.error("Error checking image dimensions:", err);
+					}
+				};
+				reader.onerror = () => {
+					console.error("Failed to read the file.");
+				};
+				reader.readAsDataURL(file);
+			}
+		},
 
 
   }
@@ -155,7 +221,7 @@ export default {
               <div class="radio-group">
                 <label>
                   <input type="radio" name="type" value="normal"
-                    @change="selectPaymentWayFunc(paymentWay.palestineBank)" checked>
+                    @change="selectPaymentWayFunc(paymentWay.palestineBank)" >
                   <div class="radio-label">
                     <p>بنك فلسطين</p>
                     <img src="/img/payBrand/bank.png" width="50" height="50" alt="">
@@ -221,17 +287,17 @@ export default {
               <br>
               <label class="text"> الاسم كامل</label>
               <br>
-              <input name="name" id="name" type="text" class="form-control my-3 py-3 text-start gray_text gray-inp"
+              <input v-model="userData.name" name="name" id="name" type="text" class="form-control my-3 py-3 text-start gray_text gray-inp"
                 placeholder="الاسم" required="">
 
               <label class="text"> البريد الالكتروني</label>
               <br>
-              <input name="name" id="name" type="text" class="form-control my-3 py-3 text-start gray_text gray-inp"
+              <input v-model="userData.email" name="name" id="name" type="text" class="form-control my-3 py-3 text-start gray_text gray-inp"
                 placeholder="البريد الالكتروني" required="">
 
               <label class="text"> رقم الجوال</label>
               <br>
-              <input name="name" id="name" type="text" class="form-control my-3 py-3 text-start gray_text gray-inp"
+              <input v-model="userData.mobile" name="name" id="name" type="text" class="form-control my-3 py-3 text-start gray_text gray-inp"
                 placeholder="05xx-xxxxxx" required="">
 
 
@@ -250,14 +316,14 @@ export default {
                         fill="#24d627"></path>
                     </g>
                   </svg>
-                  تحميل الصور
+                   تحميل الصور الحوالة لإثبات العملية
                 </label>
 
-                <input type="file" v-on:change="fileChanged" id="fileInput-c" ref="imageInput" accept="image/*">
+                <input type="file" @change="handleImageUpload" id="fileInput-c" ref="imageInput" accept="image/*">
 
               </div>
               <div class="uploudedImageContaner">
-                <img id="uploadedImage" ref="img" :src="imageSrc" alt="الصور المحملة ">
+                <img id="uploadedImage" ref="img" :src="data.payBilImage" alt="الصورة المحملة ">
               </div>
             </form>
 
@@ -287,31 +353,30 @@ export default {
       <div class="col-md-6 col-sm-12">
         <div class="card custom_cardd">
           <div class="img">
-            <img src="/img/aboutus1.jpg" class="card-img-top index-img-card" alt="...">
+            <img :src="data.image" class="card-img-top index-img-card" alt="...">
           </div>
           <div class="card-body">
-            <div class="d-flex justify-content-between align-items-baseline mb-2">
+            <!-- <div class="d-flex justify-content-between align-items-baseline mb-2">
               <h6 class="card-title justify-content-start">هونداي</h6>
-            </div>
+            </div> -->
             <div class="d-flex justify-content-between">
               <div class=" d-flex  flex-column">
-                <div class="d-flex align-items-center mb-2">
+                <!-- <div class="d-flex align-items-center mb-2">
                   <a href="hotel_details.html" class="name-details">
                     اكسنت
                   </a>
                 </div>
-
                 <div class=" d-flex align-items-center model-car">
                   <p>
                     سنة الإصدار: <span>2001</span>
                   </p>
                 </div>
-
                 <div class=" d-flex align-items-center">
                   <span class="price">
                     5000$
                   </span>
-                </div>
+                </div> -->
+
                 <div class=" d-flex align-items-center">
                   <ul class="show-more-details">
                     <li>
@@ -320,7 +385,7 @@ export default {
                           d="M14 0.666748C21.3637 0.666748 27.3333 6.63628 27.3333 14.0001C27.3333 21.3638 21.3637 27.3334 14 27.3334C6.6362 27.3334 0.666666 21.3638 0.666666 14.0001C0.666666 6.63628 6.6362 0.666748 14 0.666748ZM18.2929 9.95964L12.3333 15.9191L9.7071 13.293C9.31659 12.9025 8.68341 12.9025 8.29289 13.293C7.90237 13.6835 7.90237 14.3166 8.29289 14.7071L11.6263 18.0405C12.0168 18.431 12.6499 18.431 13.0404 18.0405L19.7071 11.3738C20.0976 10.9833 20.0976 10.3502 19.7071 9.95964C19.3165 9.56912 18.6835 9.56912 18.2929 9.95964Z"
                           fill="#24DC26">
                         </path>
-                      </svg> عدد الايام : 5
+                      </svg> عدد الايام : {{ data.durationDay }}
                     </li>
                     <li>
                       <svg width="15" height="15" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -328,7 +393,7 @@ export default {
                           d="M14 0.666748C21.3637 0.666748 27.3333 6.63628 27.3333 14.0001C27.3333 21.3638 21.3637 27.3334 14 27.3334C6.6362 27.3334 0.666666 21.3638 0.666666 14.0001C0.666666 6.63628 6.6362 0.666748 14 0.666748ZM18.2929 9.95964L12.3333 15.9191L9.7071 13.293C9.31659 12.9025 8.68341 12.9025 8.29289 13.293C7.90237 13.6835 7.90237 14.3166 8.29289 14.7071L11.6263 18.0405C12.0168 18.431 12.6499 18.431 13.0404 18.0405L19.7071 11.3738C20.0976 10.9833 20.0976 10.3502 19.7071 9.95964C19.3165 9.56912 18.6835 9.56912 18.2929 9.95964Z"
                           fill="#24DC26">
                         </path>
-                      </svg> السعر اليومي : 20
+                      </svg> السعر اليومي : {{ formatCurrency(data.dailyPrice) }}
                     </li>
                     <li>
                       <svg width="15" height="15" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -336,7 +401,7 @@ export default {
                           d="M14 0.666748C21.3637 0.666748 27.3333 6.63628 27.3333 14.0001C27.3333 21.3638 21.3637 27.3334 14 27.3334C6.6362 27.3334 0.666666 21.3638 0.666666 14.0001C0.666666 6.63628 6.6362 0.666748 14 0.666748ZM18.2929 9.95964L12.3333 15.9191L9.7071 13.293C9.31659 12.9025 8.68341 12.9025 8.29289 13.293C7.90237 13.6835 7.90237 14.3166 8.29289 14.7071L11.6263 18.0405C12.0168 18.431 12.6499 18.431 13.0404 18.0405L19.7071 11.3738C20.0976 10.9833 20.0976 10.3502 19.7071 9.95964C19.3165 9.56912 18.6835 9.56912 18.2929 9.95964Z"
                           fill="#24DC26">
                         </path>
-                      </svg> السعر الاجمالي : 100
+                      </svg> السعر الاجمالي : {{ formatCurrency(data.totalPrice) }}
                     </li>
                   </ul>
                 </div>
