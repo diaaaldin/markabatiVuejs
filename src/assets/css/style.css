@@ -1,4 +1,10 @@
 @import url("../fonts/stylesheet.css");
+@font-face {
+  font-family: 'slick';
+  src: url('/fonts/slick.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
 /**** link font *****/
 
 /**** link font *****/
