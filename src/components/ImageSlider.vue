@@ -74,16 +74,11 @@ export default {
         <img :src="img" :class="['thumbnail', { active: index === currentIndex }]" />
 
         <!-- Only show overlay on the last image -->
-        <div v-if="index === displayedImages.length - 1 && images.length > 5" class="thumbnail-overlay">
+        <!-- <div v-if="index === displayedImages.length - 1 && images.length > 5" class="thumbnail-overlay">
           +{{ images.length - 5 }}
-        </div>
-       
-      </div>
-    </div>
-
-   <div class="col-lg-12 multi-img">
-      <div class="d-flex flex-lg-column  mt-3 mt-lg-0">
-        <div id="gallery" class="mt-lg-3">
+        </div> -->
+        <div v-if="index === displayedImages.length - 1 && images.length > 5" class="thumbnail-overlay" >
+           <div id="gallery">
           <a v-for="(image, index) in images" :key="index" :href="image"
             :data-caption="'Image #' + (index + 1)" :class="{ 'Before_After_div': index === 0 }">
             <img :src="image" alt="" :class="index === 0
@@ -91,14 +86,24 @@ export default {
               : 'd-none'" />
           </a>
         </div>
+        </div>
+        
       </div>
-    </div> 
+    </div>
 
 
   </div>
 </template>
 
 <style scoped>
+#gallery{
+  width: 100%;
+  height: 100%;
+}
+.Before_After_div{
+  width: 100%;
+  height: 100%;
+}
 .slider-car {
   position: relative;
   width: 100%;
