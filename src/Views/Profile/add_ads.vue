@@ -15,6 +15,7 @@ export default {
 				image: "",
 				durationDay: 0,
 				announcementType: 0,
+				dailyPrice : 0,
 				totalPrice: 0,
 				payBilImage: "",
 				paymentMethod: 0,
@@ -28,7 +29,6 @@ export default {
 			AnnouncementType: AnnouncementTypeEnum,
 			announcementPriceInDay: 0,
 			orderDate: "",
-			orderDailyPrice: 0,
 			// editor: null,
 		}
 	},
@@ -52,20 +52,21 @@ export default {
 
 	computed: {
 		...mapGetters("Code", ["getAnnouncementTypesData"]),
-		...mapGetters("Orders", ["getOrderDateTime", "getOrderDailyPrice"]),
+		...mapGetters("Orders", ["getOrderDateTime"]),
 	},
 	methods: {
 		...mapActions("Code", ["GetAnnouncementTypes"]),
-		...mapActions("Orders", ["CreateAnnouncementOrder", "GetAnnouncementOrderDate", "GetAnnouncementOrderDailyPrice"]),
+		...mapActions("Orders", ["CreateAnnouncementOrder", "GetAnnouncementOrderDate", "GetAnnouncementOrderDailyPrice", "SaveOrderDataToState"]),
 
 		initFunc() {
 			this.GetAnnouncementTypes();
 		},
 
 		ToPaymentFunc() {
-			$('#confirm_modal').modal('hide');
-            this.$router.push({ name: "payment"});
-
+			this.SaveOrderDataToState(this.data).then((Response) => {
+				$('#confirm_modal').modal('hide');
+				this.$router.push({ name: "payment" });
+			});
 		},
 
 		checkAddValidationAndShowConfirmModal() {
@@ -110,7 +111,7 @@ export default {
 				});
 				return false;
 			}
-			$('#confirm_modal').modal('show'); 
+			$('#confirm_modal').modal('show');
 			return true;
 		},
 
@@ -194,10 +195,11 @@ export default {
 			this.data.image = "";
 			this.orderDate = "";
 			this.imageCropperSrc = null;
+
 			try {
 				await Promise.all([
 					this.GetAnnouncementOrderDailyPrice(this.data.announcementType).then((Response) => {
-						this.orderDailyPrice = Response;
+						this.data.dailyPrice = Response;
 					}),
 					this.GetAnnouncementOrderDate(this.data.announcementType).then((Response) => {
 						this.orderDate = Response;
@@ -236,7 +238,7 @@ export default {
 		},
 
 		countTotalPriceFunc() {
-			this.data.totalPrice = this.orderDailyPrice * this.data.durationDay;
+			this.data.totalPrice = this.data.dailyPrice * this.data.durationDay;
 		},
 
 
@@ -364,7 +366,7 @@ export default {
 									</g>
 								</g>
 							</svg>
-							تكلفة الإعلان لليوم {{ formatCurrency(this.orderDailyPrice) }} والتكلفة الإجمالية للإعلان {{
+							تكلفة الإعلان لليوم {{ formatCurrency(this.data.dailyPrice) }} والتكلفة الإجمالية للإعلان {{
 								formatCurrency(this.data.totalPrice) }}
 						</p>
 						<p class="warning">
