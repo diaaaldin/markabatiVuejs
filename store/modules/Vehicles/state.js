@@ -2,7 +2,7 @@ export default{
     VehicleData:{},
     VehiclesData:{},
     favoriteVehiclesData:{},
-    favoriteVehiclesIdData:{},
+    favoriteVehiclesIdData:[],
     userVehiclesData:{},
     myVehiclesData:{},
     createUpdateVehicleData:{},
