@@ -113,8 +113,8 @@ export default {
         </div>
         <section class="about-us mt-5">
             <div class="container">
-                <div class="row">
-                    <div class="col-12 col-lg-6">
+                <div class="row mb-5">
+                    <div class="col-12 col-lg-6 col-md-6">
                         <div class="me-3 mt-5">
                             <div class="">
                                 <h2 class="title mb-0"> {{ getTitleByCode("about_us_data_title") }} </h2>
@@ -149,11 +149,11 @@ export default {
                             </ul>
 
                         </div>
-                        <div class="mt-5">
+                        <div class="mt-5 mb-3">
                             <button class="btn-contact">تواصل معنا</button>
                         </div>
                     </div>
-                    <div class="col-12 col-lg-6 img-about-us">
+                    <div class="col-12 col-lg-6 col-md-6 img-about-us">
                         <div class="row">
                             <div class=" col-12">
                                 <div class="d-flex flex-column mt-lg-5 ">
