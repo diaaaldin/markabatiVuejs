@@ -218,7 +218,7 @@ export default {
                         <router-link :to="{ name: 'sellers' }">
                             <span class="text_footer">{{ $t('footer_sellers') }} </span>
                         </router-link>
-                        <router-link :to="{ name: 'main' }">
+                        <router-link :to="{ name: 'pay_for_us' }">
                             <span class="text_footer">{{ $t('footer_pay_for_website') }} </span>
                         </router-link>
                         <a href="#" data-bs-toggle="modal"

@@ -63,7 +63,7 @@ export default {
 
   created() {
     this.initFunc();
-    console.log("this.getOrderData : ", this.data);
+    // console.log("this.getOrderData : ", this.data);
     // console.log("this.getUserData : ", this.getUserData);
   },
 
@@ -397,18 +397,18 @@ export default {
               <br>
               <label class="text"> الاسم كامل</label>
               <br>
-              <input v-model="dataUser.name" name="name" id="name" type="text"
+              <input disabled v-model="dataUser.name" name="name" id="name" type="text"
                 class="form-control my-3 py-3 text-start gray_text gray-inp" placeholder="الاسم" required="">
 
               <label class="text"> البريد الالكتروني</label>
               <br>
-              <input v-model="dataUser.email" name="name" id="name" type="text"
+              <input disabled v-model="dataUser.email" name="name" id="name" type="text"
                 class="form-control my-3 py-3 text-start gray_text gray-inp" placeholder="البريد الالكتروني"
                 required="">
 
               <label class="text"> رقم الجوال</label>
               <br>
-              <input v-model="dataUser.mobile" name="name" id="name" type="text"
+              <input disabled v-model="dataUser.mobile" name="name" id="name" type="text"
                 class="form-control my-3 py-3 text-start gray_text gray-inp" placeholder="05xx-xxxxxx" required="">
 
 

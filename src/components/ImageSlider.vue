@@ -37,6 +37,19 @@ export default {
       this.currentIndex = (this.currentIndex + 1) % this.images.length;
     },
 
+    openGallery() {
+      Fancybox.show(
+        this.images.map((img, index) => ({
+          src: img,
+          type: "image",
+          caption: `Image #${index + 1}`
+        })),
+        {
+          startIndex: this.currentIndex,
+        }
+      );
+    }
+
   }
 };
 </script>
@@ -74,21 +87,26 @@ export default {
         <img :src="img" :class="['thumbnail', { active: index === currentIndex }]" />
 
         <!-- Only show overlay on the last image -->
-        <!-- <div v-if="index === displayedImages.length - 1 && images.length > 5" class="thumbnail-overlay">
-          +{{ images.length - 5 }}
-        </div> -->
-        <div v-if="index === displayedImages.length - 1 && images.length > 5" class="thumbnail-overlay" >
-           <div id="gallery">
-          <a v-for="(image, index) in images" :key="index" :href="image"
-            :data-caption="'Image #' + (index + 1)" :class="{ 'Before_After_div': index === 0 }">
-            <img :src="image" alt="" :class="index === 0
-              ? 'img-fluid srv_img w-100 last-sec-img'
-              : 'd-none'" />
-          </a>
-        </div>
+        <div v-if="index === displayedImages.length - 1 && images.length > 5" class="thumbnail-overlay"
+          @click="openGallery">
+          +{{ images.length - 4 }}
         </div>
         
+        <!-- <div v-if="index === displayedImages.length - 1 && images.length > 5" class="thumbnail-overlay">
+          <div id="gallery">
+            <a v-for="(image, index) in images" :key="index" :href="image" :data-caption="'Image #' + (index + 1)"
+              :class="{ 'Before_After_div': index === 0 }">
+              <img :src="image" alt="" :class="index === 0
+                ? 'img-fluid srv_img w-100 last-sec-img'
+                : 'd-none'" />
+            </a>
+          </div>
+        </div> -->
+
+     
+
       </div>
+
     </div>
 
 
@@ -96,14 +114,16 @@ export default {
 </template>
 
 <style scoped>
-#gallery{
+#gallery {
   width: 100%;
   height: 100%;
 }
-.Before_After_div{
+
+.Before_After_div {
   width: 100%;
   height: 100%;
 }
+
 .slider-car {
   position: relative;
   width: 100%;
