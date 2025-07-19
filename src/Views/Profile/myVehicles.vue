@@ -116,7 +116,7 @@ export default {
       });
     },
 
-    DeleteFunc() {
+    deleteFunc() {
       if (this.checkDeleteValidation()) {
 
         const loading = ElLoading.service({
@@ -564,7 +564,7 @@ export default {
           تنبـيــه سيتم حذف المركبة
         </div>
         <div class="modal-footer">
-          <button type="button" v-on:click="DeleteFunc()" class="btn btn-primary">حـذف</button>
+          <button type="button" v-on:click="deleteFunc()" class="btn btn-primary">حـذف</button>
         </div>
       </div>
     </div>

@@ -42,7 +42,7 @@ export default {
 </script>
 <template>
   <div class="slider-car">
-    <div class="badge">جديد</div>
+    <!-- <div class="badge">جديد</div> -->
     <span class="arrow left" @click="prevImage">
       <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="#000000" class="bi bi-arrow-left-short">
         <g id="SVGRepo_bgCarrier" stroke-width="0"></g>

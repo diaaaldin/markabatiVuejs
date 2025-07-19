@@ -58,7 +58,8 @@ export default {
 
 	created() {
 		// Call the function from the store directly when the component is created
-		 this.initFunc();
+		this.initFunc();
+		console.log("this.getPaymentMovementsData : ", this.getPaymentMovementsData);
 	},
 
 	computed: {
@@ -156,24 +157,24 @@ export default {
 			}
 
 		},
-		selectPaymentMethod(id) {
-			paymentMethod = "";
-			switch (id) {
-				case 1:
-					paymentMethod = "كاش";
-					break;
-				case 2:
-					paymentMethod = "فيزا كارد";
-					break;
-				default:
-					paymentMethod = "التطبيق البنكي";
-			}
-			return paymentMethod;
-		},
-		formatDate(dateString) {
-			// Convert the date string to yyyy-MM-dd
-			const date = new Date(`${dateString}Z`);
-			return date.toISOString().split('T')[0];
+
+		formatDateTime(dateString) {
+			const date = new Date(dateString);
+			if (isNaN(date)) return '';
+
+			const year = date.getFullYear();
+			const month = String(date.getMonth() + 1).padStart(2, '0');
+			const day = String(date.getDate()).padStart(2, '0');
+
+			let hours = date.getHours();
+			const minutes = String(date.getMinutes()).padStart(2, '0');
+
+			const ampm = hours >= 12 ? 'PM' : 'AM';
+			hours = hours % 12;
+			hours = hours ? hours : 12; // Convert 0 to 12
+			const formattedHours = String(hours).padStart(2, '0');
+
+			return `${year}-${month}-${day} ${formattedHours}:${minutes} ${ampm}`;
 		},
 
 		formatCurrency(value, currency) {
@@ -193,8 +194,8 @@ export default {
 			return new Intl.NumberFormat('en-US', {
 				style: 'currency',
 				currency: currencyCode,
-				// Allows up to 1 decimal digit
-				maximumFractionDigits: 1
+				minimumFractionDigits: 0, // No decimals
+				maximumFractionDigits: 0  // No decimals
 			}).format(value);
 		},
 	}
@@ -215,26 +216,26 @@ export default {
 							<th class="text-center">البريد الالكتروني</th>
 							<th class="text-center"> طريقة الدفع</th>
 							<th class="text-center">الفاتورة</th>
+							<th class="text-center">تاريخ العملية</th>
 							<th class="text-center"> وصف العملية </th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr v-for="(item, index) in getPaymentMovementsData">
 							<td class="id">{{ index + 1 }}</td>
-							<td> {{ formatCurrency(item.totalPrice, item.currency) }} </td>
+							<td> {{ formatCurrency(item.amount, item.currency) }} </td>
 							<!-- <td>طلب تمييز</td> -->
 							<td>{{ item.paidname }}</td>
 							<td>{{ item.paidEmail }}</td>
-							<td>
-								{{ selectPaymentMethod(item.paymentMethod) }}
-							</td>
+							<td> {{ item.paymentMethod }} </td>
 
-							<td><img v-on:click="OpenFullScreenBillFunc(item.id)" :src="item.PayingBilImage"
+							<td><img v-on:click="OpenFullScreenBillFunc(item.id)" :src="item.payingBilImage"
 									class="img-responsive table-img" alt="image" height="80"></td>
 
+							<td> {{ formatDateTime(item.createdAt) }} </td>
 							<td> {{ item.description }} </td>
 						</tr>
-						
+
 					</tbody>
 				</table>
 			</div>

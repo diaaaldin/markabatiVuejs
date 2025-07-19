@@ -281,7 +281,7 @@ export default {
         },
 
         chickIsFavoritFunc() {
-            // this.isFavorite = this.getFavoriteVehiclesIdData.includes(this.data.id);
+             this.isFavorite = this.getFavoriteVehiclesIdData.includes(this.data.id);
         },
         async toggleFavoriteFunc() {
             const loading = ElLoading.service({

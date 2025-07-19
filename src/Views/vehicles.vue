@@ -17,6 +17,7 @@ export default {
 
             dataSearch: {
                 ownerId: 0,
+                stateId : 0,
                 vehicleBrandId: 0,
                 vehicleModelId: 0,
                 yearFrom: 0,
@@ -216,12 +217,36 @@ export default {
             });
         },
 
+        handleFilterChange({stateId,vehicleBrandId,vehicleModelId,yearFrom,yearTo,priceFrom,priceTo,mealsFrom,mealsTo,color,bodyType,specification,paintedType,paintedStatus,gearType,oilType }) {
+            
+            this.dataSearch.stateId = stateId;
+            this.dataSearch.vehicleBrandId = vehicleBrandId;
+            this.dataSearch.vehicleModelId = vehicleModelId;
+            this.dataSearch.yearFrom = yearFrom;
+            this.dataSearch.yearTo = yearTo;
+            this.dataSearch.priceFrom = priceFrom;
+            this.dataSearch.priceTo = priceTo;
+            this.dataSearch.mealsFrom = mealsFrom;
+            this.dataSearch.mealsTo = mealsTo;
+            this.dataSearch.color = color;
+            this.dataSearch.bodyType = bodyType;
+            this.dataSearch.specification = specification;
+            this.dataSearch.paintedType = paintedType;
+            this.dataSearch.paintedStatus = paintedStatus;
+            this.dataSearch.gearType = gearType;
+            this.dataSearch.oilType = oilType ;
+            this.dataSearch.page = 1;
+             this.SearchChangeFunc();
+
+        },
+
         handleYearSelection({ from, to }) {
             this.dataSearch.yearFrom = from;
             this.dataSearch.yearTo = to;
             this.dataSearch.page = 1;
             this.SearchChangeFunc();
         },
+        
         handlePriceSelection({ from, to }) {
             this.dataSearch.priceFrom = from;
             this.dataSearch.priceTo = to;
@@ -284,7 +309,7 @@ export default {
             this.dataSearch.page = page;
             this.SearchChangeFunc();
         },
-       
+
 
     },
     beforeDestroy() {
@@ -314,13 +339,7 @@ export default {
         <div class="container">
             <div class="row mt-5 h-100">
                 <!--  start left side list  -->
-                <Filter @yearSelected="handleYearSelection" @priceSelected="handlePriceSelection"
-                    @mealSelected="handleMealSelection" @brandSelected="handleBrandSelection"
-                    @brandModelSelected="handleBrandModelSelection"
-                    @paintedStatusSelected="handlePaintedStatusSelection"
-                    @specificationSelected="handleSpecificationSelection" @bodyTypeSelected="handleBodyTypeSelection"
-                    @colorSelected="handleColorSelection" @paintedTypeSelected="handlePaintedTypeSelection"
-                    @gearTypeSelected="handleGearTypeSelection" @oilTypeSelected="handleOilTypeSelection"></Filter>
+                <Filter @filterChange="handleFilterChange"></Filter>
                 <!-- end left side list-->
 
                 <!-- right side container -->
@@ -349,8 +368,8 @@ export default {
                                 </ul>
                             </div>
                         </div> -->
-                        <div class="row" >
-                            <div class="pag" >
+                        <div class="row">
+                            <div class="pag">
                                 <p class="count">
                                     أظهر {{ startItem }} إلى {{ endItem }} من {{ pagination.rowCount }}
                                 </p>
@@ -387,6 +406,4 @@ export default {
 
     <pageFooter></pageFooter>
 </template>
-<style scoped>
-
-</style>
+<style scoped></style>

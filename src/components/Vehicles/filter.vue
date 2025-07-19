@@ -4,14 +4,22 @@ import { mapState, mapGetters, mapActions } from "vuex";
 export default {
     data() {
         return {
-            fromYear: 0,
-            toYear: 0,
-
-            fromPrice: 0,
-            toPrice: 0,
-
-            fromMeal: 0,
-            toMeal: 0
+            stateId : 0,
+            vehicleBrandId: 0,
+            vehicleModelId: 0,
+            yearFrom: 0,
+            yearTo: 0,
+            priceFrom: 0,
+            priceTo: 0,
+            mealsFrom: 0,
+            mealsTo: 0,
+            color: 0,
+            bodyType: 0,
+            specification: 0,
+            paintedType: 0,
+            paintedStatus: 0,
+            gearType: 0,
+            oilType: 0,
         }
     },
     mounted() {
@@ -19,24 +27,22 @@ export default {
     },
     watch: {
         // Watch for changes in the input fields and emit the data
-        fromYear(newValue) {
+        yearFrom(newValue) {
             this.emitYears();
         },
-        toYear(newValue) {
+        yearTo(newValue) {
             this.emitYears();
         },
-
-        fromPrice(newValue) {
+        priceFrom(newValue) {
             this.emitPrice();
         },
-        toPrice(newValue) {
+        priceTo(newValue) {
             this.emitPrice();
         },
-
-        fromMeal(newValue) {
+        mealsFrom(newValue) {
             this.emitMeal();
         },
-        toMeal(newValue) {
+        mealsTo(newValue) {
             this.emitMeal();
         },
     },
@@ -52,7 +58,7 @@ export default {
     },
 
     computed: {
-        ...mapGetters("Code", ["getBrandsData", "getBrandModelsData", "getPaintedStatusData", "getSpecificationsData", "getBodyTypesData", "getColorsData", "getPaintedTypesData", "getGearTypesData", "getOilTypesData"]),
+        ...mapGetters("Code", ["getStatesData", "getCitiesData", "getBrandsData", "getBrandModelsData", "getPaintedStatusData", "getSpecificationsData", "getBodyTypesData", "getColorsData", "getPaintedTypesData", "getGearTypesData", "getOilTypesData"]),
     },
     methods: {
         ...mapActions("Code", ["GetBrands", "GetBrandModels", "GetPaintedStatus", "GetSpecification", "GetBodyType", "GetColor", "GetPaintedType", "GetGearType", "GetOilType"]),
@@ -74,66 +80,102 @@ export default {
             } finally {
             }
         },
-
+        filterChangeFunc() {
+            this.$emit("filterChange", {
+                stateId: this.stateId,
+                vehicleBrandId: this.vehicleBrandId,
+                vehicleModelId: this.vehicleModelId,
+                paintedStatus: this.paintedStatus,
+                specification: this.specification,
+                bodyType: this.bodyType,
+                color: this.color,
+                paintedType: this.paintedType,
+                gearType: this.gearType,
+                oilType: this.oilType,
+                yearFrom: this.yearFrom,
+                yearTo: this.yearTo,
+                priceFrom: this.priceFrom,
+                priceTo: this.priceTo,
+                mealsFrom: this.mealsFrom,
+                mealsTo: this.mealsTo,
+            });
+        },
+        selectedStateFunc(id) {
+            this.stateId = id;
+            this.filterChangeFunc();
+        },
         selectedBrandFunc(id) {
-            // Emit the selected brand name to the parent
-            this.$emit("brandSelected", id);
-            this.GetBrandModels(id);
+            this.vehicleBrandId = id;
+            this.filterChangeFunc();
+            this.GetBrandModels(this.vehicleBrandId);
         },
         selectedBrandModelFunc(id) {
-            // Emit the selected brand name to the parent
-            this.$emit("brandModelSelected", id);
+            this.vehicleModelId = id;
+            this.filterChangeFunc();
         },
         selectedPaintedStatusFunc(id) {
-            // Emit the selected brand name to the parent
-            this.$emit("paintedStatusSelected", id);
+            this.paintedStatus = id;
+            this.filterChangeFunc();
         },
         selectedSpecificationFunc(id) {
-            // Emit the selected brand name to the parent
-            this.$emit("specificationSelected", id);
+            this.specification = id;
+            this.filterChangeFunc();
         },
         selectedBodyTypeFunc(id) {
-            // Emit the selected brand name to the parent
-            this.$emit("bodyTypeSelected", id);
+            this.bodyType = id;
+            this.filterChangeFunc();
         },
         selectedColorFunc(id) {
-            // Emit the selected brand name to the parent
-            this.$emit("colorSelected", id);
+            this.color = id;
+            this.filterChangeFunc();
         },
         selectedPaintedTypeFunc(id) {
-            // Emit the selected brand name to the parent
-            this.$emit("paintedTypeSelected", id);
+            this.paintedType = id;
+            this.filterChangeFunc();
         },
         selectedGearTypeFunc(id) {
-            // Emit the selected brand name to the parent
-            this.$emit("gearTypeSelected", id);
+            this.gearType = id;
+            this.filterChangeFunc();
         },
         selectedOilTypeFunc(id) {
-            // Emit the selected brand name to the parent
-            this.$emit("oilTypeSelected", id);
+            this.oilType = id;
+            this.filterChangeFunc();
         },
 
         emitYears() {
-            this.$emit("yearSelected", {
-                from: this.fromYear,
-                to: this.toYear,
-            });
+            if (this.yearFrom > 1000 && this.yearTo > 1000) {
+                this.filterChangeFunc();
+            }
         },
-
-        
         emitPrice() {
-            this.$emit("priceSelected", {
-                from: this.fromPrice,
-                to: this.toPrice,
-            });
+            if (this.priceFrom < this.priceTo) {
+                this.filterChangeFunc();
+            }
+        },
+        emitMeal() {
+            if (this.mealsFrom < this.mealsTo) {
+                this.filterChangeFunc();
+            }
         },
 
-        
-        emitMeal() {
-            this.$emit("mealSelected", {
-                from: this.fromMeal,
-                to: this.toMeal,
-            });
+        clearDataFunc() {
+                this.stateId = 0;
+                this.vehicleBrandId = 0;
+                this.vehicleModelId = 0;
+                this.yearFrom = 0;
+                this.yearTo = 0;
+                this.priceFrom = 0;
+                this.priceTo = 0;
+                this.mealsFrom = 0;
+                this.mealsTo = 0;
+                this.color = 0;
+                this.bodyType = 0;
+                this.specification = 0;
+                this.paintedType = 0;
+                this.paintedStatus = 0;
+                this.gearType = 0;
+                this.oilType = 0;
+                this.filterChangeFunc();
         },
 
     }
@@ -150,16 +192,59 @@ export default {
                 <div class="title-fill">
                     <img src="/img/icons/fillter.svg">
                     <span>الفلترة</span>
-                    <svg fill="#000" width="30" viewBox="0 0 32 32" id="iconfilter" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <defs>  </defs> <path d="M22.5,9A7.4522,7.4522,0,0,0,16,12.792V8H14v8h8V14H17.6167A5.4941,5.4941,0,1,1,22.5,22H22v2h.5a7.5,7.5,0,0,0,0-15Z"></path> <path d="M26,6H4V9.171l7.4142,7.4143L12,17.171V26h4V24h2v2a2,2,0,0,1-2,2H12a2,2,0,0,1-2-2V18L2.5858,10.5853A2,2,0,0,1,2,9.171V6A2,2,0,0,1,4,4H26Z"></path> <rect id="_Transparent_Rectangle_" data-name="&lt;Transparent Rectangle&gt;" fill="none" class="cls-1" width="32" height="32"></rect> </g></svg>                </div>
+                    <svg @click="clearDataFunc()" fill="#000" width="30" viewBox="0 0 32 32" id="iconfilter"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                        <g id="SVGRepo_iconCarrier">
+                            <defs> </defs>
+                            <path
+                                d="M22.5,9A7.4522,7.4522,0,0,0,16,12.792V8H14v8h8V14H17.6167A5.4941,5.4941,0,1,1,22.5,22H22v2h.5a7.5,7.5,0,0,0,0-15Z">
+                            </path>
+                            <path
+                                d="M26,6H4V9.171l7.4142,7.4143L12,17.171V26h4V24h2v2a2,2,0,0,1-2,2H12a2,2,0,0,1-2-2V18L2.5858,10.5853A2,2,0,0,1,2,9.171V6A2,2,0,0,1,4,4H26Z">
+                            </path>
+                            <rect id="_Transparent_Rectangle_" data-name="&lt;Transparent Rectangle&gt;" fill="none"
+                                class="cls-1" width="32" height="32"></rect>
+                        </g>
+                    </svg>
+                </div>
             </div>
+
             <div class="clear-fix"></div>
+           
             <div class="accordion-item customize-according">
+                <h2 class="accordion-header" id="heading0">
+                    <button class="accordion-button  btn collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapse0" aria-expanded="false" aria-controls="collapse0">
+                        <div class="title-fill">
+                            <img src="/img/icons/car.svg">
+                            <span>{{ $t('filter_state') }}</span>
+                        </div>
+                    </button>
+                </h2>
+                <div id="collapse0" class="accordion-collapse collapse" aria-labelledby="heading0"
+                    data-bs-parent="#accordionExample">
+                    <div class="accordion-body customize-acc-body scrollable-list">
+
+                        <div v-for="(item, index) in getStatesData" :key="index" class="form-check">
+                            <input class="form-check-input" :id="'flexRadioDefault' + (index)" type="radio" name="car"
+                                :value="item.name" @change="selectedStateFunc(item.id)">
+                            <label class="form-check-label" :for="'flexRadioDefault' + (index)">{{ item.name
+                            }}</label>
+                            <!-- <span>(345)</span> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item customize-according mt-2">
                 <h2 class="accordion-header" id="headingOne">
                     <button class="accordion-button  btn " type="button" data-bs-toggle="collapse"
                         data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                         <div class="title-fill">
                             <img src="/img/icons/car.svg">
-                            <span>{{ $t('filter_brand') }} </span>
+                            <span>{{ $t('filter_brand') }}</span>
                         </div>
                     </button>
                 </h2>
@@ -217,13 +302,13 @@ export default {
                                 <label class="label-form">من</label>
                                 <input name="year" id="year" type="number"
                                     class="form-control mt-2  text-start gray_text gray-inp" placeholder=" 0 "
-                                    required="" v-model="fromYear">
+                                    required="" v-model="yearFrom">
                             </div>
                             <div class="col-md-6">
                                 <label class="label-form">الى</label>
                                 <input name="year" id="year" type="number"
                                     class="form-control mt-2  text-start gray_text gray-inp" placeholder=" 0 "
-                                    required="" v-model="toYear">
+                                    required="" v-model="yearTo">
                             </div>
                         </div>
 
@@ -246,15 +331,13 @@ export default {
                                 <label class="label-form">من</label>
                                 <input name="price" id="price" type="number"
                                     class="form-control mt-2  text-start gray_text gray-inp" placeholder=" 0 "
-                                    required="" 
-                                    v-model="fromPrice">
+                                    required="" v-model="priceFrom">
                             </div>
                             <div class="col-md-6">
                                 <label class="label-form">الى</label>
                                 <input name="price" id="price" type="number"
                                     class="form-control mt-2  text-start gray_text gray-inp" placeholder=" 0 "
-                                    required="" 
-                                    v-model="toPrice">
+                                    required="" v-model="priceTo">
                             </div>
                         </div>
 
@@ -277,15 +360,13 @@ export default {
                                 <label class="label-form">من</label>
                                 <input name="price" id="price" type="text"
                                     class="form-control mt-2  text-start gray_text gray-inp" placeholder=" 0 "
-                                    required=""
-                                    v-model="fromMeal">
+                                    required="" v-model="mealsFrom">
                             </div>
                             <div class="col-md-6">
                                 <label class="label-form">الى</label>
                                 <input name="price" id="price" type="text"
                                     class="form-control mt-2  text-start gray_text gray-inp" placeholder=" 0 "
-                                    required=""
-                                    v-model="toMeal">
+                                    required="" v-model="mealsTo">
                             </div>
                         </div>
 
@@ -499,9 +580,11 @@ export default {
     margin-top: 10px;
     /* Optional: Space above the scrollable area */
 }
-#iconfilter{
+
+#iconfilter {
     float: left;
     cursor: pointer;
 }
+
 /* Optional: Add custom styles for your viewer component */
 </style>

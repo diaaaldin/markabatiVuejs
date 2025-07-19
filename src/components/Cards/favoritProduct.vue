@@ -78,7 +78,7 @@ export default {
     ...mapActions("Vehicles", ["ToggleVehicleFavorite", "GetVehiclesFavoriteId", "GetVehiclesFavorite"]),
 
     chickIsFavoritFunc() {
-      // this.isFavorite = this.getFavoriteVehiclesIdData.includes(this.product.id);
+       this.isFavorite = this.getFavoriteVehiclesIdData.includes(this.product.id);
     },
 
     async toggleFavoriteFunc() {

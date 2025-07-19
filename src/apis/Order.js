@@ -182,6 +182,8 @@ export default {
         return responce;
     },
     UpdateAnnouncementOrder(data) {
+
+        // console.log( "this.data :  " ,this.data);
         let token = localStorage.getItem("token")
             ? JSON.parse(localStorage.getItem("token"))
             : null;
