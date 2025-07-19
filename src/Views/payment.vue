@@ -280,14 +280,66 @@ export default {
 </script>
 <template>
   <pageNav></pageNav>
-  <div class="container">
-    <div class="row">
 
+  <div class="bread">
+        <nav>
+            <div class="container">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item" :class="{ active: $route.path === '/' }">
+                        <router-link :to="{ name: 'main' }"> {{ $t('location_menu_main') }} </router-link>
+                    </li>
+                    <li v-if="$route.path === '/profile'" class="breadcrumb-item active" aria-current="page">
+                        {{ $t('location_menu_profile') }}
+                    </li>
+                    <li v-else class="breadcrumb-item" aria-current="page"
+                        :class="{ active: $route.path === '/profile' }">
+                        <router-link :to="{ name: 'profile_profile' }"> {{ $t('location_menu_profile') }} </router-link>
+                    </li>
+                    <li v-if="$route.path === '/my_vehicles'" class="breadcrumb-item active" aria-current="page">
+                        {{ $t('location_menu_my_vehicles') }}
+                    </li>
+                    <li v-if="$route.path === '/update_vehicle'" class="breadcrumb-item">
+                        <router-link :to="{ name: 'profile_my_vehicles' }"> {{ $t('location_menu_my_vehicles') }}
+                        </router-link>
+                    </li>
+                    <li v-if="$route.path === '/favorit'" class="breadcrumb-item active" aria-current="page">
+                        {{ $t('location_menu_favorite') }}
+                    </li>
+                    <li v-if="$route.path === '/ads_orders'" class="breadcrumb-item active" aria-current="page">
+                        {{ $t('location_menu_ads_orders') }}
+                    </li>
+                    <li v-if="$route.path === '/star_orders'" class="breadcrumb-item active" aria-current="page">
+                        {{ $t('location_menu_star_orders') }}
+                    </li>
+                    <li v-if="$route.path === '/payment_operation'" class="breadcrumb-item active" aria-current="page">
+                        {{ $t('location_menu_payment_operations') }}
+                    </li>
+                    <li v-if="$route.path === '/change_password'" class="breadcrumb-item active" aria-current="page">
+                        {{ $t('location_menu_change_password') }}
+                    </li>
+
+                    <li v-if="$route.path === '/add_vehicle'" class="breadcrumb-item active" aria-current="page">
+                        {{ $t('location_menu_add_vehicle') }}
+                    </li>
+                    <li v-if="$route.path === '/update_vehicle'" class="breadcrumb-item active" aria-current="page">
+                        {{ $t('location_menu_update_vehicle') }}
+                    </li>
+
+                    <li v-if="$route.path === '/add_ads'" class="breadcrumb-item active" aria-current="page">
+                        {{ $t('location_menu_add_ads') }}
+                    </li>
+                </ol>
+
+            </div>
+        </nav>
+    </div>
+  <div class="container">
+    <div class="row mt-5">
       <div class="col-md-6 col-sm-12">
         <ul class=" nav d-flex flex-row flex-nowrap justify-content-between align-items-center radius_all p-2"
           id="myTab" role="tablist">
           <li class="nav-item">
-            <button class="nav-link btn-order px-md-5 py-md-2" :class="{ active: activeTab === 'waiting' }"
+            <button class="nav-link btn-order tab" :class="{ active: activeTab === 'waiting' }"
               @click="activeTab = 'waiting'">
 
               <svg height="20" width="20" version="1.2" baseProfile="tiny" id="inventory"
@@ -305,7 +357,7 @@ export default {
             </button>
           </li>
           <li class="nav-item">
-            <button class="nav-link btn-order px-md-5 py-md-2" :class="{ active: activeTab === 'on-progress' }"
+            <button class="nav-link btn-order tab" :class="{ active: activeTab === 'on-progress' }"
               @click="activeTab = 'on-progress'">
               <svg height="20" width="20" version="1.2" baseProfile="tiny" id="Layer_1"
                 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 256 256"
@@ -384,8 +436,9 @@ export default {
           <div v-show="activeTab === 'on-progress'" class="tab-pane fade show active">
 
             <form class="mt-4">
-
+            <label class="text">عنوان الحساب / المحفظة</label><br>
               <div class="d-flex align-items-center gap-2">
+                
                 <input name="phone" id="phone" type="text" class="form-control my-3 py-3 text-start gray_text gray-inp"
                   placeholder="05xx-xxxxxx" :value="dataWallet.inputValue" readonly />
                 <button type="button" class="btn btn-outline-success" @click="copyMobileNumber">
@@ -394,7 +447,7 @@ export default {
                 <img :src="dataWallet.qrValue" alt="QR Code" width="100" />
 
               </div>
-              <br>
+              
               <label class="text"> الاسم كامل</label>
               <br>
               <input v-model="dataUser.name" name="name" id="name" type="text"
@@ -681,6 +734,9 @@ input[type="radio"]:checked+.radio-label {
   fill: white;
 }
 
+.btn-order.tab {
+  width: 150px;
+}
 .btn-order {
   color: #000;
 }
@@ -692,12 +748,30 @@ input[type="radio"]:checked+.radio-label {
 .btn-order.active {
   color: #fff;
 }
-
+.uploudedImageContaner{
+  height: 200px;
+}
 .uploudedImageContaner img {
   width: 100%;
   border-radius: 8px;
-}
+  object-fit: contain;
+  height: 100%;
 
+}
+.btn-outline-success {
+  color: #26d829;
+  border-color: #26d829;
+}
+.btn-outline-success:hover {
+  color: #fff;
+  border-color: #000;
+  background-color: #000;
+}
+@media (max-width: 992px) {
+.custom_cardd {
+    margin: 0;
+  }
+}
 @media (max-width: 767px) {
   .custom_cardd {
     padding: 15px;
