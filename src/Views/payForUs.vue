@@ -88,7 +88,7 @@ export default {
             if (this.getUserData) {
                 this.data.paidname = this.getUserData.name;
                 this.data.paidEmail = this.getUserData.email;
-           
+
             }
         },
 
@@ -119,18 +119,19 @@ export default {
             try {
                 // Proceed only if validation passes
                 if (this.checkAddValidation()) {
-                        this.CreatePaymentMovements(this.data).then((Response) => {
-                            this.$moshaToast(this.$t('general_operation_success_message'), {
-                                hideProgressBar: 'false',
-                                showIcon: 'true',
-                                swipeClose: 'true',
-                                type: 'success',
-                                timeout: 3000,
-                            });
-                            loading.close();
-                            this.$router.push({ name: "main" });
+                    console.log("this.data : " , this.data);
+                    this.CreatePaymentMovements(this.data).then((Response) => {
+                        this.$moshaToast(this.$t('general_operation_success_message'), {
+                            hideProgressBar: 'false',
+                            showIcon: 'true',
+                            swipeClose: 'true',
+                            type: 'success',
+                            timeout: 3000,
                         });
-                    } 
+                        loading.close();
+                        this.$router.push({ name: "main" });
+                    });
+                }
             } catch (error) {
                 this.$moshaToast(error.response?.data?.message || 'An error occurred', {
                     hideProgressBar: 'false',
@@ -156,7 +157,7 @@ export default {
                     timeout: 3000,
                 });
                 return false;
-            }else if (this.data.paidname == "") {
+            } else if (this.data.paidname == "") {
                 this.$moshaToast('قم بإدخال الإسم', {
                     hideProgressBar: 'false',
                     position: 'top-center',
@@ -166,7 +167,7 @@ export default {
                     timeout: 3000,
                 });
                 return false;
-            }else if (this.data.paidEmail == "") {
+            } else if (this.data.paidEmail == "") {
                 this.$moshaToast('قم بإدخال الإيميل', {
                     hideProgressBar: 'false',
                     position: 'top-center',
@@ -176,7 +177,7 @@ export default {
                     timeout: 3000,
                 });
                 return false;
-            }else if (this.data.amount == "") {
+            } else if (this.data.amount == "") {
                 this.$moshaToast('قم بإدخال المبلوغ المدفوع', {
                     hideProgressBar: 'false',
                     position: 'top-center',
@@ -187,7 +188,7 @@ export default {
                 });
                 return false;
             }
-             else if (this.data.payBilImage == "") {
+            else if (this.data.payingBilImage == "") {
                 this.$moshaToast('أضق صورة الحوالة لإثبات عملية الدفع', {
                     hideProgressBar: 'false',
                     position: 'top-center',
@@ -252,7 +253,7 @@ export default {
                 reader.onload = async (e) => {
                     try {
 
-                        this.data.payBilImage = e.target.result;
+                        this.data.payingBilImage = e.target.result;
                         // this.imageCropperSrc = e.target.result; // Update with the file's data URL
 
                     } catch (err) {
@@ -376,8 +377,9 @@ export default {
                     <div v-show="activeTab === 'on-progress'" class="tab-pane fade show active">
 
                         <form class="mt-4">
-
+                            <label class="text">عنوان الحساب / المحفظة</label><br>
                             <div class="d-flex align-items-center gap-2">
+
                                 <input name="phone" id="phone" type="text"
                                     class="form-control my-3 py-3 text-start gray_text gray-inp"
                                     placeholder="05xx-xxxxxx" :value="dataWallet.inputValue" readonly />
@@ -387,7 +389,7 @@ export default {
                                 <img :src="dataWallet.qrValue" alt="QR Code" width="100" />
 
                             </div>
-                            <br>
+
                             <label class="text"> الاسم كامل</label>
                             <br>
                             <input v-model="data.paidname" name="name" id="name" type="text"
@@ -410,7 +412,6 @@ export default {
                             <textarea v-model="data.description" name="name" id="name" type="text"
                                 class="form-control my-3 py-3 text-start gray_text gray-inp" placeholder="" required="">
                             </textarea>
-
 
                             <div class="header">
                                 <label for="fileInput-c" class="custom-file-upload-c">
@@ -436,10 +437,11 @@ export default {
 
                             </div>
                             <div class="uploudedImageContaner">
-                                <img id="uploadedImage" ref="img" width="100" :src="data.payBilImage"
+                                <img id="uploadedImage" ref="img" width="100" :src="data.payingBilImage"
                                     alt="الصورة المحملة ">
                             </div>
                         </form>
+
 
                         <ul class=" nav d-flex flex-row flex-nowrap justify-content-between align-items-center next mt-5"
                             id="myTab" role="tablist">
@@ -464,7 +466,7 @@ export default {
                 </div>
 
             </div>
-           
+
         </div>
     </div>
 
@@ -474,176 +476,197 @@ export default {
 </template>
 <style scoped>
 .header {
-    text-align: center;
-    padding: 20px;
-    background-color: #4CAF50;
-    color: white;
-    border-radius: 8px;
-    margin-bottom: 20px;
+  text-align: center;
+  padding: 20px;
+  background-color: #4CAF50;
+  color: white;
+  border-radius: 8px;
+  margin-bottom: 20px;
 }
 
 .header h1 {
-    margin: 0;
-    font-size: 1.8em;
+  margin: 0;
+  font-size: 1.8em;
 }
 
 .header input[type="file"] {
-    display: inline-block;
-    margin: 15px 0;
-    padding: 10px;
-    font-size: 1em;
-    border-radius: 5px;
-    border: 1px solid #ddd;
+  display: inline-block;
+  margin: 15px 0;
+  padding: 10px;
+  font-size: 1em;
+  border-radius: 5px;
+  border: 1px solid #ddd;
 }
 
 .next .nextbtn {
-    padding: 15px 60px;
-    background-color: black;
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    transition: all 0.3s ease-in-out;
-    font-size: 14px;
-    font-weight: 400;
+  padding: 15px 60px;
+  background-color: black;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  transition: all 0.3s ease-in-out;
+  font-size: 14px;
+  font-weight: 400;
 
 }
 
 .next .confirmbtn {
-    padding: 15px 30px;
-    background-color: #26d829;
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    transition: all 0.3s ease-in-out;
-    font-size: 14px;
-    font-weight: 400;
+  padding: 15px 30px;
+  background-color: #26d829;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  transition: all 0.3s ease-in-out;
+  font-size: 14px;
+  font-weight: 400;
 }
 
 .next .nextbtn:hover {
-    background-color: #26d829;
-    color: #fff;
+  background-color: #26d829;
+  color: #fff;
 
 }
 
 .next .confirmbtn:hover {
-    background-color: #000;
-    color: #fff;
+  background-color: #000;
+  color: #fff;
 
 }
 
 .next .confirmbtn svg path {
-    fill: #fff;
+  fill: #fff;
 }
 
 .radio-group {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .radio-label {
-    border: 2px solid #ccc;
-    padding: 12px 20px;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: all 0.4s ease-in-out;
-    display: flex;
-    justify-content: space-between;
+  border: 2px solid #ccc;
+  padding: 12px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.4s ease-in-out;
+  display: flex;
+  justify-content: space-between;
 }
 
 .radio-label p {
-    margin: 0;
-    padding: 13px;
+  margin: 0;
+  padding: 13px;
 }
 
 .radio-label img {
-    border-radius: 8px;
-    margin-left: 15px;
+  border-radius: 8px;
+  margin-left: 15px;
 }
 
 input[type="radio"] {
-    display: none;
-    transition: all 0.4s ease-in-out;
+  display: none;
+  transition: all 0.4s ease-in-out;
 }
 
 input[type="radio"]:checked+.radio-label {
-    border-color: #26d829;
-    /* Green border */
-    color: #fff;
-    font-weight: bold;
-    background-color: #26d829;
+  border-color: #26d829;
+  /* Green border */
+  color: #fff;
+  font-weight: bold;
+  background-color: #26d829;
 }
 
 .radio-container {
-    display: flex;
-    flex-direction: column;
-    /* max-width: 200px; */
-    margin: 80px auto;
+  display: flex;
+  flex-direction: column;
+  /* max-width: 200px; */
+  margin: 80px auto;
 }
 
 .label-title {
-    font-weight: bold;
-    background: #000;
-    color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    margin-bottom: 25px;
+  font-weight: bold;
+  background: #000;
+  color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 25px;
 }
 
 .custom_cardd {
-    padding: 15px;
-    margin: 132px 100px 77px 0;
+  padding: 15px;
+  margin: 132px 100px 77px 0;
 }
 
 .custom_cardd .img {
-    height: 340px;
+  height: 340px;
 }
 
 .custom_cardd .img img {
-    height: 100%;
+  height: 100%;
 }
 
 .index-img-card:hover {
-    -webkit-transform: none !important;
-    transform: none !important;
+  -webkit-transform: none !important;
+  transform: none !important;
 }
 
 .radius_all>li .btn-order path {
-    stroke: #26d829;
-    fill: #26d829;
+  stroke: #26d829;
+  fill: #26d829;
 }
 
 .radius_all>li:nth-child(1) .btn-order.active path {
-    stroke: #fff;
-    fill: #fff;
+  stroke: #fff;
+  fill: #fff;
 }
 
 .radius_all>li:nth-child(2) .btn-order.active path {
-    stroke: white;
-    fill: white;
+  stroke: white;
+  fill: white;
 }
 
+.btn-order.tab {
+  width: 150px;
+}
 .btn-order {
-    color: #000;
+  color: #000;
 }
 
 .btn-order:hover {
-    color: #26d829;
+  color: #26d829;
 }
 
 .btn-order.active {
-    color: #fff;
+  color: #fff;
 }
-
+.uploudedImageContaner{
+  height: 200px;
+}
 .uploudedImageContaner img {
-    width: 100%;
-    border-radius: 8px;
-}
+  width: 100%;
+  border-radius: 8px;
+  object-fit: contain;
+  height: 100%;
 
+}
+.btn-outline-success {
+  color: #26d829;
+  border-color: #26d829;
+}
+.btn-outline-success:hover {
+  color: #fff;
+  border-color: #000;
+  background-color: #000;
+}
+@media (max-width: 992px) {
+.custom_cardd {
+    margin: 0;
+  }
+}
 @media (max-width: 767px) {
-    .custom_cardd {
-        padding: 15px;
-        margin: 77px 0 77px 0;
-    }
+  .custom_cardd {
+    padding: 15px;
+    margin: 77px 0 77px 0;
+  }
 }
 </style>

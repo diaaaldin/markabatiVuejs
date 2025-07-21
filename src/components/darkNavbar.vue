@@ -442,4 +442,16 @@ export default {
 .profile-icon {
     border-radius: 8px;
 }
+.header-div .navbar .sign-up a{
+    background-color: var(--main-color);
+    color: #fff;
+}
+.header-div .navbar .sign-up a:hover{
+    background-color: #fff;
+    color: #000;
+}
+.header-div .navbar .login a:hover{
+    background-color: var(--main-color);
+    color: #fff;
+}
 </style>

@@ -413,4 +413,20 @@ export default {
 .is-not-read p , .is-not-read span{
     font-weight: bold;
 }
+.header-div .navbar .sign-up a{
+    background-color: var(--main-color);
+    color: #fff;
+}
+.header-div .navbar .sign-up a:hover{
+    background-color: #000;
+    color: #fff;
+}
+.header-div .navbar .login a{
+    background-color: #000;
+    color: #fff;
+}
+.header-div .navbar .login a:hover{
+    background-color: var(--main-color);
+    color: #fff;
+}
 </style>

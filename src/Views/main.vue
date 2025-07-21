@@ -80,17 +80,17 @@ export default {
 
         getNotificationFunc() {
             if (this.isTokenValid()) {
-                this.GetUserNotifications(this.dataNotification).then(Response => {
-                }).catch(error => {
-                    this.$moshaToast(error.response.data.message, {
-                        hideProgressBar: 'false',
-                        position: 'top-center',
-                        showIcon: 'true',
-                        swipeClose: 'true',
-                        type: 'warning',
-                        timeout: 3000,
-                    });
-                });
+                // this.GetUserNotifications(this.dataNotification).then(Response => {
+                // }).catch(error => {
+                //     this.$moshaToast(error.response.data.message, {
+                //         hideProgressBar: 'false',
+                //         position: 'top-center',
+                //         showIcon: 'true',
+                //         swipeClose: 'true',
+                //         type: 'warning',
+                //         timeout: 3000,
+                //     });
+                // });
             }
         },
 

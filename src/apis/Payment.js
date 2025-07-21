@@ -16,7 +16,7 @@ export default {
     },
 
     CreatePaymentMovements(data) {
-        return Api.get(`${END_POINT}/CreatePaymentMovements`, data);
+        return Api.post(`${END_POINT}/CreatePaymentMovements`, data);
     },
 
 }

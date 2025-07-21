@@ -138,7 +138,7 @@ export default {
 
 .image {
   width: 100%;
-  height: 365px;
+  height: auto;
   aspect-ratio: 4 / 3;
   background-color: whitesmoke;
   overflow: hidden;
@@ -243,9 +243,15 @@ export default {
 /* ------------------- Responsive Breakpoints ------------------- */
 
 @media (max-width: 992px) {
+  .Before_After_div::after {
+  top: 20%;
+  right: 30%;}
+  .thumbnails {
+
+  gap: 10px;}
   .thumbnail-wrapper {
-    width: 60px;
-    height: 60px;
+    width: 50px;
+    height: 50px;
   }
 
   .thumbnail-overlay {
@@ -260,9 +266,9 @@ export default {
 }
 
 @media (max-width: 768px) {
-  .main-image {
+  /* .main-image {
     max-height: 250px;
-  }
+  } */
 
   .thumbnail-wrapper {
     width: 50px;
@@ -283,9 +289,9 @@ export default {
 }
 
 @media (max-width: 480px) {
-  .main-image {
+  /* .main-image {
     max-height: 200px;
-  }
+  } */
 
   .thumbnail-wrapper {
     width: 45px;

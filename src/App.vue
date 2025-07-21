@@ -48,9 +48,9 @@ export default {
 			this.GetCities();
 			this.GetConstants();
 
-			if (this.isTokenValid()) {
-				this.GetVehiclesFavoriteId();
-			}
+			// if (this.isTokenValid()) {
+			// 	// this.GetVehiclesFavoriteId();
+			// }
 
 			try {
 				await Promise.all([
