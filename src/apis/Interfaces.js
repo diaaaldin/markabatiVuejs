@@ -13,13 +13,8 @@ export default{
         return Api.get(`${END_POINT}/GetInterfaceItem`, config );
     },
 
-    GetInterfaceItems(interfaceId){
-        let config = {
-            params: {
-                interfaceId: interfaceId
-            },
-          };
-        return Api.get(`${END_POINT}/GetInterfaceItems`, config );
+    GetInterfacesItems(){
+        return Api.get(`${END_POINT}/GetInterfacesItems`);
     },
 
   

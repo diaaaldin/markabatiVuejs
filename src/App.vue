@@ -22,11 +22,11 @@ export default {
 	},
 
 	mounted() {
-
+		this.initFunc();
 	},
 	created() {
 		// Call the function from the store directly when the component is created
-		this.initFunc();
+
 	},
 
 	methods: {
@@ -37,6 +37,7 @@ export default {
 		...mapActions("Code", ["GetStates", "GetCities", "GetConstants"]),
 		...mapActions("Users", ["GetWebSiteComunicationInfo"]),
 		...mapActions("Vehicles", ["GetVehiclesFavoriteId"]),
+		...mapActions("Interfaces", ["GetInterfacesItems"]),
 
 		async initFunc() {
 			const loading = ElLoading.service({
@@ -44,17 +45,18 @@ export default {
 				background: 'rgba(0, 0, 0, 0.7)',
 				text: "",
 			});
+			this.recordVisit();
 			this.GetStates();
 			this.GetCities();
 			this.GetConstants();
-
+			this.GetInterfacesItems();
 			// if (this.isTokenValid()) {
 			// 	// this.GetVehiclesFavoriteId();
 			// }
 
 			try {
 				await Promise.all([
-					this.recordVisit(),
+
 					this.GetMainAnnouncementActiveOrder(),
 					this.GetVerticalAnnouncementActiveOrder(),
 					this.GetHorizontalAnnouncementActiveOrder(),

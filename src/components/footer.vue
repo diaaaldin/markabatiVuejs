@@ -6,11 +6,15 @@ import { socialUrlData } from '@/config/config';
 
 import { mapState, mapGetters, mapActions } from "vuex";
 import axios from "axios";
+import { InterfacesEnum } from '@/config/config.js'
 
 
 export default {
     data() {
         return {
+
+            interfaceId: InterfacesEnum.modals,
+
             data: {
                 id: 0,
                 orderType: 0,
@@ -60,20 +64,21 @@ export default {
         RouterView,
     },
     mounted() {
-        console.log("this.getSiteComunicationData : ", this.getSiteComunicationData);
+        // console.log("this.getSiteComunicationData : ", this.getSiteComunicationData);
     },
     beforeUnmount() {
         // Properly destroy the instance when the component is unmounted
     },
 
     created() {
-
     },
 
     computed: {
+        ...mapGetters("Interfaces", ["getInterfaceItemsData"]),
         ...mapGetters("Code", ["getStatesData", "getCitiesData"]),
         ...mapGetters("Code", ["getQuestionsData", "getStatesData", "getComunicationMethodsData", "getOrderServicesData", "getChildrenServicesData"]),
         ...mapGetters("Users", ["getSiteComunicationData"]),
+
 
         GetUserName() {
             let userName = localStorage.getItem("customerName");
@@ -89,6 +94,18 @@ export default {
         ...mapActions("Code", ["GetQuestionsData", "GetStates", "GetComunicationMethods", "GetOrderServices", "GetChildrenServices"]),
         ...mapActions("Orders", ["CreateOrder"]),
 
+
+        getTitleByCode(code) {
+            // Find the object with the matching code
+            const foundItem = this.getInterfaceItemsData.find(item => item.code === code);
+
+            if (foundItem) {
+                return foundItem.title;  // Set the title if found
+
+            } else {
+                return "Title not found";  // If no match is found
+            }
+        },
 
         ownerImageFunc(imgae) {
             const imageUrl = imgae
@@ -231,14 +248,14 @@ export default {
                 <div class="col-lg-3 col-md-3">
                     <div class="d-flex flex-column flex-lg-column justify-content-between">
                         <h4 class="text_footer-title">{{ $t('footer_lows') }}</h4>
-                        <a href="#">
+                        <a href="#" data-bs-toggle="modal" data-bs-target="#privacy_policy_modal">
                             <span class="text_footer">{{ $t('footer_private_polices') }} </span>
                         </a>
-                        <a href="#">
-                            <span class="text_footer">{{ $t('footer_jadgement') }} </span>
+                        <a href="#" data-bs-toggle="modal" data-bs-target="#terms_and_conditions_modal">
+                            <span class="text_footer" >{{ $t('footer_terms_and_conditions') }} </span>
                         </a>
-                        <a href="#">
-                            <span class="text_footer">{{ $t('footer_return_polices') }} </span>
+                        <a href="#" data-bs-toggle="modal" data-bs-target="#return_polices_modal">
+                            <span class="text_footer"  >{{ $t('footer_return_polices') }} </span>
                         </a>
                     </div>
 
@@ -333,6 +350,62 @@ export default {
                             </g>
                         </svg>
                     </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="privacy_policy_modal" tabindex="-1" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel"> سياسة الخصوصية </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="card seller_card">
+                        <div class="card-body" v-html="getTitleByCode('privacy_policy_modal')">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="terms_and_conditions_modal" tabindex="-1" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel"> الشروط والأحكام </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="card seller_card">
+                        <div class="card-body" v-html="getTitleByCode('terms_and_conditions_modal')">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="return_polices_modal" tabindex="-1" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel"> سياسة الإرجاع </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="card seller_card">
+                        <div class="card-body" v-html="getTitleByCode('return_polices_modal')">
+
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

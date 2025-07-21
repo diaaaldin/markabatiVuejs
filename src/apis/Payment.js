@@ -16,6 +16,7 @@ export default {
     },
 
     CreatePaymentMovements(data) {
+        // console.log("this.data : " , data);
         return Api.post(`${END_POINT}/CreatePaymentMovements`, data);
     },
 
