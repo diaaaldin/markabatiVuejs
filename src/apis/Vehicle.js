@@ -17,7 +17,6 @@ export default {
     },
 
     GetVehiclesRandomly(data) {
-        console.log("this.data : " , data);
         const queryString = new URLSearchParams({
             ownerId: data.ownerId,
             stateId: data.stateId,

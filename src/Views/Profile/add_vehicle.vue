@@ -149,6 +149,28 @@ export default {
 						loading.close();
 						$('#swear').modal('hide');
 						this.$router.push({ name: "profile_my_vehicles" });
+					}).catch(error => {
+						if (error.response && error.response.status === 401) {
+							this.$moshaToast(this.$t('general_user_not_allow_error_message'), {
+								hideProgressBar: 'false',
+								position: 'top-center',
+								showIcon: 'true',
+								swipeClose: 'true',
+								type: 'warning',
+								timeout: 3000,
+							});
+						} else {
+							// Handle other errors with the provided message from the response
+							this.$moshaToast(error.response?.data?.message || 'An error occurred', {
+								hideProgressBar: 'false',
+								position: 'top-center',
+								showIcon: 'true',
+								swipeClose: 'true',
+								type: 'warning',  // Default type is 'warning'
+								timeout: 3000,
+							});
+						}
+						loading.close();
 					});
 				}
 			} catch (error) {
@@ -724,7 +746,8 @@ function debounce(func, wait) {
 							<label class="w-100 h-100">
 								<div class="icon"></div>
 								<h5 class="page-title">أضف الصورة الرئيسية للمركبة</h5>
-								<img src="/images/green-add-button.png" alt="" class="d-block mx-auto rounded-circle p-2 add-img-c" />
+								<img src="/images/green-add-button.png" alt=""
+									class="d-block mx-auto rounded-circle p-2 add-img-c" />
 								<p class="mb-0 text-center">صورة المركبة.</p>
 							</label>
 						</div>
@@ -752,7 +775,7 @@ function debounce(func, wait) {
 
 
 
-			
+
 
 
 
@@ -794,7 +817,7 @@ function debounce(func, wait) {
 				</div>
 				<div class="modal-footer">
 					<button @click="createFunc()" type="button" class="btn btn-primary">
-						 تأكيد
+						تأكيد
 					</button>
 				</div>
 			</div>
@@ -912,11 +935,10 @@ function debounce(func, wait) {
 .remove button:hover svg g path {
 	fill: #fff;
 }
+
 .modal-footer .btn-primary {
-     border-radius: 30px;
-     padding: 8px 30px;
-    margin: 0 auto;
+	border-radius: 30px;
+	padding: 8px 30px;
+	margin: 0 auto;
 }
-
-
 </style>

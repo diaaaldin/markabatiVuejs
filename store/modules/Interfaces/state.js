@@ -1,7 +1,7 @@
 export default{
 
    InterfaceItemData : {},
-   InterfaceItemsData : {},
+   InterfaceItemsData : [],
    InterfaceItemCreateUpdateData :{},
  
 }

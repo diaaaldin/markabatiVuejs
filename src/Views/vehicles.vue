@@ -17,7 +17,7 @@ export default {
 
             dataSearch: {
                 ownerId: 0,
-                stateId : 0,
+                stateId: 0,
                 vehicleBrandId: 0,
                 vehicleModelId: 0,
                 yearFrom: 0,
@@ -217,8 +217,8 @@ export default {
             });
         },
 
-        handleFilterChange({stateId,vehicleBrandId,vehicleModelId,yearFrom,yearTo,priceFrom,priceTo,mealsFrom,mealsTo,color,bodyType,specification,paintedType,paintedStatus,gearType,oilType }) {
-            
+        handleFilterChange({ stateId, vehicleBrandId, vehicleModelId, yearFrom, yearTo, priceFrom, priceTo, mealsFrom, mealsTo, color, bodyType, specification, paintedType, paintedStatus, gearType, oilType }) {
+
             this.dataSearch.stateId = stateId;
             this.dataSearch.vehicleBrandId = vehicleBrandId;
             this.dataSearch.vehicleModelId = vehicleModelId;
@@ -234,9 +234,9 @@ export default {
             this.dataSearch.paintedType = paintedType;
             this.dataSearch.paintedStatus = paintedStatus;
             this.dataSearch.gearType = gearType;
-            this.dataSearch.oilType = oilType ;
+            this.dataSearch.oilType = oilType;
             this.dataSearch.page = 1;
-             this.SearchChangeFunc();
+            this.SearchChangeFunc();
 
         },
 
@@ -246,7 +246,7 @@ export default {
             this.dataSearch.page = 1;
             this.SearchChangeFunc();
         },
-        
+
         handlePriceSelection({ from, to }) {
             this.dataSearch.priceFrom = from;
             this.dataSearch.priceTo = to;
@@ -344,7 +344,11 @@ export default {
 
                 <!-- right side container -->
                 <div class="col-12 col-lg-9 ">
-                    <div class="container white_card mt-2 right-side">
+                    <div v-if="!this.getVehiclesData.vehicles.data || this.getVehiclesData.vehicles.data.length === 0"
+                        class="alert alert-danger mt-3 d-flex justify-content-center">
+                        {{ $t('general_empty_table') }}
+                    </div>
+                    <div v-else class="container white_card mt-2 right-side">
                         <span class="header-title"> {{ $t('vehicles_title') }} </span>
                         <!-- <select class="header-drop form-select p-3 align-items-center d-flex mx-lg-2"
                             aria-label="Default select example">

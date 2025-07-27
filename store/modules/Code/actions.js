@@ -295,7 +295,6 @@ export const GetAnnouncementTypes = ({ commit, dispatch }) => {
 }
 export const GetConstants = ({ commit, dispatch }) => {
     Category.GetConstants().then(function (response) {
-        console.log("response.data.data : " , response.data.data);
         commit('SET_CONSTANTS_DATA', response.data.data);
         return response.data.data;
     }).catch(function (error) {

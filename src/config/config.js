@@ -11,7 +11,7 @@ export const socialUrlData = {
 
 export const Urls = {
    cpSite: 'https://localhost:44347',
-    // cpSite : 'https://cp.markabatistore.com',
+  //  cpSite : 'https://cp.markabatistore.com',
   //cpSite : 'http://localhost:4000',
 
   dashboard: 'https://dash.markabatistore.com',

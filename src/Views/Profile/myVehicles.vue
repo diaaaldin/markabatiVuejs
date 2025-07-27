@@ -33,7 +33,7 @@ export default {
       dataStar: {
         id: 0,
         message: "",
-        image : "",
+        image: "",
         vehicleId: 0,
         durationDay: 0,
         dailyPrice: 0,
@@ -76,7 +76,7 @@ export default {
   methods: {
     ...mapActions("Vehicles", ["GetMyVehicles", "GetVehicelForUpdate", "UpdateVehicleImage360", "DeleteVehicle"]),
     ...mapActions("Orders", ["CreateStarVehicleOrder"]),
-    ...mapActions("Orders", ["CreateAnnouncementOrder", "GetStarVehicleOrderDate", "GetStarVehicleOrderDailyPrice" , "SaveOrderDataToState"]),
+    ...mapActions("Orders", ["CreateAnnouncementOrder", "GetStarVehicleOrderDate", "GetStarVehicleOrderDailyPrice", "SaveOrderDataToState"]),
 
 
     initFunc() {
@@ -361,7 +361,7 @@ export default {
         maximumFractionDigits: 1
       }).format(value);
     },
-    
+
     formatCurrencyStarOrder(value) {
       return new Intl.NumberFormat('en-US', {
         style: 'currency',
@@ -436,7 +436,11 @@ export default {
       </div>
     </div>
     <div class="container white_card px-4 pt-4 pb-0 mt-3 mt-lg-0 right-side">
-      <div class="table-responsive">
+      <div v-if="!getMyVehiclesData || getMyVehiclesData.length === 0"
+        class="alert alert-danger mt-3 d-flex justify-content-center">
+        {{ $t('general_empty_table') }}
+      </div>
+      <div v-else class="table-responsive">
         <table class="table text-center">
           <thead>
             <tr>
@@ -545,12 +549,9 @@ export default {
         </table>
 
       </div>
-
-      <!-- <div v-if="!getCustomerBuyProductsOrdersData || getCustomerBuyProductsOrdersData.length === 0" class="alert alert-danger mt-3">
-         الجدول فارغ، حاول أن تضيف فيه بعض البيانات.      </div>
-    </div> -->
     </div>
   </div>
+  <!-- </div> -->
   <!-- end right side  -->
 
   <div class="modal fade" id="delete_vehicle" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -690,7 +691,8 @@ export default {
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" v-on:click="starToPaymentFunc()" class="btn btn-primary">إكمال عملية الدفع لتأكيد الطلب</button>
+          <button type="button" v-on:click="starToPaymentFunc()" class="btn btn-primary">إكمال عملية الدفع لتأكيد
+            الطلب</button>
         </div>
       </div>
     </div>

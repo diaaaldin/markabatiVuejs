@@ -182,7 +182,7 @@ export default {
 
 			switch (currency) {
 				case CurrenceEnum.USD:
-					currencyCode = "ILS";
+					currencyCode = "USD";
 					break;
 				case CurrenceEnum.JOD:
 					currencyCode = "JOD";
@@ -205,7 +205,11 @@ export default {
 
 	<div class="col-12 col-lg-9 payment">
 		<div class="container white_card px-4 pt-4 pb-0 mt-3 mt-lg-0 right-side">
-			<div class="table-responsive">
+			<div v-if="!getPaymentMovementsData || getPaymentMovementsData.length === 0"
+				class="alert alert-danger mt-3 d-flex justify-content-center">
+				{{ $t('general_empty_table') }}
+			</div>
+			<div v-else class="table-responsive">
 				<table class="table text-center">
 					<thead>
 						<tr>
@@ -223,7 +227,11 @@ export default {
 					<tbody>
 						<tr v-for="(item, index) in getPaymentMovementsData">
 							<td class="id">{{ index + 1 }}</td>
-							<td> {{ formatCurrency(item.amount, item.currency) }} </td>
+							<td> 
+								<!-- {{ formatCurrency(item.amount, item.currency) }}  -->
+								{{ item.amount }} 
+
+							</td>
 							<!-- <td>طلب تمييز</td> -->
 							<td>{{ item.paidname }}</td>
 							<td>{{ item.paidEmail }}</td>

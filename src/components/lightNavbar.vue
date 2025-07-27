@@ -47,8 +47,7 @@ export default {
                 ? this.getUserData.image
                 : "/img/profile-icon.png";
 
-            return "/img/profile-icon.png";
-            // return imageUrl;
+            return imageUrl;
         },
         userHaveToken() {
             const name = this.getUserLoginName;// just for loud this function again when name change
@@ -120,14 +119,43 @@ export default {
             }
         },
 
+        // isTokenValid() {
+        //     const token = localStorage.getItem('token');
+        //     if (!token) return false;
+        //     // Example: check token expiration
+        //     const payload = JSON.parse(atob(token.split('.')[1]));
+        //     const currentTime = Math.floor(Date.now() / 1000);
+        //     return payload.exp > currentTime;
+        // },
+
         isTokenValid() {
-            const token = localStorage.getItem('token');
-            if (!token) return false;
-            // Example: check token expiration
-            const payload = JSON.parse(atob(token.split('.')[1]));
-            const currentTime = Math.floor(Date.now() / 1000);
-            return payload.exp > currentTime;
-        },
+			const token = localStorage.getItem('token');
+
+			if (!token || typeof token !== 'string' || !token.includes('.')) {
+				console.warn("Token is missing or invalid structure");
+				return false;
+			}
+
+			try {
+				const parts = token.split('.');
+				if (parts.length !== 3) {
+					console.warn("Token does not have 3 parts");
+					return false;
+				}
+
+				const base64Payload = parts[1]
+					.replace(/-/g, '+')  // base64url to base64
+					.replace(/_/g, '/');
+
+				const decodedPayload = JSON.parse(atob(base64Payload));
+				const currentTime = Math.floor(Date.now() / 1000);
+
+				return decodedPayload.exp > currentTime;
+			} catch (error) {
+				console.error("Token decoding failed:", error);
+				return false;
+			}
+		},
 
         logoutFunc() {
             localStorage.clear();

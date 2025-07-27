@@ -147,6 +147,10 @@
     "general_delete_operation_success_message":"تمت عملية الحذف بنجاح",
     "general_select_item_error":"هنالك خطأ في تحديد العنصر",
     "general_user_not_allow_error_message":"المستخدم لا يمكلك صلاحية",
+    "general_empty_table":"لا يوجد نتائج للعرض",
+
+    "general_select_state":"-- اختر المحافظة --",
+    "general_select_city":"-- اختر المدينة --",
 
 
     "profile_btn_addVehicel":"اضافة مركبة",
@@ -164,8 +168,7 @@
     "profile_input_licenseNumber":"رخصة الشركة",
     "profile_input_moreInfo":"معلومات أخرى",
     
-    "profile_select_state":"-- اختر المحافظة --",
-    "profile_select_city":"-- اختر المدينة --",
+
 
     "profile_sidemenu_profile":"الصفحة الشخصية",
     "profile_sidemenu_vehicles":"مركباتي",

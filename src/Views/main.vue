@@ -80,17 +80,17 @@ export default {
 
         getNotificationFunc() {
             if (this.isTokenValid()) {
-                // this.GetUserNotifications(this.dataNotification).then(Response => {
-                // }).catch(error => {
-                //     this.$moshaToast(error.response.data.message, {
-                //         hideProgressBar: 'false',
-                //         position: 'top-center',
-                //         showIcon: 'true',
-                //         swipeClose: 'true',
-                //         type: 'warning',
-                //         timeout: 3000,
-                //     });
-                // });
+                this.GetUserNotifications(this.dataNotification).then(Response => {
+                }).catch(error => {
+                    this.$moshaToast(error.response.data.message, {
+                        hideProgressBar: 'false',
+                        position: 'top-center',
+                        showIcon: 'true',
+                        swipeClose: 'true',
+                        type: 'warning',
+                        timeout: 3000,
+                    });
+                });
             }
         },
 
@@ -114,35 +114,35 @@ export default {
         //     return payload.exp > currentTime;
         // },
 
-        isTokenValid() {
-            const token = localStorage.getItem('token');
+        
+		isTokenValid() {
+			const token = localStorage.getItem('token');
 
-            if (!token || typeof token !== 'string' || !token.includes('.')) {
-                console.warn("Token is missing or invalid structure");
-                return false;
-            }
+			if (!token || typeof token !== 'string' || !token.includes('.')) {
+				console.warn("Token is missing or invalid structure");
+				return false;
+			}
 
-            try {
-                const parts = token.split('.');
-                if (parts.length !== 3) {
-                    console.warn("Token does not have 3 parts");
-                    return false;
-                }
+			try {
+				const parts = token.split('.');
+				if (parts.length !== 3) {
+					console.warn("Token does not have 3 parts");
+					return false;
+				}
 
-                const base64Payload = parts[1]
-                    .replace(/-/g, '+')  // base64url to base64
-                    .replace(/_/g, '/');
+				const base64Payload = parts[1]
+					.replace(/-/g, '+')  // base64url to base64
+					.replace(/_/g, '/');
 
-                const decodedPayload = JSON.parse(atob(base64Payload));
-                const currentTime = Math.floor(Date.now() / 1000);
+				const decodedPayload = JSON.parse(atob(base64Payload));
+				const currentTime = Math.floor(Date.now() / 1000);
 
-                return decodedPayload.exp > currentTime;
-            } catch (error) {
-                console.error("Token decoding failed:", error);
-                return false;
-            }
-        },
-
+				return decodedPayload.exp > currentTime;
+			} catch (error) {
+				console.error("Token decoding failed:", error);
+				return false;
+			}
+		},
 
         logoutFunc() {
             localStorage.clear();

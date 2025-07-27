@@ -65,7 +65,13 @@ export default {
       <div class="tab-content px-0" id="myTabContent">
         <div class="favorite-product" id="">
           <!-- start card link -->
-          <favoritProduct v-for="(item, index) in getFavoriteVehiclesData.vehicles.data" :product='item'></favoritProduct>
+          <div v-if="!getFavoriteVehiclesData.vehicles.data || getFavoriteVehiclesData.vehicles.data.length === 0"
+            class="alert alert-danger mt-3 d-flex justify-content-center">
+            {{ $t('general_empty_table') }}
+          </div>
+
+          <favoritProduct v-else v-for="(item, index) in getFavoriteVehiclesData.vehicles.data" :product='item'>
+          </favoritProduct>
           <!-- <favoritProduct></favoritProduct>
           <favoritProduct></favoritProduct>
           <favoritProduct></favoritProduct>
