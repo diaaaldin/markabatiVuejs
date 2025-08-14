@@ -22,7 +22,7 @@ export default {
 
     created() {
         // Call the function from the store directly when the component is created
-               this.GetMainAnnouncementActiveOrder();
+            //    this.GetMainAnnouncementActiveOrder();
 
     },
 
@@ -78,56 +78,8 @@ export default {
    <section class="slider-main">
             <div class="slider">
                 <div v-for="item in getMainAnnouncementData" class="card-slider">
-                    <img :src="item.image" class="card-img-top" alt="...">
-                    <!-- <div class="card-body">
-                        <div class="d-flex justify-content-between mb-2">
-                            <h1 class="card-title justify-content-start">سيارتك المثالية بين يديك, ابدأ رحلتك معنا!
-                            </h1>
-                        </div>
-                        <div class="d-flex justify-content-between">
-                            <div class=" d-flex  flex-column">
-                                <div class="d-flex align-items-center mb-3">
-                                    <h3>حقق أحلامك على الطريق مع أفضل السيارات للبيع والإيجار! اختر من بين مجموعة فاخرة
-                                        ومميزة تلبي كل احتياجاتك بأسعار تنافسية وخدمات لا تضاهي. سواء كنت تبحث عن
-                                        الفخامة أو الأداء أو الراحة، نحن هنا لنمنحك تحربة قيادة تفوق التوقعات!</h3>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="d-flex justify-content-between">
-                            <div class=" d-flex  flex-column">
-                                <div class="d-flex align-items-center mb-3">
-                                    <a href="">استكشف معنا</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div> -->
+                    <img :src="item.image" class="responsive" alt="...">
                 </div>
-                <!-- <div class="card-slider">
-                    <img src="/img/slider/s2.png" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between mb-2">
-                            <h1 class="card-title justify-content-start">سيارتك المثالية بين يديك, ابدا رحلتك معنا!
-                            </h1>
-                        </div>
-                        <div class="d-flex justify-content-between">
-                            <div class=" d-flex  flex-column">
-                                <div class="d-flex align-items-center mb-3">
-                                    <h3>حقق أحلامك على الطريق مع أفضل السيارات للبيع والإيجار! اختر من بين مجموعة فاخرة
-                                        ومميزة تلبي كل احتياجاتك بأسعار تنافسية وخدمات لا تضاهي. سواء كنت تبحث عن
-                                        الفخامة أو الأداء أو الراحة، نحن هنا لنمنحك تحربة قيادة تفوق التوقعات!</h3>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="d-flex justify-content-between">
-                            <div class=" d-flex  flex-column">
-                                <div class="d-flex align-items-center mb-3">
-                                    <a href="">استكشف المزيد</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>  
-                </div> -->
-
             </div>
         </section>
 </template>
@@ -136,15 +88,39 @@ export default {
     background-image:"C:/img\markabatiComponent\homeHeader.png";
 }
 
-@media (max-width: 992px) {
-.slider-main .slider .card-slider{
-    height: 500px;
+.slick-slide {
+  height: auto !important;
 }
+
+.slick-slide img {
+  width: 100%;
+  height: auto;
 }
-@media (max-width: 767px) {
-    .slider-main .slider .card-slider{
-        height: 230px;
-    }
+
+.slider-main .slider .card-slider {
+  width: 100%;
+  height: auto; 
+}
+
+.responsive {
+  display: block;
+  max-width: 100%;
+  height: auto; 
+  object-fit: cover; 
+}
+
+.slider-main {
+  width: 100%;
+}
+
+.slider-main .slider {
+  width: 100%;
+}
+/* @media (max-width: 992px) {
 
 }
+@media (max-width: 767px) {
+   
+
+} */
 </style>

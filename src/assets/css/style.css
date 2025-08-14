@@ -3988,7 +3988,11 @@ background-color: #fff;
   overflow-x: hidden;
   height: 184px;
 }
-
+/**********************************/
+.btn-close{
+  opacity: 1;
+  background-color: white;
+}
 /*******************  media query   ***************************************/
 /******** about us images  ***********/
 @media (max-width: 834px) {

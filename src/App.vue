@@ -58,7 +58,7 @@ export default {
 				await Promise.all([
 
 					this.GetMainAnnouncementActiveOrder(),
-					this.GetVerticalAnnouncementActiveOrder(),
+					// this.GetVerticalAnnouncementActiveOrder(),
 					this.GetHorizontalAnnouncementActiveOrder(),
 					this.GetStarActiveVehicles(),
 					this.GetUserNotifications(this.dataNotification),

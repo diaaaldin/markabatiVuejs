@@ -21,7 +21,7 @@ export default {
 
     created() {
         // Call the function from the store directly when the component is created
-       this.GetHorizontalAnnouncementActiveOrder();
+    //    this.GetHorizontalAnnouncementActiveOrder();
 
     },
 
@@ -33,44 +33,44 @@ export default {
     methods: {
         // ...mapActions("Users", ["CustomerProfileInfo"]),
         ...mapActions("Announcement", ["GetVerticalAnnouncementActiveOrder", "GetHorizontalAnnouncementActiveOrder"]),
-   mainSlider() {
-            $('.slider').slick({
-                dots: true,
-                infinite: false,
-                speed: 300,
-                slidesToShow: 1,
-                rtl: true,
-                autoplay: true,
-                autoplaySpeed: 2000,
-                prevArrow: '<button class="slick-prev prev-arrow"> <i class="fa-solid fa-angle-right"></i></button>',
-                nextArrow: '<button class="slick-next next-arrow"> <i class="fa-solid fa-angle-left"></i></button>',
-                slidesToScroll: 1,
-                responsive: [
-                    {
-                        breakpoint: 1200,
-                        settings: {
-                            slidesToShow: 1,
-                            slidesToScroll: 1,
-                        }
-                    },
-                    {
-                        breakpoint: 1008,
-                        settings: {
-                            slidesToShow: 1,
-                            slidesToScroll: 1,
-                        }
-                    },
-                    {
-                        breakpoint: 800,
-                        settings: {
-                            arrows: false,
-                            slidesToShow: 1,
-                            slidesToScroll: 1,
-                        },
-                    }
-                ]
-            });
-        },
+//    mainSlider() {
+//             $('.slider').slick({
+//                 dots: true,
+//                 infinite: false,
+//                 speed: 300,
+//                 slidesToShow: 1,
+//                 rtl: true,
+//                 autoplay: true,
+//                 autoplaySpeed: 2000,
+//                 prevArrow: '<button class="slick-prev prev-arrow"> <i class="fa-solid fa-angle-right"></i></button>',
+//                 nextArrow: '<button class="slick-next next-arrow"> <i class="fa-solid fa-angle-left"></i></button>',
+//                 slidesToScroll: 1,
+//                 responsive: [
+//                     {
+//                         breakpoint: 1200,
+//                         settings: {
+//                             slidesToShow: 1,
+//                             slidesToScroll: 1,
+//                         }
+//                     },
+//                     {
+//                         breakpoint: 1008,
+//                         settings: {
+//                             slidesToShow: 1,
+//                             slidesToScroll: 1,
+//                         }
+//                     },
+//                     {
+//                         breakpoint: 800,
+//                         settings: {
+//                             arrows: false,
+//                             slidesToShow: 1,
+//                             slidesToScroll: 1,
+//                         },
+//                     }
+//                 ]
+//             });
+//         },
 
 
     }
@@ -171,29 +171,37 @@ export default {
     box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px !important;
     border-radius: 20px;
 }
-.slider-main .slider .card-slider img{
+/* .slider-main .slider .card-slider img{
     border-radius: 20px;
     width: 100%;
-}
+} */
 
 .slider-main.ads-main .slider .card-slider {
-  height: 500px;
+  /* height: 500px; */
+    width: 100%;
+    height: auto;
   
+}
+.slider-main .slider .card-slider img {
+  display: block;
+  width: 100%;
+  height: auto; /* Keeps aspect ratio */
+  object-fit: cover; /* or "contain" if you want the whole image visible */
+  border-radius: 20px;
+}
+
+.slick-slide {
+  height: auto !important;
+}
+
+.slick-slide img {
+  width: 100%;
+  height: auto;
 }
 .slider-main.ads-main {
   margin-top: 50px;
   margin-bottom: 50px;
 }
 
-@media (max-width: 992px) {
-.slider-main.ads-main .slider .card-slider{
-    height: 400px;
-}
-}
-@media (max-width: 767px) {
-    .slider-main.ads-main .slider .card-slider{
-        height: 230px;
-    }
 
-}
 </style>

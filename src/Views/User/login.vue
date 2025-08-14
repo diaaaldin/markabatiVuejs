@@ -60,14 +60,12 @@ export default {
 		...mapActions("Users", ["UserLogin" , "GetNewPassword"]),
 		
 		getLoginfunc() {
-			// this.$router.push({ name: 'profile_profile' });
 			if (this.checkValidation()) {
 				const loading = ElLoading.service({
 					lock: true,
 					background: 'rgba(0, 0, 0, 0.7)',
 					text: "",
 				});
-
 				this.UserLogin(this.user).then(Response => {
 					this.$moshaToast('Login Success', {
 						hideProgressBar: 'false',
@@ -77,9 +75,6 @@ export default {
 						timeout: 3000,
 					});
 					loading.close();
-					// if (Response.typeName == "Customer") {
-					// 	this.$router.push({ name: 'main' });
-					// }
                		this.$router.push({ name: "profile_profile" });
 				}).catch(error => {
 					this.$moshaToast(error.response.data.message, {
