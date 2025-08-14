@@ -20,25 +20,25 @@ export default {
             data: {
                 id: 0,
                 name: "",
-                nickName: "",
                 email: "",
                 mobile: "",
-                stateId: "",
-                cityId: "",
-                address: "",
+                userType: 0,
+                ssn: "",
+                licenseNumber: "",
+                addressState: 0,
+                addressCity: 0,
+                addressInfo: "",
+                moreInfo: "",
                 password: "",
-                confirmPassword: "",
-                userTypeCFK: 0,
-                zipCode: ""
+                confirmPassword: ""
             },
+
             emailError: '',
-            states: [], // Will hold the list of states
-            cities: [], // Will hold the list of cities for the selected state
+
+            stateCities: [],
         }
     },
     created() {
-        this.fetchStates();
-
         //localStorage.clear();
     },
 
@@ -54,22 +54,11 @@ export default {
             ],
 
         });
-        // Initialize intl-tel-input on the input element
-        this.iti = window.intlTelInput(this.$refs.phoneInput, {
-            initialCountry: "us",
-            strictMode: true,
-            utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"
-        });
+      
     },
-    beforeUnmount() {
-        // Properly destroy the instance when the component is unmounted
-        if (this.iti) {
-            this.iti.destroy();
-        }
-    },
-
+  
     computed: {
-        //...mapState("cart", ["cart"]),
+        ...mapGetters("Code", ["getStatesData", "getCitiesData"]),
     },
 
     methods: {
@@ -182,7 +171,7 @@ export default {
                 });
                 this.$refs.password.focus();
                 return false;
-            } else if (this.data.cityId.trim() == '') {
+            } else if (this.data.addressCity.trim() == '') {
                 this.$moshaToast("select city", {
                     hideProgressBar: 'false',
                     position: 'top-center',
@@ -280,31 +269,31 @@ export default {
             const input = event.target.value.replace(/\D/g, '').slice(0, 5);
             this.data.zipCode = input;
         },
-        // Fetch the states from the API
-        async fetchStates() {
-            try {
-                const response = await axios.get("https://api.census.gov/data/2020/dec/pl?get=NAME&for=state:*", {
-                    withCredentials: false,
-                });
-                // API returns the first element as headers, so we slice it off
-                this.states = response.data;
-            } catch (error) {
-                console.error("Error fetching states:", error);
-            }
+
+        setStatesCities(state) {
+            let res = this.getCitiesData.filter(x => x.state === state);
+            if (res) {
+                this.stateCities = [];
+                this.data.addressCity = 0;
+                this.stateCities = res;
+            } else this.stateCities = [];
         },
 
-        // Fetch cities based on the selected state
-        async fetchCities(stateId) {
-            try {
-                const response = await axios.get(
-                    `https://api.census.gov/data/2020/dec/pl?get=NAME&for=place:*&in=state:${stateId}`, {
-                    withCredentials: false,
-                });
-                this.cities = response.data;
-            } catch (error) {
-                console.error("Error fetching cities:", error);
-            }
+        clearData() {
+            this.data.name = "";
+            this.data.email = "";
+            this.data.mobile = "";
+            this.data.userType = 0;
+            this.data.ssn = "";
+            this.data.licenseNumber = "";
+            this.data.addressState = 0;
+            this.data.addressCity = 0;
+            this.data.addressInfo = "";
+            this.data.moreInfo = "";
+            this.data.password = "";
+            this.data.confirmPassword = "";
         },
+
     },
 }                   
 </script>
@@ -313,9 +302,9 @@ export default {
     <div class="container me-lg-0 login register">
         <div class="row flex-column-reverse flex-lg-row ">
             <div class="col-12 col-lg-5 mt-5 pe-lg-0">
-                <div class="row row-login register">
+                <div class="row row-login register col-sm-12">
                     <div class="row justify-content-center ">
-                        <div class="col-12 col-lg-8 ">
+                        <div class="col-12 col-lg-8 col-sm-12">
                             <div class="img">
                                 <router-link to="/">
                                     <img src="/img/logo.png" alt="">
@@ -338,7 +327,23 @@ export default {
                                         <button class="nav-link active" id="home-tab" data-bs-toggle="tab"
                                             data-bs-target="#home" type="button" role="tab" aria-controls="home"
                                             aria-selected="true">
-                                            <svg viewBox="0 0 24 24" width="24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path opacity="0.4" d="M12 22.01C17.5228 22.01 22 17.5329 22 12.01C22 6.48716 17.5228 2.01001 12 2.01001C6.47715 2.01001 2 6.48716 2 12.01C2 17.5329 6.47715 22.01 12 22.01Z" fill="#26d829"></path> <path d="M12 6.93994C9.93 6.93994 8.25 8.61994 8.25 10.6899C8.25 12.7199 9.84 14.3699 11.95 14.4299C11.98 14.4299 12.02 14.4299 12.04 14.4299C12.06 14.4299 12.09 14.4299 12.11 14.4299C12.12 14.4299 12.13 14.4299 12.13 14.4299C14.15 14.3599 15.74 12.7199 15.75 10.6899C15.75 8.61994 14.07 6.93994 12 6.93994Z" fill="#26d829"></path> <path d="M18.7807 19.36C17.0007 21 14.6207 22.01 12.0007 22.01C9.3807 22.01 7.0007 21 5.2207 19.36C5.4607 18.45 6.1107 17.62 7.0607 16.98C9.7907 15.16 14.2307 15.16 16.9407 16.98C17.9007 17.62 18.5407 18.45 18.7807 19.36Z" fill="#26d829"></path> </g></svg>
+                                            <svg viewBox="0 0 24 24" width="24" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round"
+                                                    stroke-linejoin="round"></g>
+                                                <g id="SVGRepo_iconCarrier">
+                                                    <path opacity="0.4"
+                                                        d="M12 22.01C17.5228 22.01 22 17.5329 22 12.01C22 6.48716 17.5228 2.01001 12 2.01001C6.47715 2.01001 2 6.48716 2 12.01C2 17.5329 6.47715 22.01 12 22.01Z"
+                                                        fill="#26d829"></path>
+                                                    <path
+                                                        d="M12 6.93994C9.93 6.93994 8.25 8.61994 8.25 10.6899C8.25 12.7199 9.84 14.3699 11.95 14.4299C11.98 14.4299 12.02 14.4299 12.04 14.4299C12.06 14.4299 12.09 14.4299 12.11 14.4299C12.12 14.4299 12.13 14.4299 12.13 14.4299C14.15 14.3599 15.74 12.7199 15.75 10.6899C15.75 8.61994 14.07 6.93994 12 6.93994Z"
+                                                        fill="#26d829"></path>
+                                                    <path
+                                                        d="M18.7807 19.36C17.0007 21 14.6207 22.01 12.0007 22.01C9.3807 22.01 7.0007 21 5.2207 19.36C5.4607 18.45 6.1107 17.62 7.0607 16.98C9.7907 15.16 14.2307 15.16 16.9407 16.98C17.9007 17.62 18.5407 18.45 18.7807 19.36Z"
+                                                        fill="#26d829"></path>
+                                                </g>
+                                            </svg>
 
                                             <span class="tab-title ms-2"> حساب فرد </span>
 
@@ -349,7 +354,32 @@ export default {
                                         <button class="nav-link" id="profile-tab" data-bs-toggle="tab"
                                             data-bs-target="#profile" type="button" role="tab" aria-controls="profile"
                                             aria-selected="false">
-                                            <svg viewBox="0 0 24 24" width="24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path opacity="0.4" d="M18 3H6C3.79 3 2 4.78 2 6.97V17.03C2 19.22 3.79 21 6 21H18C20.21 21 22 19.22 22 17.03V6.97C22 4.78 20.21 3 18 3Z" fill="#26d829"></path> <path d="M19 8.75H14C13.59 8.75 13.25 8.41 13.25 8C13.25 7.59 13.59 7.25 14 7.25H19C19.41 7.25 19.75 7.59 19.75 8C19.75 8.41 19.41 8.75 19 8.75Z" fill="#26d829"></path> <path d="M19 12.75H15C14.59 12.75 14.25 12.41 14.25 12C14.25 11.59 14.59 11.25 15 11.25H19C19.41 11.25 19.75 11.59 19.75 12C19.75 12.41 19.41 12.75 19 12.75Z" fill="#26d829"></path> <path d="M19 16.75H17C16.59 16.75 16.25 16.41 16.25 16C16.25 15.59 16.59 15.25 17 15.25H19C19.41 15.25 19.75 15.59 19.75 16C19.75 16.41 19.41 16.75 19 16.75Z" fill="#26d829"></path> <path d="M8.49945 11.7899C9.77523 11.7899 10.8095 10.7557 10.8095 9.47992C10.8095 8.20414 9.77523 7.16992 8.49945 7.16992C7.22368 7.16992 6.18945 8.20414 6.18945 9.47992C6.18945 10.7557 7.22368 11.7899 8.49945 11.7899Z" fill="#26d829"></path> <path d="M9.29954 13.1098C8.76954 13.0598 8.21954 13.0598 7.68954 13.1098C6.00954 13.2698 4.65954 14.5998 4.49954 16.2798C4.48954 16.4198 4.52954 16.5598 4.62954 16.6598C4.72954 16.7598 4.85954 16.8298 4.99954 16.8298H11.9995C12.1395 16.8298 12.2795 16.7698 12.3695 16.6698C12.4595 16.5698 12.5095 16.4298 12.4995 16.2898C12.3295 14.5998 10.9895 13.2698 9.29954 13.1098Z" fill="#26d829"></path> </g></svg>
+                                            <svg viewBox="0 0 24 24" width="24" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round"
+                                                    stroke-linejoin="round"></g>
+                                                <g id="SVGRepo_iconCarrier">
+                                                    <path opacity="0.4"
+                                                        d="M18 3H6C3.79 3 2 4.78 2 6.97V17.03C2 19.22 3.79 21 6 21H18C20.21 21 22 19.22 22 17.03V6.97C22 4.78 20.21 3 18 3Z"
+                                                        fill="#26d829"></path>
+                                                    <path
+                                                        d="M19 8.75H14C13.59 8.75 13.25 8.41 13.25 8C13.25 7.59 13.59 7.25 14 7.25H19C19.41 7.25 19.75 7.59 19.75 8C19.75 8.41 19.41 8.75 19 8.75Z"
+                                                        fill="#26d829"></path>
+                                                    <path
+                                                        d="M19 12.75H15C14.59 12.75 14.25 12.41 14.25 12C14.25 11.59 14.59 11.25 15 11.25H19C19.41 11.25 19.75 11.59 19.75 12C19.75 12.41 19.41 12.75 19 12.75Z"
+                                                        fill="#26d829"></path>
+                                                    <path
+                                                        d="M19 16.75H17C16.59 16.75 16.25 16.41 16.25 16C16.25 15.59 16.59 15.25 17 15.25H19C19.41 15.25 19.75 15.59 19.75 16C19.75 16.41 19.41 16.75 19 16.75Z"
+                                                        fill="#26d829"></path>
+                                                    <path
+                                                        d="M8.49945 11.7899C9.77523 11.7899 10.8095 10.7557 10.8095 9.47992C10.8095 8.20414 9.77523 7.16992 8.49945 7.16992C7.22368 7.16992 6.18945 8.20414 6.18945 9.47992C6.18945 10.7557 7.22368 11.7899 8.49945 11.7899Z"
+                                                        fill="#26d829"></path>
+                                                    <path
+                                                        d="M9.29954 13.1098C8.76954 13.0598 8.21954 13.0598 7.68954 13.1098C6.00954 13.2698 4.65954 14.5998 4.49954 16.2798C4.48954 16.4198 4.52954 16.5598 4.62954 16.6598C4.72954 16.7598 4.85954 16.8298 4.99954 16.8298H11.9995C12.1395 16.8298 12.2795 16.7698 12.3695 16.6698C12.4595 16.5698 12.5095 16.4298 12.4995 16.2898C12.3295 14.5998 10.9895 13.2698 9.29954 13.1098Z"
+                                                        fill="#26d829"></path>
+                                                </g>
+                                            </svg>
                                             <span class="tab-title ms-2"> حساب شركة </span>
 
                                         </button>
@@ -389,31 +419,34 @@ export default {
                                                             placeholder="(201) 555-0123" aria-label=""
                                                             aria-describedby="basic-addon1" @input="filterMobileInput"
                                                             required>
+
+
                                                         <label class="text">المحافظة</label>
                                                         <br>
-                                                        <select v-model="data.stateId"
+                                                        <select v-model="data.addressState"
                                                             class="form-control my-3 py-3 text-start gray_text gray-inp"
-                                                            @change="fetchCities(data.stateId)">
-                                                            <option value="" key="" selected>-- اختر المحافظة --
-                                                            </option>
-                                                            <option v-for="item in states" :key="parseInt(item[1])"
-                                                                :value="item[1]">
-                                                                {{ item[0] }}
+                                                            @change="setStatesCities(data.addressState)">
+
+                                                            <option value="0" key="0" selected>{{
+                                                                $t('general_select_state') }}</option>
+                                                            <option v-for="item in getStatesData"
+                                                                :key="parseInt(item.id)" :value="item.id">
+                                                                {{ item.name }}
                                                             </option>
                                                         </select>
 
                                                         <label class="text">المدينة</label>
                                                         <br>
-                                                        <select v-model="data.cityId"
+                                                        <select v-model="data.addressCity"
                                                             class="form-control  my-3 py-3 text-start gray_text gray-inp"
-                                                            :disabled="cities.length === 0">
-                                                            <option value="" key="" selected>-- اختر المدينة --</option>
-                                                            <option v-for="item in cities" :key="parseInt(item[2])"
-                                                                :value="item[2]">
-                                                                {{ item[0] }}
+                                                            :disabled="!stateCities || stateCities.length === 0">
+                                                            <option value="0" key="0" selected>{{
+                                                                $t('general_select_city') }}</option>
+                                                            <option v-for="item in stateCities" :key="parseInt(item.id)"
+                                                                :value="item.id">
+                                                                {{ item.name }}
                                                             </option>
                                                         </select>
-
 
                                                         <label class="text">رقم الهوية</label>
                                                         <br>
@@ -455,9 +488,10 @@ export default {
                                             </div>
                                         </div>
                                     </form>
-                                    
-                                    <p class="d-flex justify-content-center c_acount mt-3 gray_text have_account">   لدي حساب
-                                         <span class="ps-1">
+
+                                    <p class="d-flex justify-content-center c_acount mt-3 gray_text have_account"> لدي
+                                        حساب
+                                        <span class="ps-1">
                                             <a href="create_account.html" class="text">تسجيل دخول</a></span>
                                     </p>
                                 </div>
@@ -493,28 +527,30 @@ export default {
                                                             required>
                                                         <label class="text">المحافظة</label>
                                                         <br>
-                                                        <select v-model="data.stateId"
+                                                        <select v-model="data.addressState"
                                                             class="form-control my-3 py-3 text-start gray_text gray-inp"
-                                                            @change="fetchCities(data.stateId)">
-                                                            <option value="" key="" selected>-- اختر المحافظة --
-                                                            </option>
-                                                            <option v-for="item in states" :key="parseInt(item[1])"
-                                                                :value="item[1]">
-                                                                {{ item[0] }}
+                                                            @change="setStatesCities(data.addressState)">
+                                                            <option value="0" key="0" selected>{{
+                                                                $t('general_select_state') }}</option>
+                                                            <option v-for="item in getStatesData"
+                                                                :key="parseInt(item.id)" :value="item.id">
+                                                                {{ item.name }}
                                                             </option>
                                                         </select>
 
                                                         <label class="text">المدينة</label>
                                                         <br>
-                                                        <select v-model="data.cityId"
+                                                        <select v-model="data.addressCity"
                                                             class="form-control  my-3 py-3 text-start gray_text gray-inp"
-                                                            :disabled="cities.length === 0">
-                                                            <option value="" key="" selected>-- اختر المدينة --</option>
-                                                            <option v-for="item in cities" :key="parseInt(item[2])"
-                                                                :value="item[2]">
-                                                                {{ item[0] }}
+                                                            :disabled="!stateCities || stateCities.length === 0">
+                                                            <option value="0" key="0" selected>{{
+                                                                $t('general_select_city') }}</option>
+                                                            <option v-for="item in stateCities" :key="parseInt(item.id)"
+                                                                :value="item.id">
+                                                                {{ item.name }}
                                                             </option>
                                                         </select>
+
 
 
                                                         <label class="text">رقم الهوية</label>
@@ -557,8 +593,9 @@ export default {
                                             </div>
                                         </div>
                                     </form>
-                                    <p class="d-flex justify-content-center c_acount mt-3 gray_text have_account">   لدي حساب
-                                         <span class="ps-1">
+                                    <p class="d-flex justify-content-center c_acount mt-3 gray_text have_account"> لدي
+                                        حساب
+                                        <span class="ps-1">
                                             <a href="create_account.html" class="text">تسجيل دخول</a></span>
                                     </p>
                                 </div>
@@ -581,8 +618,7 @@ export default {
 </template>
 
 <style scoped>
-.have_account a:hover{
-    color:#26d829;
+.have_account a:hover {
+    color: #26d829;
 }
-
 </style>

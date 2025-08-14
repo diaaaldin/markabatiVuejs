@@ -145,7 +145,7 @@ export default {
 				this.SearchChange();
 			}
 		},
-		
+
 		updateFunc() {
 			if (this.checkUpdateValidation()) {
 
@@ -399,7 +399,11 @@ export default {
 			</div>
 		</div>
 		<div class="container white_card px-4 pt-4 pb-0 mt-3 mt-lg-0 right-side">
-			<div class="table-responsive">
+			<div v-if="!getOrdersData.orders.data || getOrdersData.orders.data.length === 0"
+				class="alert alert-danger mt-3 d-flex justify-content-center">
+				{{ $t('general_empty_table') }}
+			</div>
+			<div v-else class="table-responsive">
 				<table class="table text-center">
 					<thead>
 						<tr>

@@ -310,6 +310,7 @@ export default {
             headers: { 'Authorization': token, 'Content-Type': 'application/json', },
         };
 
+      
         return Api.put(`${END_POINT}/UpdateCustomerImage`, imagePath, config);
     },
     UpdateCompanyImage(imagePath) {
@@ -321,7 +322,7 @@ export default {
             // headers: { 'Authorization': token, "Access-Control-Allow-Origin": "*" },
             headers: { 'Authorization': token, 'Content-Type': 'application/json', },
         };
-
+  console.log("image path : " , imagePath);
         return Api.put(`${END_POINT}/UpdateCompanyImage`, imagePath, config);
     },
     UpdateAdminImage(imagePath) {

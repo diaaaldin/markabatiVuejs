@@ -15,4 +15,9 @@ export default {
         return Api.get(`${END_POINT}/GetUserPaymentMovements`, config);
     },
 
+    CreatePaymentMovements(data) {
+        // console.log("this.data : " , data);
+        return Api.post(`${END_POINT}/CreatePaymentMovements`, data);
+    },
+
 }

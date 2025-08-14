@@ -21,8 +21,8 @@ export const GetInterfaceItem = ({ commit, dispatch },id) => {
 }
 
 
-export const GetInterfaceItems = ({ commit, dispatch } , id) => {
-    return Interfaces.GetInterfaceItems(id).then(function (response) {
+export const GetInterfacesItems = ({ commit, dispatch } ) => {
+    return Interfaces.GetInterfacesItems().then(function (response) {
         commit('SET_INTERFACE_ITEMS_DATA', response.data.data);
         return response.data.data;
     }).catch(function (error) {

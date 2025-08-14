@@ -745,7 +745,7 @@ export default {
                         <select v-model="data.addressState"
                             class="form-control mt-2 mb-4  py-3 text-start list_link gray-inp"
                             @change="setStatesCities(data.addressState)">
-                            <option value="0" key="0" selected>{{ $t('profile_select_state') }}</option>
+                            <option value="0" key="0" selected>{{ $t('general_select_state') }}</option>
                             <option v-for="item in getStatesData" :key="parseInt(item.id)" :value="item.id">
                                 {{ item.name }}
                             </option>
@@ -756,7 +756,7 @@ export default {
                         <select v-model="data.addressCity"
                             class="form-control mt-2 mb-4 py-3 text-start list_link gray-inp"
                             :disabled="!stateCities || stateCities.length === 0">
-                            <option value="0" key="0" selected>{{ $t('profile_select_city') }}</option>
+                            <option value="0" key="0" selected>{{ $t('general_select_city') }}</option>
                             <option v-for="item in stateCities" :key="parseInt(item.id)" :value="item.id">
                                 {{ item.name }}
                             </option>

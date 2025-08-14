@@ -36,6 +36,7 @@ import vehicle from '@/Views/vehicle.vue'
 import vehicles from '@/Views/vehicles.vue'
 import gallary from '@/Views/gallary.vue'
 import payment from '@/Views/payment.vue'
+import pay_for_us from '@/Views/payForUs.vue'
 
 import teckitsuccess from '@/Views/Checkout/PaymentSuccess.vue'
 import teckitfail from '@/Views/Checkout/PaymentFail.vue'
@@ -92,6 +93,11 @@ const routes = [
         path: '/payment',
         name: "payment",
         component: payment
+    },
+    {
+        path: '/pay_for_us',
+        name: "pay_for_us",
+        component: pay_for_us
     },
     {
         path: '/teckitfail',

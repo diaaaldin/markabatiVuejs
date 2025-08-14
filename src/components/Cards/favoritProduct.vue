@@ -78,35 +78,99 @@ export default {
     ...mapActions("Vehicles", ["ToggleVehicleFavorite", "GetVehiclesFavoriteId", "GetVehiclesFavorite"]),
 
     chickIsFavoritFunc() {
-       this.isFavorite = this.getFavoriteVehiclesIdData.includes(this.product.id);
+      this.isFavorite = this.getFavoriteVehiclesIdData.includes(this.product.id);
     },
 
     async toggleFavoriteFunc() {
-      const loading = ElLoading.service({
-        lock: true,
-        background: 'rgba(0, 0, 0, 0.7)',
-        text: '',
-      });
+      if (this.isTokenValid()) {
+        const loading = ElLoading.service({
+          lock: true,
+          background: 'rgba(0, 0, 0, 0.7)',
+          text: '',
+        });
+        try {
+          const response = await this.ToggleVehicleFavorite(this.product.id);
+          if (response.isFavorite === true) {
+            this.$moshaToast(response.message, {
+              hideProgressBar: 'false',
+              showIcon: 'true',
+              swipeClose: 'true',
+              type: 'success',
+              timeout: 3000,
+            });
+          } else {
+            this.$moshaToast(response.message, {
+              hideProgressBar: 'false',
+              showIcon: 'true',
+              swipeClose: 'true',
+              type: 'danger',
+              timeout: 3000,
+            });
+          }
 
-      try {
-        const response = await this.ToggleVehicleFavorite(this.product.id);
-        this.$moshaToast(response.message, {
+          await this.GetVehiclesFavoriteId(); // wait for fresh data
+          await this.GetVehiclesFavorite(); // wait for fresh data
+          this.chickIsFavoritFunc(); // re-evaluate
+
+        } catch (error) {
+          this.$moshaToast(error.response?.data?.message || 'حدث خطأ', {
+            type: 'warning',
+            timeout: 3000,
+            showIcon: true,
+          });
+        } finally {
+          loading.close();
+        }
+      }
+    },
+
+    isTokenValid() {
+      const token = localStorage.getItem('token');
+      if (!token || typeof token !== 'string' || !token.includes('.')) {
+        console.warn("Token is missing or invalid structure");
+        this.$moshaToast("لا يوجد معلومات دخول للمستخدم قم بتسجيل الدخول أولاً", {
+          hideProgressBar: 'false',
+          showIcon: 'true',
+          swipeClose: 'true',
           type: 'danger',
           timeout: 3000,
-          showIcon: true,
         });
+        return false;
+      }
+      try {
+        const parts = token.split('.');
+        if (parts.length !== 3) {
+          console.warn("Token does not have 3 parts");
+          return false;
+        }
 
-        await this.GetVehiclesFavoriteId(); // wait for fresh data
-        await this.GetVehiclesFavorite(); // wait for fresh data
-        this.chickIsFavoritFunc(); // re-evaluate
+        const base64Payload = parts[1]
+          .replace(/-/g, '+')  // base64url to base64
+          .replace(/_/g, '/');
+
+        const decodedPayload = JSON.parse(atob(base64Payload));
+        const currentTime = Math.floor(Date.now() / 1000);
+
+
+        if (decodedPayload.exp > currentTime) {
+          return true;
+        } else {
+          this.$moshaToast("قم بتسجيل الدخول مجدداً", {
+            hideProgressBar: 'false',
+            showIcon: 'true',
+            swipeClose: 'true',
+            type: 'danger',
+            timeout: 3000,
+          });
+          return false;
+        }
+        // let res = decodedPayload.exp > currentTime;
+        // console.log("res : ", res);
+        // return res;
+
       } catch (error) {
-        this.$moshaToast(error.response?.data?.message || 'حدث خطأ', {
-          type: 'warning',
-          timeout: 3000,
-          showIcon: true,
-        });
-      } finally {
-        loading.close();
+        console.error("Token decoding failed:", error);
+        return false;
       }
     },
 
@@ -153,7 +217,7 @@ export default {
 <template>
   <div class="gray-inp px-4 py-3 mt-3 mb-3 fav-card">
     <div class="row">
-      <div class="col-12 col-lg-2 px-0">
+      <div class="col-12 col-lg-2 col-md-2 col-sm-12 px-0">
         <a href="javascript:void(0)">
           <div class="image">
             <img class="img-fluid" v-on:click="toProductFunc()" :src="product.image" alt="">
@@ -161,7 +225,7 @@ export default {
         </a>
 
       </div>
-      <div class="col-12 col-lg-10 ">
+      <div class="col-12 col-lg-10 col-md-10 details">
         <div class="d-flex justify-content-between align-items-center mt-2 mt-lg-0">
 
           <div class="d-flex justify-content-start  ">
@@ -287,5 +351,46 @@ export default {
 .heart_svg {
   cursor: pointer;
   /* Change cursor to pointer for better UX */
+}
+ .fav-card .details{
+    position: relative;
+  }
+  .details .text-end svg{
+  position: absolute;
+    left: 0;
+        top: 14px;
+}
+@media (max-width: 992px) {
+  .fav-card .details{
+    padding-right: 50px;
+    position: relative;
+  }
+    .favorite-product .description-text-gray {
+    line-height: 1.7;
+    padding-left: 17px;
+}
+.details .text-end svg{
+  position: absolute;
+    left: 0;
+        top: 14px;
+}
+}
+@media (max-width: 767px) {
+  .fav-card .details{
+    padding-right: 0;
+  }
+      .favorite-product .image {
+       
+        width: 100%;
+        height: 100%;
+    }
+    .favorite-product .description-text-gray {
+    line-height: 1.5;
+}
+.details .text-end svg{
+  position: absolute;
+    left: 0;
+        top: 14px;
+}
 }
 </style>

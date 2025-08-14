@@ -45,8 +45,7 @@ export default {
                 ? this.getUserData.image
                 : "/img/profile-icon.png";
 
-            return "/img/profile-icon.png";
-            // return imageUrl;
+            return imageUrl;
         },
         userHaveToken() {
             const name = this.getUserLoginName;// just for loud this function again when name change
@@ -120,43 +119,44 @@ export default {
             }
         },
 
-        isTokenValid() {
-            const token = localStorage.getItem('token');
-            if (!token) return false;
-            // Example: check token expiration
-            const payload = JSON.parse(atob(token.split('.')[1]));
-            const currentTime = Math.floor(Date.now() / 1000);
-            return payload.exp > currentTime;
-        },
         // isTokenValid() {
         //     const token = localStorage.getItem('token');
-
-        //     if (!token || typeof token !== 'string' || !token.includes('.')) {
-        //         console.warn("Token is missing or invalid structure");
-        //         return false;
-        //     }
-
-        //     try {
-        //         const parts = token.split('.');
-        //         if (parts.length !== 3) {
-        //             console.warn("Token does not have 3 parts");
-        //             return false;
-        //         }
-
-        //         const base64Payload = parts[1]
-        //             .replace(/-/g, '+')  // base64url to base64
-        //             .replace(/_/g, '/');
-
-        //         const decodedPayload = JSON.parse(atob(base64Payload));
-        //         const currentTime = Math.floor(Date.now() / 1000);
-
-        //         return decodedPayload.exp > currentTime;
-        //     } catch (error) {
-        //         console.error("Token decoding failed:", error);
-        //         return false;
-        //     }
+        //     if (!token) return false;
+        //     // Example: check token expiration
+        //     const payload = JSON.parse(atob(token.split('.')[1]));
+        //     const currentTime = Math.floor(Date.now() / 1000);
+        //     return payload.exp > currentTime;
         // },
 
+        
+		isTokenValid() {
+			const token = localStorage.getItem('token');
+
+			if (!token || typeof token !== 'string' || !token.includes('.')) {
+				console.warn("Token is missing or invalid structure");
+				return false;
+			}
+
+			try {
+				const parts = token.split('.');
+				if (parts.length !== 3) {
+					console.warn("Token does not have 3 parts");
+					return false;
+				}
+
+				const base64Payload = parts[1]
+					.replace(/-/g, '+')  // base64url to base64
+					.replace(/_/g, '/');
+
+				const decodedPayload = JSON.parse(atob(base64Payload));
+				const currentTime = Math.floor(Date.now() / 1000);
+
+				return decodedPayload.exp > currentTime;
+			} catch (error) {
+				console.error("Token decoding failed:", error);
+				return false;
+			}
+		},
 
         logoutFunc() {
             localStorage.clear();
@@ -392,7 +392,7 @@ export default {
                                     d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z" />
                             </svg>
                             <div class="img">
-                                <img src="/img/profile-icon.png" width="48" height="" class="profile-icon" alt="...">
+                                <img :src="userImage" width="48" height="" class="profile-icon" alt="...">
                             </div>
                             <!-- {{ GetUserName }} -->
                         </a>

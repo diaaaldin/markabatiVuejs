@@ -8,3 +8,12 @@ export const GetUserPaymentMovements = ({ commit, dispatch }) => {
         throw error;
     });
 }
+
+export const CreatePaymentMovements = ({ commit, dispatch } , data) => {
+    return Payment.CreatePaymentMovements(data).then(function (response) {
+        // commit('SET_PAYMENT_MOVEMENTS_DATA', response.data.data);
+        return response.data.data;
+    }).catch(function (error) {
+        throw error;
+    });
+}

@@ -48,7 +48,7 @@ export default {
 		}
 	},
 	mounted() {
-		console.log("this.orderStatus : " , this.orderStatus);
+		console.log("this.orderStatus : ", this.orderStatus);
 
 	},
 	components: {
@@ -359,6 +359,11 @@ export default {
 
 	<div class="col-12 col-lg-9 order">
 		<div class="container white_card px-4 pt-4 pb-0 mt-3 mt-lg-0 right-side">
+			<div v-if="!getOrdersData.orders.data || getOrdersData.orders.data.length === 0"
+				class="alert alert-danger mt-3 d-flex justify-content-center">
+				{{ $t('general_empty_table') }}
+			</div>
+
 			<div class="table-responsive">
 				<table class="table text-center">
 					<thead>
@@ -400,8 +405,10 @@ export default {
 							<td><img v-on:click="OpenFullScreenFunc(item.id)" :src="item.vehicleImage"
 									class="img-responsive table-img" alt="image" height="80"></td>
 							<td>
-								<span v-if="item.statusId == orderStatus.accepted" class="availabe">{{ item.statusName }}</span>
-								<span v-else-if="item.statusId == orderStatus.pending" class="warning">{{ item.statusName }}</span>
+								<span v-if="item.statusId == orderStatus.accepted" class="availabe">{{ item.statusName
+									}}</span>
+								<span v-else-if="item.statusId == orderStatus.pending" class="warning">{{
+									item.statusName }}</span>
 								<span v-else class="not-availabe">{{ item.statusName }}</span>
 							</td>
 							<td>
