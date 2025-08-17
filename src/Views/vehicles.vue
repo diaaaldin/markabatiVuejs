@@ -46,21 +46,71 @@ export default {
             },
         }
     },
+    // mounted() {
+    //     this.MainSlider();
+
+    //     useHead({
+    //         title: 'Vehicles | Markabati',
+    //         meta: [
+    //             {
+    //                 name: `description`,
+    //                 content: 'Yalla Party is your go-to platform for booking events of any size, from weddings and engagements to birthdays and graduation parties.',
+    //             },
+    //         ],
+    //     });
+
+    //     //document.addEventListener('click', this.closeDropdown);
+    // },
     mounted() {
         this.MainSlider();
 
         useHead({
-            title: 'Vehicles | Markabati',
+            title: ' مركبتي | معرض المركبات',
             meta: [
                 {
-                    name: `description`,
-                    content: 'Yalla Party is your go-to platform for booking events of any size, from weddings and engagements to birthdays and graduation parties.',
+                    name: 'description',
+                    content: 'تصفح أكبر مجموعة من السيارات الجديدة والمستعملة للبيع في فلسطين. ابحث عن سيارات سيدان، دفع رباعي، سيارات عائلية، تجارية وأكثر بأسعار تنافسية.'
                 },
+                {
+                    name: 'keywords',
+                    content: 'سيارات للبيع فلسطين, معارض سيارات, سيارات مستعملة فلسطين, سيارات جديدة فلسطين, أسعار السيارات, دفع رباعي للبيع, سيارات عائلية, مركبات تجارية, بحث عن سيارات, فلتر سيارات'
+                },
+                {
+                    property: 'og:title',
+                    content: 'معرض السيارات | أكبر سوق لبيع وشراء المركبات في فلسطين | مركبتي'
+                },
+                {
+                    property: 'og:description',
+                    content: 'تصفح أكبر مجموعة من السيارات الجديدة والمستعملة للبيع في فلسطين. ابحث عن سيارات سيدان، دفع رباعي، سيارات عائلية، تجارية وأكثر بأسعار تنافسية.'
+                },
+                {
+                    property: 'og:type',
+                    content: 'website'
+                },
+                {
+                    name: 'robots',
+                    content: 'index, follow, max-image-preview:large'
+                },
+                {
+                    name: 'viewport',
+                    content: 'width=device-width, initial-scale=1'
+                }
+            ],
+
+            htmlAttrs: {
+                lang: 'ar',
+                dir: 'rtl'
+            },
+
+            link: [
+                {
+                    rel: 'canonical',
+                    href: window.location.href 
+                }
             ],
         });
-
-        //document.addEventListener('click', this.closeDropdown);
     },
+
     components: {
         pageNav,
         pageFooter,

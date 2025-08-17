@@ -29,18 +29,64 @@ export default {
 		}
 	},
 
+	watch: {
+		data: {
+			immediate: true,
+			handler() {
+				if (this.getUserVehiclesData) {
+					let stateName = this.stateNameFunc(this.getUserVehiclesData.addressStateId);
+					useHead({
+						title: `${this.getUserVehiclesData.name} | مركبتي`,
+						meta: [
+							{
+								name: 'description',
+								content: `تصفح سيارات ${this.getUserVehiclesData.name} المعروضة للبيع في ${stateName} عبر منصة مركبتي. سيارات جديدة ومستعملة بأسعار منافسة ومواصفات متنوعة.`,
+							},
+							{
+								name: 'keywords',
+								content: `${this.getUserVehiclesData.name}, سيارات للبيع في ${stateName}, سيارات مستعملة, سيارات جديدة, معارض سيارات في ${stateName}, بيع سيارات ${stateName}, سيارات ${this.getUserVehiclesData.name}`,
+							},
+							{
+								name: 'robots',
+								content: 'index, follow',
+							},
+							{
+								name: 'author',
+								content: 'مركبتي'
+							},
+							{
+								charset: 'UTF-8'
+							},
+							{
+								name: 'language',
+								content: 'ar'
+							},
+							{
+								'http-equiv': 'Content-Language',
+								content: 'ar'
+							}
+						],
+						htmlAttrs: {
+							lang: 'ar',
+							dir: 'rtl'
+						},
+						link: [
+							{
+								rel: 'canonical',
+								href: window.location.href
+							}
+						]
+					});
+				}
+			},
+			immediate: true, // Run immediately when component mounts
+			deep: true // Watch nested properties
+		},
+	},
+
 	mounted() {
 		this.recordVisit();
 
-		useHead({
-			title: 'Gallary | Markabati',
-			meta: [
-				{
-					name: `description`,
-					content: 'Markabati is your go-to platform for booking events of any size, from weddings and engagements to birthdays and graduation parties.',
-				},
-			],
-		});
 	},
 
 	components: {
@@ -79,7 +125,7 @@ export default {
 	methods: {
 		...mapActions("Code", ["GetStates", "GetCities"]),
 		...mapActions("Vehicles", ["GetUserVehicles"]),
-        ...mapActions("Visit", ["RecordVisit"]),
+		...mapActions("Visit", ["RecordVisit"]),
 
 		initFunc() {
 			const loading = ElLoading.service({
@@ -155,24 +201,24 @@ export default {
 		},
 
 		async recordVisit() {
-            try {
-                // Create the visitData object 	
-                const visitData = {
-                    ip: "", // Get the user's IP from the fetched data
-                    userAgent: navigator.userAgent,
-                    route: this.$route.path
-                };
-                // Log the visitData for debugging
-                // If needed, send the data to your backend
-                this.RecordVisit(visitData).then(Response => {
-                }).catch(error => {
-                    console.log(error.response.data.message);
-                });
-            } catch (error) {
-                // Handle any errors (network issues, API failure, etc.)
-                console.error("Error fetching IP:", error);
-            }
-        },
+			try {
+				// Create the visitData object 	
+				const visitData = {
+					ip: "", // Get the user's IP from the fetched data
+					userAgent: navigator.userAgent,
+					route: this.$route.path
+				};
+				// Log the visitData for debugging
+				// If needed, send the data to your backend
+				this.RecordVisit(visitData).then(Response => {
+				}).catch(error => {
+					console.log(error.response.data.message);
+				});
+			} catch (error) {
+				// Handle any errors (network issues, API failure, etc.)
+				console.error("Error fetching IP:", error);
+			}
+		},
 
 	}
 };
@@ -205,7 +251,7 @@ export default {
 
 							</div>
 							<div class="d-flex justify-content-center">
-=                          		  <button class="btn-contact-x">تواصل معنا</button>
+								= <button class="btn-contact-x">تواصل معنا</button>
 							</div>
 						</div>
 					</div>

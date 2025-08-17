@@ -4,7 +4,7 @@ import { ElLoading } from 'element-plus';
 import { useHead } from '@vueuse/head'
 import pageNav from '@/components/lightNavbar.vue';
 import pageFooter from '@/components/footer.vue';
-import { InterfacesEnum } from '@/config/config.js'
+import { InterfacesEnum , socialUrlData , Urls} from '@/config/config.js'
 
 
 
@@ -16,14 +16,117 @@ export default {
     },
     mounted() {
         useHead({
-            title: 'About Us | Markabati',
+            title: 'مركبتي | من نحن',
             meta: [
                 {
-                    name: `description`,
-                    content: 'Markabati is your go-to platform for booking events of any size, from weddings and engagements to birthdays and graduation parties.',
+                    name: 'description',
+                    content: 'مركبتي هو المنصة المثالية لبيع وشراء السيارات والمركبات المستعملة والجديدة في فلسطين. اعرض مركبتك بسهولة أو ابحث عن أفضل العروض من البائعين مباشرة.',
                 },
+                {
+                    name: 'keywords',
+                    content: 'بيع سيارات, شراء سيارات, سوق السيارات, سوق المركبات, سيارات مستعملة, سيارات جديدة, معارض سيارات, أسعار السيارات في فلسطين, سيارات في فلسطين'
+
+                },
+                {
+                    name: 'robots',
+                    content: 'index, follow',
+                },
+                {
+                    charset: 'UTF-8'
+                },
+                {
+                    name: 'language',
+                    content: 'ar'
+                }
             ],
+
+            htmlAttrs: {
+                lang: 'ar',
+                dir: 'rtl'
+            },
+
+            link: [
+                {
+                    rel: 'canonical',
+                    href: window.location.href
+                }
+            ]
         });
+        useHead({
+    title: 'مركبتي | من نحن',
+    meta: [
+        {
+            name: 'description',
+            content: 'تعرف على منصة مركبتي، الرائدة في بيع وشراء السيارات المستعملة والجديدة في فلسطين. نقدم حلولًا آمنة وسهلة للبائعين والمشترين.'
+        },
+        {
+            name: 'keywords',
+            content: 'بيع سيارات, شراء سيارات, سوق السيارات فلسطين, سيارات مستعملة فلسطين, سيارات جديدة فلسطين, معارض سيارات فلسطين'
+        },
+        {
+            property: 'og:title',
+            content: 'من نحن - مركبتي | سوق السيارات الأفضل في فلسطين'
+        },
+        {
+            property: 'og:description',
+            content: 'اكتشف منصة مركبتي لبيع وشراء السيارات بثقة وسهولة في فلسطين.'
+        },
+        {
+            property: 'og:url',
+            content: window.location.href
+        },
+        {
+            property: 'og:type',
+            content: 'website'
+        },
+        {
+            property: 'og:image',
+            content: 'رابط صورة لوجو الموقع'
+        },
+        {
+            name: 'robots',
+            content: 'index, follow'
+        },
+        {
+            charset: 'UTF-8'
+        },
+        {
+            name: 'language',
+            content: 'ar'
+        }
+    ],
+    htmlAttrs: {
+        lang: 'ar',
+        dir: 'rtl'
+    },
+    link: [
+        {
+            rel: 'canonical',
+            href: window.location.href
+        }
+    ],
+    script: [
+        {
+            type: 'application/ld+json',
+            innerHTML: JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": "Organization",
+                "name": "مركبتي",
+                "url": `${Urls.site}`,
+                "description": "منصة رائدة لبيع وشراء السيارات في فلسطين.",
+                "founder": {
+                    "@type": "Person",
+                    "name": "ضياءالدين قوصه"
+                },
+                "foundingDate": "2025",
+                "sameAs": [
+                    `${socialUrlData.facebook}`,
+                    `${socialUrlData.instagram}`
+                ]
+            })
+        }
+    ]
+});
     },
     components: {
         pageNav,
@@ -68,7 +171,7 @@ export default {
 
             return imageUrl;
         },
-           stateNameFunc(id) {
+        stateNameFunc(id) {
             // console.log("this.getStatesData : ",id);
             let res = this.getStatesData.find(x => x.id === id);
             if (res) return res.name;
@@ -130,15 +233,17 @@ export default {
                         <div class="me-3 mt-5">
                             <div class="">
                                 <h2 class="title mb-0" v-html="getTitleByCode('about_us_data_title')"> </h2>
-                               <p class="item_about_us mt-5" v-html="getTitleByCode('about_us_general_data')"></p>
+                                <p class="item_about_us mt-5" v-html="getTitleByCode('about_us_general_data')"></p>
                             </div>
+                            <!--
                             <ul class="ul_about mt-3 ">
                                 <li class="item_about_us py-2" v-html="getTitleByCode('about_us_sort1_data')"></li>
                                 <li class="item_about_us py-2" v-html="getTitleByCode('about_us_sort2_data')"></li>
                                 <li class="item_about_us py-2" v-html="getTitleByCode('about_us_sort3_data')"></li>
                             </ul>
+                             -->
                             <ul class="ul_about_green">
-                                <li class="item_about_us_green" >
+                                <li class="item_about_us_green">
                                     <svg width="15" height="15" viewBox="0 0 28 28" fill="none"
                                         xmlns="http://www.w3.org/2000/svg">
                                         <path
@@ -146,9 +251,9 @@ export default {
                                             fill="#24DC26">
                                         </path>
                                     </svg> {{ $t('aboutUs_for_comunication') }}
-                                    <span v-html="getTitleByCode('about_us_mobile1_data')" ></span>
+                                    <span v-html="getTitleByCode('about_us_mobile1_data')"></span>
                                 </li>
-                                <li class="item_about_us_green" >
+                                <li class="item_about_us_green">
                                     <svg width="15" height="15" viewBox="0 0 28 28" fill="none"
                                         xmlns="http://www.w3.org/2000/svg">
                                         <path
@@ -156,7 +261,7 @@ export default {
                                             fill="#24DC26">
                                         </path>
                                     </svg> {{ $t('aboutUs_for_comunication') }}
-                                     <span v-html="getTitleByCode('about_us_mobile2_data')" ></span>
+                                    <span v-html="getTitleByCode('about_us_mobile2_data')"></span>
                                 </li>
                             </ul>
 

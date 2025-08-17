@@ -32,22 +32,60 @@ export default {
         pageFooter,
         productCard
     },
+    // mounted() {
+    //     this.mainSlider();
+    //     useHead({
+    //         // Can be static or computed
+    //         title: 'Home | Markabati',
+    //         meta: [
+    //             {
+    //                 name: `description`,
+    //                 content: 'Markabati is your go-to platform for booking events of any size, from weddings and engagements to birthdays and graduation parties. Our platform also supports businesses by providing a marketplace where they can showcase and sell everything related to parties.',
+    //             },
+    //         ],
+    //     });
+    // },
     mounted() {
         this.mainSlider();
         useHead({
-            // Can be static or computed
-            title: 'Home | Markabati',
+            title: 'مركبتي | بيع وشراء السيارات ',
             meta: [
                 {
-                    name: `description`,
-                    content: 'Markabati is your go-to platform for booking events of any size, from weddings and engagements to birthdays and graduation parties. Our platform also supports businesses by providing a marketplace where they can showcase and sell everything related to parties.',
+                    name: 'description',
+                    content: 'مركبتي هو المنصة المثالية لبيع وشراء السيارات والمركبات المستعملة والجديدة في فلسطين. اعرض مركبتك بسهولة أو ابحث عن أفضل العروض من البائعين مباشرة.',
                 },
+                {
+                    name: 'keywords',
+                    content: 'بيع سيارات, شراء سيارات, سوق السيارات, سوق المركبات, سيارات مستعملة, سيارات جديدة, معارض سيارات, أسعار السيارات في فلسطين, سيارات في فلسطين'
+
+                },
+                {
+                    name: 'robots',
+                    content: 'index, follow',
+                },
+                {
+                    charset: 'UTF-8'
+                },
+                {
+                    name: 'language',
+                    content: 'ar'
+                }
             ],
+            
+            htmlAttrs: {
+                lang: 'ar',
+                dir: 'rtl'
+            },
+
+            link: [
+            {
+                rel: 'canonical',
+                href: window.location.href
+            }
+        ]
         });
-        //console.log("this.getQuestionsData : ", this.getQuestionsData);
-        // Initialize intl-tel-input on the input element
-        // this.initFunc();
     },
+
     beforeUnmount() {
         // Properly destroy the instance when the component is unmounted
     },
@@ -114,35 +152,35 @@ export default {
         //     return payload.exp > currentTime;
         // },
 
-        
-		isTokenValid() {
-			const token = localStorage.getItem('token');
 
-			if (!token || typeof token !== 'string' || !token.includes('.')) {
-				console.warn("Token is missing or invalid structure");
-				return false;
-			}
+        isTokenValid() {
+            const token = localStorage.getItem('token');
 
-			try {
-				const parts = token.split('.');
-				if (parts.length !== 3) {
-					console.warn("Token does not have 3 parts");
-					return false;
-				}
+            if (!token || typeof token !== 'string' || !token.includes('.')) {
+                console.warn("Token is missing or invalid structure");
+                return false;
+            }
 
-				const base64Payload = parts[1]
-					.replace(/-/g, '+')  // base64url to base64
-					.replace(/_/g, '/');
+            try {
+                const parts = token.split('.');
+                if (parts.length !== 3) {
+                    console.warn("Token does not have 3 parts");
+                    return false;
+                }
 
-				const decodedPayload = JSON.parse(atob(base64Payload));
-				const currentTime = Math.floor(Date.now() / 1000);
+                const base64Payload = parts[1]
+                    .replace(/-/g, '+')  // base64url to base64
+                    .replace(/_/g, '/');
 
-				return decodedPayload.exp > currentTime;
-			} catch (error) {
-				console.error("Token decoding failed:", error);
-				return false;
-			}
-		},
+                const decodedPayload = JSON.parse(atob(base64Payload));
+                const currentTime = Math.floor(Date.now() / 1000);
+
+                return decodedPayload.exp > currentTime;
+            } catch (error) {
+                console.error("Token decoding failed:", error);
+                return false;
+            }
+        },
 
         logoutFunc() {
             localStorage.clear();

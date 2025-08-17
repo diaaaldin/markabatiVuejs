@@ -56,6 +56,9 @@ export default {
         }
     },
     watch: {
+
+    },
+    watch: {
         '$route.fullPath': {
             handler() {
                 this.initFunc(); // يعيد جلب البيانات عند تغيير الرابط
@@ -67,29 +70,65 @@ export default {
             immediate: true,
             handler() {
                 this.chickIsFavoritFunc();
-            }
+                if (this.data.id) { // Only run when data is loaded
+                    useHead({
+                        // title: `${this.data.brandName} ${this.data.modelName} ${this.data.year} | مركبتي`,
+                        title: ` مركبتي | ${this.data.brandName} ${this.data.modelName} ${this.data.year} `,
+                        meta: [
+                            {
+                                name: 'description',
+                                content: `اشتري ${this.data.brandName} ${this.data.modelName} موديل ${this.data.year} في فلسطين - ${this.data.price} ${this.data.currency}. ${this.data.description || 'سيارة بحالة ممتازة'}`,
+                            },
+                            {
+                                name: 'keywords',
+                                content: `سيارات للبيع, ${this.data.brandName}, ${this.data.modelName}, سيارات فلسطين, مركبات مستعملة`,
+                            },
+                            {
+                                property: 'og:title',
+                                content: `${this.data.brandName} ${this.data.modelName} للبيع | مركبتي`
+                            },
+                            {
+                                property: 'og:description',
+                                content: `سيارة ${this.data.brandName} ${this.data.modelName} موديل ${this.data.year} للبيع في فلسطين - ${this.data.price} ${this.data.currency}`
+                            },
+                            {
+                                property: 'og:image',
+                                content: this.data.image || '/default-car.jpg'
+                            },
+                            {
+                                property: 'og:url',
+                                content: window.location.href
+                            }
+                        ],
+                        link: [
+                            {
+                                rel: 'canonical',
+                                href: window.location.href
+                            }
+                        ],
+                        htmlAttrs: {
+                            lang: 'ar',
+                            dir: 'rtl'
+                        }
+                    });
+                }
+            },
+            immediate: true, // Run immediately when component mounts
+            deep: true // Watch nested properties
         },
+
         getFavoriteVehiclesIdData: {
             handler() {
                 this.chickIsFavoritFunc();
             }
-        }
+        },
     },
+
     mounted() {
+        this.initFunc();
         this.chickIsFavoritFunc();
         this.recordVisit();
 
-        useHead({
-            // Can be static or computed
-            title: 'Product Details | YallaParty',
-            meta: [
-                {
-                    name: `description`,
-                    content: 'Yalla Party is your go-to platform for booking events of any size, from weddings and engagements to birthdays and graduation parties.',
-                },
-            ],
-
-        });
     },
     beforeUnmount() {
         // Properly destroy the instance when the component is unmounted
@@ -110,7 +149,7 @@ export default {
     },
 
     created() {
-        this.initFunc();
+        // this.initFunc();
     },
 
     computed: {
@@ -138,7 +177,7 @@ export default {
             const id = idMatch ? idMatch[0] : null; // Extract the first number if it exists
 
             this.GetVehicle(id).then(Response => {
-
+                console.log("this.getVehicleData : ", this.getVehicleData);
                 this.data = this.getVehicleData;
                 this.GetVehiclesFavoriteId();
                 this.chickIsFavoritFunc();
@@ -220,7 +259,7 @@ export default {
             const div = document.createElement('div');
             div.innerHTML = html;
             const text = div.textContent || div.innerText || '';
-            return text.length > 200 ? text.slice(0, 200) + '...' : text;
+            return text.length > 150 ? text.slice(0, 150) + '...' : text;
         },
 
         stateNameFunc(id) {
@@ -445,7 +484,7 @@ export default {
                                             {{ item }}
                                         </li>
                                         <p> {{ stripHtml(data.description) }}
-                                            <a href="#vehicle-description-section"> ><span class="more">مشاهدة
+                                            <a v-if="data.description.length > 150" href="#vehicle-description-section"> ><span class="more">مشاهدة
                                                     المزيد</span></a>
                                         </p>
                                     </ul>

@@ -30,7 +30,6 @@ import update_announcement from '@/Views/Announcement/updateAnnouncement.vue'
 //main
 import main from '@/Views/main.vue'
 import aboutus from '@/Views/aboutUs.vue'
-import seller from '@/Views/seller.vue'
 import sellers from '@/Views/sellers.vue'
 import vehicle from '@/Views/vehicle.vue'
 import vehicles from '@/Views/vehicles.vue'
@@ -69,11 +68,7 @@ const routes = [
         name: "vehicles",
         component: vehicles
     },
-    {
-        path: '/seller/:slug',
-        name: "seller",
-        component: seller
-    },
+
     {
         path: '/sellers',
         name: "sellers",
