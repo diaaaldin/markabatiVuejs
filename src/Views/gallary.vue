@@ -219,7 +219,6 @@ export default {
 				console.error("Error fetching IP:", error);
 			}
 		},
-
 	}
 };
 </script>

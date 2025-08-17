@@ -44,19 +44,45 @@ export default {
 
     mounted() {
         useHead({
-            // Can be static or computed
-            title: 'SignUp | Markabati',
+            title: 'مركبتي | إنساء حساب',
             meta: [
                 {
-                    name: `description`,
-                    content: 'Markabati is your go-to platform for booking events of any size, from weddings and engagements to birthdays and graduation parties.',
+                    name: 'description',
+                    content: 'أنشئ حسابك الآن على موقع مركبتي سواء كمعرض سيارات أو كفرد لعرض سياراتك للبيع أو البحث عن أفضل العروض في فلسطين. سجّل بسهولة وابدأ رحلتك مع أكبر منصة للسيارات في فلسطين.',
                 },
+                {
+                    name: 'keywords',
+                    content: 'إنشاء حساب مركبتي, تسجيل حساب معرض سيارات, تسجيل حساب فردي, بيع سيارات فلسطين, شراء سيارات فلسطين, سوق السيارات في فلسطين, تسجيل حساب جديد'
+                },
+                {
+                    name: 'robots',
+                    content: 'index, follow', // مهم تكون مفهرسة لأنها تجيب مستخدمين جدد
+                },
+                {
+                    charset: 'UTF-8'
+                },
+                {
+                    name: 'language',
+                    content: 'ar'
+                }
             ],
 
+            htmlAttrs: {
+                lang: 'ar',
+                dir: 'rtl'
+            },
+
+            link: [
+                {
+                    rel: 'canonical',
+                    href: window.location.href
+                }
+            ]
         });
-      
+
+
     },
-  
+
     computed: {
         ...mapGetters("Code", ["getStatesData", "getCitiesData"]),
     },
@@ -311,7 +337,7 @@ export default {
                                 </router-link>
                             </div>
                             <div class="text-center">
-                                <h2 class="title_log">انشاء حساب</h2>
+                                <h2 class="title_log">إنشاء حساب</h2>
                                 <div>
                                     <p class="gray_text">مرحبا بك في متجر مركبتي</p>
                                 </div>
@@ -380,7 +406,7 @@ export default {
                                                         fill="#26d829"></path>
                                                 </g>
                                             </svg>
-                                            <span class="tab-title ms-2"> حساب شركة </span>
+                                            <span class="tab-title ms-2"> حساب معرض </span>
 
                                         </button>
                                     </li>
@@ -492,7 +518,9 @@ export default {
                                     <p class="d-flex justify-content-center c_acount mt-3 gray_text have_account"> لدي
                                         حساب
                                         <span class="ps-1">
-                                            <a href="create_account.html" class="text">تسجيل دخول</a></span>
+                                            <!-- <a href="create_account.html" class="text">تسجيل دخول</a> -->
+                                            <router-link to="/login" class="text">تسجيل دخول</router-link>
+                                        </span>
                                     </p>
                                 </div>
 
@@ -596,7 +624,9 @@ export default {
                                     <p class="d-flex justify-content-center c_acount mt-3 gray_text have_account"> لدي
                                         حساب
                                         <span class="ps-1">
-                                            <a href="create_account.html" class="text">تسجيل دخول</a></span>
+                                            <!-- <a href="create_account.html" class="text">تسجيل دخول</a> -->
+                                        <router-link to="/login" class="text">تسجيل دخول</router-link>
+                                        </span>
                                     </p>
                                 </div>
 

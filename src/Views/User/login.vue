@@ -10,25 +10,43 @@ export default {
 
 	},
 	mounted() {
-        useHead({
-                // Can be static or computed
-                title: 'Login | Markabati',
-                meta: [
-                     {
-                     name: `description`,
-                    content: 'Markabati is your go-to platform for booking events of any size, from weddings and engagements to birthdays and graduation parties.',
-                     },
-                    ],
-                
-                });
+		useHead({
+			title: 'مركبتي | تسجيل الدخول',
+			meta: [
+				{
+					name: 'description',
+					content: 'سجل دخولك إلى مركبتي للوصول إلى أفضل عروض السيارات الجديدة والمستعملة في فلسطين. بيع أو شراء مركبتك مباشرة دون وساطة وبأفضل الأسعار.',
+				},
+				{
+					name: 'keywords',
+					content: 'تسجيل دخول مركبتي, بيع سيارات فلسطين, شراء سيارات فلسطين, سوق السيارات مباشر, دخول حساب مركبتي, سيارات مستعملة فلسطين'
+				},
+				// Open Graph
+				{ property: 'og:title', content: 'تسجيل الدخول | مركبتي - بيع وشراء السيارات مباشرة' },
+				{ property: 'og:description', content: 'انضم إلى مركبتي لتجربة بيع وشراء سيارات مباشرة وسريعة.' },
+				{ property: 'og:type', content: 'website' },
+				{ property: 'og:url', content: window.location.href },
+				// الأساسيات
+				{ charset: 'UTF-8' },
+				{ name: 'language', content: 'ar' },
+				{ name: 'robots', content: 'index, follow' } // أو noindex إذا كانت الصفحة حساسة
+			],
+			htmlAttrs: {
+				lang: 'ar',
+				dir: 'rtl'
 			},
+			link: [
+				{ rel: 'canonical', href: window.location.href }
+			]
+		});
+	},
 	components: {
 		RouterView
 	},
 
 	data() {
 		return {
-			userSlug:localStorage.getItem("slug"),
+			userSlug: localStorage.getItem("slug"),
 
 			user: {
 				email: "",
@@ -36,12 +54,12 @@ export default {
 			},
 
 			newPasswordData: {
-				userId : 0,
+				userId: 0,
 				email: "",
-				Mobile:"",
-				sendWay:0,
-				oldPassword:"",
-				newPassword:""
+				Mobile: "",
+				sendWay: 0,
+				oldPassword: "",
+				newPassword: ""
 			},
 
 			isPasswordVisible: false,
@@ -57,8 +75,8 @@ export default {
 	},
 
 	methods: {
-		...mapActions("Users", ["UserLogin" , "GetNewPassword"]),
-		
+		...mapActions("Users", ["UserLogin", "GetNewPassword"]),
+
 		getLoginfunc() {
 			if (this.checkValidation()) {
 				const loading = ElLoading.service({
@@ -75,7 +93,7 @@ export default {
 						timeout: 3000,
 					});
 					loading.close();
-               		this.$router.push({ name: "profile_profile" });
+					this.$router.push({ name: "profile_profile" });
 				}).catch(error => {
 					this.$moshaToast(error.response.data.message, {
 						hideProgressBar: 'false',
@@ -118,13 +136,13 @@ export default {
 			return true;
 		},
 
-		clearNewPasswordFunc(){
-			    this.newPasswordData.userId = 0;
-				this.newPasswordData.email= "";
-				this.newPasswordData.Mobile="";
-				this.newPasswordData.sendWay=0;
-				this.newPasswordData.oldPassword="";
-				this.newPasswordData.newPassword="";
+		clearNewPasswordFunc() {
+			this.newPasswordData.userId = 0;
+			this.newPasswordData.email = "";
+			this.newPasswordData.Mobile = "";
+			this.newPasswordData.sendWay = 0;
+			this.newPasswordData.oldPassword = "";
+			this.newPasswordData.newPassword = "";
 		},
 
 		getNewPasswordFunc() {
@@ -189,7 +207,7 @@ export default {
 					<div class="col-12 col-lg-8">
 						<div class="img">
 							<router-link to="/">
-							<img src="/img/logo.png" alt="">
+								<img src="/img/logo.png" alt="">
 							</router-link>
 						</div>
 						<div class="text-center">
@@ -205,33 +223,34 @@ export default {
 								<form class="mt-4">
 									<label class="text">البريد الالكتروني</label>
 									<br>
-										<input @keypress.enter="getLoginfunc()" name="email" type="email" dir="ltr"
+									<input @keypress.enter="getLoginfunc()" name="email" type="email" dir="ltr"
 										v-model="user.email"
 										class="form-control my-3 py-3 text-start gray_text gray-inp "
-										placeholder="البريد الالكتروني" required >
+										placeholder="البريد الالكتروني" required>
 
-										<div class="password-container">
-											<label class="text">كلمة المرور</label>
-											<br />
-											<input @keypress.enter="getLoginfunc"
-											:type="isPasswordVisible ? 'text' : 'password'"
-											v-model="user.password" class="form-control my-3 py-3 gray_text gray-inp"
-											autocomplete="current-password" placeholder="كلمة المرور"
-											required />
-											<span  @click="togglePasswordVisibility" style="cursor: pointer;">
-												<!-- <i  class="far fa-eye-slash"></i> -->
-												<i  class="far fa-eye"></i>
-												<!-- <i :class="isPasswordVisible ? 'far fa-eye-slash' : 'far fa-eye'"></i> -->
-											</span>
-										</div>
-									
-
-									<div class="d-flex justify-content-end">
-										<a v-on:click="clearNewPasswordFunc()" data-bs-toggle="modal" data-bs-target="#forgot_password"
-											class="text text-login forgot-password">هل نسيت كلمة المرور؟</a>
+									<div class="password-container">
+										<label class="text">كلمة المرور</label>
+										<br />
+										<input @keypress.enter="getLoginfunc"
+											:type="isPasswordVisible ? 'text' : 'password'" v-model="user.password"
+											class="form-control my-3 py-3 gray_text gray-inp"
+											autocomplete="current-password" placeholder="كلمة المرور" required />
+										<span @click="togglePasswordVisibility" style="cursor: pointer;">
+											<!-- <i  class="far fa-eye-slash"></i> -->
+											<i class="far fa-eye"></i>
+											<!-- <i :class="isPasswordVisible ? 'far fa-eye-slash' : 'far fa-eye'"></i> -->
+										</span>
 									</div>
 
-									<button type="button" v-on:click="getLoginfunc()" class="btn_submit_1 form-control mt-3 py-3" value="Login">
+
+									<div class="d-flex justify-content-end">
+										<a v-on:click="clearNewPasswordFunc()" data-bs-toggle="modal"
+											data-bs-target="#forgot_password" class="text text-login forgot-password">هل
+											نسيت كلمة المرور؟</a>
+									</div>
+
+									<button type="button" v-on:click="getLoginfunc()"
+										class="btn_submit_1 form-control mt-3 py-3" value="Login">
 										تسجيل الدخول
 									</button>
 								</form>
@@ -279,6 +298,4 @@ export default {
 	</div>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>
