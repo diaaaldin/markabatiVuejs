@@ -227,7 +227,7 @@ export default {
   <div id="container">
     <div class="uploudedImageContaner">
       <h2>{{ $t('cropper_title') }}</h2>
-      <img id="uploadedImage" ref="img" :src="imageSrc" >
+      <img loading="lazy" id="uploadedImage" ref="img" :src="imageSrc" >
     </div>
   </div>
 

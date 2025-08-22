@@ -386,7 +386,7 @@ export default {
                     @change="selectPaymentMethodsFunc(PaymentMethods.palestineBank)">
                   <div class="radio-label">
                     <p>بنك فلسطين</p>
-                    <img src="/img/payBrand/bank.png" width="50" height="50" alt="">
+                    <img loading="lazy" src="/img/payBrand/bank.png" width="50" height="50" alt="">
                   </div>
                 </label>
                 <label>
@@ -394,7 +394,7 @@ export default {
                     @change="selectPaymentMethodsFunc(PaymentMethods.palPayWallet)">
                   <div class=" radio-label">
                     <p>PalPay</p>
-                    <img src="/img/payBrand/palpay.jpg" width="50" height="50" alt="">
+                    <img loading="lazy" src="/img/payBrand/palpay.jpg" width="50" height="50" alt="">
 
                   </div>
                 </label>
@@ -403,7 +403,7 @@ export default {
                     @change="selectPaymentMethodsFunc(PaymentMethods.jawwalPayWallet)">
                   <div class=" radio-label">
                     <p>Jawwal Pay</p>
-                    <img src="/img/payBrand/jawwalpay.png" width="50" height="50" alt="">
+                    <img loading="lazy" src="/img/payBrand/jawwalpay.png" width="50" height="50" alt="">
 
                   </div>
                 </label>
@@ -411,14 +411,14 @@ export default {
                   <input type="radio" name="type" value="outline" @change="selectPaymentMethodsFunc(PaymentMethods.palestineBank)">
                   <div class="radio-label">
                     <p>بطاقة ائتمان</p>
-                    <img src="/img/payBrand/visa.jpg" width="50" height="50" alt="">
+                    <img loading="lazy" src="/img/payBrand/visa.jpg" width="50" height="50" alt="">
                   </div>
                 </label> -->
                 <label>
                   <input type="radio" name="type" value="outline" @change="selectPaymentMethodsFunc(PaymentMethods.usdtWallet)">
                   <div class=" radio-label">
                     <p>USDT</p>
-                    <img src="/img/payBrand/TetherUSDT.png" width="50" height="50" alt="">
+                    <img loading="lazy" src="/img/payBrand/TetherUSDT.png" width="50" height="50" alt="">
                   </div>
                 </label>
 
@@ -444,7 +444,7 @@ export default {
                 <button type="button" class="btn btn-outline-success" @click="copyMobileNumber">
                   نسخ
                 </button>
-                <img :src="dataWallet.qrValue" alt="QR Code" width="100" />
+                <img loading="lazy" :src="dataWallet.qrValue" alt="QR Code" width="100" />
 
               </div>
               
@@ -487,7 +487,7 @@ export default {
 
               </div>
               <div class="uploudedImageContaner">
-                <img id="uploadedImage" ref="img" width="100" :src="data.payBilImage" alt="الصورة المحملة ">
+                <img loading="lazy" id="uploadedImage" ref="img" width="100" :src="data.payBilImage" alt="الصورة المحملة ">
               </div>
             </form>
 
@@ -517,7 +517,7 @@ export default {
       <div class="col-md-6 col-sm-12">
         <div class="card custom_cardd">
           <div class="img">
-            <img :src="data.image" class="card-img-top index-img-card" alt="...">
+            <img loading="lazy" :src="data.image" class="card-img-top index-img-card" alt="...">
           </div>
           <div class="card-body">
             <!-- <div class="d-flex justify-content-between align-items-baseline mb-2">

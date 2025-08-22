@@ -237,7 +237,7 @@ export default {
 							<td>{{ item.paidEmail }}</td>
 							<td> {{ item.paymentMethod }} </td>
 
-							<td><img v-on:click="OpenFullScreenBillFunc(item.id)" :src="item.payingBilImage"
+							<td><img loading="lazy" v-on:click="OpenFullScreenBillFunc(item.id)" :src="item.payingBilImage"
 									class="img-responsive table-img" alt="image" height="80"></td>
 
 							<td> {{ formatDateTime(item.createdAt) }} </td>

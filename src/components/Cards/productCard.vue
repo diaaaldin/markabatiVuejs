@@ -262,14 +262,14 @@ export default {
         <a href="javascript:void(0)" style="color:black;">
             <div class="card custom_card">
                 <div class="img">
-                    <img v-on:click="toProductFunc()" :src="product.image" class="card-img-top index-img-card"
+                    <img loading="lazy" v-on:click="toProductFunc()" :src="product.image" class="card-img-top index-img-card"
                         alt="...">
                 </div>
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-baseline mb-2">
                         <h6 class="card-title justify-content-start">{{ product.brandName }}</h6>
                         <a v-on:click="toggleFavoriteFunc()" href="javascript:void(0)" class="justify-content-end">
-                            <!-- <img src="/img/icons/star2.svg"> -->
+                            <!-- <img loading="lazy" src="/img/icons/star2.svg"> -->
 
                             <svg viewBox="0 0 24 24" width="24" height="24" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
@@ -386,7 +386,7 @@ export default {
                 <div class="modal-body">
                     <div class="card seller_card">
                         <div class="img">
-                            <img v-on:click="toSellerGallaryFunc()" :src="ownerImageFunc(product.ownerImage)" class=""
+                            <img loading="lazy" v-on:click="toSellerGallaryFunc()" :src="ownerImageFunc(product.ownerImage)" class=""
                                 alt="...">
                         </div>
                         <div class="card-body">

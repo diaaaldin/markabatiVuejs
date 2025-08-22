@@ -67,7 +67,7 @@ export default {
         </g>
       </svg> </span>
     <div class="image">
-      <img :src="images[currentIndex]" class="main-image img-fluid" />
+      <img loading="lazy" :src="images[currentIndex]" class="main-image img-fluid" />
     </div>
     <span class="arrow right" @click="nextImage">
       <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="#000000" class="bi bi-arrow-right-short">
@@ -84,7 +84,7 @@ export default {
     <div class="thumbnails">
       <!-- Loop through the first 5 images -->
       <div v-for="(img, index) in displayedImages" :key="index" class="thumbnail-wrapper" @click="setImage(index)">
-        <img :src="img" :class="['thumbnail', { active: index === currentIndex }]" />
+        <img loading="lazy" :src="img" :class="['thumbnail', { active: index === currentIndex }]" />
 
         <!-- Only show overlay on the last image -->
         <div v-if="index === displayedImages.length - 1 && images.length > 5" class="thumbnail-overlay"
@@ -96,7 +96,7 @@ export default {
           <div id="gallery">
             <a v-for="(image, index) in images" :key="index" :href="image" :data-caption="'Image #' + (index + 1)"
               :class="{ 'Before_After_div': index === 0 }">
-              <img :src="image" alt="" :class="index === 0
+              <img loading="lazy" :src="image" alt="" :class="index === 0
                 ? 'img-fluid srv_img w-100 last-sec-img'
                 : 'd-none'" />
             </a>

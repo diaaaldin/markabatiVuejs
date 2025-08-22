@@ -710,12 +710,12 @@ function debounce(func, wait) {
                             <label class="w-100 h-100">
                                 <div class="icon"></div>
                                 <h5 class="text-center">أضف الصورة الرئيسية للمركبة</h5>
-                                <img src="/images/plus-icon.svg" alt="" class="d-block mx-auto rounded-circle p-2" />
+                                <img loading="lazy" src="/images/plus-icon.svg" alt="" class="d-block mx-auto rounded-circle p-2" />
                                 <p class="mb-0 text-center">صورة المركبة.</p>
                             </label>
                         </div>
                         <div v-if="imageCropperSrc" class="imageCropper">
-                            <img :src="imageCropperSrc" alt="imageCropper">
+                            <img loading="lazy" :src="imageCropperSrc" alt="imageCropper">
                         </div>
                     </div>
 

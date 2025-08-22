@@ -214,7 +214,7 @@ export default {
                 <div class="col-lg-3 col-md-12">
                     <div class="d-flex flex-column flex-lg-column ">
                         <div class="  d-flex justify-content-center justify-content-lg-start  my-3">
-                            <img src="/img/logo.png" alt="" class="img-fluid">
+                            <img loading="lazy" src="/img/logo.png" alt="" class="img-fluid">
                         </div>
                         <p class="text_footer_hero">
                             {{ $t('footer_about') }}
@@ -264,16 +264,16 @@ export default {
                     <h4 class="text_footer-title">{{ $t('footer_followus') }}</h4>
                     <div class="d-flex justify-content-center justify-content-lg-start link">
                         <a href="#">
-                            <img alt="Facebook" src="/img/icons/face.svg" class="img-fluid mx-1">
+                            <img loading="lazy" alt="Facebook" src="/img/icons/face.svg" class="img-fluid mx-1">
                         </a>
                         <a href="#">
-                            <img alt="web" src="/img/icons/web.svg" class="img-fluid mx-1">
+                            <img loading="lazy" alt="web" src="/img/icons/web.svg" class="img-fluid mx-1">
                         </a>
                         <a href="#">
-                            <img alt="ln" src="/img/icons/ln.svg" class="img-fluid mx-1">
+                            <img loading="lazy" alt="ln" src="/img/icons/ln.svg" class="img-fluid mx-1">
                         </a>
                         <a href="#">
-                            <img alt="insta" src="/img/icons/insta.svg" class="img-fluid mx-1">
+                            <img loading="lazy" alt="insta" src="/img/icons/insta.svg" class="img-fluid mx-1">
                         </a>
                     </div>
 
@@ -303,7 +303,7 @@ export default {
                 <div class="modal-body">
                     <div class="card seller_card">
                         <div class="img">
-                            <img v-on:click="toSellerGallaryFunc()" :src="ownerImageFunc(getSiteComunicationData.image)"
+                            <img loading="lazy" v-on:click="toSellerGallaryFunc()" :src="ownerImageFunc(getSiteComunicationData.image)"
                                 class="" alt="...">
                         </div>
                         <div class="card-body">

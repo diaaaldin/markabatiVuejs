@@ -77,7 +77,7 @@ export default {
     <div class="col-12 col-lg-3 col-md-6 mt-4 text-center">
         <div class="card seller_card">
             <div class="img">
-                <img :src="userImage" class="" alt="...">
+                <img loading="lazy" :src="userImage" class="" alt="...">
             </div>
             <div class="card-body ">
                 <div class="d-flex justify-content-center align-items-baseline mb-2">

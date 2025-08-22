@@ -220,7 +220,7 @@ export default {
       <div class="col-12 col-lg-2 col-md-2 col-sm-12 px-0">
         <a href="javascript:void(0)">
           <div class="image">
-            <img class="img-fluid" v-on:click="toProductFunc()" :src="product.image" alt="">
+            <img loading="lazy" class="img-fluid" v-on:click="toProductFunc()" :src="product.image" alt="">
           </div>
         </a>
 
@@ -239,7 +239,7 @@ export default {
               <!-- <span> Monday ، 16 April </span> -->
             </div>
             <a v-on:click="toggleFavoriteFunc()" href="javascript:void(0)" class="justify-content-end">
-              <!-- <img src="/img/icons/star2.svg"> -->
+              <!-- <img loading="lazy" src="/img/icons/star2.svg"> -->
               <svg viewBox="0 0 24 24" width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <g id="SVGRepo_iconCarrier">
                   <path

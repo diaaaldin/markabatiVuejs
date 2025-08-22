@@ -701,7 +701,7 @@ export default {
                     </div>
 
                     <div class="d-flex  div-img-profile px-0 justify-content-lg-start mb-4">
-                        <img data-bs-toggle="modal" data-bs-target="#cropper_modal" :src="userImage"
+                        <img loading="lazy" data-bs-toggle="modal" data-bs-target="#cropper_modal" :src="userImage"
                             alt="profile-picture" class="img-fluid hero-profile-pic" id="output">
                         <div
                             class="upload_profile_div d-flex align-items-center justify-content-center justify-content-lg-start">

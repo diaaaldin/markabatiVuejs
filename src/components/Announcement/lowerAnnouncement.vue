@@ -82,7 +82,7 @@ export default {
 <section class="slider-main ads-main">
             <div class="slider">
                 <div v-for="item in getHorizontalAnnouncementData" class="card-slider">
-                    <img :src="item.image" class="card-img-top" alt="...">
+                    <img loading="lazy" :src="item.image" class="card-img-top" alt="...">
                     <!-- <div class="card-body">
                         <div class="d-flex justify-content-between mb-2">
                             <h1 class="card-title justify-content-start">
