@@ -328,12 +328,12 @@ export default {
                                     ref="fileInput" />
                                 <div class="icon"></div>
                                 <h5 class="text-center">أضف صورة الإعلان</h5>
-                                <img src="/images/plus-icon.svg" alt="" class="d-block mx-auto rounded-circle p-2" />
+                                <img loading="lazy" src="/images/plus-icon.svg" alt="" class="d-block mx-auto rounded-circle p-2" />
                                 <p class="mb-0 text-center">صورة الإعلان.</p>
                             </label>
                         </div>
                         <div v-if="imageCropperSrc" class="imageCropper">
-                            <img :src="imageCropperSrc" alt="imageCropper" />
+                            <img loading="lazy" :src="imageCropperSrc" alt="imageCropper" />
                         </div>
                     </div>
                     <div class="col-12" v-else>
@@ -341,12 +341,12 @@ export default {
                             <label class="w-100 h-100">
                                 <div class="icon"></div>
                                 <h5 class="text-center">أضف صورة الإعلان</h5>
-                                <img src="/images/plus-icon.svg" alt="" class="d-block mx-auto rounded-circle p-2" />
+                                <img loading="lazy" src="/images/plus-icon.svg" alt="" class="d-block mx-auto rounded-circle p-2" />
                                 <p class="mb-0 text-center">صورة الإعلان.</p>
                             </label>
                         </div>
                         <div v-if="imageCropperSrc" class="imageCropper">
-                            <img :src="imageCropperSrc" alt="imageCropper">
+                            <img loading="lazy" :src="imageCropperSrc" alt="imageCropper">
                         </div>
                     </div>
 

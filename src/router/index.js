@@ -46,119 +46,119 @@ const routes = [
     {
         path: '/',
         name: "main",
-        component: main
+        component: () => import('@/Views/main.vue')
     },
     {
         path: '/login',
         name: "login",
-        component: login
+        component:  () => import('@/Views/User/login.vue')
     },
     {
         path: '/signUp',
         name: "signUp",
-        component: signUp
+        component:  () => import('@/Views/User/signUp.vue')
     },
     {
         path: '/aboutus',
         name: "aboutus",
-        component: aboutus
+        component:  () => import('@/Views/aboutUs.vue')
     },
     {
         path: '/vehicles',
         name: "vehicles",
-        component: vehicles
+        component:  () => import('@/Views/vehicles.vue')
     },
 
     {
         path: '/sellers',
         name: "sellers",
-        component: sellers
+        component:  () => import('@/Views/sellers.vue')
     },
     {
         path: '/vehicle/:slug',
         name: "vehicle",
-        component: vehicle
+        component:  () => import('@/Views/vehicle.vue')
     },
     {
         path: '/gallary/:slug',
         name: "gallary",
-        component: gallary
+        component:  () => import('@/Views/gallary.vue')
     },
     {
         path: '/payment',
         name: "payment",
-        component: payment
+        component:  () => import('@/Views/payment.vue')
     },
     {
         path: '/pay_for_us',
         name: "pay_for_us",
-        component: pay_for_us
+        component:  () => import('@/Views/payForUs.vue')
     },
     {
         path: '/teckitfail',
         name: "teckitfail",
-        component: teckitfail
+        component:  () => import('@/Views/Checkout/PaymentFail.vue')
     },
     {
         path: '/teckitsuccess',
         name: "teckitsuccess",
-        component: teckitsuccess,
+        component:  () => import('@/Views/Checkout/PaymentSuccess.vue'),
         props: route => ({ sessionId: route.query.sessionId }) // Pass sessionId as a prop
     },
     {
         path: '/profile',
         name: "profile",
-        component: profile,
+        component:  () => import('@/Views/profile.vue'),
         children: [
             {
                 path: '',
                 name: "profile_profile",
-                component: profile_profile
+                component:  () => import('@/Views/Profile/profile.vue')
             },
             {
                 path: '/my_vehicles',
                 name: "profile_my_vehicles",
-                component: profile_my_vehicles
+                component:  () => import('@/Views/Profile/myVehicles.vue')
             },
             {
                 path: '/ads_orders',
                 name: "profile_ads_orders",
-                component: profile_ads_orders
+                component:  () => import('@/Views/Profile/Orders/ads_orders.vue')
             },
             {
                 path: '/star_orders',
                 name: "profile_star_orders",
-                component: profile_star_orders
+                component:  () => import('@/Views/Profile/Orders/star_orders.vue')
             },
             {
                 path: '/change_password',
                 name: "profile_change_password",
-                component: profile_change_password
+                component:  () => import('@/Views/Profile/changePassword.vue')
             },
             {
                 path: '/favorit',
                 name: "profile_favorit",
-                component: profile_favorit
+                component:  () => import('@/Views/Profile/favorit.vue')
             },
             {
                 path: '/payment_operation',
                 name: "profile_Payment",
-                component: profile_Payment
+                component:  () => import('@/Views/Profile/PaymentOperations.vue')
             },
             {
                 path: '/add_vehicle',
                 name: "profile_add_vehicle",
-                component: profile_add_vehicle
+                component:  () => import('@/Views/Profile/add_vehicle.vue')
             },
              {
                 path: '/update_vehicle',
                 name: "profile_update_vehicle",
-                component: profile_update_vehicle
+                component:  () => import('@/Views/Profile/update_vehicle.vue')
             },
             {
                 path: '/add_ads',
                 name: "profile_add_ads",
-                component: profile_add_ads
+                component:  () => import('@/Views/Profile/add_ads.vue')
             },
            
         ]

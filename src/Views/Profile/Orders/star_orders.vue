@@ -395,14 +395,14 @@ export default {
 							<td>{{ formatCurrency(item.totalPrice, 0) }}</td>
 							<!-- <td class="text-center"> -->
 							<!-- مدفوع -->
-							<!-- <img v-if="item.isPayed == true" src="/images/icons_true.png" alt="show"> -->
+							<!-- <img loading="lazy" v-if="item.isPayed == true" src="/images/icons_true.png" alt="show"> -->
 							<!-- غير مدفوع -->
-							<!-- <img v-else src="/images/icons8-false.png" alt="show"> -->
+							<!-- <img loading="lazy" v-else src="/images/icons8-false.png" alt="show"> -->
 							<!-- </td> -->
-							<td><img v-on:click="OpenFullScreenBillFunc(item.id)" :src="item.billImage"
+							<td><img loading="lazy" v-on:click="OpenFullScreenBillFunc(item.id)" :src="item.billImage"
 									class="img-responsive table-img" alt="bill image" height="80">
 							</td>
-							<td><img v-on:click="OpenFullScreenFunc(item.id)" :src="item.vehicleImage"
+							<td><img loading="lazy" v-on:click="OpenFullScreenFunc(item.id)" :src="item.vehicleImage"
 									class="img-responsive table-img" alt="image" height="80"></td>
 							<td>
 								<span v-if="item.statusId == orderStatus.accepted" class="availabe">{{ item.statusName

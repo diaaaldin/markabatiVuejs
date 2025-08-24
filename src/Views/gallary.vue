@@ -227,7 +227,7 @@ export default {
 	<div class="gallary">
 		<div class="header-title bg text-center">
 			<div class="container text-center">
-				<div class="img"><img :src="userImage" class="" alt="..."></div>
+				<div class="img"><img loading="lazy" :src="userImage" class="" alt="..."></div>
 				<div class="card-body">
 					<div class="d-flex justify-content-center align-items-baseline mb-2">
 						<h1 class="card-title justify-content-center">{{ this.getUserVehiclesData.name }}</h1>

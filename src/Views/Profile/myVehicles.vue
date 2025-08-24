@@ -465,7 +465,7 @@ export default {
               <td>{{ item.meals }}</td>
               <td>{{ formatCurrency(item.price, item.currency) }}</td>
               <td>
-                <img :src="item.image" class="img-responsive table-img" alt="product image" height="80">
+                <img loading="lazy" :src="item.image" class="img-responsive table-img" alt="product image" height="80">
               </td>
               <td>
                 <span v-if="item.statusId == vehicleStatus.accepted" class="availabe">{{ item.statusName }}</span>
@@ -715,12 +715,12 @@ export default {
                 <input type="file" accept="image/*" @change="handleImageUpload" class="d-none" ref="fileInput" />
                 <div class="icon"></div>
                 <h5 class="text-center">أضف صورة 360</h5>
-                <img src="/images/plus-icon.svg" alt="" class="d-block mx-auto rounded-circle p-2" />
+                <img loading="lazy" src="/images/plus-icon.svg" alt="" class="d-block mx-auto rounded-circle p-2" />
                 <p class="mb-0 text-center">الصورة</p>
               </label>
             </div>
             <div v-if="img360" class="imageCropper">
-              <img :src="img360" alt="imageCropper" />
+              <img loading="lazy" :src="img360" alt="imageCropper" />
             </div>
           </div>
         </div>

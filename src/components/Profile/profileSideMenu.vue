@@ -61,7 +61,7 @@ export default {
         <div class="d-flex justify-content-between align-items-center py-2">
           <div class="justify-content-start d-flex">
             <div class="d-flex align-items-center ">
-              <img :src="userImage" class="img-fluid hero-profile-pic1" alt="profile pic">
+              <img loading="lazy" :src="userImage" class="img-fluid hero-profile-pic1" alt="profile pic">
               <div class="d-flex flex-column">
 
                 <router-link to="/profile" class="list_link ms-2" style="color: black">{{ userName }}</router-link>

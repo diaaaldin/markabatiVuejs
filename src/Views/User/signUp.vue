@@ -333,7 +333,7 @@ export default {
                         <div class="col-12 col-lg-8 col-sm-12">
                             <div class="img">
                                 <router-link to="/">
-                                    <img src="/img/logo.png" alt="">
+                                    <img loading="lazy" src="/img/logo.png" alt="">
                                 </router-link>
                             </div>
                             <div class="text-center">
@@ -640,7 +640,7 @@ export default {
             </div>
 
             <div class="col-12 col-lg-7  pe-lg-0 image">
-                <!-- <img src="assets/img/bg-login.jpg" class="img-fluid" alt=""> -->
+                <!-- <img loading="lazy" src="assets/img/bg-login.jpg" class="img-fluid" alt=""> -->
             </div>
 
         </div>

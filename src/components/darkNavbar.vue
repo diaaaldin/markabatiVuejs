@@ -176,7 +176,7 @@ export default {
 
                 <div class="navbar-brand">
                     <router-link to="/">
-                        <img src="/img/logo.png" width="100" alt="" />
+                        <img loading="lazy" src="/img/logo.png" width="100" alt="" />
                     </router-link>
 
                 </div>
@@ -392,7 +392,7 @@ export default {
                                     d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z" />
                             </svg>
                             <div class="img">
-                                <img :src="userImage" width="48" height="" class="profile-icon" alt="...">
+                                <img loading="lazy" :src="userImage" width="48" height="" class="profile-icon" alt="...">
                             </div>
                             <!-- {{ GetUserName }} -->
                         </a>

@@ -276,7 +276,7 @@ export default {
                         <div class="row">
                             <div class=" col-12">
                                 <div class="d-flex flex-column mt-lg-5 ">
-                                    <img class="img-fluid my-2" src="/img/aboutus1.jpg" alt="">
+                                    <img loading="lazy" class="img-fluid my-2" src="/img/aboutus1.jpg" alt="">
                                 </div>
                             </div>
 
@@ -298,7 +298,7 @@ export default {
                 <div class="modal-body">
                     <div class="card seller_card">
                         <div class="img">
-                            <img v-on:click="toSellerGallaryFunc()" :src="ownerImageFunc(getSiteComunicationData.image)"
+                            <img loading="lazy" v-on:click="toSellerGallaryFunc()" :src="ownerImageFunc(getSiteComunicationData.image)"
                                 class="" alt="...">
                         </div>
                         <div class="card-body">

@@ -78,7 +78,7 @@ export default {
    <section class="slider-main">
             <div class="slider">
                 <div v-for="item in getMainAnnouncementData" class="card-slider">
-                    <img :src="item.image" class="responsive" alt="...">
+                    <img loading="lazy" :src="item.image" class="responsive" alt="...">
                 </div>
             </div>
         </section>

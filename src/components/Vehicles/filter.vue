@@ -207,7 +207,7 @@ export default {
             <div class="sec">
                 <div class="title-fill">
                     <div class="fill-down" @click="toggleFilterBar">
-                        <img src="/img/icons/fillter.svg">
+                        <img loading="lazy" src="/img/icons/fillter.svg">
                         <span>الفلترة</span>
                     </div>
                     <svg @click="clearDataFunc()" fill="#000" width="30" viewBox="0 0 32 32" id="iconfilter"
@@ -237,7 +237,7 @@ export default {
                         <button class="accordion-button  btn collapsed" type="button" data-bs-toggle="collapse"
                             data-bs-target="#collapse0" aria-expanded="false" aria-controls="collapse0">
                             <div class="title-fill">
-                                <img src="/img/icons/map-pin.svg">
+                                <img loading="lazy" src="/img/icons/map-pin.svg">
                                 <span>{{ $t('filter_state') }}</span>
                             </div>
                         </button>
@@ -262,7 +262,7 @@ export default {
                         <button class="accordion-button  btn " type="button" data-bs-toggle="collapse"
                             data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                             <div class="title-fill">
-                                <img src="/img/icons/car.svg">
+                                <img loading="lazy" src="/img/icons/car.svg">
                                 <span>{{ $t('filter_brand') }}</span>
                             </div>
                         </button>
@@ -286,7 +286,7 @@ export default {
                         <button class="accordion-button  btn collapsed" type="button" data-bs-toggle="collapse"
                             data-bs-target="#collapse2" aria-expanded="false" aria-controls="collapse2">
                             <div class="title-fill model">
-                                <img src="/img/icons/car-wheel.svg">
+                                <img loading="lazy" src="/img/icons/car-wheel.svg">
                                 <span>{{ $t('filter_model') }}</span>
                             </div>
                         </button>
@@ -310,7 +310,7 @@ export default {
                         <button class="accordion-button  btn collapsed" type="button" data-bs-toggle="collapse"
                             data-bs-target="#collapse2" aria-expanded="false" aria-controls="collapse2">
                             <div class="title-fill">
-                                <img src="/img/icons/date.svg">
+                                <img loading="lazy" src="/img/icons/date.svg">
                                 <span>{{ $t('filter_year') }}</span>
                             </div>
                         </button>
@@ -340,7 +340,7 @@ export default {
                         <button class="accordion-button  btn collapsed" type="button" data-bs-toggle="collapse"
                             data-bs-target="#collapse2" aria-expanded="false" aria-controls="collapse2">
                             <div class="title-fill">
-                                <img src="/img/icons/money.svg">
+                                <img loading="lazy" src="/img/icons/money.svg">
                                 <span>{{ $t('filter_price') }}</span>
                             </div>
                         </button>
@@ -370,7 +370,7 @@ export default {
                         <button class="accordion-button  btn collapsed" type="button" data-bs-toggle="collapse"
                             data-bs-target="#collapse2" aria-expanded="false" aria-controls="collapse2">
                             <div class="title-fill">
-                                <img src="/img/icons/speed.svg">
+                                <img loading="lazy" src="/img/icons/speed.svg">
                                 <span>{{ $t('filter_meals') }}</span>
                             </div>
                         </button>
@@ -401,7 +401,7 @@ export default {
                         <button class="accordion-button  btn collapsed" type="button" data-bs-toggle="collapse"
                             data-bs-target="#collapse3" aria-expanded="false" aria-controls="collapse3">
                             <div class="title-fill">
-                                <img src="/img/icons/car.svg">
+                                <img loading="lazy" src="/img/icons/car.svg">
                                 <span>{{ $t('filter_body_type') }}</span>
                             </div>
                         </button>
@@ -424,7 +424,7 @@ export default {
                         <button class="accordion-button  btn collapsed" type="button" data-bs-toggle="collapse"
                             data-bs-target="#collapse4" aria-expanded="false" aria-controls="collapse4">
                             <div class="title-fill">
-                                <img src="/img/icons/car.svg">
+                                <img loading="lazy" src="/img/icons/car.svg">
                                 <span>{{ $t('filter_specefication') }}</span>
                             </div>
                         </button>
@@ -448,7 +448,7 @@ export default {
                         <button class="accordion-button  btn collapsed" type="button" data-bs-toggle="collapse"
                             data-bs-target="#collapse5" aria-expanded="false" aria-controls="collapse5">
                             <div class="title-fill">
-                                <img src="/img/icons/color.svg">
+                                <img loading="lazy" src="/img/icons/color.svg">
                                 <span>{{ $t('filter_color') }}</span>
                             </div>
                         </button>
@@ -471,7 +471,7 @@ export default {
                         <button class="accordion-button  btn collapsed" type="button" data-bs-toggle="collapse"
                             data-bs-target="#collapse6" aria-expanded="false" aria-controls="collapse6">
                             <div class="title-fill">
-                                <img src="/img/icons/color.svg">
+                                <img loading="lazy" src="/img/icons/color.svg">
                                 <span>{{ $t('filter_painting_type') }}</span>
                             </div>
                         </button>
@@ -494,7 +494,7 @@ export default {
                         <button class="accordion-button  btn collapsed" type="button" data-bs-toggle="collapse"
                             data-bs-target="#collapse7" aria-expanded="false" aria-controls="collapse7">
                             <div class="title-fill">
-                                <img src="/img/icons/color.svg">
+                                <img loading="lazy" src="/img/icons/color.svg">
                                 <span>{{ $t('filter_painting_status') }}</span>
                             </div>
                         </button>
@@ -517,7 +517,7 @@ export default {
                         <button class="accordion-button  btn collapsed" type="button" data-bs-toggle="collapse"
                             data-bs-target="#collapse8" aria-expanded="false" aria-controls="collapse8">
                             <div class="title-fill">
-                                <img src="/img/icons/car.svg">
+                                <img loading="lazy" src="/img/icons/car.svg">
                                 <span>{{ $t('filter_gear_type') }}</span>
                             </div>
                         </button>
@@ -541,7 +541,7 @@ export default {
                         <button class="accordion-button  btn collapsed" type="button" data-bs-toggle="collapse"
                             data-bs-target="#collapse10" aria-expanded="false" aria-controls="collapse10">
                             <div class="title-fill">
-                                <img src="/img/icons/spas.svg">
+                                <img loading="lazy" src="/img/icons/spas.svg">
                                 <span>{{ $t('filter_specefication') }}</span>
                             </div>
                         </button>
@@ -565,7 +565,7 @@ export default {
                         <button class="accordion-button  btn collapsed" type="button" data-bs-toggle="collapse"
                             data-bs-target="#collapse9" aria-expanded="false" aria-controls="collapse9">
                             <div class="title-fill">
-                                <img src="/img/icons/car.svg">
+                                <img loading="lazy" src="/img/icons/car.svg">
                                 <span>{{ $t('filter_oil_type') }}</span>
                             </div>
                         </button>

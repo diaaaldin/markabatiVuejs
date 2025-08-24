@@ -493,9 +493,9 @@ export default {
                         </div>
                         <div class="seller">
                             <div class="img">
-                                <!-- <img src="/img/seller.png" class="" alt="...">
-                                <img :src="data.ownerImage" class="" alt="..."> -->
-                                <img v-on:click="toSellerGallaryFunc()"
+                                <!-- <img loading="lazy" src="/img/seller.png" class="" alt="...">
+                                <img loading="lazy" :src="data.ownerImage" class="" alt="..."> -->
+                                <img loading="lazy" v-on:click="toSellerGallaryFunc()"
                                     :src="data.ownerImage && data.ownerImage !== '' ? data.ownerImage : '/img/seller.png'"
                                     alt="...">
 
@@ -860,7 +860,7 @@ export default {
                 <div class="modal-body">
                     <div class="card seller_card">
                         <div class="img">
-                            <img v-on:click="toSellerGallaryFunc()" :src="ownerImageFunc(data.ownerImage)" class=""
+                            <img loading="lazy" v-on:click="toSellerGallaryFunc()" :src="ownerImageFunc(data.ownerImage)" class=""
                                 alt="...">
                         </div>
                         <div class="card-body">
