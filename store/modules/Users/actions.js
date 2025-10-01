@@ -108,6 +108,36 @@ export const AdminLogin = ({ commit, dispatch }, data) => {
     });
 }
 
+export const CustomerSignUp = ({ commit, dispatch }, data) => {
+    return User.CustomerSignUp(data).then(function (response) {
+        if (response.data.data.id > 0) {
+            localStorage.setItem("token", JSON.stringify(response.data.data.token));
+            // localStorage.setItem("slug", response.data.data.slug);
+            response.data.data.token = "";
+            localStorage.setItem('userName', JSON.parse(JSON.stringify(response.data.data.name)));
+            localStorage.setItem('userType', JSON.parse(JSON.stringify(response.data.data.userType)));
+            localStorage.setItem('id', JSON.parse(JSON.stringify(response.data.data.id)));
+        }
+        return response.data.data;
+    }).catch(function (error) {
+        throw error;
+    });
+}
+export const ComponySignUp = ({ commit, dispatch }, data) => {
+    return User.ComponySignUp(data).then(function (response) {
+        if (response.data.data.id > 0) {
+            localStorage.setItem("token", JSON.stringify(response.data.data.token));
+            // localStorage.setItem("slug", response.data.data.slug);
+            response.data.data.token = "";
+            localStorage.setItem('userName', JSON.parse(JSON.stringify(response.data.data.name)));
+            localStorage.setItem('userType', JSON.parse(JSON.stringify(response.data.data.userType)));
+            localStorage.setItem('id', JSON.parse(JSON.stringify(response.data.data.id)));
+        }
+        return response.data.data;
+    }).catch(function (error) {
+        throw error;
+    });
+}
 
 export const CustomerCreate = ({ commit, dispatch }, data) => {
     return User.CustomerCreate(data).then(function (response) {

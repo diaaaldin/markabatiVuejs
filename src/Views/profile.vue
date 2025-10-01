@@ -19,11 +19,11 @@ export default {
     },
     mounted() {
         useHead({
-            title: 'Profile | Markabati',
+            title: 'مركبتي | الصفحة الشخصية',
             meta: [
                 {
                     name: `description`,
-                    content: 'Markabati is your go-to platform for booking events of any size, from weddings and engagements to birthdays and graduation parties.',
+                    content: 'مركبتي هو المنصة المثالية لبيع وشراء السيارات والمركبات المستعملة والجديدة في فلسطين. اعرض مركبتك بسهولة أو ابحث عن أفضل العروض من البائعين مباشرة.',
                 },
             ],
         });

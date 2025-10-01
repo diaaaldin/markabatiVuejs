@@ -122,6 +122,12 @@ export default {
         return Api.post(`${END_POINT}/AdminLogin`, data);
     },
 
+    CustomerSignUp(data) {
+        return Api.post(`${END_POINT}/CustomerSignUp`, data);
+    },
+    ComponySignUp(data) {
+        return Api.post(`${END_POINT}/ComponySignUp`, data);
+    },
 
     CustomerCreate(data) {
         let token = localStorage.getItem("token")
@@ -310,7 +316,7 @@ export default {
             headers: { 'Authorization': token, 'Content-Type': 'application/json', },
         };
 
-      
+
         return Api.put(`${END_POINT}/UpdateCustomerImage`, imagePath, config);
     },
     UpdateCompanyImage(imagePath) {
@@ -322,7 +328,7 @@ export default {
             // headers: { 'Authorization': token, "Access-Control-Allow-Origin": "*" },
             headers: { 'Authorization': token, 'Content-Type': 'application/json', },
         };
-  console.log("image path : " , imagePath);
+        console.log("image path : ", imagePath);
         return Api.put(`${END_POINT}/UpdateCompanyImage`, imagePath, config);
     },
     UpdateAdminImage(imagePath) {

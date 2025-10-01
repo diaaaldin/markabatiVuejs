@@ -44,7 +44,7 @@ export default {
 							},
 							{
 								name: 'keywords',
-								content: `${this.getUserVehiclesData.name}, سيارات للبيع في ${stateName}, سيارات مستعملة, سيارات جديدة, معارض سيارات في ${stateName}, بيع سيارات ${stateName}, سيارات ${this.getUserVehiclesData.name}`,
+								content: `${this.getUserVehiclesData.name}, سيارات للبيع في ${stateName}, سيارات مستعملة, سيارات جديدة, معارض سيارات في ${stateName}, بيع سيارات ${stateName}, سيارات ${this.getUserVehiclesData.name} , مركبتي فلسطين`,
 							},
 							{
 								name: 'robots',

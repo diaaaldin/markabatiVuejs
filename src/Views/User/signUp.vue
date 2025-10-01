@@ -4,6 +4,8 @@ import { ElLoading } from 'element-plus';
 import { RouterView } from 'vue-router';
 import { mapState, mapGetters, mapActions } from "vuex";
 import axios from "axios";
+import { UserTypeEnum } from '@/config/config.js'
+
 
 
 export default {
@@ -32,10 +34,13 @@ export default {
                 password: "",
                 confirmPassword: ""
             },
-
+            userType: UserTypeEnum,
             emailError: '',
 
             stateCities: [],
+
+            isPassword1Visible: false,
+            isPassword2Visible: false,
         }
     },
     created() {
@@ -52,7 +57,7 @@ export default {
                 },
                 {
                     name: 'keywords',
-                    content: 'إنشاء حساب مركبتي, تسجيل حساب معرض سيارات, تسجيل حساب فردي, بيع سيارات فلسطين, شراء سيارات فلسطين, سوق السيارات في فلسطين, تسجيل حساب جديد'
+                    content: 'إنشاء حساب مركبتي, تسجيل حساب معرض سيارات, تسجيل حساب فردي, بيع سيارات فلسطين, شراء سيارات فلسطين, سوق السيارات في فلسطين, تسجيل حساب جديد , مركبتي فلسطين'
                 },
                 {
                     name: 'robots',
@@ -88,45 +93,26 @@ export default {
     },
 
     methods: {
-        ...mapActions("Users", ["CustomerSignUp"]),
-        getSignUpfunc() {
+        ...mapActions("Users", ["CustomerSignUp", "ComponySignUp"]),
 
-            if (this.checkValidation()) {
-
+        getSignUpNormalfunc() {
+            if (this.checkValidationNormal()) {
                 const loading = ElLoading.service({
                     lock: true,
                     background: 'rgba(0, 0, 0, 0.7)',
                     text: "Signing you up...",
-
                 });
-
                 this.CustomerSignUp(this.data).then(Response => {
-                    this.$moshaToast('Registration Successful!', {
+                    this.$moshaToast(this.$t('general_signup_success_message'), {
                         hideProgressBar: 'false',
                         showIcon: 'true',
                         swipeClose: 'true',
                         type: 'success',
                         timeout: 3000,
                     });
-
-
-                    localStorage.setItem('customerName', JSON.parse(JSON.stringify(Response.name)));
-                    localStorage.setItem('customerNickName', JSON.parse(JSON.stringify(Response.nickName)));
-
-                    localStorage.setItem("token", JSON.stringify(Response.token));
-                    Response.token = "";
-                    localStorage.setItem('id', JSON.parse(JSON.stringify(Response.id)));
-                    localStorage.setItem('email', JSON.parse(JSON.stringify(Response.email)));
-                    localStorage.setItem('parentId', JSON.parse(JSON.stringify(Response.parentId)));
-                    localStorage.setItem('userTypeId', JSON.parse(JSON.stringify(Response.userTypeId)));
-                    localStorage.setItem('typeName', JSON.parse(JSON.stringify(Response.typeName)));
-
                     loading.close();
-                    this.$router.push({ name: 'main' });
-
-
+                    this.$router.push({ name: "profile_profile" });
                 }).catch(error => {
-
                     this.$moshaToast(error.response.data.message || 'Signup failed', {
                         hideProgressBar: 'false',
                         position: 'top-center',
@@ -138,12 +124,54 @@ export default {
                     loading.close();
                 });
             }
-
         },
 
-        checkValidation() {
+        getSignUpCompanyfunc() {
+            if (this.checkValidationCompany()) {
+                const loading = ElLoading.service({
+                    lock: true,
+                    background: 'rgba(0, 0, 0, 0.7)',
+                    text: "Signing you up...",
+                });
+                this.ComponySignUp(this.data).then(Response => {
+                    this.$moshaToast(this.$t('general_signup_success_message'), {
+                        hideProgressBar: 'false',
+                        showIcon: 'true',
+                        swipeClose: 'true',
+                        type: 'success',
+                        timeout: 3000,
+                    });
+                    loading.close();
+                    this.$router.push({ name: "profile_profile" });
+                }).catch(error => {
+                    this.$moshaToast(error.response.data.message || 'Signup failed', {
+                        hideProgressBar: 'false',
+                        position: 'top-center',
+                        showIcon: 'true',
+                        swipeClose: 'true',
+                        type: 'warning',
+                        timeout: 3000,
+                    });
+                    loading.close();
+                });
+
+            }
+        },
+
+        checkValidationNormal() {
             if (this.data.name.trim() == '') {
-                this.$moshaToast("enter name", {
+                this.$moshaToast("أدخل الإسم", {
+                    hideProgressBar: 'false',
+                    position: 'top-center',
+                    showIcon: 'true',
+                    swipeClose: 'true',
+                    type: 'warning',
+                    timeout: 3000,
+                });
+                this.$refs.name.focus();
+                return false;
+            } else if (this.data.email.trim() == '') {
+                this.$moshaToast("أدخل الإيميل", {
                     hideProgressBar: 'false',
                     position: 'top-center',
                     showIcon: 'true',
@@ -153,30 +181,8 @@ export default {
                 });
                 this.$refs.email.focus();
                 return false;
-            } else if (this.data.nickName.trim() == '') {
-                this.$moshaToast("enter nickname", {
-                    hideProgressBar: 'false',
-                    position: 'top-center',
-                    showIcon: 'true',
-                    swipeClose: 'true',
-                    type: 'warning',
-                    timeout: 3000,
-                });
-                this.$refs.nickName.focus();
-                return false;
-            } else if (this.data.email.trim() == '') {
-                this.$moshaToast("enter email", {
-                    hideProgressBar: 'false',
-                    position: 'top-center',
-                    showIcon: 'true',
-                    swipeClose: 'true',
-                    type: 'warning',
-                    timeout: 3000,
-                });
-                this.$refs.password.focus();
-                return false;
             } else if (this.data.mobile.trim() == '') {
-                this.$moshaToast("enter mobile", {
+                this.$moshaToast("أدخل رقم الجوال", {
                     hideProgressBar: 'false',
                     position: 'top-center',
                     showIcon: 'true',
@@ -184,10 +190,11 @@ export default {
                     type: 'warning',
                     timeout: 3000,
                 });
-                this.$refs.password.focus();
+                this.$refs.mobile.focus();
                 return false;
-            } else if (this.data.stateId.trim() == '') {
-                this.$moshaToast("select state", {
+            }
+            else if (this.data.ssn.trim() == '') {
+                this.$moshaToast("أدخل رقم الهوية", {
                     hideProgressBar: 'false',
                     position: 'top-center',
                     showIcon: 'true',
@@ -195,10 +202,35 @@ export default {
                     type: 'warning',
                     timeout: 3000,
                 });
-                this.$refs.password.focus();
+                this.$refs.ssn.focus();
                 return false;
-            } else if (this.data.addressCity.trim() == '') {
-                this.$moshaToast("select city", {
+            }
+            // else if (this.checkSSN(this.data.ssn.trim())) {
+            //     this.$moshaToast("أدخل رقم الهوية بشكل صحيح", {
+            //         hideProgressBar: 'false',
+            //         position: 'top-center',
+            //         showIcon: 'true',
+            //         swipeClose: 'true',
+            //         type: 'warning',
+            //         timeout: 3000,
+            //     });
+            //     this.$refs.ssn.focus();
+            //     return false;
+            // }
+            // else if (this.data.licenseNumber.trim() == '' ) {
+            //     this.$moshaToast("أدخل رقم الترخيص", {
+            //         hideProgressBar: 'false',
+            //         position: 'top-center',
+            //         showIcon: 'true',
+            //         swipeClose: 'true',
+            //         type: 'warning',
+            //         timeout: 3000,
+            //     });
+            //     this.$refs.licenseNumber.focus();
+            //     return false;
+            // }
+            else if (this.data.addressState == 0) {
+                this.$moshaToast("إختر المحافظة", {
                     hideProgressBar: 'false',
                     position: 'top-center',
                     showIcon: 'true',
@@ -206,10 +238,10 @@ export default {
                     type: 'warning',
                     timeout: 3000,
                 });
-                this.$refs.password.focus();
+                this.$refs.addressState.focus();
                 return false;
-            } else if (this.data.zipCode.trim() == '') {
-                this.$moshaToast("enter zip code", {
+            } else if (this.data.addressCity == 0) {
+                this.$moshaToast("إختر المدينة", {
                     hideProgressBar: 'false',
                     position: 'top-center',
                     showIcon: 'true',
@@ -217,7 +249,7 @@ export default {
                     type: 'warning',
                     timeout: 3000,
                 });
-                this.$refs.password.focus();
+                this.$refs.addressCity.focus();
                 return false;
             } else if (this.data.password.trim() == '') {
                 this.$moshaToast("enter password", {
@@ -239,7 +271,7 @@ export default {
                     type: 'warning',
                     timeout: 3000,
                 });
-                this.$refs.password.focus();
+                this.$refs.confirmPassword.focus();
                 return false;
             } else if (this.data.password != this.data.confirmPassword) {
                 this.$moshaToast("confirm password not equal password", {
@@ -251,10 +283,107 @@ export default {
                     timeout: 3000,
                 });
                 this.$refs.password.focus();
+                this.$refs.confirmPassword.focus();
                 return false;
 
             } else if (!this.validateEmail(this.data.email)) {
-                this.$moshaToast("Please enter a valid email address.", {
+                this.$moshaToast("الرجاء إدخال إيميل صالح", {
+                    hideProgressBar: 'false',
+                    position: 'top-center',
+                    showIcon: 'true',
+                    swipeClose: 'true',
+                    type: 'warning',
+                    timeout: 3000,
+                });
+                this.$refs.email.focus();
+                return false;
+            }
+            return true;
+        },
+
+        checkValidationCompany() {
+            if (this.data.name.trim() == '') {
+                this.$moshaToast("أدخل الإسم", {
+                    hideProgressBar: 'false',
+                    position: 'top-center',
+                    showIcon: 'true',
+                    swipeClose: 'true',
+                    type: 'warning',
+                    timeout: 3000,
+                });
+                this.$refs.name.focus();
+                return false;
+            } else if (this.data.email.trim() == '') {
+                this.$moshaToast("أدخل الإيميل", {
+                    hideProgressBar: 'false',
+                    position: 'top-center',
+                    showIcon: 'true',
+                    swipeClose: 'true',
+                    type: 'warning',
+                    timeout: 3000,
+                });
+                this.$refs.email.focus();
+                return false;
+            } else if (this.data.mobile.trim() == '') {
+                this.$moshaToast("أدخل رقم الجوال", {
+                    hideProgressBar: 'false',
+                    position: 'top-center',
+                    showIcon: 'true',
+                    swipeClose: 'true',
+                    type: 'warning',
+                    timeout: 3000,
+                });
+                this.$refs.mobile.focus();
+                return false;
+            }
+            // else if (this.data.ssn.trim() == '' && this.data.userType == UserTypeEnum.Normal) {
+            //     this.$moshaToast("أدخل رقم الهوية", {
+            //         hideProgressBar: 'false',
+            //         position: 'top-center',
+            //         showIcon: 'true',
+            //         swipeClose: 'true',
+            //         type: 'warning',
+            //         timeout: 3000,
+            //     });
+            //     this.$refs.password.focus();
+            //     return false;
+            // } 
+            else if (this.data.licenseNumber.trim() == '') {
+                this.$moshaToast("أدخل رقم الترخيص", {
+                    hideProgressBar: 'false',
+                    position: 'top-center',
+                    showIcon: 'true',
+                    swipeClose: 'true',
+                    type: 'warning',
+                    timeout: 3000,
+                });
+                this.$refs.licenseNumber.focus();
+                return false;
+            }
+            else if (this.data.addressState == 0) {
+                this.$moshaToast("إختر المحافظة", {
+                    hideProgressBar: 'false',
+                    position: 'top-center',
+                    showIcon: 'true',
+                    swipeClose: 'true',
+                    type: 'warning',
+                    timeout: 3000,
+                });
+                this.$refs.addressState.focus();
+                return false;
+            } else if (this.data.addressCity == 0) {
+                this.$moshaToast("إختر المدينة", {
+                    hideProgressBar: 'false',
+                    position: 'top-center',
+                    showIcon: 'true',
+                    swipeClose: 'true',
+                    type: 'warning',
+                    timeout: 3000,
+                });
+                this.$refs.addressCity.focus();
+                return false;
+            } else if (this.data.password.trim() == '') {
+                this.$moshaToast("enter password", {
                     hideProgressBar: 'false',
                     position: 'top-center',
                     showIcon: 'true',
@@ -263,6 +392,41 @@ export default {
                     timeout: 3000,
                 });
                 this.$refs.password.focus();
+                return false;
+            } else if (this.data.confirmPassword.trim() == '') {
+                this.$moshaToast("enter confirmPassword", {
+                    hideProgressBar: 'false',
+                    position: 'top-center',
+                    showIcon: 'true',
+                    swipeClose: 'true',
+                    type: 'warning',
+                    timeout: 3000,
+                });
+                this.$refs.confirmPassword.focus();
+                return false;
+            } else if (this.data.password != this.data.confirmPassword) {
+                this.$moshaToast("confirm password not equal password", {
+                    hideProgressBar: 'false',
+                    position: 'top-center',
+                    showIcon: 'true',
+                    swipeClose: 'true',
+                    type: 'warning',
+                    timeout: 3000,
+                });
+                this.$refs.password.focus();
+                this.$refs.confirmPassword.focus();
+                return false;
+
+            } else if (!this.validateEmail(this.data.email)) {
+                this.$moshaToast("الرجاء إدخال إيميل صالح", {
+                    hideProgressBar: 'false',
+                    position: 'top-center',
+                    showIcon: 'true',
+                    swipeClose: 'true',
+                    type: 'warning',
+                    timeout: 3000,
+                });
+                this.$refs.email.focus();
                 return false;
             }
             return true;
@@ -278,7 +442,7 @@ export default {
             }
             // Check if the input does not match the email format
             else if (!emailPattern.test(this.data.email)) {
-                this.emailError = 'Please enter a valid email address.';
+                this.emailError = 'الرجاء إدخال ايميل صالح .';
                 return false;
             }
             // Clear the error if the input is valid
@@ -287,10 +451,55 @@ export default {
                 return true;
             }
         },
+
         filterMobileInput(event) {
-            const input = event.target.value.replace(/\D/g, '').slice(0, 10);
+            let input = event.target.value;
+
+            // Keep only digits, but allow "+" only at the start
+            input = input.replace(/(?!^\+)[^\d]/g, '');
+
+            if (input.startsWith('+')) {
+                // Limit: "+" + 13 digits max
+                input = input.slice(0, 13);
+            } else {
+                // Limit: 14 digits max
+                input = input.slice(0, 14);
+            }
+
             this.data.mobile = input;
         },
+
+        filterSsnInput(event) {
+            const input = event.target.value.replace(/\D/g, '').slice(0, 9);
+            this.data.ssn = input;
+        },
+
+        checkSSN(ssn) {
+            if (!/^\d{9}$/.test(ssn)) return false;
+            if (parseInt(ssn, 10) === 0) return false;
+
+            let b = 0;
+            for (let i = 0; i < ssn.length - 1; i++) {
+                let a = parseInt(ssn.charAt(i), 10);
+
+                if (i % 2 === 1) {
+                    a *= 2;
+                    if (a > 9) {
+                        let v = a % 10;
+                        let v2 = Math.floor(a / 10);
+                        a = v + v2;
+                    }
+                }
+                b += a;
+            }
+
+            b = b % 10;
+            b = 10 - b;
+            if (b === 10) b = 0;
+
+            return b === parseInt(ssn.charAt(ssn.length - 1), 10);
+        },
+
         filterzipCdoeInput(event) {
             const input = event.target.value.replace(/\D/g, '').slice(0, 5);
             this.data.zipCode = input;
@@ -318,6 +527,21 @@ export default {
             this.data.moreInfo = "";
             this.data.password = "";
             this.data.confirmPassword = "";
+        },
+
+        normalSelectFunc() {
+            this.data.userType = UserTypeEnum.Normal;
+        },
+
+        companySelectFunc() {
+            this.data.userType = UserTypeEnum.Compony;
+        },
+
+        togglePassword1Visibility() {
+            this.isPassword1Visible = !this.isPassword1Visible;
+        },
+        togglePassword2Visibility() {
+            this.isPassword2Visible = !this.isPassword2Visible;
         },
 
     },
@@ -436,16 +660,14 @@ export default {
                                                             placeholder="البريد الالكتروني" required>
                                                         <p v-if="emailError" style="color: red">{{ emailError }}</p>
 
-
-                                                        <label class="text">رقم الهاتف</label>
+                                                        <label class="text">رقم الهاتف </label>
                                                         <br>
                                                         <input v-model="data.mobile" name="mobile" id="phone" type="tel"
                                                             ref="phoneInput"
                                                             class="form-control my-3 py-3 text-start gray_text gray-inp"
-                                                            placeholder="(201) 555-0123" aria-label=""
+                                                            placeholder="(+970) 59-512-3123" aria-label=""
                                                             aria-describedby="basic-addon1" @input="filterMobileInput"
                                                             required>
-
 
                                                         <label class="text">المحافظة</label>
                                                         <br>
@@ -473,40 +695,62 @@ export default {
                                                                 {{ item.name }}
                                                             </option>
                                                         </select>
+                                                        <label class="text">معلومات مفصلة عن العنوان</label>
+                                                        <br>
+                                                        <textarea v-model="data.addressInfo" ref="addressInfo"
+                                                            name="addressInfo" type="text"
+                                                            class="form-control my-3 py-3 text-start gray_text gray-inp "
+                                                            placeholder="" required></textarea>
 
                                                         <label class="text">رقم الهوية</label>
                                                         <br>
-                                                        <input v-model="data.zipCode" ref="zipCode" name="zipCode"
-                                                            type="text"
+                                                        <input v-model="data.ssn" ref="ssn" name="ssn" type="text"
                                                             class="form-control my-3 py-3 text-start gray_text gray-inp "
-                                                            placeholder="00000000" @input="filterzipCdoeInput" required>
-                                                        <!-- <label class="text">Company Address</label>
-                                    <br>
-                                    <input name="companyAddress" type="text"
-                                        class="form-control my-3 py-3 text-start gray_text gray-inp "
-                                        placeholder="Company Address" required> -->
+                                                            placeholder="00000000" @input="filterSsnInput" required>
+
                                                         <div class="password-container">
                                                             <label class="text">كلمة المرور</label>
                                                             <br>
-                                                            <input v-model="data.password" ref="password"
+                                                            <!-- <input v-model="data.password" ref="password"
                                                                 type="password"
                                                                 class="form-control my-3 py-3 gray_text gray-inp id_password"
                                                                 autocomplete="current-password"
                                                                 placeholder="كلمة المرور" required>
-                                                            <i class="far fa-eye togglePassword"></i>
+                                                            <i class="far fa-eye togglePassword"></i> -->
+                                                            <input v-model="data.password"
+                                                                :type="isPassword1Visible ? 'text' : 'password'"
+                                                                class="form-control mt-2 mb-4  py-3 text-start list_link gray-inp id_password"
+                                                                autocomplete="current-password"
+                                                                placeholder="كلمة المرور " required>
+                                                            <a v-on:click="togglePassword1Visibility">
+                                                                <i
+                                                                    :class="isPassword1Visible ? 'far fa-eye-slash togglePassword' : 'far fa-eye togglePassword'"></i>
+                                                                <!-- <i class="far fa-eye-slash togglePassword"></i> -->
+                                                            </a>
                                                         </div>
                                                         <div class="password-container">
                                                             <label class="text">تأكيد كلمة المرور</label>
                                                             <br>
-                                                            <input v-model="data.confirmPassword" ref="confirmPassword"
+                                                            <!-- <input v-model="data.confirmPassword" ref="confirmPassword"
                                                                 type="Password"
                                                                 class="form-control my-3 py-3 gray_text gray-inp id_password"
                                                                 autocomplete="current-password"
                                                                 placeholder="تأكيد كلمة المرور" required>
-                                                            <i class="far fa-eye togglePassword"></i>
+                                                            <i class="far fa-eye togglePassword"></i> -->
+
+                                                            <input v-model="data.confirmPassword"
+                                                                :type="isPassword2Visible ? 'text' : 'password'"
+                                                                class="form-control mt-2 mb-4  py-3 text-start list_link gray-inp id_password"
+                                                                autocomplete="current-password"
+                                                                placeholder="تأكيد كلمة المرور " required>
+                                                            <a v-on:click="togglePassword2Visibility">
+                                                                <i
+                                                                    :class="isPassword2Visible ? 'far fa-eye-slash togglePassword' : 'far fa-eye togglePassword'"></i>
+                                                                <!-- <i class="far fa-eye-slash togglePassword"></i> -->
+                                                            </a>
                                                         </div>
 
-                                                        <button type="button" v-on:click="getSignUpfunc"
+                                                        <button type="button" v-on:click="getSignUpNormalfunc()"
                                                             class=" btn_submit_1 form-control mt-4 mb-3 py-3"
                                                             value="SignUp">انشاء حساب</button>
                                                     </form>
@@ -550,12 +794,12 @@ export default {
                                                         <input v-model="data.mobile" name="mobile" id="phone" type="tel"
                                                             ref="phoneInput"
                                                             class="form-control my-3 py-3 text-start gray_text gray-inp"
-                                                            placeholder="(201) 555-0123" aria-label=""
+                                                            placeholder="(+970) 59-512-3123" aria-label=""
                                                             aria-describedby="basic-addon1" @input="filterMobileInput"
                                                             required>
                                                         <label class="text">المحافظة</label>
                                                         <br>
-                                                        <select v-model="data.addressState"
+                                                        <select v-model="data.addressState" name="addressState"
                                                             class="form-control my-3 py-3 text-start gray_text gray-inp"
                                                             @change="setStatesCities(data.addressState)">
                                                             <option value="0" key="0" selected>{{
@@ -568,7 +812,7 @@ export default {
 
                                                         <label class="text">المدينة</label>
                                                         <br>
-                                                        <select v-model="data.addressCity"
+                                                        <select v-model="data.addressCity" name="addressCity"
                                                             class="form-control  my-3 py-3 text-start gray_text gray-inp"
                                                             :disabled="!stateCities || stateCities.length === 0">
                                                             <option value="0" key="0" selected>{{
@@ -579,41 +823,52 @@ export default {
                                                             </option>
                                                         </select>
 
-
-
-                                                        <label class="text">رقم الهوية</label>
+                                                        <label class="text">معلومات مفصلة عن العنوان</label>
                                                         <br>
-                                                        <input v-model="data.zipCode" ref="zipCode" name="zipCode"
-                                                            type="text"
+                                                        <textarea v-model="data.addressInfo" ref="addressInfo"
+                                                            name="addressInfo" type="text"
                                                             class="form-control my-3 py-3 text-start gray_text gray-inp "
-                                                            placeholder="00000000" @input="filterzipCdoeInput" required>
-                                                        <!-- <label class="text">Company Address</label>
-                                    <br>
-                                    <input name="companyAddress" type="text"
-                                        class="form-control my-3 py-3 text-start gray_text gray-inp "
-                                        placeholder="Company Address" required> -->
+                                                            placeholder="" required></textarea>
+
+
+                                                        <label class="text">رقم الترخيص</label>
+                                                        <br>
+                                                        <input v-model="data.licenseNumber" ref="licenseNumber"
+                                                            name="licenseNumber" type="text"
+                                                            class="form-control my-3 py-3 text-start gray_text gray-inp "
+                                                            placeholder="00000000" required>
+
                                                         <div class="password-container">
                                                             <label class="text">كلمة المرور</label>
                                                             <br>
-                                                            <input v-model="data.password" ref="password"
-                                                                type="password"
-                                                                class="form-control my-3 py-3 gray_text gray-inp id_password"
+
+                                                            <input v-model="data.password"
+                                                                :type="isPassword1Visible ? 'text' : 'password'"
+                                                                class="form-control mt-2 mb-4  py-3 text-start list_link gray-inp id_password"
                                                                 autocomplete="current-password"
-                                                                placeholder="كلمة المرور" required>
-                                                            <i class="far fa-eye togglePassword"></i>
+                                                                placeholder="كلمة المرور " required>
+                                                            <a v-on:click="togglePassword1Visibility">
+                                                                <i
+                                                                    :class="isPassword1Visible ? 'far fa-eye-slash togglePassword' : 'far fa-eye togglePassword'"></i>
+                                                                <!-- <i class="far fa-eye-slash togglePassword"></i> -->
+                                                            </a>
                                                         </div>
                                                         <div class="password-container">
                                                             <label class="text">تأكيد كلمة المرور</label>
                                                             <br>
-                                                            <input v-model="data.confirmPassword" ref="confirmPassword"
-                                                                type="Password"
-                                                                class="form-control my-3 py-3 gray_text gray-inp id_password"
+                                                            <input v-model="data.confirmPassword"
+                                                                :type="isPassword2Visible ? 'text' : 'password'"
+                                                                class="form-control mt-2 mb-4  py-3 text-start list_link gray-inp id_password"
                                                                 autocomplete="current-password"
-                                                                placeholder="تأكيد كلمة المرور" required>
-                                                            <i class="far fa-eye togglePassword"></i>
+                                                                placeholder="تأكيد كلمة المرور " required>
+                                                            <a v-on:click="togglePassword2Visibility">
+                                                                <i
+                                                                    :class="isPassword2Visible ? 'far fa-eye-slash togglePassword' : 'far fa-eye togglePassword'"></i>
+                                                                <!-- <i class="far fa-eye-slash togglePassword"></i> -->
+                                                            </a>
                                                         </div>
 
-                                                        <button type="button" v-on:click="getSignUpfunc"
+                                                        <button type="button" v-on:click="getSignUpCompanyfunc()"
                                                             class=" btn_submit_1 form-control mt-4 mb-3 py-3"
                                                             value="SignUp">انشاء حساب</button>
                                                     </form>
@@ -625,7 +880,7 @@ export default {
                                         حساب
                                         <span class="ps-1">
                                             <!-- <a href="create_account.html" class="text">تسجيل دخول</a> -->
-                                        <router-link to="/login" class="text">تسجيل دخول</router-link>
+                                            <router-link to="/login" class="text">تسجيل دخول</router-link>
                                         </span>
                                     </p>
                                 </div>

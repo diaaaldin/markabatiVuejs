@@ -81,7 +81,7 @@ export default {
                             },
                             {
                                 name: 'keywords',
-                                content: `سيارات للبيع, ${this.data.brandName}, ${this.data.modelName}, سيارات فلسطين, مركبات مستعملة`,
+                                content: `سيارات للبيع, ${this.data.brandName}, ${this.data.modelName}, سيارات فلسطين, مركبات مستعملة , مركبتي فلسطين`,
                             },
                             {
                                 property: 'og:title',
