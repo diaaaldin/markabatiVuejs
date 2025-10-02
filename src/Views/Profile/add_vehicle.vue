@@ -29,14 +29,14 @@ export default {
 			data: {
 				brandIdFk: 0,
 				modelIdFk: 0,
-				year: 0,
-				numOfMeals: 0,
+				year: null,
+				numOfMeals: null,
 				bodyTypeIdCfk: 0,
 				colorIdCFK: 0,
 				paintedTypeIdCfk: 0,
 				paintedStatusIdCfk: 0,
 				specificationIdCfk: 0,
-				price: 0,
+				price: null,
 				currency: 0,
 				gearTypeIdCfk: 0,
 				oilTypeIdCfk: 0,
@@ -490,7 +490,110 @@ export default {
 			this.data.extinsionCategory.splice(index, 1);
 		},
 
+		// Year validation - only check after 4 digits are typed
+		validateYearAfter4Digits() {
+			// Convert to string to check length
+			const yearStr = this.data.year.toString();
+			
+			// Only validate when exactly 4 digits are entered
+			if (yearStr.length === 4) {
+				const year = parseInt(this.data.year);
+				
+				if (year > 2030) {
+					this.data.year = 2030;
+					this.$moshaToast('السنة يجب أن تكون أقل من أو تساوي 2030', {
+						hideProgressBar: 'false',
+						position: 'top-center',
+						showIcon: 'true',
+						swipeClose: 'true',
+						type: 'warning',
+						timeout: 3000,
+					});
+				} else if (year < 1900) {
+					this.data.year = 1900;
+					this.$moshaToast('السنة يجب أن تكون أكبر من أو تساوي 1900', {
+						hideProgressBar: 'false',
+						position: 'top-center',
+						showIcon: 'true',
+						swipeClose: 'true',
+						type: 'warning',
+						timeout: 3000,
+					});
+				}
+			}
+		},
 
+		// Validation methods for numeric inputs
+		validateYear() {
+			const year = parseInt(this.data.year);
+			if (isNaN(year)) {
+				this.data.year = 0;
+			} else if (year < 1900) {
+				this.data.year = 1900;
+				this.$moshaToast('السنة يجب أن تكون أكبر من 1900', {
+					hideProgressBar: 'false',
+					position: 'top-center',
+					showIcon: 'true',
+					swipeClose: 'true',
+					type: 'warning',
+					timeout: 3000,
+				});
+			} else if (year > 2030) {
+				this.data.year = 2030;
+				this.$moshaToast('السنة يجب أن تكون أقل من 2030', {
+					hideProgressBar: 'false',
+					position: 'top-center',
+					showIcon: 'true',
+					swipeClose: 'true',
+					type: 'warning',
+					timeout: 3000,
+				});
+			}
+		},
+
+		validateDistance() {
+			const distance = parseInt(this.data.numOfMeals);
+			if (isNaN(distance)) {
+				this.data.numOfMeals = 0;
+			} else if (distance < 0) {
+				this.data.numOfMeals = 0;
+				this.$moshaToast('المسافة يجب أن تكون أكبر من أو تساوي 0', {
+					hideProgressBar: 'false',
+					position: 'top-center',
+					showIcon: 'true',
+					swipeClose: 'true',
+					type: 'warning',
+					timeout: 3000,
+				});
+			} else if (distance > 999999999) {
+				this.data.numOfMeals = 999999999;
+				this.$moshaToast('المسافة يجب أن تكون أقل من 999,999,999 كم', {
+					hideProgressBar: 'false',
+					position: 'top-center',
+					showIcon: 'true',
+					swipeClose: 'true',
+					type: 'warning',
+					timeout: 3000,
+				});
+			}
+		},
+
+		validatePrice() {
+			const price = parseFloat(this.data.price);
+			if (isNaN(price)) {
+				this.data.price = 0;
+			} else if (price < 0) {
+				this.data.price = 0;
+				this.$moshaToast('السعر يجب أن يكون أكبر من أو يساوي 0', {
+					hideProgressBar: 'false',
+					position: 'top-center',
+					showIcon: 'true',
+					swipeClose: 'true',
+					type: 'warning',
+					timeout: 3000,
+				});
+			}
+		},
 
 	}
 };
@@ -548,15 +651,17 @@ function debounce(func, wait) {
 					<div class="col-12 col-sm-6">
 						<div class="form-group">
 							<label>سنة إضافة المركبة</label>
-							<input v-model="data.year" type="text" placeholder="yyyy-mm-dd"
-								class="form-control mt-2 mb-4  py-3 text-start list_link gray-inp" maxlength="4">
+							<input v-model="data.year" type="number" placeholder="أدخل سنة المركبة (مثال: 2025)" min="1900" max="2030"
+								@input="validateYearAfter4Digits"
+								class="form-control mt-2 mb-4  py-3 text-start list_link gray-inp">
 						</div>
 					</div>
 					<div class="col-12 col-sm-6">
 						<div class="form-group">
 							<label>المسافة التي قطعتها المركبة</label>
-							<input v-model="data.numOfMeals" type="text" placeholder="0000 كم"
-								class="form-control mt-2 mb-4  py-3 text-start list_link gray-inp" maxlength="4">
+							<input v-model="data.numOfMeals" type="number" placeholder="أدخل المسافة بالكيلومتر (مثال: 50000)" min="0" max="999999999"
+								@input="validateDistance" @blur="validateDistance"
+								class="form-control mt-2 mb-4  py-3 text-start list_link gray-inp">
 						</div>
 					</div>
 					<div class="col-12 col-md-6">
@@ -650,7 +755,8 @@ function debounce(func, wait) {
 					<div class="col-12 col-md-6">
 						<div class="form-group">
 							<label>سعر المركبة</label>
-							<input v-model="data.price" type="text"
+							<input v-model="data.price" type="number" placeholder="أدخل سعر المركبة (مثال: 25000)" min="0" step="0.01"
+								@input="validatePrice" @blur="validatePrice"
 								class="form-control mt-2 mb-4  py-3 text-start list_link gray-inp">
 						</div>
 					</div>
@@ -792,8 +898,8 @@ function debounce(func, wait) {
 			<div class="modal-content">
 				<div class="modal-header">
 					<h5 class="modal-title">الصورة الرئيسية للمركبة</h5>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
+					
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
 					</button>
 				</div>
 				<div class="modal-body">

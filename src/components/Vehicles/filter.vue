@@ -308,7 +308,7 @@ export default {
                 <div class="accordion-item customize-according mt-2">
                     <h2 class="accordion-header" id="">
                         <button class="accordion-button  btn collapsed" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#collapse2" aria-expanded="false" aria-controls="collapse2">
+                             aria-expanded="false" >
                             <div class="title-fill">
                                 <img loading="lazy" src="/img/icons/date.svg">
                                 <span>{{ $t('filter_year') }}</span>
@@ -338,7 +338,7 @@ export default {
                 <div class="accordion-item customize-according mt-2">
                     <h2 class="accordion-header" id="">
                         <button class="accordion-button  btn collapsed" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#collapse2" aria-expanded="false" aria-controls="collapse2">
+                              aria-expanded="false" >
                             <div class="title-fill">
                                 <img loading="lazy" src="/img/icons/money.svg">
                                 <span>{{ $t('filter_price') }}</span>
@@ -368,7 +368,7 @@ export default {
                 <div class="accordion-item customize-according mt-2">
                     <h2 class="accordion-header" id="">
                         <button class="accordion-button  btn collapsed" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#collapse2" aria-expanded="false" aria-controls="collapse2">
+                            aria-expanded="false"  >
                             <div class="title-fill">
                                 <img loading="lazy" src="/img/icons/speed.svg">
                                 <span>{{ $t('filter_meals') }}</span>

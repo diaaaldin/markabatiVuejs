@@ -187,6 +187,7 @@ export default {
                 background: 'rgba(0, 0, 0, 0.7)',
                 text: "",
             });
+            console.log("this.data.userType : ", this.data.userType);
 
             if (this.data.userType == UserTypeEnum.Normal) {
                 this.CustomerProfileInfo(this.data.id).then(Response => {

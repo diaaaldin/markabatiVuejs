@@ -236,9 +236,7 @@ export default {
 											class="form-control my-3 py-3 gray_text gray-inp"
 											autocomplete="current-password" placeholder="كلمة المرور" required />
 										<span @click="togglePasswordVisibility" style="cursor: pointer;">
-											<!-- <i  class="far fa-eye-slash"></i> -->
-											<i class="far fa-eye"></i>
-											<!-- <i :class="isPasswordVisible ? 'far fa-eye-slash' : 'far fa-eye'"></i> -->
+											<i :class="isPasswordVisible ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
 										</span>
 									</div>
 
