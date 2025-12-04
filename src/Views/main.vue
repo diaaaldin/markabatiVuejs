@@ -46,13 +46,13 @@ export default {
     //     });
     // },
     mounted() {
-        this.mainSlider();
+        // this.mainSlider();
         useHead({
             title: 'مركبتي | بيع وشراء السيارات ',
             meta: [
                 {
                     name: 'description',
-                    content: 'مركبتي هو المنصة المثالية لبيع وشراء السيارات والمركبات المستعملة والجديدة في فلسطين. اعرض مركبتك بسهولة أو ابحث عن أفضل العروض من البائعين مباشرة.',
+                    content: 'مركبتي هي المنصة المثالية لبيع وشراء السيارات والمركبات المستعملة والجديدة في فلسطين. اعرض مركبتك بسهولة أو ابحث عن أفضل العروض من البائعين مباشرة.',
                 },
                 {
                     name: 'keywords',
@@ -213,44 +213,44 @@ export default {
             this.data.mobile = input;
         },
 
-        mainSlider() {
-            $('.slider').slick({
-                dots: true,
-                infinite: false,
-                speed: 300,
-                slidesToShow: 1,
-                rtl: true,
-                autoplay: true,
-                autoplaySpeed: 2000,
-                prevArrow: '<button class="slick-prev prev-arrow"> <i class="fa-solid fa-angle-right"></i></button>',
-                nextArrow: '<button class="slick-next next-arrow"> <i class="fa-solid fa-angle-left"></i></button>',
-                slidesToScroll: 1,
-                responsive: [
-                    {
-                        breakpoint: 1200,
-                        settings: {
-                            slidesToShow: 1,
-                            slidesToScroll: 1,
-                        }
-                    },
-                    {
-                        breakpoint: 1008,
-                        settings: {
-                            slidesToShow: 1,
-                            slidesToScroll: 1,
-                        }
-                    },
-                    {
-                        breakpoint: 800,
-                        settings: {
-                            arrows: false,
-                            slidesToShow: 1,
-                            slidesToScroll: 1,
-                        },
-                    }
-                ]
-            });
-        },
+        // mainSlider() {
+        //     $('.slider').slick({
+        //         dots: true,
+        //         infinite: false,
+        //         speed: 300,
+        //         slidesToShow: 1,
+        //         rtl: true,
+        //         autoplay: true,
+        //         autoplaySpeed: 2000,
+        //         prevArrow: '<button class="slick-prev prev-arrow"> <i class="fa-solid fa-angle-right"></i></button>',
+        //         nextArrow: '<button class="slick-next next-arrow"> <i class="fa-solid fa-angle-left"></i></button>',
+        //         slidesToScroll: 1,
+        //         responsive: [
+        //             {
+        //                 breakpoint: 1200,
+        //                 settings: {
+        //                     slidesToShow: 1,
+        //                     slidesToScroll: 1,
+        //                 }
+        //             },
+        //             {
+        //                 breakpoint: 1008,
+        //                 settings: {
+        //                     slidesToShow: 1,
+        //                     slidesToScroll: 1,
+        //                 }
+        //             },
+        //             {
+        //                 breakpoint: 800,
+        //                 settings: {
+        //                     arrows: false,
+        //                     slidesToShow: 1,
+        //                     slidesToScroll: 1,
+        //                 },
+        //             }
+        //         ]
+        //     });
+        // },
 
     }
 

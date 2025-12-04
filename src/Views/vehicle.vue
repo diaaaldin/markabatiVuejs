@@ -828,7 +828,8 @@ export default {
                 <div class="col-12">
                     <div class="public-view">
                         <h1 class="line-green">{{ $t('vehicle_discreption') }} </h1>
-                        <div class="col-12 mt-4">
+                        <!-- <div class="col-12 mt-4"> -->
+                        <div class="mt-4">
                             <p v-html="data.description"></p>
                         </div>
                     </div>

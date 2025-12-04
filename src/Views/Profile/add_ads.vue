@@ -429,10 +429,8 @@ export default {
 		<div class="modal-dialog modal-dialog-centered" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title">الصورة الرئيسية للمركبة</h5>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
+					<h5 class="modal-title" id="exampleModalLabel"> تأكيد الطلب </h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
 					<div>
@@ -475,6 +473,7 @@ export default {
 
 </template>
 <style scoped>
+
 .imageCropper {
 	background-color: #f1f0ef;
 	/* White background for the box */

@@ -207,7 +207,7 @@ export default {
 					<div class="col-12 col-lg-8">
 						<div class="img">
 							<router-link to="/">
-								<img loading="lazy" src="/img/logo.png" alt="">
+								<img loading="lazy" src="/img/mini_logo.png" alt="">
 							</router-link>
 						</div>
 						<div class="text-center">

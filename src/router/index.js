@@ -19,9 +19,6 @@ import profile_update_vehicle from '@/Views/Profile/update_vehicle.vue'
 import profile_add_ads from '@/Views/Profile/add_ads.vue'
 
 
-//announcement
-import add_announcement from '@/Views/Announcement/addAnnouncement.vue'
-import update_announcement from '@/Views/Announcement/updateAnnouncement.vue'
 
 //vehicle
 // import add_vehicle from '@/Views/Vehicle/add_vehicle.vue'

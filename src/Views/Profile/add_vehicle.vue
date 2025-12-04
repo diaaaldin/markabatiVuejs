@@ -84,6 +84,7 @@ export default {
 	},
 
 	computed: {
+		...mapGetters("Interfaces", ["getInterfaceItemsData"]),
 		...mapGetters("Code", ["getBrandsData", "getBrandModelsData", "getPaintedStatusData", "getSpecificationsData"
 			, "getBodyTypesData", "getColorsData", "getPaintedTypesData", "getGearTypesData", "getOilTypesData", "getCurrencyData"]),
 	},
@@ -125,6 +126,18 @@ export default {
 			//     this.$router.push({ name: 'storeLogin' });
 			// }
 		},
+
+		getTitleByCode(code) {
+            // Find the object with the matching code
+            const foundItem = this.getInterfaceItemsData.find(item => item.code === code);
+
+            if (foundItem) {
+                return foundItem.title;  // Set the title if found
+
+            } else {
+                return "Title not found";  // If no match is found
+            }
+        },
 
 		createFunc() {
 
@@ -494,11 +507,11 @@ export default {
 		validateYearAfter4Digits() {
 			// Convert to string to check length
 			const yearStr = this.data.year.toString();
-			
+
 			// Only validate when exactly 4 digits are entered
 			if (yearStr.length === 4) {
 				const year = parseInt(this.data.year);
-				
+
 				if (year > 2030) {
 					this.data.year = 2030;
 					this.$moshaToast('السنة يجب أن تكون أقل من أو تساوي 2030', {
@@ -651,15 +664,16 @@ function debounce(func, wait) {
 					<div class="col-12 col-sm-6">
 						<div class="form-group">
 							<label>سنة إضافة المركبة</label>
-							<input v-model="data.year" type="number" placeholder="أدخل سنة المركبة (مثال: 2025)" min="1900" max="2030"
-								@input="validateYearAfter4Digits"
+							<input v-model="data.year" type="number" placeholder="أدخل سنة المركبة (مثال: 2025)"
+								min="1900" max="2030" @input="validateYearAfter4Digits"
 								class="form-control mt-2 mb-4  py-3 text-start list_link gray-inp">
 						</div>
 					</div>
 					<div class="col-12 col-sm-6">
 						<div class="form-group">
 							<label>المسافة التي قطعتها المركبة</label>
-							<input v-model="data.numOfMeals" type="number" placeholder="أدخل المسافة بالكيلومتر (مثال: 50000)" min="0" max="999999999"
+							<input v-model="data.numOfMeals" type="number"
+								placeholder="أدخل المسافة بالكيلومتر (مثال: 50000)" min="0" max="999999999"
 								@input="validateDistance" @blur="validateDistance"
 								class="form-control mt-2 mb-4  py-3 text-start list_link gray-inp">
 						</div>
@@ -755,8 +769,8 @@ function debounce(func, wait) {
 					<div class="col-12 col-md-6">
 						<div class="form-group">
 							<label>سعر المركبة</label>
-							<input v-model="data.price" type="number" placeholder="أدخل سعر المركبة (مثال: 25000)" min="0" step="0.01"
-								@input="validatePrice" @blur="validatePrice"
+							<input v-model="data.price" type="number" placeholder="أدخل سعر المركبة (مثال: 25000)"
+								min="0" step="0.01" @input="validatePrice" @blur="validatePrice"
 								class="form-control mt-2 mb-4  py-3 text-start list_link gray-inp">
 						</div>
 					</div>
@@ -898,7 +912,7 @@ function debounce(func, wait) {
 			<div class="modal-content">
 				<div class="modal-header">
 					<h5 class="modal-title">الصورة الرئيسية للمركبة</h5>
-					
+
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
 					</button>
 				</div>
@@ -915,12 +929,15 @@ function debounce(func, wait) {
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabel"> خطاب القسم </h5>
+					<h5 class="modal-title" id="exampleModalLabel"> تأكيد نشر المركبة </h5>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
-				<div class="modal-body">
+				<!-- <div class="modal-body">
 					<p>هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص .</p>
+				</div> -->
+				<div class="modal-body" v-html="getTitleByCode('confirm_add_vehicle_modal')">
 				</div>
+
 				<div class="modal-footer">
 					<button @click="createFunc()" type="button" class="btn btn-primary">
 						تأكيد

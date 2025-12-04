@@ -2,56 +2,6 @@
 import Cropper from 'cropperjs';
 import { mapGetters, mapActions } from "vuex";
 import Swal from 'sweetalert2';
-// // for file pond
-// import vueFilePond from 'vue-filepond';
-// // Import plugins
-// import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.esm.js';
-// import FilePondPluginImagePreview from 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.esm.js';
-// import FilePondPluginImageEditor from "@pqina/filepond-plugin-image-editor";
-// import FilePondPluginFilePoster from "filepond-plugin-file-poster";
-
-// // Import styles
-// import 'filepond/dist/filepond.min.css';
-// import "filepond-plugin-file-poster/dist/filepond-plugin-file-poster.min.css";
-// import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css';
-
-// // Import Pintura styles
-// import "@pqina/pintura/pintura.css";
-// // Import Pintura
-// import {
-//   // editor
-//   createDefaultImageReader,
-//   createDefaultImageWriter,
-//   locale_en_gb,
-//   // plugins
-//   setPlugins,
-//   plugin_crop,
-//   plugin_crop_locale_en_gb,
-//   plugin_filter,
-//   plugin_filter_defaults,
-//   plugin_filter_locale_en_gb,
-//   plugin_finetune,
-//   plugin_finetune_defaults,
-//   plugin_finetune_locale_en_gb,
-//   plugin_annotate,
-//   plugin_annotate_locale_en_gb,
-//   markup_editor_defaults,
-//   markup_editor_locale_en_gb,
-
-//   // filepond
-//   openEditor,
-//   processImage,
-//   createDefaultImageOrienter,
-//   legacyDataToImageState,
-// } from "@pqina/pintura";
-
-// setPlugins(plugin_crop, plugin_finetune, plugin_filter, plugin_annotate);
-
-// // Create FilePond component
-// const FilePond = vueFilePond(
-//   FilePondPluginFilePoster,
-//   FilePondPluginImageEditor,
-// );
 
 export default {
 
@@ -64,36 +14,6 @@ export default {
       imageCropper: null,
       ImageCropperBase64: '',
 
-
-      // myEditor: {
-      //   // map legacy data objects to new imageState objects
-      //   legacyDataToImageState: legacyDataToImageState,
-      //   // used to create the editor, receives editor configuration, should return an editor instance
-      //   createEditor: openEditor,
-      //   // Required, used for reading the image data
-      //   imageReader: [createDefaultImageReader],
-      //   // optionally. can leave out when not generating a preview thumbnail and/or output image
-      //   imageWriter: [createDefaultImageWriter],
-      //   // used to generate poster images, runs an editor in the background
-      //   imageProcessor: processImage,
-      //   // editor options
-      //   editorOptions: {
-      //     utils: ['crop', 'finetune', 'filter', 'annotate'],
-      //     imageOrienter: createDefaultImageOrienter(),
-      //     ...plugin_finetune_defaults,
-      //     ...plugin_filter_defaults,
-      //     ...markup_editor_defaults,
-      //     locale: {
-      //       ...locale_en_gb,
-      //       ...plugin_crop_locale_en_gb,
-      //       ...plugin_finetune_locale_en_gb,
-      //       ...plugin_filter_locale_en_gb,
-      //       ...plugin_annotate_locale_en_gb,
-      //       ...markup_editor_locale_en_gb,
-      //     },
-      //   },
-      // },
-
     };
   },
 
@@ -103,9 +23,29 @@ export default {
   emits: ['IsShow', 'b64image', 'copperImage'],
 
   methods: {
-    ...mapActions("Users", ["UserProfileInfo", "UpdateImageProfile"]),
+    onImageLoad() {
+      // recreate cropper when the actual image has loaded so canvas uses real dimensions
+      if (this.cropper) {
+        try { this.cropper.destroy(); } catch (e) { }
+        this.cropper = null;
+      }
+      this.cropper = new Cropper(this.$refs.img, {
+        aspectRatio: 1.75,
+        viewMode: 1,      // fit image inside container
+        dragMode: 'move',
+        background: false,
+        responsive: true,
+        autoCropArea: 1,       // crop box covers full image initially
+        restore: true,
+        cropBoxMovable: true,
+        cropBoxResizable: true,
+        minCropBoxWidth: 20,
+        minCropBoxHeight: 20,
+      });
+    },
 
     closeModal(image) {
+      //console.log(image);
       this.$emit('b64image', image);
       this.$emit('IsShow', false);
       this.$emit('copperImage', this.imageCropper);
@@ -153,35 +93,13 @@ export default {
         console.log('Error: ', error);
       };
     },
-
-    toProfilePage() {
-      let Id = parseInt(localStorage.getItem("id"));
-      this.UserProfileInfo(Id).then(Response => {
-        this.$router.push({ name: "myStore" });
-      }).catch(error => {
-        Swal.fire(error.response.data.message);
-      });
-    },
-
   },
 
   mounted() {
-    this.cropper = new Cropper(this.$refs.img, {
-      aspectRatio: 1,
-      minCropBoxWidth: 20,
-      minCropBoxHeight: 20,
-      viewMode: 3,
-      dragMode: 'move',
-      background: false,
-      cropBoxMovable: true,
-      cropBoxResizable: true,
-
-    }
-    );
   },
 
   beforeDestroy() {
-    this.cropper.destroy();
+  if (this.cropper) try { this.cropper.destroy(); } catch(e) {}
   },
 
   watch: {
@@ -191,13 +109,20 @@ export default {
       }
     },
   },
+    watch: {
+    imageSrc() {
+
+     // when imageSrc changes the <img> will load and onImageLoad will recreate the cropper
+     // no direct replace here
+    },
+  },
 
 
 };
 </script>
 
 <template>
-  <!-- <FilePond ref="pond" 
+<!-- <FilePond ref="pond" 
 			label-idle="Drop file here..."
 		  accepted-file-types="image/jpeg, image/png"
 			:imageEditor="myEditor" 
@@ -227,7 +152,8 @@ export default {
   <div id="container">
     <div class="uploudedImageContaner">
       <h2>{{ $t('cropper_title') }}</h2>
-      <img loading="lazy" id="uploadedImage" ref="img" :src="imageSrc" >
+      <!-- <img loading="lazy" id="uploadedImage" ref="img" :src="imageSrc" alt="Uploaded Image"> -->
+      <img id="uploadedImage" ref="img" :src="imageSrc" alt="Uploaded Image" @load="onImageLoad">
     </div>
   </div>
 
@@ -237,8 +163,14 @@ export default {
 
 </template>
 <style scoped>
-/* General Styles */
-
+ /* General Styles */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f0f0f0;
+  color: #333;
+  margin: 0;
+  padding: 0;
+}
 
 /* Header */
 .header {
@@ -263,7 +195,6 @@ export default {
   border-radius: 5px;
   border: 1px solid #ddd;
 }
-
 /* Container */
 #container {
   display: flex;
@@ -287,8 +218,10 @@ export default {
 }
 
 #uploadedImage {
-  max-width: 100%;
-  max-height: 400px;
+  width: 100%;
+  height: auto;
+  /* optional: limit height but allow full width */
+  max-height: 600px;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
@@ -302,8 +235,7 @@ export default {
   max-width: 600px;
 }
 
-#cropButton,
-#cancelButton {
+#cropButton, #cancelButton {
   padding: 12px 20px;
   border: none;
   border-radius: 5px;
@@ -348,8 +280,7 @@ export default {
     flex-direction: column;
   }
 
-  #cropButton,
-  #cancelButton {
+  #cropButton, #cancelButton {
     margin: 5px 0;
   }
 }
@@ -363,8 +294,7 @@ export default {
     font-size: 1.2em;
   }
 
-  #cropButton,
-  #cancelButton {
+  #cropButton, #cancelButton {
     font-size: 0.9em;
     padding: 10px;
   }

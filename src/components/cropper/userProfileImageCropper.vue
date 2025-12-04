@@ -2,6 +2,7 @@
 import Cropper from 'cropperjs';
 import { mapGetters, mapActions } from "vuex";
 import Swal from 'sweetalert2';
+
 export default {
 
   data() {
@@ -10,21 +11,49 @@ export default {
       imageSrc: null,
       imageres: null,
       cropper: null,
+      imageCropper: null,
+      ImageCropperBase64: '',
+
     };
   },
 
-  emits: {
-    IsShow: true,
+  components: {
+    // FilePond,
   },
+  emits: ['IsShow', 'b64image', 'copperImage'],
 
   methods: {
-    ...mapActions("Users", ["UserProfileInfo", "UpdateImageProfile"]),
-
-    closeModal() {
-      this.$emit('IsShow', false);
+    onImageLoad() {
+      // recreate cropper when the actual image has loaded so canvas uses real dimensions
+      if (this.cropper) {
+        try { this.cropper.destroy(); } catch (e) { }
+        this.cropper = null;
+      }
+      this.cropper = new Cropper(this.$refs.img, {
+        aspectRatio: 3,
+        viewMode: 1,           // fit image inside container
+        dragMode: 'move',
+        background: false,
+        responsive: true,
+        autoCropArea: 1,       // crop box covers full image initially
+        restore: true,
+        cropBoxMovable: true,
+        cropBoxResizable: true,
+        minCropBoxWidth: 20,
+        minCropBoxHeight: 20,
+      });
     },
 
+    closeModal(image) {
+      //console.log(image);
+      this.$emit('b64image', image);
+      this.$emit('IsShow', false);
+      this.$emit('copperImage', this.imageCropper);
+    },
+
+
     fileChanged(e) {
+      console.log("image befor cropper : ", e);
       const files = e.target.files || e.dataTransfer.files;
       if (files.length) {
         this.selectedFile = files[0];
@@ -44,73 +73,33 @@ export default {
     handleImageCropped() {
       var self = this;
       this.cropper.getCroppedCanvas().toBlob((blob) => {
-        console.log(blob);
-        //this.$emit('imageCropped', blob);
         // Create a new File object from the blob
         const file = new File([blob], 'cropped_image.jpg', { type: 'image/jpeg' });
-        self.saveImgAsBase64(file)
+        this.imageCropper = file;
+        self.passImgAsBase64(file);
       }, 'image/jpeg');
       this.selectedFile = null;
     },
 
-    saveImgAsBase64(file) {
+    passImgAsBase64(file) {
       var self = this;
       var reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = function () {
-        this.profileImageUpdating = reader.result;
-        let res = this.profileImageUpdating;
-        console.log(res);
-        if (res != "") {
-          self.UpdateImageProfile(res).then(Response => {
-            console.log(Response);
-            self.$moshaToast('Change Profile Image Success', {
-              hideProgressBar: 'false',
-              showIcon: 'true',
-              swipeClose: 'true',
-              type: 'success',
-              timeout: 3000,
-            });
-
-            self.toProfilePage();
-          }).catch(error => {
-            Swal.fire(error.response.data.message);
-          });
-        }
+        this.ImageCropperBase64 = reader.result;
+        self.closeModal(this.ImageCropperBase64);
       };
       reader.onerror = function (error) {
         console.log('Error: ', error);
       };
     },
-
-    toProfilePage() {
-      let Id = parseInt(localStorage.getItem("id"));
-      var self = this;
-      self.UserProfileInfo(Id).then(Response => {
-        self.$emit('IsShow', false);
-        //this.$router.push({ name: "myStore" });
-      }).catch(error => {
-        Swal.fire(error.response.data.message);
-      });
-    },
   },
 
   mounted() {
-    this.cropper = new Cropper(this.$refs.img, {
-      aspectRatio: 3,
-      minCropBoxWidth: 20,
-      minCropBoxHeight: 20,
-      viewMode: 3,
-      dragMode: 'move',
-      background: false,
-      cropBoxMovable: true,
-      cropBoxResizable: true,
-
-    });
   },
 
   beforeDestroy() {
-    this.cropper.destroy();
+  if (this.cropper) try { this.cropper.destroy(); } catch(e) {}
   },
 
   watch: {
@@ -120,12 +109,24 @@ export default {
       }
     },
   },
+    watch: {
+    imageSrc() {
+
+     // when imageSrc changes the <img> will load and onImageLoad will recreate the cropper
+     // no direct replace here
+    },
+  },
 
 
 };
 </script>
 
 <template>
+<!-- <FilePond ref="pond" 
+			label-idle="Drop file here..."
+		  accepted-file-types="image/jpeg, image/png"
+			:imageEditor="myEditor" 
+/> -->
   <div class="header">
     <label for="fileInput-c" class="custom-file-upload-c">
       <!-- SVG Icon -->
@@ -151,18 +152,18 @@ export default {
   <div id="container">
     <div class="uploudedImageContaner">
       <h2>{{ $t('cropper_title') }}</h2>
-      <img loading="lazy" id="uploadedImage" ref="img" :src="imageSrc" alt="Uploaded Image">
+      <!-- <img loading="lazy" id="uploadedImage" ref="img" :src="imageSrc" alt="Uploaded Image"> -->
+      <img id="uploadedImage" ref="img" :src="imageSrc" alt="Uploaded Image" @load="onImageLoad">
     </div>
   </div>
 
   <div id="imageControls">
     <button id="cropButton" v-on:click="handleImageCropped()">{{ $t('general_submit_button') }}</button>
-    <!-- <button id="cancelButton" v-on:click="closeModal()">Cancel</button> -->
   </div>
 
 </template>
 <style scoped>
-/* General Styles */
+ /* General Styles */
 body {
   font-family: Arial, sans-serif;
   background-color: #f0f0f0;
@@ -194,7 +195,6 @@ body {
   border-radius: 5px;
   border: 1px solid #ddd;
 }
-
 /* Container */
 #container {
   display: flex;
@@ -218,8 +218,10 @@ body {
 }
 
 #uploadedImage {
-  max-width: 100%;
-  max-height: 400px;
+  width: 100%;
+  height: auto;
+  /* optional: limit height but allow full width */
+  max-height: 600px;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
@@ -233,8 +235,7 @@ body {
   max-width: 600px;
 }
 
-#cropButton,
-#cancelButton {
+#cropButton, #cancelButton {
   padding: 12px 20px;
   border: none;
   border-radius: 5px;
@@ -279,8 +280,7 @@ body {
     flex-direction: column;
   }
 
-  #cropButton,
-  #cancelButton {
+  #cropButton, #cancelButton {
     margin: 5px 0;
   }
 }
@@ -294,8 +294,7 @@ body {
     font-size: 1.2em;
   }
 
-  #cropButton,
-  #cancelButton {
+  #cropButton, #cancelButton {
     font-size: 0.9em;
     padding: 10px;
   }

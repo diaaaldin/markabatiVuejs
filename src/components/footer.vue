@@ -214,11 +214,14 @@ export default {
                 <div class="col-lg-3 col-md-12">
                     <div class="d-flex flex-column flex-lg-column ">
                         <div class="  d-flex justify-content-center justify-content-lg-start  my-3">
-                            <img loading="lazy" src="/img/logo.png" alt="" class="img-fluid">
+                            <img loading="lazy" src="/img/mini_logo.png" alt="" class="img-fluid">
                         </div>
-                        <p class="text_footer_hero">
+                        <!-- <p class="text_footer_hero">
                             {{ $t('footer_about') }}
-                        </p>
+                        </p> -->
+                        <div class="text_footer_hero" v-html="getTitleByCode('message_fotter')">
+
+                        </div>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-3 ps-lg-5">
@@ -252,10 +255,10 @@ export default {
                             <span class="text_footer">{{ $t('footer_private_polices') }} </span>
                         </a>
                         <a href="#" data-bs-toggle="modal" data-bs-target="#terms_and_conditions_modal">
-                            <span class="text_footer" >{{ $t('footer_terms_and_conditions') }} </span>
+                            <span class="text_footer">{{ $t('footer_terms_and_conditions') }} </span>
                         </a>
                         <a href="#" data-bs-toggle="modal" data-bs-target="#return_polices_modal">
-                            <span class="text_footer"  >{{ $t('footer_return_polices') }} </span>
+                            <span class="text_footer">{{ $t('footer_return_polices') }} </span>
                         </a>
                     </div>
 
@@ -263,17 +266,19 @@ export default {
                 <div class="col-lg-3 col-md-3 social-links">
                     <h4 class="text_footer-title">{{ $t('footer_followus') }}</h4>
                     <div class="d-flex justify-content-center justify-content-lg-start link">
-                        <a href="#">
+                        <!-- Facebook -->
+                        <a v-if="socialUrls.facebook" :href="socialUrls.facebook" target="_blank"
+                            rel="noopener noreferrer">
                             <img loading="lazy" alt="Facebook" src="/img/icons/face.svg" class="img-fluid mx-1">
                         </a>
-                        <a href="#">
-                            <img loading="lazy" alt="web" src="/img/icons/web.svg" class="img-fluid mx-1">
-                        </a>
-                        <a href="#">
-                            <img loading="lazy" alt="ln" src="/img/icons/ln.svg" class="img-fluid mx-1">
-                        </a>
-                        <a href="#">
-                            <img loading="lazy" alt="insta" src="/img/icons/insta.svg" class="img-fluid mx-1">
+                        <!-- Twitter / X -->
+                        <!-- <a v-if="socialUrls.twitter" :href="socialUrls.twitter" target="_blank" rel="noopener noreferrer">
+                            <img loading="lazy" alt="Twitter / X" src="/img/icons/twitter.svg" class="img-fluid mx-1">
+                        </a> -->
+                        <!-- Instagram -->
+                        <a v-if="socialUrls.instagram" :href="socialUrls.instagram" target="_blank"
+                            rel="noopener noreferrer">
+                            <img loading="lazy" alt="Instagram" src="/img/icons/insta.svg" class="img-fluid mx-1">
                         </a>
                     </div>
 
@@ -303,8 +308,8 @@ export default {
                 <div class="modal-body">
                     <div class="card seller_card">
                         <div class="img">
-                            <img loading="lazy" v-on:click="toSellerGallaryFunc()" :src="ownerImageFunc(getSiteComunicationData.image)"
-                                class="" alt="...">
+                            <img loading="lazy" v-on:click="toSellerGallaryFunc()"
+                                :src="ownerImageFunc(getSiteComunicationData.image)" class="" alt="...">
                         </div>
                         <div class="card-body">
                             <div class="d-flex justify-content-center align-items-baseline mb-2">

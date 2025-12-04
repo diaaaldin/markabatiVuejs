@@ -11,30 +11,49 @@ export default {
       imageSrc: null,
       imageres: null,
       cropper: null,
-      imageCropper:null,
+      imageCropper: null,
       ImageCropperBase64: '',
-      
+
     };
   },
 
   components: {
-   // FilePond,
+    // FilePond,
   },
-  emits: ['IsShow', 'b64image' , 'copperImage'],
+  emits: ['IsShow', 'b64image', 'copperImage'],
 
   methods: {
-    ...mapActions("Users", ["UserProfileInfo", "UpdateImageProfile"]),
+    onImageLoad() {
+      // recreate cropper when the actual image has loaded so canvas uses real dimensions
+      if (this.cropper) {
+        try { this.cropper.destroy(); } catch (e) { }
+        this.cropper = null;
+      }
+      this.cropper = new Cropper(this.$refs.img, {
+        aspectRatio: 3,
+        viewMode: 1,           // fit image inside container
+        dragMode: 'move',
+        background: false,
+        responsive: true,
+        autoCropArea: 1,       // crop box covers full image initially
+        restore: true,
+        cropBoxMovable: true,
+        cropBoxResizable: true,
+        minCropBoxWidth: 20,
+        minCropBoxHeight: 20,
+      });
+    },
 
     closeModal(image) {
       //console.log(image);
       this.$emit('b64image', image);
       this.$emit('IsShow', false);
-      this.$emit('copperImage' , this.imageCropper);
+      this.$emit('copperImage', this.imageCropper);
     },
 
 
     fileChanged(e) {
-      console.log("image befor cropper : " , e);
+      console.log("image befor cropper : ", e);
       const files = e.target.files || e.dataTransfer.files;
       if (files.length) {
         this.selectedFile = files[0];
@@ -74,35 +93,13 @@ export default {
         console.log('Error: ', error);
       };
     },
-
-    toProfilePage() {
-      let Id = parseInt(localStorage.getItem("id"));
-      this.UserProfileInfo(Id).then(Response => {
-        this.$router.push({ name: "myStore" });
-      }).catch(error => {
-        Swal.fire(error.response.data.message);
-      });
-    },
-
   },
 
   mounted() {
-    this.cropper = new Cropper(this.$refs.img, {
-      aspectRatio: 2.5,
-      minCropBoxWidth: 20,
-      minCropBoxHeight: 20,
-      viewMode: 3,
-      dragMode: 'move',
-      background: false,
-      cropBoxMovable: true,
-      cropBoxResizable: true,
-
-    }
-  );
   },
 
   beforeDestroy() {
-    this.cropper.destroy();
+  if (this.cropper) try { this.cropper.destroy(); } catch(e) {}
   },
 
   watch: {
@@ -110,6 +107,13 @@ export default {
       if (this.imageSrc) {
         this.cropper.replace(this.imageSrc);
       }
+    },
+  },
+    watch: {
+    imageSrc() {
+
+     // when imageSrc changes the <img> will load and onImageLoad will recreate the cropper
+     // no direct replace here
     },
   },
 
@@ -123,7 +127,7 @@ export default {
 		  accepted-file-types="image/jpeg, image/png"
 			:imageEditor="myEditor" 
 /> -->
-    <div class="header">
+  <div class="header">
     <label for="fileInput-c" class="custom-file-upload-c">
       <!-- SVG Icon -->
       <svg viewBox="0 0 24 24" width="20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -148,7 +152,8 @@ export default {
   <div id="container">
     <div class="uploudedImageContaner">
       <h2>{{ $t('cropper_title') }}</h2>
-      <img loading="lazy" id="uploadedImage" ref="img" :src="imageSrc" alt="Uploaded Image">
+      <!-- <img loading="lazy" id="uploadedImage" ref="img" :src="imageSrc" alt="Uploaded Image"> -->
+      <img id="uploadedImage" ref="img" :src="imageSrc" alt="Uploaded Image" @load="onImageLoad">
     </div>
   </div>
 
@@ -213,8 +218,10 @@ body {
 }
 
 #uploadedImage {
-  max-width: 100%;
-  max-height: 400px;
+  width: 100%;
+  height: auto;
+  /* optional: limit height but allow full width */
+  max-height: 600px;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }

@@ -43,6 +43,7 @@ export default {
       },
 
       orderDate: "",
+      isValid360: false,
     }
   },
 
@@ -266,6 +267,16 @@ export default {
           timeout: 3000,
         });
         return false;
+      } else if (!this.isValid360) {
+        this.$moshaToast('الرجاء اختيار صورة 360 أو صورة بانورامية (أعرض بكثير من الارتفاع)', {
+          hideProgressBar: 'false',
+          position: 'top-center',
+          showIcon: 'true',
+          swipeClose: 'true',
+          type: 'warning',
+          timeout: 3000,
+        });
+        return false;
       }
       return true;
     },
@@ -391,17 +402,58 @@ export default {
 
     handleImageUpload(event) {
       const file = event.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = async (e) => {
-          this.dataimg360.imagePath = e.target.result;
-          this.img360 = e.target.result; // Update with the file's data URL
-        };
-        reader.onerror = () => {
-          console.error("Failed to read the file.");
-        };
-        reader.readAsDataURL(file);
-      }
+      if (!file) return;
+
+      const img = new Image();
+      const objectUrl = URL.createObjectURL(file);
+
+      img.onload = () => {
+        const ratio = img.width / img.height;
+
+        // اعتبر الصورة صالحة إذا كانت بانورامية/360: العرض أكبر بكثير من الارتفاع
+        // مثال: 2:1 أو 3:1 أو 4:1 ...
+        if (ratio < 2) {
+          this.isValid360 = false;
+          this.dataimg360.imagePath = "";
+          this.img360 = "";
+          this.$moshaToast('الصورة يجب أن تكون 360 أو بانورامية (العرض أكبر من ضعف الارتفاع)', {
+            hideProgressBar: 'false',
+            position: 'top-center',
+            showIcon: 'true',
+            swipeClose: 'true',
+            type: 'warning',
+            timeout: 3000,
+          });
+        } else {
+          this.isValid360 = true;
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            this.dataimg360.imagePath = e.target.result;
+            this.img360 = e.target.result; // Update with the file's data URL
+          };
+          reader.onerror = () => {
+            console.error("Failed to read the file.");
+          };
+          reader.readAsDataURL(file);
+        }
+
+        URL.revokeObjectURL(objectUrl);
+      };
+
+      img.onerror = () => {
+        URL.revokeObjectURL(objectUrl);
+        this.isValid360 = false;
+        this.$moshaToast('فشل في قراءة الصورة', {
+          hideProgressBar: 'false',
+          position: 'top-center',
+          showIcon: 'true',
+          swipeClose: 'true',
+          type: 'warning',
+          timeout: 3000,
+        });
+      };
+
+      img.src = objectUrl;
     },
 
     countTotalPriceFunc() {

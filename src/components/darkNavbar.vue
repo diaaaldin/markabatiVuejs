@@ -176,7 +176,7 @@ export default {
 
                 <div class="navbar-brand">
                     <router-link to="/">
-                        <img loading="lazy" src="/img/logo.png" width="100" alt="" />
+                        <img loading="lazy" src="/img/mini_logo.png" width="100" alt="" />
                     </router-link>
 
                 </div>

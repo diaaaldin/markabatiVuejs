@@ -9,8 +9,14 @@ export default {
         }
     },
     mounted() {
-        // this.mainSlider();
-
+        // try init if data already present
+        this.initSliderIfReady();
+    },
+    beforeDestroy() {
+        // cleanup slick if initialized
+        if (typeof $ !== 'undefined' && $('.slider').hasClass('slick-initialized')) {
+            $('.slider').slick('unslick');
+        }
     },
     components: {
 
@@ -30,8 +36,27 @@ export default {
         ...mapGetters("Announcement", ["getMainAnnouncementData", "getHorizontalAnnouncementData"]),
 
     },
+    watch: {
+        // when data arrives, init slider after DOM update
+        getMainAnnouncementData(newVal) {
+            if (newVal && newVal.length) {
+                this.$nextTick(() => {
+                    this.initSliderIfReady();
+                });
+            }
+        }
+    },
     methods: {
         ...mapActions("Announcement", ["GetMainAnnouncementActiveOrder", "GetHorizontalAnnouncementActiveOrder"]),
+
+        initSliderIfReady() {
+            // ensure jquery/slick available and not already initialized
+            if (typeof $ === 'undefined' || !$.fn.slick) return;
+            const $sl = $('.slider');
+            if ($sl.length && !$sl.hasClass('slick-initialized')) {
+                this.mainSlider();
+            }
+        },
 
          mainSlider() {
             $('.slider').slick({
