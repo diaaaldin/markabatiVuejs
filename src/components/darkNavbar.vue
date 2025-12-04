@@ -171,12 +171,12 @@ export default {
 </script>
 <template>
     <div class="header-div main">
-        <nav class="navbar navbar-expand-lg navbar-expand-lg pt-3">
+        <nav class="navbar navbar-expand-lg navbar-expand-lg ">
             <div class="container">
 
                 <div class="navbar-brand">
                     <router-link to="/">
-                        <img loading="lazy" src="/img/mini_logo.png" width="100" alt="" />
+                        <img loading="lazy" src="/img/mini_logo.png"  alt="" />
                     </router-link>
 
                 </div>

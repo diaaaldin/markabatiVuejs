@@ -887,9 +887,11 @@ body {
 /************* Start navigation overlay **************/
 .navbar-brand {
   position: relative;
+  padding: 0;
 }
 .navbar-brand img{
   /* width: 40%; */
+  width: 150px;
 }
 .navigation .navigation__checkbox {
   display: none;
@@ -4040,7 +4042,9 @@ background-color: #fff;
 }
 
 @media (max-width: 992px) {
- 
+ .navbar-brand img{
+  width: 100px;
+}
   .header-div .panner .sub-index-title {
     padding: 0 0 45px 0;
   }

@@ -214,7 +214,7 @@ export default {
                 <div class="col-lg-3 col-md-12">
                     <div class="d-flex flex-column flex-lg-column ">
                         <div class="  d-flex justify-content-center justify-content-lg-start  my-3">
-                            <img loading="lazy" src="/img/mini_logo.png" alt="" class="img-fluid">
+                            <img loading="lazy" src="/img/mini_logo.png" alt="" class="img-fluid" width="200">
                         </div>
                         <!-- <p class="text_footer_hero">
                             {{ $t('footer_about') }}
