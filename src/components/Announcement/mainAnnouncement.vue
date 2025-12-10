@@ -13,9 +13,12 @@ export default {
         this.initSliderIfReady();
     },
     beforeDestroy() {
-        // cleanup slick if initialized
-        if (typeof $ !== 'undefined' && $('.slider').hasClass('slick-initialized')) {
-            $('.slider').slick('unslick');
+        // cleanup slick if initialized - use scoped selector
+        if (typeof $ !== 'undefined') {
+            const $sl = $(this.$el).find('.slider');
+            if ($sl.length && $sl.hasClass('slick-initialized')) {
+                $sl.slick('unslick');
+            }
         }
     },
     components: {
@@ -52,14 +55,16 @@ export default {
         initSliderIfReady() {
             // ensure jquery/slick available and not already initialized
             if (typeof $ === 'undefined' || !$.fn.slick) return;
-            const $sl = $('.slider');
+            // Use scoped selector to only target this component's slider
+            const $sl = $(this.$el).find('.slider');
             if ($sl.length && !$sl.hasClass('slick-initialized')) {
                 this.mainSlider();
             }
         },
 
          mainSlider() {
-            $('.slider').slick({
+            // Use scoped selector to only target this component's slider
+            $(this.$el).find('.slider').slick({
                 dots: true,
                 infinite: false,
                 speed: 300,

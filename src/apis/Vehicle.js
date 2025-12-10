@@ -17,34 +17,36 @@ export default {
     },
 
     GetVehiclesRandomly(data) {
-        const queryString = new URLSearchParams({
-            ownerId: data.ownerId,
-            stateId: data.stateId,
-            vehicleBrandId: data.vehicleBrandId,
-            vehicleModelId: data.vehicleModelId,
-            yearFrom: data.yearFrom,
-            yearTo: data.yearTo,
-            priceFrom: data.priceFrom,
-            priceTo: data.priceTo,
-            mealsFrom: data.mealsFrom,
-            mealsTo: data.mealsTo,
-            color: data.color,
-            bodyType: data.bodyType,
-            specification: data.specification,
-            paintedType: data.paintedType,
-            paintedStatus: data.paintedStatus,
-            gearType: data.gearType,
-            oilType: data.oilType,
-
-            page: data.page,
-            pageSize: data.pageSize
-        });
-        // data.exceptionIds.forEach(id => queryString.append('exceptionIds', id));
-
-        let config = {
-            params: queryString,
+        // Build params object for ASP.NET Core [FromQuery] SearchViewModel binding
+        // API signature: GetVehiclesRandomly([FromQuery] SearchViewModel vm, int page = 1, int pageSize = 5)
+        const params = {
+            // SearchViewModel properties - only include if they have meaningful values (not 0)
+            // ASP.NET Core treats missing params as null for nullable int?/double? types
+            ...(data.searchData?.ownerId && data.searchData.ownerId !== 0 && { ownerId: data.searchData.ownerId }),
+            ...(data.searchData?.stateId && data.searchData.stateId !== 0 && { stateId: data.searchData.stateId }),
+            ...(data.searchData?.vehicleBrandId && data.searchData.vehicleBrandId !== 0 && { vehicleBrandId: data.searchData.vehicleBrandId }),
+            ...(data.searchData?.vehicleModelId && data.searchData.vehicleModelId !== 0 && { vehicleModelId: data.searchData.vehicleModelId }),
+            ...(data.searchData?.yearFrom && data.searchData.yearFrom !== 0 && { yearFrom: data.searchData.yearFrom }),
+            ...(data.searchData?.yearTo && data.searchData.yearTo !== 0 && { yearTo: data.searchData.yearTo }),
+            ...(data.searchData?.priceFrom && data.searchData.priceFrom !== 0 && { priceFrom: data.searchData.priceFrom }),
+            ...(data.searchData?.priceTo && data.searchData.priceTo !== 0 && { priceTo: data.searchData.priceTo }),
+            ...(data.searchData?.mealsFrom && data.searchData.mealsFrom !== 0 && { mealsFrom: data.searchData.mealsFrom }),
+            ...(data.searchData?.mealsTo && data.searchData.mealsTo !== 0 && { mealsTo: data.searchData.mealsTo }),
+            ...(data.searchData?.color && data.searchData.color !== 0 && { color: data.searchData.color }),
+            ...(data.searchData?.bodyType && data.searchData.bodyType !== 0 && { bodyType: data.searchData.bodyType }),
+            ...(data.searchData?.specification && data.searchData.specification !== 0 && { specification: data.searchData.specification }),
+            ...(data.searchData?.paintedType && data.searchData.paintedType !== 0 && { paintedType: data.searchData.paintedType }),
+            ...(data.searchData?.paintedStatus && data.searchData.paintedStatus !== 0 && { paintedStatus: data.searchData.paintedStatus }),
+            ...(data.searchData?.gearType && data.searchData.gearType !== 0 && { gearType: data.searchData.gearType }),
+            ...(data.searchData?.oilType && data.searchData.oilType !== 0 && { oilType: data.searchData.oilType }),
+    
+            // Method parameters (always included)
+            page: data.page ?? 1,
+            pageSize: data.pageSize ?? 5
         };
-        return Api.get(`${END_POINT}/GetVehiclesRandomly`, config);
+
+        console.log("params : " , params);
+        return Api.get(`${END_POINT}/GetVehiclesRandomly`, { params });
     },
 
     GetUserVehicles(data) {

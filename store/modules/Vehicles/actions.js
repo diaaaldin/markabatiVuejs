@@ -9,7 +9,7 @@ export const GetVehicle = ({ commit, dispatch },id) => {
     });
 }
 
-export const GetVehiclesRandomly = ({ commit, dispatch },data) => {
+export const GetVehiclesRandomly = ({ commit, dispatch }, data) => {
     return Vehicle.GetVehiclesRandomly(data).then(function (response) {
         commit('SET_VEHICELS_DATA', response.data.data);
         return response.data.data;

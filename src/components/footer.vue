@@ -421,3 +421,20 @@ export default {
     background-image: "C:/img\markabatiComponent\fotter.png";
 }
 </style>
+
+<style>
+/* Non-scoped styles for modals - modals are rendered outside component scope */
+.modal-footer .btn-primary {
+    border-radius: 30px;
+    padding: 8px 30px;
+    margin: 0 auto;
+}
+
+.modal-footer .btn-primary svg {
+    margin-right: 10px;
+}
+
+.modal-footer .btn-primary svg path {
+    fill: white;
+}
+</style>

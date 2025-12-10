@@ -167,13 +167,15 @@ const routes = [
 const router = createRouter({
     history: createWebHistory(),
     routes,
-    
-      // to scroll to the top if any route happen
-      scrollBehavior(to, from, savedPosition) {
+    // Optimize scroll behavior
+    scrollBehavior(to, from, savedPosition) {
         if (savedPosition) {
             return savedPosition;
         } else {
-            return {  top: 0 }; // Always scroll to the top
+            return { 
+                top: 0,
+                behavior: 'smooth' // Smooth scroll for better UX
+            };
         }
     }
 });

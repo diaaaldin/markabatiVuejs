@@ -271,7 +271,7 @@ export default {
                 <div class="row">
                     <div class="col-lg-9">
                         <div class="row">
-                            <productCard v-for="item in getStarActiveVehicleData" :product='item'></productCard>
+                            <productCard v-for="item in getStarActiveVehicleData" :key="item.id" :product='item'></productCard>
 
 
                         </div>

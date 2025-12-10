@@ -448,11 +448,11 @@ export default {
     border: none;
     padding-bottom: 0;
 }
+</style>
 
+<style>
+/* Non-scoped styles for modals - modals are rendered outside component scope */
 .modal-footer .btn-primary {
-    /* width: 50px;
-    height: 50px;
-     */
     border-radius: 30px;
     padding: 8px 30px;
     margin: 0 auto;

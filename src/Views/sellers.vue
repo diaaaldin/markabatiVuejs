@@ -27,6 +27,7 @@ export default {
                 pageSize: 3,
                 rowCount: 9,
             },
+            windowWidth: window.innerWidth,
         }
     },
     // mounted() {
@@ -43,6 +44,9 @@ export default {
     // },
 
     mounted() {
+        this.handleResize();
+        window.addEventListener('resize', this.handleResize);
+        
         useHead({
             title: 'مركبتي | معارض البائعون ',
 
@@ -140,6 +144,36 @@ export default {
         },
         endItem() {
             return Math.min(this.pagination.currentPage * this.pagination.pageSize, this.pagination.rowCount);
+        },
+        visiblePages() {
+            const total = this.pagination.pageCount;
+            const current = this.pagination.currentPage;
+            const pages = [];
+            
+            // For mobile: show max 3 pages, for desktop: show max 5 pages
+            const maxVisible = this.windowWidth < 768 ? 3 : 5;
+            
+            if (total <= maxVisible) {
+                // Show all pages if total is less than max visible
+                for (let i = 1; i <= total; i++) {
+                    pages.push(i);
+                }
+            } else {
+                // Show pages around current page
+                let start = Math.max(1, current - Math.floor(maxVisible / 2));
+                let end = Math.min(total, start + maxVisible - 1);
+                
+                // Adjust start if we're near the end
+                if (end - start < maxVisible - 1) {
+                    start = Math.max(1, end - maxVisible + 1);
+                }
+                
+                for (let i = start; i <= end; i++) {
+                    pages.push(i);
+                }
+            }
+            
+            return pages;
         }
     },
     methods: {
@@ -194,6 +228,13 @@ export default {
             this.SearchChangeFunc();
         },
 
+        handleResize() {
+            this.windowWidth = window.innerWidth;
+        },
+
+    },
+    beforeDestroy() {
+        window.removeEventListener('resize', this.handleResize);
     }
 };
 </script>
@@ -224,7 +265,7 @@ export default {
                     <div class="col-12">
                         <div class="container white_card mt-2">
                             <div class="row">
-                                <sellerCard v-for="item in this.getUsersData.users.data" :seller='item'></sellerCard>
+                                <sellerCard v-for="item in this.getUsersData.users.data" :key="item.id" :seller='item'></sellerCard>
                             </div>
 
                             <!-- <div class="row">
@@ -246,18 +287,24 @@ export default {
                                     </p>
                                     <ul class="pagination">
                                         <li :class="{ disabled: pagination.currentPage === 1 }">
-                                            <a href="#" @click.prevent="goToPage(pagination.currentPage - 1)">
+                                            <a href="#" @click.prevent="goToPage(pagination.currentPage - 1)" class="pagination-link">
                                                 <i class="fa-solid fa-arrow-right"></i>
                                             </a>
                                         </li>
-                                        <li v-for="page in pagination.pageCount" :key="page"
+                                        <li v-if="visiblePages[0] > 1" class="pagination-ellipsis">
+                                            <span>...</span>
+                                        </li>
+                                        <li v-for="page in visiblePages" :key="page"
                                             :class="{ active: pagination.currentPage === page }">
-                                            <a href="#" @click.prevent="goToPage(page)">
+                                            <a href="#" @click.prevent="goToPage(page)" class="pagination-link">
                                                 {{ page }}
                                             </a>
                                         </li>
+                                        <li v-if="visiblePages[visiblePages.length - 1] < pagination.pageCount" class="pagination-ellipsis">
+                                            <span>...</span>
+                                        </li>
                                         <li :class="{ disabled: pagination.currentPage === pagination.pageCount }">
-                                            <a href="#" @click.prevent="goToPage(pagination.currentPage + 1)">
+                                            <a href="#" @click.prevent="goToPage(pagination.currentPage + 1)" class="pagination-link">
                                                 <i class="fa-solid fa-arrow-left"></i>
                                             </a>
                                         </li>
@@ -278,4 +325,149 @@ export default {
 
     <pageFooter></pageFooter>
 </template>
-<style scoped></style>
+<style scoped>
+.pag {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    padding: 20px 0;
+}
+
+.pag .count {
+    margin: 0;
+    font-size: 14px;
+    color: #666;
+    text-align: center;
+}
+
+.pag .pagination {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.pag .pagination li {
+    min-width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    border-radius: 8px;
+    border: 1px solid #ccced2;
+    transition: all 0.4s ease-in-out;
+    cursor: pointer;
+}
+
+.pag .pagination li.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.pag .pagination li.disabled a {
+    pointer-events: none;
+}
+
+.pag .pagination li.pagination-ellipsis {
+    border: none;
+    background: transparent;
+    cursor: default;
+    min-width: auto;
+    padding: 0 5px;
+}
+
+.pag .pagination li.pagination-ellipsis span {
+    color: #666;
+    font-size: 16px;
+}
+
+.pag .pagination li a {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #000;
+    text-decoration: none;
+    padding: 0 8px;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.pag .pagination li.active {
+    background-color: black;
+    border-color: black;
+}
+
+.pag .pagination li.active a {
+    color: white;
+}
+
+.pag .pagination li:not(.disabled):not(.pagination-ellipsis):hover {
+    background-color: black;
+    border-color: black;
+}
+
+.pag .pagination li:not(.disabled):not(.pagination-ellipsis):hover a {
+    color: white;
+}
+
+/* Mobile responsive styles */
+@media screen and (max-width: 768px) {
+    .pag {
+        padding: 15px 0;
+    }
+
+    .pag .count {
+        font-size: 12px;
+        margin-bottom: 10px;
+    }
+
+    .pag .pagination {
+        gap: 3px;
+        width: 100%;
+        justify-content: center;
+    }
+
+    .pag .pagination li {
+        min-width: 36px;
+        height: 36px;
+        margin: 0;
+        font-size: 14px;
+    }
+
+    .pag .pagination li a {
+        padding: 0 4px;
+        font-size: 14px;
+    }
+
+    .pag .pagination li.pagination-ellipsis {
+        min-width: 20px;
+        padding: 0 2px;
+    }
+
+    .pag .pagination li.pagination-ellipsis span {
+        font-size: 14px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .pag .pagination li {
+        min-width: 32px;
+        height: 32px;
+        font-size: 12px;
+    }
+
+    .pag .pagination li a {
+        font-size: 12px;
+        padding: 0 2px;
+    }
+}
+</style>

@@ -1340,6 +1340,7 @@ background-color: #0bc00e;
   display: inline-block;
   z-index: 100;
   top: 95%;
+  right: 0;
   border-radius: 10px;
 }
 .details-car .same-vehicle{
@@ -3346,6 +3347,21 @@ input:checked + .slider_lang:before {
 .modal-content {
   border: none;
   border-radius: 20px;
+}
+
+/* Ensure modal footer button styles are always applied */
+.modal-footer .btn-primary {
+  border-radius: 30px;
+  padding: 8px 30px;
+  margin: 0 auto;
+}
+
+.modal-footer .btn-primary svg {
+  margin-right: 10px;
+}
+
+.modal-footer .btn-primary svg path {
+  fill: white;
 }
 
 /**************  style fav page ***********************/

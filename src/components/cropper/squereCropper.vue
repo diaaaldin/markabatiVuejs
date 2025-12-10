@@ -1,5 +1,6 @@
 <script>
 import Cropper from 'cropperjs';
+import 'cropperjs/dist/cropper.css';
 import { mapGetters, mapActions } from "vuex";
 import Swal from 'sweetalert2';
 
@@ -86,8 +87,8 @@ export default {
       var reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = function () {
-        this.ImageCropperBase64 = reader.result;
-        self.closeModal(this.ImageCropperBase64);
+        self.ImageCropperBase64 = reader.result;
+        self.closeModal(self.ImageCropperBase64);
       };
       reader.onerror = function (error) {
         console.log('Error: ', error);
@@ -104,16 +105,8 @@ export default {
 
   watch: {
     imageSrc() {
-      if (this.imageSrc) {
-        this.cropper.replace(this.imageSrc);
-      }
-    },
-  },
-    watch: {
-    imageSrc() {
-
-     // when imageSrc changes the <img> will load and onImageLoad will recreate the cropper
-     // no direct replace here
+      // when imageSrc changes the <img> will load and onImageLoad will recreate the cropper
+      // no direct replace here
     },
   },
 

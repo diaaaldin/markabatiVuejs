@@ -9,7 +9,17 @@ export default {
         }
     },
     mounted() {
-        // this.mainSlider();
+        // try init if data already present
+        this.initSliderIfReady();
+    },
+    beforeDestroy() {
+        // cleanup slick if initialized - use scoped selector
+        if (typeof $ !== 'undefined') {
+            const $sl = $(this.$el).find('.slider');
+            if ($sl.length && $sl.hasClass('slick-initialized')) {
+                $sl.slick('unslick');
+            }
+        }
     },
     components: {
 
@@ -30,48 +40,69 @@ export default {
 
 
     },
+    watch: {
+        // when data arrives, init slider after DOM update
+        getHorizontalAnnouncementData(newVal) {
+            if (newVal && newVal.length) {
+                this.$nextTick(() => {
+                    this.initSliderIfReady();
+                });
+            }
+        }
+    },
     methods: {
         // ...mapActions("Users", ["CustomerProfileInfo"]),
         ...mapActions("Announcement", ["GetVerticalAnnouncementActiveOrder", "GetHorizontalAnnouncementActiveOrder"]),
-//    mainSlider() {
-//             $('.slider').slick({
-//                 dots: true,
-//                 infinite: false,
-//                 speed: 300,
-//                 slidesToShow: 1,
-//                 rtl: true,
-//                 autoplay: true,
-//                 autoplaySpeed: 2000,
-//                 prevArrow: '<button class="slick-prev prev-arrow"> <i class="fa-solid fa-angle-right"></i></button>',
-//                 nextArrow: '<button class="slick-next next-arrow"> <i class="fa-solid fa-angle-left"></i></button>',
-//                 slidesToScroll: 1,
-//                 responsive: [
-//                     {
-//                         breakpoint: 1200,
-//                         settings: {
-//                             slidesToShow: 1,
-//                             slidesToScroll: 1,
-//                         }
-//                     },
-//                     {
-//                         breakpoint: 1008,
-//                         settings: {
-//                             slidesToShow: 1,
-//                             slidesToScroll: 1,
-//                         }
-//                     },
-//                     {
-//                         breakpoint: 800,
-//                         settings: {
-//                             arrows: false,
-//                             slidesToShow: 1,
-//                             slidesToScroll: 1,
-//                         },
-//                     }
-//                 ]
-//             });
-//         },
 
+        initSliderIfReady() {
+            // ensure jquery/slick available and not already initialized
+            if (typeof $ === 'undefined' || !$.fn.slick) return;
+            // Use scoped selector to only target this component's slider
+            const $sl = $(this.$el).find('.slider');
+            if ($sl.length && !$sl.hasClass('slick-initialized')) {
+                this.mainSlider();
+            }
+        },
+
+        mainSlider() {
+            // Use scoped selector to only target this component's slider
+            $(this.$el).find('.slider').slick({
+                dots: true,
+                infinite: false,
+                speed: 300,
+                slidesToShow: 1,
+                rtl: true,
+                autoplay: true,
+                autoplaySpeed: 2000,
+                prevArrow: '<button class="slick-prev prev-arrow"> <i class="fa-solid fa-angle-right"></i></button>',
+                nextArrow: '<button class="slick-next next-arrow"> <i class="fa-solid fa-angle-left"></i></button>',
+                slidesToScroll: 1,
+                responsive: [
+                    {
+                        breakpoint: 1200,
+                        settings: {
+                            slidesToShow: 1,
+                            slidesToScroll: 1,
+                        }
+                    },
+                    {
+                        breakpoint: 1008,
+                        settings: {
+                            slidesToShow: 1,
+                            slidesToScroll: 1,
+                        }
+                    },
+                    {
+                        breakpoint: 800,
+                        settings: {
+                            arrows: false,
+                            slidesToShow: 1,
+                            slidesToScroll: 1,
+                        },
+                    }
+                ]
+            });
+        },
 
     }
 };

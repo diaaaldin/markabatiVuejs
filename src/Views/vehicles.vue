@@ -33,17 +33,18 @@ export default {
                 paintedStatus: 0,
                 gearType: 0,
                 oilType: 0,
-
-                page: 1,
-                pageSize: 6
             },
+
+            page: 1,
+            pageSize: 1,
 
             pagination: {
                 currentPage: 1,
                 pageCount: 3,
-                pageSize: 3,
+                pageSize: 1,
                 rowCount: 9,
             },
+            windowWidth: window.innerWidth,
         }
     },
     // mounted() {
@@ -63,6 +64,8 @@ export default {
     // },
     mounted() {
         this.MainSlider();
+        this.handleResize();
+        window.addEventListener('resize', this.handleResize);
 
         useHead({
             title: ' مركبتي | معرض المركبات',
@@ -141,6 +144,36 @@ export default {
         },
         endItem() {
             return Math.min(this.pagination.currentPage * this.pagination.pageSize, this.pagination.rowCount);
+        },
+        visiblePages() {
+            const total = this.pagination.pageCount;
+            const current = this.pagination.currentPage;
+            const pages = [];
+            
+            // For mobile: show max 3 pages, for desktop: show max 5 pages
+            const maxVisible = this.windowWidth < 768 ? 3 : 5;
+            
+            if (total <= maxVisible) {
+                // Show all pages if total is less than max visible
+                for (let i = 1; i <= total; i++) {
+                    pages.push(i);
+                }
+            } else {
+                // Show pages around current page
+                let start = Math.max(1, current - Math.floor(maxVisible / 2));
+                let end = Math.min(total, start + maxVisible - 1);
+                
+                // Adjust start if we're near the end
+                if (end - start < maxVisible - 1) {
+                    start = Math.max(1, end - maxVisible + 1);
+                }
+                
+                for (let i = start; i <= end; i++) {
+                    pages.push(i);
+                }
+            }
+            
+            return pages;
         }
 
     },
@@ -156,13 +189,18 @@ export default {
             });
 
             this.GetHorizontalAnnouncementActiveOrder();
-            this.GetVehiclesRandomly(this.dataSearch).then(Response => {
+            this.GetVehiclesRandomly({
+                searchData: this.dataSearch,
+                page: this.page,
+                pageSize: this.pageSize
+            }).then(Response => {
                 this.pagination = this.getVehiclesData.vehicles.pagination;
                 // console.log("vehicles : ", this.getVehiclesData);
                 // console.log("this.pagination : ", this.pagination);
                 loading.close();
             }).catch(error => {
-                this.$moshaToast(error.response.data.message, {
+                const errorMessage = error?.response?.data?.message || error?.message || 'حدث خطأ أثناء تحميل البيانات';
+                this.$moshaToast(errorMessage, {
                     hideProgressBar: 'false',
                     position: 'top-center',
                     showIcon: 'true',
@@ -183,11 +221,17 @@ export default {
                 text: "",
             });
 
-            this.GetVehiclesRandomly(this.dataSearch).then(Response => {
+            console.log("this.dataSearch : ", this.dataSearch);
+            this.GetVehiclesRandomly({
+                searchData: this.dataSearch,
+                page: this.page,
+                pageSize: this.pageSize
+            }).then(Response => {
                 this.pagination = this.getVehiclesData.vehicles.pagination;
                 loading.close();
             }).catch(error => {
-                this.$moshaToast(error.response.data.message, {
+                const errorMessage = error?.response?.data?.message || error?.message || 'حدث خطأ أثناء تحميل البيانات';
+                this.$moshaToast(errorMessage, {
                     hideProgressBar: 'false',
                     position: 'top-center',
                     showIcon: 'true',
@@ -229,42 +273,54 @@ export default {
             });
         },
         MainSlider() {
-            $('.slider').slick({
-                dots: true,
-                infinite: false,
-                speed: 300,
-                slidesToShow: 1,
-                rtl: true,
-                autoplay: true,
-                autoplaySpeed: 2000,
-                prevArrow: '<button class="slick-prev prev-arrow"> <i class="fa-solid fa-angle-right"></i></button>',
-                nextArrow: '<button class="slick-next next-arrow"> <i class="fa-solid fa-angle-left"></i></button>',
-                slidesToScroll: 1,
-                responsive: [
-                    {
-                        breakpoint: 1200,
-                        settings: {
-                            slidesToShow: 1,
-                            slidesToScroll: 1,
-                        }
-                    },
-                    {
-                        breakpoint: 1008,
-                        settings: {
-                            slidesToShow: 1,
-                            slidesToScroll: 1,
-                        }
-                    },
-                    {
-                        breakpoint: 800,
-                        settings: {
-                            arrows: false,
-                            slidesToShow: 1,
-                            slidesToScroll: 1,
+            // Check if jQuery and slick are available
+            if (typeof $ === 'undefined' || !$.fn.slick) {
+                console.warn('jQuery or Slick slider not available');
+                return;
+            }
+            
+            // Use scoped selector to only target this component's slider
+            const $slider = $(this.$el).find('.slider');
+            
+            // Check if slider element exists and is not already initialized
+            if ($slider.length && !$slider.hasClass('slick-initialized')) {
+                $slider.slick({
+                    dots: true,
+                    infinite: false,
+                    speed: 300,
+                    slidesToShow: 1,
+                    rtl: true,
+                    autoplay: true,
+                    autoplaySpeed: 2000,
+                    prevArrow: '<button class="slick-prev prev-arrow"> <i class="fa-solid fa-angle-right"></i></button>',
+                    nextArrow: '<button class="slick-next next-arrow"> <i class="fa-solid fa-angle-left"></i></button>',
+                    slidesToScroll: 1,
+                    responsive: [
+                        {
+                            breakpoint: 1200,
+                            settings: {
+                                slidesToShow: 1,
+                                slidesToScroll: 1,
+                            }
                         },
-                    }
-                ]
-            });
+                        {
+                            breakpoint: 1008,
+                            settings: {
+                                slidesToShow: 1,
+                                slidesToScroll: 1,
+                            }
+                        },
+                        {
+                            breakpoint: 800,
+                            settings: {
+                                arrows: false,
+                                slidesToShow: 1,
+                                slidesToScroll: 1,
+                            },
+                        }
+                    ]
+                });
+            }
         },
 
         handleFilterChange({ stateId, vehicleBrandId, vehicleModelId, yearFrom, yearTo, priceFrom, priceTo, mealsFrom, mealsTo, color, bodyType, specification, paintedType, paintedStatus, gearType, oilType }) {
@@ -285,7 +341,7 @@ export default {
             this.dataSearch.paintedStatus = paintedStatus;
             this.dataSearch.gearType = gearType;
             this.dataSearch.oilType = oilType;
-            this.dataSearch.page = 1;
+            this.page = 1;
             this.SearchChangeFunc();
 
         },
@@ -293,55 +349,55 @@ export default {
         handleYearSelection({ from, to }) {
             this.dataSearch.yearFrom = from;
             this.dataSearch.yearTo = to;
-            this.dataSearch.page = 1;
+            this.page = 1;
             this.SearchChangeFunc();
         },
 
         handlePriceSelection({ from, to }) {
             this.dataSearch.priceFrom = from;
             this.dataSearch.priceTo = to;
-            this.dataSearch.page = 1;
+            this.page = 1;
             this.SearchChangeFunc();
         },
         handleMealSelection({ from, to }) {
             this.dataSearch.mealsFrom = from;
             this.dataSearch.mealsTo = to;
-            this.dataSearch.page = 1;
+            this.page = 1;
             this.SearchChangeFunc();
         },
         handleBrandSelection(id) {
             this.dataSearch.vehicleBrandId = id;
-            this.dataSearch.page = 1;
+            this.page = 1;
             this.SearchChangeFunc();
         },
         handleBrandModelSelection(id) {
             this.dataSearch.vehicleModelId = id;
-            this.dataSearch.page = 1;
+            this.page = 1;
             this.SearchChangeFunc();
         },
         handlePaintedStatusSelection(id) {
             this.dataSearch.paintedStatus = id;
-            this.dataSearch.page = 1;
+            this.page = 1;
             this.SearchChangeFunc();
         },
         handleSpecificationSelection(id) {
             this.dataSearch.specification = id;
-            this.dataSearch.page = 1;
+            this.page = 1;
             this.SearchChangeFunc();
         },
         handleBodyTypeSelection(id) {
             this.dataSearch.bodyType = id;
-            this.dataSearch.page = 1;
+            this.page = 1;
             this.SearchChangeFunc();
         },
         handleColorSelection(id) {
             this.dataSearch.color = id;
-            this.dataSearch.page = 1;
+            this.page = 1;
             this.SearchChangeFunc();
         },
         handlePaintedTypeSelection(id) {
             this.dataSearch.paintedType = id;
-            this.dataSearch.page = 1;
+            this.page = 1;
             this.SearchChangeFunc();
         },
         handleGearTypeSelection(id) {
@@ -350,20 +406,32 @@ export default {
         },
         handleOilTypeSelection(id) {
             this.dataSearch.oilType = id;
-            this.dataSearch.page = 1;
+            this.page = 1;
             this.SearchChangeFunc();
         },
 
         goToPage(page) {
             if (page < 1 || page > this.pagination.pageCount) return;
-            this.dataSearch.page = page;
+            this.page = page;
             this.SearchChangeFunc();
         },
 
+        handleResize() {
+            this.windowWidth = window.innerWidth;
+        },
 
     },
     beforeDestroy() {
         document.removeEventListener('click', this.closeDropdown);
+        window.removeEventListener('resize', this.handleResize);
+        
+        // Cleanup slick slider if initialized
+        if (typeof $ !== 'undefined' && $.fn.slick) {
+            const $slider = $(this.$el).find('.slider');
+            if ($slider.length && $slider.hasClass('slick-initialized')) {
+                $slider.slick('unslick');
+            }
+        }
     }
 };
 </script>
@@ -429,18 +497,24 @@ export default {
                                 </p>
                                 <ul class="pagination">
                                     <li :class="{ disabled: pagination.currentPage === 1 }">
-                                        <a href="#" @click.prevent="goToPage(pagination.currentPage - 1)">
+                                        <a href="#" @click.prevent="goToPage(pagination.currentPage - 1)" class="pagination-link">
                                             <i class="fa-solid fa-arrow-right"></i>
                                         </a>
                                     </li>
-                                    <li v-for="page in pagination.pageCount" :key="page"
+                                    <li v-if="visiblePages[0] > 1" class="pagination-ellipsis">
+                                        <span>...</span>
+                                    </li>
+                                    <li v-for="page in visiblePages" :key="page"
                                         :class="{ active: pagination.currentPage === page }">
-                                        <a href="#" @click.prevent="goToPage(page)">
+                                        <a href="#" @click.prevent="goToPage(page)" class="pagination-link">
                                             {{ page }}
                                         </a>
                                     </li>
+                                    <li v-if="visiblePages[visiblePages.length - 1] < pagination.pageCount" class="pagination-ellipsis">
+                                        <span>...</span>
+                                    </li>
                                     <li :class="{ disabled: pagination.currentPage === pagination.pageCount }">
-                                        <a href="#" @click.prevent="goToPage(pagination.currentPage + 1)">
+                                        <a href="#" @click.prevent="goToPage(pagination.currentPage + 1)" class="pagination-link">
                                             <i class="fa-solid fa-arrow-left"></i>
                                         </a>
                                     </li>
@@ -460,4 +534,149 @@ export default {
 
     <pageFooter></pageFooter>
 </template>
-<style scoped></style>
+<style scoped>
+.pag {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    padding: 20px 0;
+}
+
+.pag .count {
+    margin: 0;
+    font-size: 14px;
+    color: #666;
+    text-align: center;
+}
+
+.pag .pagination {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.pag .pagination li {
+    min-width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    border-radius: 8px;
+    border: 1px solid #ccced2;
+    transition: all 0.4s ease-in-out;
+    cursor: pointer;
+}
+
+.pag .pagination li.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.pag .pagination li.disabled a {
+    pointer-events: none;
+}
+
+.pag .pagination li.pagination-ellipsis {
+    border: none;
+    background: transparent;
+    cursor: default;
+    min-width: auto;
+    padding: 0 5px;
+}
+
+.pag .pagination li.pagination-ellipsis span {
+    color: #666;
+    font-size: 16px;
+}
+
+.pag .pagination li a {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #000;
+    text-decoration: none;
+    padding: 0 8px;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.pag .pagination li.active {
+    background-color: black;
+    border-color: black;
+}
+
+.pag .pagination li.active a {
+    color: white;
+}
+
+.pag .pagination li:not(.disabled):not(.pagination-ellipsis):hover {
+    background-color: black;
+    border-color: black;
+}
+
+.pag .pagination li:not(.disabled):not(.pagination-ellipsis):hover a {
+    color: white;
+}
+
+/* Mobile responsive styles */
+@media screen and (max-width: 768px) {
+    .pag {
+        padding: 15px 0;
+    }
+
+    .pag .count {
+        font-size: 12px;
+        margin-bottom: 10px;
+    }
+
+    .pag .pagination {
+        gap: 3px;
+        width: 100%;
+        justify-content: center;
+    }
+
+    .pag .pagination li {
+        min-width: 36px;
+        height: 36px;
+        margin: 0;
+        font-size: 14px;
+    }
+
+    .pag .pagination li a {
+        padding: 0 4px;
+        font-size: 14px;
+    }
+
+    .pag .pagination li.pagination-ellipsis {
+        min-width: 20px;
+        padding: 0 2px;
+    }
+
+    .pag .pagination li.pagination-ellipsis span {
+        font-size: 14px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .pag .pagination li {
+        min-width: 32px;
+        height: 32px;
+        font-size: 12px;
+    }
+
+    .pag .pagination li a {
+        font-size: 12px;
+        padding: 0 2px;
+    }
+}
+</style>
