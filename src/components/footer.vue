@@ -98,7 +98,7 @@ export default {
         getTitleByCode(code) {
             // Find the object with the matching code
             const foundItem = this.getInterfaceItemsData.find(item => item.code === code);
-
+            console.log("getInterfaceItemsData : ", this.getInterfaceItemsData);
             if (foundItem) {
                 return foundItem.title;  // Set the title if found
 

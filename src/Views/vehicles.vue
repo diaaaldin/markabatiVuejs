@@ -36,7 +36,7 @@ export default {
             },
 
             page: 1,
-            pageSize: 1,
+            pageSize: 12,
 
             pagination: {
                 currentPage: 1,
