@@ -173,6 +173,8 @@ export default {
 
 			this.dataSearch.userId = id;
 
+			console.log("this.dataSearch : ",this.dataSearch);
+			console.log("this.getUserVehiclesData : ",this.getUserVehiclesData);
 			this.GetUserVehicles(this.dataSearch).then(Response => {
 				this.pagination = this.getUserVehiclesData.vehicles.pagination;
 

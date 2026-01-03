@@ -1,3 +1,7 @@
+export const getCodesData = (state) => {
+    return state.CodesData;
+}
+
 export const getStatesData = (state) => {
     return state.StatesData;
 }

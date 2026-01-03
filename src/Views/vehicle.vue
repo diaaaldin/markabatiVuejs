@@ -529,7 +529,7 @@ export default {
                     </div>
                 </div>
             </div>
-            <div class="row">
+            <div class="row justify-content-center">
                 <div class="col-lg-2 col-md-3 col-sm-6 text-center">
                     <div class="details-squre">
                         <span>
@@ -823,6 +823,37 @@ export default {
                         <p> {{ data.oilType }}</p>
                     </div>
                 </div>
+                <!-- Vehicle Category Extensions -->
+                <template v-if="data.vehicleCategoryExtension && data.vehicleCategoryExtension.length > 0">
+                    <div v-for="(extension, index) in data.vehicleCategoryExtension" :key="index" class="col-lg-2 col-md-3 col-sm-6 text-center">
+                        <div class="details-squre">
+                            <span>
+                                <template v-if="extension.icon || extension.iconSvg || extension.svg || extension.iconHtml">
+                                    <span v-html="extension.icon || extension.iconSvg || extension.svg || extension.iconHtml"></span>
+                                </template>
+                                <template v-else>
+                                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                <g id="SVGRepo_iconCarrier">
+                                    <path
+                                        d="M7 12C6.44772 12 6 11.5523 6 11C6 10.4477 6.44772 10 7 10H17C17.5523 10 18 10.4477 18 11C18 11.5523 17.5523 12 17 12L7 12Z"
+                                        fill="#0F0F0F"></path>
+                                    <path
+                                        d="M6 15C6 15.5523 6.44772 16 7 16H13C13.5523 16 14 15.5523 14 15C14 14.4477 13.5523 14 13 14H7C6.44772 14 6 14.4477 6 15Z"
+                                        fill="#0F0F0F"></path>
+                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                        d="M7 1C6.44772 1 6 1.44772 6 2V3H4C2.89543 3 2 3.89543 2 5V19C2 21.2091 3.79086 23 6 23H18C20.2091 23 22 21.2091 22 19V5C22 3.89543 21.1046 3 20 3H18V2C18 1.44772 17.5523 1 17 1C16.4477 1 16 1.44772 16 2V3H13V2C13 1.44772 12.5523 1 12 1C11.4477 1 11 1.44772 11 2V3H8V2C8 1.44772 7.55228 1 7 1ZM16 5H13V6C13 6.55228 12.5523 7 12 7C11.4477 7 11 6.55228 11 6V5H8V6C8 6.55228 7.55228 7 7 7C6.44772 7 6 6.55228 6 6V5H5C4.44772 5 4 5.44772 4 6V19C4 20.1046 4.89543 21 6 21H18C19.1046 21 20 20.1046 20 19V6C20 5.44772 19.5523 5 19 5H18V6C18 6.55228 17.5523 7 17 7C16.4477 7 16 6.55228 16 6V5Z"
+                                        fill="#0F0F0F"></path>
+                                </g>
+                            </svg>
+                                </template>
+                            </span>
+                            <h5>{{ extension.extensionName || extension.name }}</h5>
+                            <p>{{ extension.extentionValue || extension.value || extension.valueSt }}</p>
+                        </div>
+                    </div>
+                </template>
             </div>
             <div id="vehicle-description-section" class="row">
                 <div class="col-12">

@@ -74,6 +74,22 @@ export default{
         return Api.get(`${END_POINT}/GetStateCities`, config );
     },
 
+
+    GetAllCodes() {
+        return Api.get(`${END_POINT}/GetAllCodes`);
+    },
+
+    GetCodesByParent(parent1, parent2 = 0) {
+        let config = {
+            params: {
+                parent1: parent1,
+                parent2: parent2
+            }
+        };
+
+        return Api.get(`${END_POINT}/GetCodesByParent`, config);
+    },
+    
     CreateCode(data){
         let token =  localStorage.getItem("token")
         ? JSON.parse(localStorage.getItem("token"))

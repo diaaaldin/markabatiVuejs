@@ -75,7 +75,7 @@ export default {
   },
 
   methods: {
-    ...mapActions("Vehicles", ["GetMyVehicles", "GetVehicelForUpdate", "UpdateVehicleImage360", "DeleteVehicle"]),
+    ...mapActions("Vehicles", ["GetMyVehicles", "GetVehicelForUpdate", "UpdateVehicleImage360", "DeleteVehicle", "UpdateVehicleStatus"]),
     ...mapActions("Orders", ["CreateStarVehicleOrder"]),
     ...mapActions("Orders", ["CreateAnnouncementOrder", "GetStarVehicleOrderDate", "GetStarVehicleOrderDailyPrice", "SaveOrderDataToState"]),
 
@@ -334,6 +334,60 @@ export default {
 
     },
 
+    asSoldFunc() {
+      if (this.checkasSoldValidation()) {
+
+        const loading = ElLoading.service({
+          lock: true,
+          background: 'rgba(0, 0, 0, 0.7)',
+          text: "",
+        });
+
+        const data = {
+          vehicleId: this.data.id,
+          statusId: this.vehicleStatus.saled
+        };
+
+        console.log("data : ",data);
+        this.UpdateVehicleStatus(data).then(Response => {
+          this.$moshaToast('تم تحديث حالة المركبة إلى "تم البيع"', {
+            hideProgressBar: 'false',
+            showIcon: 'true',
+            swipeClose: 'true',
+            type: 'success',
+            timeout: 3000,
+          });
+          loading.close();
+          this.GetData();
+          $('#as_sold_vehicle').modal('hide');
+        }).catch(error => {
+          this.$moshaToast(error?.response?.data?.message || 'حدث خطأ أثناء تحديث حالة المركبة', {
+            hideProgressBar: 'false',
+            position: 'top-center',
+            showIcon: 'true',
+            swipeClose: 'true',
+            type: 'warning',
+            timeout: 3000,
+          });
+          loading.close();
+        });
+      }
+    },
+    checkasSoldValidation() {
+      if (this.data.id == 0) {
+        this.$moshaToast('هنالك خطأ في تحديد المركبة', {
+          hideProgressBar: 'false',
+          position: 'top-center',
+          showIcon: 'true',
+          swipeClose: 'true',
+          type: 'warning',
+          timeout: 3000,
+        });
+        return false;
+      }
+      return true;
+    },
+
     clearData() {
       this.data.vehicleId = 0;
       this.selectedVehicle.id = 0;
@@ -585,13 +639,15 @@ export default {
               </td>
               <td>{{ item.totalVisits }}</td>
               <td>
-                <a v-on:click="selectItemForUpdate(item.id)" class="option">تعديل</a>
+                <a v-on:click="selectItemForUpdate(item.id)" class="option"> تعديل </a>
                 <a class="option" data-bs-toggle="modal" data-bs-target="#vehicle_star_modal"
-                  v-on:click="selectItemForStar(item.id)">تمييز المركبة</a>
+                  v-on:click="selectItemForStar(item.id)"> تمييز المركبة </a>
                 <a class="option" data-bs-toggle="modal" data-bs-target="#update_360_modal"
-                  v-on:click="selectItem(item.id)">تعديل صورة 360</a>
+                  v-on:click="selectItem(item.id)"> تعديل صورة 360 </a>
+                <a v-on:click="selectItem(item.id)" class="option" data-bs-toggle="modal"
+                  data-bs-target="#as_sold_vehicle"> تم البيع </a>
                 <a v-on:click="selectItem(item.id)" class="option del" data-bs-toggle="modal"
-                  data-bs-target="#delete_vehicle">حذف</a>
+                  data-bs-target="#delete_vehicle"> حذف </a>
               </td>
 
             </tr>
@@ -605,6 +661,24 @@ export default {
   </div>
   <!-- </div> -->
   <!-- end right side  -->
+
+  <div class="modal fade" id="as_sold_vehicle" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">تم البيع</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          تنبـيــه : سيتم اخفاء المركبة عن جمهور الناس في حال تم بيعها
+        </div>
+        <div class="modal-footer">
+          <button type="button" v-on:click="asSoldFunc()" class="btn btn-primary">تأكيد</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 
   <div class="modal fade" id="delete_vehicle" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">

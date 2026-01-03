@@ -1,6 +1,6 @@
 export const socialUrlData = {
   facebook: 'https://www.facebook.com/people/%D9%85%D8%B1%D9%83%D8%A8%D8%AA%D9%8A-%D9%81%D9%84%D8%B3%D8%B7%D9%8A%D9%86/61584628529772',
-  instagram: 'https://www.instagram.com',
+  instagram: 'https://www.instagram.com/markabati.palestine',
   twitter: 'https://x.com',
   linkedIn: 'https://www.linkedin.com',
   snapchat: 'https://www.snapchat.com',
@@ -10,8 +10,8 @@ export const socialUrlData = {
 
 
 export const Urls = {
-  // cpSite: 'https://localhost:44347',
-  cpSite : 'https://cp.markabatistore.com',
+  cpSite: 'https://localhost:44347',
+  // cpSite : 'https://cp.markabatistore.com',
   // cpSite : 'http://localhost:4000',
 
   dashboard: 'https://dash.markabatistore.com',
@@ -51,6 +51,7 @@ export const ParentEnum = {
   AnnouncementType: 13,
   SendMessageWay: 14,
   VehicleStatus: 15,
+  SiteStatus: 20,
 };
 
 
