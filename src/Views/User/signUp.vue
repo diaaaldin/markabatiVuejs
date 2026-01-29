@@ -252,7 +252,7 @@ export default {
                 this.$refs.addressCity.focus();
                 return false;
             } else if (this.data.password.trim() == '') {
-                this.$moshaToast("enter password", {
+                this.$moshaToast("أدخل كلمة المرور", {
                     hideProgressBar: 'false',
                     position: 'top-center',
                     showIcon: 'true',
@@ -263,7 +263,7 @@ export default {
                 this.$refs.password.focus();
                 return false;
             } else if (this.data.confirmPassword.trim() == '') {
-                this.$moshaToast("enter confirmPassword", {
+                this.$moshaToast("أدخل تأكيد كلمة المرور", {
                     hideProgressBar: 'false',
                     position: 'top-center',
                     showIcon: 'true',
@@ -274,7 +274,7 @@ export default {
                 this.$refs.confirmPassword.focus();
                 return false;
             } else if (this.data.password != this.data.confirmPassword) {
-                this.$moshaToast("confirm password not equal password", {
+                this.$moshaToast("تأكيد كلمة المرور لا تتطابق مع كلمة المرور", {
                     hideProgressBar: 'false',
                     position: 'top-center',
                     showIcon: 'true',
@@ -383,7 +383,7 @@ export default {
                 this.$refs.addressCity.focus();
                 return false;
             } else if (this.data.password.trim() == '') {
-                this.$moshaToast("enter password", {
+                this.$moshaToast("أدخل كلمة المرور", {
                     hideProgressBar: 'false',
                     position: 'top-center',
                     showIcon: 'true',
@@ -394,7 +394,7 @@ export default {
                 this.$refs.password.focus();
                 return false;
             } else if (this.data.confirmPassword.trim() == '') {
-                this.$moshaToast("enter confirmPassword", {
+                this.$moshaToast("أدخل تأكيد كلمة المرور", {
                     hideProgressBar: 'false',
                     position: 'top-center',
                     showIcon: 'true',
@@ -405,7 +405,7 @@ export default {
                 this.$refs.confirmPassword.focus();
                 return false;
             } else if (this.data.password != this.data.confirmPassword) {
-                this.$moshaToast("confirm password not equal password", {
+                this.$moshaToast("تأكيد كلمة المرور لا تتطابق مع كلمة المرور", {
                     hideProgressBar: 'false',
                     position: 'top-center',
                     showIcon: 'true',

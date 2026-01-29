@@ -171,14 +171,22 @@ export default {
 
             return imageUrl;
         },
-        stateNameFunc(id) {
+
+      stateNameFunc(id) {
             // console.log("this.getStatesData : ",id);
+            if (!this.getStatesData || !Array.isArray(this.getStatesData)) {
+                return "";
+            }
             let res = this.getStatesData.find(x => x.id === id);
             if (res) return res.name;
             else return "";
         },
+
         cityNameFunc(id) {
             // console.log("this.getCitiesData : ", id);
+            if (!this.getCitiesData || !Array.isArray(this.getCitiesData)) {
+                return "";
+            }
             let res = this.getCitiesData.find(x => x.id === id);
             if (res) return res.name;
             else return "";

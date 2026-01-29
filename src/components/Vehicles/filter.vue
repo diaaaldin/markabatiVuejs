@@ -21,6 +21,8 @@ export default {
             gearType: 0,
             oilType: 0,
             showFilterBar: true,
+            touchStartY: null,
+            touchStartX: null,
         }
     },
     mounted() {
@@ -28,8 +30,10 @@ export default {
             window.addEventListener("resize", this.handleResize);
                 },
     beforeUnmount() {
-  window.removeEventListener("resize", this.handleResize);
-},
+        window.removeEventListener("resize", this.handleResize);
+        // Clean up body class
+        document.body.classList.remove('filter-open');
+    },
 
     watch: {
         // Watch for changes in the input fields and emit the data
@@ -50,6 +54,16 @@ export default {
         },
         mealsTo(newValue) {
             this.emitMeal();
+        },
+        // Watch filter bar visibility to manage body scroll lock
+        showFilterBar(newVal) {
+            if (window.innerWidth <= 992) {
+                if (newVal) {
+                    document.body.classList.add('filter-open');
+                } else {
+                    document.body.classList.remove('filter-open');
+                }
+            }
         },
     },
     components: {
@@ -186,13 +200,57 @@ export default {
 
         toggleFilterBar() {
                 this.showFilterBar = !this.showFilterBar;
+                // Prevent body scroll when filter is open on mobile
+                if (window.innerWidth <= 992) {
+                    if (this.showFilterBar) {
+                        document.body.classList.add('filter-open');
+                    } else {
+                        document.body.classList.remove('filter-open');
+                    }
+                }
             },
             handleResize() {
     if (window.innerWidth <= 992) { // Bootstrap's lg breakpoint (iPad and smaller)
       this.showFilterBar = false;
+      document.body.classList.remove('filter-open');
     } else {
       this.showFilterBar = true;
+      document.body.classList.remove('filter-open');
     }
+  },
+  
+  // Prevent filter from closing when scrolling inside it on mobile
+  handleTouchStart(e) {
+    // Store the initial touch position
+    this.touchStartY = e.touches[0].clientY;
+    this.touchStartX = e.touches[0].clientX;
+    // Prevent event from bubbling up
+    e.stopPropagation();
+  },
+  
+  handleTouchMove(e) {
+    // Prevent default behavior that might close the filter
+    // Only prevent if we're scrolling inside the filter content
+    const filterBar = e.currentTarget.closest('.filter-bar');
+    if (filterBar) {
+      // Allow scrolling inside the filter bar
+      e.stopPropagation();
+      // Don't prevent default to allow scrolling
+    }
+  },
+  
+  handleTouchEnd(e) {
+    // Reset touch positions
+    this.touchStartY = null;
+    this.touchStartX = null;
+    // Prevent event from bubbling up
+    e.stopPropagation();
+  },
+  
+  // Prevent clicks inside filter from closing it
+  handleFilterClick(e) {
+    // Stop propagation to prevent any parent handlers from closing the filter
+    e.stopPropagation();
   },
     }
 };
@@ -231,7 +289,11 @@ export default {
 
             <div class="clear-fix"></div>
             <transition name="fade-slide">
-            <div class="filter-bar" v-show="showFilterBar">
+            <div class="filter-bar" v-show="showFilterBar" 
+                 @touchstart.stop="handleTouchStart"
+                 @touchmove.stop="handleTouchMove"
+                 @touchend.stop="handleTouchEnd"
+                 @click.stop="handleFilterClick">
                 <div class="accordion-item customize-according">
                     <h2 class="accordion-header" id="heading0">
                         <button class="accordion-button  btn collapsed" type="button" data-bs-toggle="collapse"
@@ -616,6 +678,62 @@ export default {
     /* Enable vertical scrolling */
     margin-top: 10px;
     /* Optional: Space above the scrollable area */
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+    touch-action: pan-y; /* Allow vertical scrolling */
+    overscroll-behavior: contain; /* Prevent scroll chaining */
+}
+
+.filter-bar {
+    touch-action: pan-y; /* Allow vertical scrolling */
+    overscroll-behavior: contain; /* Prevent scroll chaining */
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+}
+
+.filter-bar .accordion-body {
+    touch-action: pan-y; /* Allow vertical scrolling */
+    overscroll-behavior: contain; /* Prevent scroll chaining */
+}
+
+/* Prevent filter from closing when scrolling on mobile */
+@media (max-width: 992px) {
+    .filter-bar {
+        position: relative;
+        z-index: 1000;
+        max-height: calc(100vh - 100px);
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        touch-action: pan-y;
+        overscroll-behavior: contain;
+        /* Prevent any pointer events from closing the filter */
+        pointer-events: auto;
+    }
+    
+    .filter-bar * {
+        /* Allow all interactions inside filter */
+        pointer-events: auto;
+    }
+    
+    .filter-bar .accordion {
+        touch-action: pan-y;
+    }
+    
+    .filter-bar .accordion-item {
+        touch-action: pan-y;
+    }
+    
+    .filter-bar .accordion-body {
+        touch-action: pan-y;
+        overscroll-behavior: contain;
+    }
+    
+    /* Ensure scrollable lists work properly */
+    .filter-bar .scrollable-list {
+        -webkit-overflow-scrolling: touch;
+        touch-action: pan-y;
+        overscroll-behavior: contain;
+        /* Increase max height on mobile for better scrolling */
+        max-height: 250px;
+    }
 }
 
 #iconfilter {
@@ -637,6 +755,15 @@ export default {
 .fade-slide-enter-to, .fade-slide-leave-from {
     opacity: 1;
     transform: translateY(0);
+}
+
+/* Prevent body scroll when filter is open on mobile */
+@media (max-width: 992px) {
+    body.filter-open {
+        overflow: hidden;
+        position: fixed;
+        width: 100%;
+    }
 }
 
 

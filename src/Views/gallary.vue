@@ -109,6 +109,17 @@ export default {
 		...mapGetters("Code", ["getStatesData", "getCitiesData"]),
 		...mapGetters("Vehicles", ["getUserVehiclesData"]),
 
+		vehiclesList() {
+			if (!this.getUserVehiclesData || !this.getUserVehiclesData.vehicles || !this.getUserVehiclesData.vehicles.data) {
+				return [];
+			}
+			return this.getUserVehiclesData.vehicles.data;
+		},
+
+		hasVehicles() {
+			return this.vehiclesList && this.vehiclesList.length > 0;
+		},
+
 		userImage() {
 			const imageUrl = this.getUserVehiclesData && this.getUserVehiclesData.image
 				? this.getUserVehiclesData.image
@@ -172,11 +183,10 @@ export default {
 
 
 			this.dataSearch.userId = id;
-
-			console.log("this.dataSearch : ",this.dataSearch);
-			console.log("this.getUserVehiclesData : ",this.getUserVehiclesData);
 			this.GetUserVehicles(this.dataSearch).then(Response => {
-				this.pagination = this.getUserVehiclesData.vehicles.pagination;
+				if (this.getUserVehiclesData && this.getUserVehiclesData.vehicles && this.getUserVehiclesData.vehicles.pagination) {
+					this.pagination = this.getUserVehiclesData.vehicles.pagination;
+				}
 
 				loading.close();
 			}).catch(error => {
@@ -202,7 +212,9 @@ export default {
 			});
 
 			this.GetUserVehicles(this.dataSearch).then(Response => {
-				this.pagination = this.getUserVehiclesData.vehicles.pagination;
+				if (this.getUserVehiclesData && this.getUserVehiclesData.vehicles && this.getUserVehiclesData.vehicles.pagination) {
+					this.pagination = this.getUserVehiclesData.vehicles.pagination;
+				}
 				loading.close();
 			}).catch(error => {
 				this.$moshaToast(error.response.data.message, {
@@ -218,11 +230,17 @@ export default {
 		},
 
 		stateNameFunc(id) {
+			if (!this.getStatesData || !Array.isArray(this.getStatesData)) {
+				return "";
+			}
 			let res = this.getStatesData.find(x => x.id === id);
 			if (res) return res.name;
 			else return "";
 		},
 		cityNameFunc(id) {
+			if (!this.getCitiesData || !Array.isArray(this.getCitiesData)) {
+				return "";
+			}
 			let res = this.getCitiesData.find(x => x.id === id);
 			if (res) return res.name;
 			else return "";
@@ -328,10 +346,11 @@ export default {
 				<div class="container white_card mt-2">
 
 					<div class="clearfix"></div>
-					<div class="row">
-						<productCard v-for="item in this.getUserVehiclesData.vehicles.data" :key="item.id" :product='item'>
-						</productCard>
-
+					<div v-if="!hasVehicles" class="alert alert-danger mt-3 d-flex justify-content-center">
+						{{ $t('general_empty_table') }}
+					</div>
+					<div v-else class="row">
+						<productCard v-for="item in vehiclesList" :key="item.id" :product='item'></productCard>
 					</div>
 					<!-- <div class="row">
 						<div class="pag">

@@ -9,17 +9,16 @@ export default {
         }
     },
     mounted() {
-        // try init if data already present
-        this.initSliderIfReady();
+        // Wait a bit for DOM and data to be ready
+        this.$nextTick(() => {
+            setTimeout(() => {
+                this.initSliderIfReady();
+            }, 100);
+        });
     },
     beforeDestroy() {
-        // cleanup slick if initialized - use scoped selector
-        if (typeof $ !== 'undefined') {
-            const $sl = $(this.$el).find('.slider');
-            if ($sl.length && $sl.hasClass('slick-initialized')) {
-                $sl.slick('unslick');
-            }
-        }
+        // cleanup slick if initialized
+        this.destroySlider();
     },
     components: {
 
@@ -38,27 +37,70 @@ export default {
     computed: {
         ...mapGetters("Announcement", ["getMainAnnouncementData", "getHorizontalAnnouncementData"]),
 
+        safeMainAnnouncementData() {
+            if (!this.getMainAnnouncementData || !Array.isArray(this.getMainAnnouncementData)) {
+                return [];
+            }
+            return this.getMainAnnouncementData;
+        },
     },
     watch: {
-        // when data arrives, init slider after DOM update
-        getMainAnnouncementData(newVal) {
-            if (newVal && newVal.length) {
-                this.$nextTick(() => {
-                    this.initSliderIfReady();
-                });
-            }
+        // when data arrives or changes, re-init slider after DOM update
+        getMainAnnouncementData: {
+            handler(newVal, oldVal) {
+                // Destroy existing slider if it exists
+                this.destroySlider();
+                
+                // Only initialize if we have data
+                if (newVal && Array.isArray(newVal) && newVal.length > 0) {
+                    this.$nextTick(() => {
+                        this.initSliderIfReady();
+                    });
+                }
+            },
+            immediate: false,
+            deep: true
         }
     },
     methods: {
         ...mapActions("Announcement", ["GetMainAnnouncementActiveOrder", "GetHorizontalAnnouncementActiveOrder"]),
 
+        destroySlider() {
+            // Destroy slick slider if initialized
+            if (typeof $ !== 'undefined' && $.fn.slick) {
+                const $sl = $(this.$el).find('.slider');
+                if ($sl.length && $sl.hasClass('slick-initialized')) {
+                    try {
+                        $sl.slick('unslick');
+                    } catch (e) {
+                        console.warn('Error destroying slider:', e);
+                    }
+                }
+            }
+        },
+
         initSliderIfReady() {
-            // ensure jquery/slick available and not already initialized
-            if (typeof $ === 'undefined' || !$.fn.slick) return;
+            // ensure jquery/slick available
+            if (typeof $ === 'undefined' || !$.fn.slick) {
+                // Retry after a short delay if jQuery/slick not ready
+                setTimeout(() => this.initSliderIfReady(), 100);
+                return;
+            }
+            
+            // Check if we have data
+            if (!this.safeMainAnnouncementData || this.safeMainAnnouncementData.length === 0) {
+                return;
+            }
+
             // Use scoped selector to only target this component's slider
             const $sl = $(this.$el).find('.slider');
             if ($sl.length && !$sl.hasClass('slick-initialized')) {
-                this.mainSlider();
+                // Ensure DOM is ready
+                this.$nextTick(() => {
+                    if ($sl.children().length > 0) {
+                        this.mainSlider();
+                    }
+                });
             }
         },
 
@@ -105,9 +147,9 @@ export default {
 };
 </script>
 <template>
-   <section class="slider-main">
+   <section class="slider-main" v-if="safeMainAnnouncementData && safeMainAnnouncementData.length > 0">
             <div class="slider">
-                <div v-for="item in getMainAnnouncementData" class="card-slider">
+                <div v-for="(item, index) in safeMainAnnouncementData" :key="index" class="card-slider">
                     <img loading="lazy" :src="item.image" class="responsive" alt="...">
                 </div>
             </div>

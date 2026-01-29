@@ -9,17 +9,16 @@ export default {
         }
     },
     mounted() {
-        // try init if data already present
-        this.initSliderIfReady();
+        // Wait a bit for DOM and data to be ready
+        this.$nextTick(() => {
+            setTimeout(() => {
+                this.initSliderIfReady();
+            }, 100);
+        });
     },
     beforeDestroy() {
-        // cleanup slick if initialized - use scoped selector
-        if (typeof $ !== 'undefined') {
-            const $sl = $(this.$el).find('.slider');
-            if ($sl.length && $sl.hasClass('slick-initialized')) {
-                $sl.slick('unslick');
-            }
-        }
+        // cleanup slick if initialized
+        this.destroySlider();
     },
     components: {
 
@@ -38,29 +37,71 @@ export default {
     computed: {
        ...mapGetters("Announcement", ["getVerticalAnnouncementData", "getHorizontalAnnouncementData"]),
 
-
+        safeHorizontalAnnouncementData() {
+            if (!this.getHorizontalAnnouncementData || !Array.isArray(this.getHorizontalAnnouncementData)) {
+                return [];
+            }
+            return this.getHorizontalAnnouncementData;
+        },
     },
     watch: {
-        // when data arrives, init slider after DOM update
-        getHorizontalAnnouncementData(newVal) {
-            if (newVal && newVal.length) {
-                this.$nextTick(() => {
-                    this.initSliderIfReady();
-                });
-            }
+        // when data arrives or changes, re-init slider after DOM update
+        getHorizontalAnnouncementData: {
+            handler(newVal, oldVal) {
+                // Destroy existing slider if it exists
+                this.destroySlider();
+                
+                // Only initialize if we have data
+                if (newVal && Array.isArray(newVal) && newVal.length > 0) {
+                    this.$nextTick(() => {
+                        this.initSliderIfReady();
+                    });
+                }
+            },
+            immediate: false,
+            deep: true
         }
     },
     methods: {
         // ...mapActions("Users", ["CustomerProfileInfo"]),
         ...mapActions("Announcement", ["GetVerticalAnnouncementActiveOrder", "GetHorizontalAnnouncementActiveOrder"]),
 
+        destroySlider() {
+            // Destroy slick slider if initialized
+            if (typeof $ !== 'undefined' && $.fn.slick) {
+                const $sl = $(this.$el).find('.slider');
+                if ($sl.length && $sl.hasClass('slick-initialized')) {
+                    try {
+                        $sl.slick('unslick');
+                    } catch (e) {
+                        console.warn('Error destroying slider:', e);
+                    }
+                }
+            }
+        },
+
         initSliderIfReady() {
-            // ensure jquery/slick available and not already initialized
-            if (typeof $ === 'undefined' || !$.fn.slick) return;
+            // ensure jquery/slick available
+            if (typeof $ === 'undefined' || !$.fn.slick) {
+                // Retry after a short delay if jQuery/slick not ready
+                setTimeout(() => this.initSliderIfReady(), 100);
+                return;
+            }
+            
+            // Check if we have data
+            if (!this.safeHorizontalAnnouncementData || this.safeHorizontalAnnouncementData.length === 0) {
+                return;
+            }
+
             // Use scoped selector to only target this component's slider
             const $sl = $(this.$el).find('.slider');
             if ($sl.length && !$sl.hasClass('slick-initialized')) {
-                this.mainSlider();
+                // Ensure DOM is ready
+                this.$nextTick(() => {
+                    if ($sl.children().length > 0) {
+                        this.mainSlider();
+                    }
+                });
             }
         },
 
@@ -109,10 +150,10 @@ export default {
 </script>
 
 <template>
-    <div class="container">
+    <div class="container" v-if="safeHorizontalAnnouncementData && safeHorizontalAnnouncementData.length > 0">
 <section class="slider-main ads-main">
             <div class="slider">
-                <div v-for="item in getHorizontalAnnouncementData" class="card-slider">
+                <div v-for="(item, index) in safeHorizontalAnnouncementData" :key="index" class="card-slider">
                     <img loading="lazy" :src="item.image" class="card-img-top" alt="...">
                     <!-- <div class="card-body">
                         <div class="d-flex justify-content-between mb-2">

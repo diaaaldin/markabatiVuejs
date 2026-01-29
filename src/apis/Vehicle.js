@@ -45,7 +45,6 @@ export default {
             pageSize: data.pageSize ?? 5
         };
 
-        console.log("params : " , params);
         return Api.get(`${END_POINT}/GetVehiclesRandomly`, { params });
     },
 

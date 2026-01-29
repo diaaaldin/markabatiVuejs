@@ -59,7 +59,6 @@ export default {
 	created() {
 		// Call the function from the store directly when the component is created
 		this.initFunc();
-		console.log("this.getPaymentMovementsData : ", this.getPaymentMovementsData);
 	},
 
 	computed: {

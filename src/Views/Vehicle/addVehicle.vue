@@ -283,7 +283,7 @@ export default {
                 });
                 return false;
             } else if (this.data.price == 0) {
-                this.$moshaToast('enter product price', {
+                this.$moshaToast('أدخل سعر المركبة', {
                     hideProgressBar: 'false',
                     position: 'top-center',
                     showIcon: 'true',
@@ -293,7 +293,7 @@ export default {
                 });
                 return false;
             } else if (this.data.currency == 0) {
-                this.$moshaToast('إختر نوع العملة المراد', {
+                this.$moshaToast('إختر نوع العملة المرادة', {
                     hideProgressBar: 'false',
                     position: 'top-center',
                     showIcon: 'true',

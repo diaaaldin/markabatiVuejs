@@ -40,7 +40,6 @@ export default {
         },
 
         created() {
-             console.log("this.seller : ",this.seller);
         },
 
         computed: {
@@ -57,15 +56,24 @@ export default {
             ...mapActions("Code", ["GetStates", "GetCities"]),
 
             stateNameFunc(id) {
-                let res = this.getStatesData.find(x => x.id === id);
-                if (res) return res.name;
-                else return "";
-            },
-            cityNameFunc(id) {
-                let res = this.getCitiesData.find(x => x.id === id);
-                if (res) return res.name;
-                else return "";
-            },
+            // console.log("this.getStatesData : ",id);
+            if (!this.getStatesData || !Array.isArray(this.getStatesData)) {
+                return "";
+            }
+            let res = this.getStatesData.find(x => x.id === id);
+            if (res) return res.name;
+            else return "";
+        },
+
+        cityNameFunc(id) {
+            // console.log("this.getCitiesData : ", id);
+            if (!this.getCitiesData || !Array.isArray(this.getCitiesData)) {
+                return "";
+            }
+            let res = this.getCitiesData.find(x => x.id === id);
+            if (res) return res.name;
+            else return "";
+        },
             toGallaryFunc(){
                this.$router.push({ name: "gallary", params: { slug: this.seller.slug } });
             }

@@ -70,6 +70,17 @@ export default {
 	computed: {
 		...mapGetters("Code", ["getOrderStatusData", "getAnnouncementTypesData"]),
 		...mapGetters("Orders", ["getOrdersData", "getOrderDateTime"]),
+
+		ordersList() {
+			if (!this.getOrdersData || !this.getOrdersData.orders || !this.getOrdersData.orders.data) {
+				return [];
+			}
+			return this.getOrdersData.orders.data;
+		},
+
+		hasOrders() {
+			return this.ordersList && this.ordersList.length > 0;
+		},
 	},
 	methods: {
 		...mapActions("Code", ["GetOrderStatus", "GetAnnouncementTypes"]),
@@ -267,7 +278,10 @@ export default {
 			return true;
 		},
 		selectItem(id) {
-			const foundItem = this.getOrdersData.orders.data.find(element => element.id === id);
+			if (!this.ordersList || !Array.isArray(this.ordersList)) {
+				return;
+			}
+			const foundItem = this.ordersList.find(element => element.id === id);
 			if (foundItem) {
 				this.data.id = foundItem.id;
 				this.data.message = foundItem.message;
@@ -318,7 +332,10 @@ export default {
 
 		OpenFullScreenFunc(id) {
 			this.selectedOrder.image = [];
-			const foundItem = this.getOrdersData.orders.data.find(element => element.id === id);
+			if (!this.ordersList || !Array.isArray(this.ordersList)) {
+				return;
+			}
+			const foundItem = this.ordersList.find(element => element.id === id);
 			if (foundItem && foundItem.image != "") {
 				if (!Array.isArray(this.selectedOrder.image)) {
 					this.selectedOrder.image = []; // Initialize as an empty array if not already
@@ -330,7 +347,10 @@ export default {
 		},
 		OpenFullScreenBillFunc(id) {
 			this.selectedOrder.image = [];
-			const foundItem = this.getOrdersData.orders.data.find(element => element.id === id);
+			if (!this.ordersList || !Array.isArray(this.ordersList)) {
+				return;
+			}
+			const foundItem = this.ordersList.find(element => element.id === id);
 			if (foundItem && foundItem.billImage != "") {
 				if (!Array.isArray(this.selectedOrder.image)) {
 					this.selectedOrder.image = []; // Initialize as an empty array if not already
@@ -399,7 +419,7 @@ export default {
 			</div>
 		</div>
 		<div class="container white_card px-4 pt-4 pb-0 mt-3 mt-lg-0 right-side">
-			<div v-if="!getOrdersData.orders.data || getOrdersData.orders.data.length === 0"
+			<div v-if="!hasOrders"
 				class="alert alert-danger mt-3 d-flex justify-content-center">
 				{{ $t('general_empty_table') }}
 			</div>
@@ -425,7 +445,7 @@ export default {
 						</tr>
 					</thead>
 					<tbody>
-						<tr v-for="(item, index) in getOrdersData.orders.data">
+						<tr v-for="(item, index) in ordersList" :key="item.id">
 							<td class="id">{{ index + 1 }}</td>
 							<td>{{ item.userName }}</td>
 							<td>{{ item.announcementTypeName }}</td>

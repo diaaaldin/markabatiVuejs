@@ -40,12 +40,16 @@ export default {
         product: {
             immediate: true,
             handler() {
-                this.chickIsFavoritFunc();
+                if (this.isTokenValidSilent()) {
+                    this.chickIsFavoritFunc();
+                }
             }
         },
         getFavoriteVehiclesIdData: {
             handler() {
-                this.chickIsFavoritFunc();
+                if (this.isTokenValidSilent()) {
+                    this.chickIsFavoritFunc();
+                }
             }
         }
     },
@@ -58,7 +62,9 @@ export default {
     },
 
     mounted() {
-        this.chickIsFavoritFunc();
+        if (this.isTokenValidSilent()) {
+            this.chickIsFavoritFunc();
+        }
     },
     created() {
         // Call the function from the store directly when the component is created
@@ -82,7 +88,35 @@ export default {
         },
 
         chickIsFavoritFunc() {
+            if (!this.getFavoriteVehiclesIdData || !Array.isArray(this.getFavoriteVehiclesIdData)) {
+                this.isFavorite = false;
+                return;
+            }
             this.isFavorite = this.getFavoriteVehiclesIdData.includes(this.product.id);
+        },
+
+        isTokenValidSilent() {
+            const token = localStorage.getItem('token');
+            if (!token || typeof token !== 'string' || !token.includes('.')) {
+                return false;
+            }
+            try {
+                const parts = token.split('.');
+                if (parts.length !== 3) {
+                    return false;
+                }
+
+                const base64Payload = parts[1]
+                    .replace(/-/g, '+')
+                    .replace(/_/g, '/');
+
+                const decodedPayload = JSON.parse(atob(base64Payload));
+                const currentTime = Math.floor(Date.now() / 1000);
+
+                return decodedPayload.exp > currentTime;
+            } catch (error) {
+                return false;
+            }
         },
 
         async toggleFavoriteFunc() {
@@ -217,6 +251,9 @@ export default {
 
         stateNameFunc(id) {
             // console.log("this.getStatesData : ",id);
+            if (!this.getStatesData || !Array.isArray(this.getStatesData)) {
+                return "";
+            }
             let res = this.getStatesData.find(x => x.id === id);
             if (res) return res.name;
             else return "";
@@ -224,6 +261,9 @@ export default {
 
         cityNameFunc(id) {
             // console.log("this.getCitiesData : ", id);
+            if (!this.getCitiesData || !Array.isArray(this.getCitiesData)) {
+                return "";
+            }
             let res = this.getCitiesData.find(x => x.id === id);
             if (res) return res.name;
             else return "";

@@ -39,8 +39,9 @@ export default {
     }
   },
   mounted() {
-    this.chickIsFavoritFunc();
-
+    if (this.isTokenValidSilent()) {
+      this.chickIsFavoritFunc();
+    }
   },
   components: {
 
@@ -54,12 +55,16 @@ export default {
     product: {
       immediate: true,
       handler() {
-        this.chickIsFavoritFunc();
+        if (this.isTokenValidSilent()) {
+          this.chickIsFavoritFunc();
+        }
       }
     },
     getFavoriteVehiclesIdData: {
       handler() {
-        this.chickIsFavoritFunc();
+        if (this.isTokenValidSilent()) {
+          this.chickIsFavoritFunc();
+        }
       }
     }
   },
@@ -78,7 +83,35 @@ export default {
     ...mapActions("Vehicles", ["ToggleVehicleFavorite", "GetVehiclesFavoriteId", "GetVehiclesFavorite"]),
 
     chickIsFavoritFunc() {
+      if (!this.getFavoriteVehiclesIdData || !Array.isArray(this.getFavoriteVehiclesIdData)) {
+        this.isFavorite = false;
+        return;
+      }
       this.isFavorite = this.getFavoriteVehiclesIdData.includes(this.product.id);
+    },
+
+    isTokenValidSilent() {
+      const token = localStorage.getItem('token');
+      if (!token || typeof token !== 'string' || !token.includes('.')) {
+        return false;
+      }
+      try {
+        const parts = token.split('.');
+        if (parts.length !== 3) {
+          return false;
+        }
+
+        const base64Payload = parts[1]
+          .replace(/-/g, '+')
+          .replace(/_/g, '/');
+
+        const decodedPayload = JSON.parse(atob(base64Payload));
+        const currentTime = Math.floor(Date.now() / 1000);
+
+        return decodedPayload.exp > currentTime;
+      } catch (error) {
+        return false;
+      }
     },
 
     async toggleFavoriteFunc() {

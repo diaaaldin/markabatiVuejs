@@ -592,8 +592,21 @@ export default {
                 return true;
             }
         },
+        
         filterMobileInput(event) {
-            const input = event.target.value.replace(/\D/g, '').slice(0, 10);
+            let input = event.target.value;
+
+            // Keep only digits, but allow "+" only at the start
+            input = input.replace(/(?!^\+)[^\d]/g, '');
+
+            if (input.startsWith('+')) {
+                // Limit: "+" + 13 digits max
+                input = input.slice(0, 13);
+            } else {
+                // Limit: 14 digits max
+                input = input.slice(0, 14);
+            }
+
             this.data.mobile = input;
         },
         filterSSNInput(event) {
@@ -645,15 +658,24 @@ export default {
         },
 
         stateNameFunc(id) {
+            // console.log("this.getStatesData : ",id);
+            if (!this.getStatesData || !Array.isArray(this.getStatesData)) {
+                return "";
+            }
             let res = this.getStatesData.find(x => x.id === id);
             if (res) return res.name;
             else return "";
         },
+
         cityNameFunc(id) {
+            // console.log("this.getCitiesData : ", id);
+            if (!this.getCitiesData || !Array.isArray(this.getCitiesData)) {
+                return "";
+            }
             let res = this.getCitiesData.find(x => x.id === id);
             if (res) return res.name;
             else return "";
-        }
+        },
 
     }
 };

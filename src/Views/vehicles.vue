@@ -139,6 +139,17 @@ export default {
         ...mapGetters("Announcement", ["getVerticalAnnouncementData", "getHorizontalAnnouncementData"]),
         ...mapGetters("Vehicles", ["getVehiclesData"]),
 
+        vehiclesList() {
+            if (!this.getVehiclesData || !this.getVehiclesData.vehicles || !this.getVehiclesData.vehicles.data) {
+                return [];
+            }
+            return this.getVehiclesData.vehicles.data;
+        },
+
+        hasVehicles() {
+            return this.vehiclesList && this.vehiclesList.length > 0;
+        },
+
         startItem() {
             return (this.pagination.currentPage - 1) * this.pagination.pageSize + 1;
         },
@@ -194,7 +205,9 @@ export default {
                 page: this.page,
                 pageSize: this.pageSize
             }).then(Response => {
-                this.pagination = this.getVehiclesData.vehicles.pagination;
+                if (this.getVehiclesData && this.getVehiclesData.vehicles && this.getVehiclesData.vehicles.pagination) {
+                    this.pagination = this.getVehiclesData.vehicles.pagination;
+                }
                 // console.log("vehicles : ", this.getVehiclesData);
                 // console.log("this.pagination : ", this.pagination);
                 loading.close();
@@ -221,13 +234,14 @@ export default {
                 text: "",
             });
 
-            console.log("this.dataSearch : ", this.dataSearch);
             this.GetVehiclesRandomly({
                 searchData: this.dataSearch,
                 page: this.page,
                 pageSize: this.pageSize
             }).then(Response => {
-                this.pagination = this.getVehiclesData.vehicles.pagination;
+                if (this.getVehiclesData && this.getVehiclesData.vehicles && this.getVehiclesData.vehicles.pagination) {
+                    this.pagination = this.getVehiclesData.vehicles.pagination;
+                }
                 loading.close();
             }).catch(error => {
                 const errorMessage = error?.response?.data?.message || error?.message || 'حدث خطأ أثناء تحميل البيانات';
@@ -462,7 +476,7 @@ export default {
 
                 <!-- right side container -->
                 <div class="col-12 col-lg-9 ">
-                    <div v-if="!this.getVehiclesData.vehicles.data || this.getVehiclesData.vehicles.data.length === 0"
+                    <div v-if="!hasVehicles"
                         class="alert alert-danger mt-3 d-flex justify-content-center">
                         {{ $t('general_empty_table') }}
                     </div>
@@ -475,7 +489,7 @@ export default {
                         </select> -->
                         <div class="clearfix"></div>
                         <div class="row">
-                            <productCard v-for="item in this.getVehiclesData.vehicles.data" :product='item'>
+                            <productCard v-for="item in vehiclesList" :key="item.id" :product='item'>
                             </productCard>
                         </div>
                         <!-- <div class="row">

@@ -82,15 +82,15 @@ export default {
 
 			if (this.isTokenValid()) {
 				this.GetVehiclesFavoriteId();
+				this.GetUserNotifications(this.dataNotification);
 			}
 
 			try {
 				await Promise.all([
 					this.GetMainAnnouncementActiveOrder(),
-					// this.GetVerticalAnnouncementActiveOrder(),
+					this.GetVerticalAnnouncementActiveOrder(),
 					this.GetHorizontalAnnouncementActiveOrder(),
 					this.GetStarActiveVehicles(),
-					this.GetUserNotifications(this.dataNotification),
 					this.GetWebSiteComunicationInfo(),
 				]);
 			} catch (error) {

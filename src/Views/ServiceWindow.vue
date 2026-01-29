@@ -54,9 +54,11 @@ export default {
 
         <main class="service-window__main">
             <div class="service-window__card">
-                <div class="service-window__icon">
+                <!-- <div class="service-window__icon">
                     <i class="fa-solid fa-screwdriver-wrench"></i>
-                </div>
+                    
+                </div> -->
+                <img loading="lazy" src="/img/mini_logo.png" width="200" alt="" />
                 <div class="">
                     <p class="item_about_us mt-5" v-html="getTitleByCode('service_message')"></p>
                 </div>

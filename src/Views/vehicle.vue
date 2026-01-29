@@ -69,7 +69,9 @@ export default {
         data: {
             immediate: true,
             handler() {
-                this.chickIsFavoritFunc();
+                if (this.isTokenValidSilent()) {
+                    this.chickIsFavoritFunc();
+                }
                 if (this.data.id) { // Only run when data is loaded
                     useHead({
                         // title: `${this.data.brandName} ${this.data.modelName} ${this.data.year} | مركبتي`,
@@ -119,14 +121,18 @@ export default {
 
         getFavoriteVehiclesIdData: {
             handler() {
-                this.chickIsFavoritFunc();
+                if (this.isTokenValidSilent()) {
+                    this.chickIsFavoritFunc();
+                }
             }
         },
     },
 
     mounted() {
         this.initFunc();
-        this.chickIsFavoritFunc();
+        if (this.isTokenValidSilent()) {
+            this.chickIsFavoritFunc();
+        }
         this.recordVisit();
 
     },
@@ -179,8 +185,10 @@ export default {
             this.GetVehicle(id).then(Response => {
                 console.log("this.getVehicleData : ", this.getVehicleData);
                 this.data = this.getVehicleData;
-                this.GetVehiclesFavoriteId();
-                this.chickIsFavoritFunc();
+                if (this.isTokenValidSilent()) {
+                    this.GetVehiclesFavoriteId();
+                    this.chickIsFavoritFunc();
+                }
 
                 loading.close();
             }).catch(error => {
@@ -263,11 +271,20 @@ export default {
         },
 
         stateNameFunc(id) {
+            // console.log("this.getStatesData : ",id);
+            if (!this.getStatesData || !Array.isArray(this.getStatesData)) {
+                return "";
+            }
             let res = this.getStatesData.find(x => x.id === id);
             if (res) return res.name;
             else return "";
         },
+
         cityNameFunc(id) {
+            // console.log("this.getCitiesData : ", id);
+            if (!this.getCitiesData || !Array.isArray(this.getCitiesData)) {
+                return "";
+            }
             let res = this.getCitiesData.find(x => x.id === id);
             if (res) return res.name;
             else return "";
@@ -320,7 +337,35 @@ export default {
         },
 
         chickIsFavoritFunc() {
+            if (!this.getFavoriteVehiclesIdData || !Array.isArray(this.getFavoriteVehiclesIdData)) {
+                this.isFavorite = false;
+                return;
+            }
             this.isFavorite = this.getFavoriteVehiclesIdData.includes(this.data.id);
+        },
+
+        isTokenValidSilent() {
+            const token = localStorage.getItem('token');
+            if (!token || typeof token !== 'string' || !token.includes('.')) {
+                return false;
+            }
+            try {
+                const parts = token.split('.');
+                if (parts.length !== 3) {
+                    return false;
+                }
+
+                const base64Payload = parts[1]
+                    .replace(/-/g, '+')
+                    .replace(/_/g, '/');
+
+                const decodedPayload = JSON.parse(atob(base64Payload));
+                const currentTime = Math.floor(Date.now() / 1000);
+
+                return decodedPayload.exp > currentTime;
+            } catch (error) {
+                return false;
+            }
         },
 
         async toggleFavoriteFunc() {

@@ -139,6 +139,17 @@ export default {
     computed: {
         ...mapGetters("Users", ["getUsersData"]),
 
+        usersList() {
+            if (!this.getUsersData || !this.getUsersData.users || !this.getUsersData.users.data) {
+                return [];
+            }
+            return this.getUsersData.users.data;
+        },
+
+        hasUsers() {
+            return this.usersList && this.usersList.length > 0;
+        },
+
         startItem() {
             return (this.pagination.currentPage - 1) * this.pagination.pageSize + 1;
         },
@@ -187,7 +198,9 @@ export default {
             });
 
             this.GetSellers(this.dataSearch).then(Response => {
-                this.pagination = this.getUsersData.users.pagination;
+                if (this.getUsersData && this.getUsersData.users && this.getUsersData.users.pagination) {
+                    this.pagination = this.getUsersData.users.pagination;
+                }
                 // console.log("sellers : ", this.getUsersData);
                 loading.close();
             }).catch(error => {
@@ -209,7 +222,9 @@ export default {
 
         GetData() {
             this.GetSellers(this.dataSearch).then(Response => {
-                this.pagination = this.getUsersData.users.pagination;
+                if (this.getUsersData && this.getUsersData.users && this.getUsersData.users.pagination) {
+                    this.pagination = this.getUsersData.users.pagination;
+                }
             }).catch(error => {
                 this.$moshaToast(error.response.data.message, {
                     hideProgressBar: 'false',
@@ -264,8 +279,11 @@ export default {
 
                     <div class="col-12">
                         <div class="container white_card mt-2">
-                            <div class="row">
-                                <sellerCard v-for="item in this.getUsersData.users.data" :key="item.id" :seller='item'></sellerCard>
+                            <div v-if="!hasUsers" class="alert alert-danger mt-3 d-flex justify-content-center">
+                                {{ $t('general_empty_table') }}
+                            </div>
+                            <div v-else class="row">
+                                <sellerCard v-for="item in usersList" :key="item.id" :seller='item'></sellerCard>
                             </div>
 
                             <!-- <div class="row">

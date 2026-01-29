@@ -28,6 +28,17 @@ export default {
 
   computed: {
     ...mapGetters("Vehicles", ["getFavoriteVehiclesData"]),
+
+    vehiclesList() {
+      if (!this.getFavoriteVehiclesData || !this.getFavoriteVehiclesData.vehicles || !this.getFavoriteVehiclesData.vehicles.data) {
+        return [];
+      }
+      return this.getFavoriteVehiclesData.vehicles.data;
+    },
+
+    hasVehicles() {
+      return this.vehiclesList && this.vehiclesList.length > 0;
+    },
   },
 
   methods: {
@@ -65,12 +76,12 @@ export default {
       <div class="tab-content px-0" id="myTabContent">
         <div class="favorite-product" id="">
           <!-- start card link -->
-          <div v-if="!getFavoriteVehiclesData.vehicles.data || getFavoriteVehiclesData.vehicles.data.length === 0"
+          <div v-if="!hasVehicles"
             class="alert alert-danger mt-3 d-flex justify-content-center">
             {{ $t('general_empty_table') }}
           </div>
 
-          <favoritProduct v-else v-for="(item, index) in getFavoriteVehiclesData.vehicles.data" :product='item'>
+          <favoritProduct v-else v-for="(item, index) in vehiclesList" :key="item.id" :product='item'>
           </favoritProduct>
           <!-- <favoritProduct></favoritProduct>
           <favoritProduct></favoritProduct>
