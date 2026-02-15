@@ -474,6 +474,7 @@ export default {
                 <Filter @filterChange="handleFilterChange"></Filter>
                 <!-- end left side list-->
 
+
                 <!-- right side container -->
                 <div class="col-12 col-lg-9 ">
                     <div v-if="!hasVehicles"

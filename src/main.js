@@ -19,6 +19,11 @@ const app = createApp(App);
 
 // Configure axios defaults
 axios.defaults.withCredentials = true;
+
+// Ensure all global axios requests send the current UI language
+const selectedLanguage = localStorage.getItem('selectedLanguage') || 'ar';
+axios.defaults.headers.common['X-Language'] = selectedLanguage;
+
 // Add request timeout
 axios.defaults.timeout = 10000; // 10 seconds
 

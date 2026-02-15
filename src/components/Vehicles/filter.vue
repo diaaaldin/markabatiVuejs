@@ -14,8 +14,6 @@ export default {
             mealsFrom: 0,
             mealsTo: 0,
             color: 0,
-            bodyType: 0,
-            specification: 0,
             paintedType: 0,
             paintedStatus: 0,
             gearType: 0,
@@ -26,13 +24,12 @@ export default {
         }
     },
     mounted() {
-            this.handleResize();
-            window.addEventListener("resize", this.handleResize);
-                },
+        // Set initial visibility: show on desktop, hidden on mobile
+        this.showFilterBar = window.innerWidth > 992;
+        window.addEventListener("resize", this.handleResize);
+    },
     beforeUnmount() {
         window.removeEventListener("resize", this.handleResize);
-        // Clean up body class
-        document.body.classList.remove('filter-open');
     },
 
     watch: {
@@ -55,16 +52,6 @@ export default {
         mealsTo(newValue) {
             this.emitMeal();
         },
-        // Watch filter bar visibility to manage body scroll lock
-        showFilterBar(newVal) {
-            if (window.innerWidth <= 992) {
-                if (newVal) {
-                    document.body.classList.add('filter-open');
-                } else {
-                    document.body.classList.remove('filter-open');
-                }
-            }
-        },
     },
     components: {
 
@@ -78,20 +65,17 @@ export default {
     },
 
     computed: {
-        ...mapGetters("Code", ["getStatesData", "getCitiesData", "getBrandsData", "getBrandModelsData", "getPaintedStatusData", "getSpecificationsData", "getBodyTypesData", "getColorsData", "getPaintedTypesData", "getGearTypesData", "getOilTypesData"]),
+		...mapGetters("Code", ["getStatesData", "getCitiesData", "getBrandsData", "getBrandModelsData", "getPaintedStatusData", "getColorsData", "getGearTypesData", "getOilTypesData"]),
     },
     methods: {
-        ...mapActions("Code", ["GetBrands", "GetBrandModels", "GetPaintedStatus", "GetSpecification", "GetBodyType", "GetColor", "GetPaintedType", "GetGearType", "GetOilType"]),
+		...mapActions("Code", ["GetBrands", "GetBrandModels", "GetPaintedStatus", "GetColor", "GetGearType", "GetOilType"]),
 
         async initFunc() {
             try {
                 await Promise.all([
                     this.GetBrands(),
                     this.GetPaintedStatus(),
-                    this.GetSpecification(),
-                    this.GetBodyType(),
                     this.GetColor(),
-                    this.GetPaintedType(),
                     this.GetGearType(),
                     this.GetOilType(),
                 ]);
@@ -106,10 +90,7 @@ export default {
                 vehicleBrandId: this.vehicleBrandId,
                 vehicleModelId: this.vehicleModelId,
                 paintedStatus: this.paintedStatus,
-                specification: this.specification,
-                bodyType: this.bodyType,
                 color: this.color,
-                paintedType: this.paintedType,
                 gearType: this.gearType,
                 oilType: this.oilType,
                 yearFrom: this.yearFrom,
@@ -149,10 +130,6 @@ export default {
             this.color = id;
             this.filterChangeFunc();
         },
-        selectedPaintedTypeFunc(id) {
-            this.paintedType = id;
-            this.filterChangeFunc();
-        },
         selectedGearTypeFunc(id) {
             this.gearType = id;
             this.filterChangeFunc();
@@ -189,9 +166,6 @@ export default {
             this.mealsFrom = 0;
             this.mealsTo = 0;
             this.color = 0;
-            this.bodyType = 0;
-            this.specification = 0;
-            this.paintedType = 0;
             this.paintedStatus = 0;
             this.gearType = 0;
             this.oilType = 0;
@@ -199,25 +173,16 @@ export default {
         },
 
         toggleFilterBar() {
-                this.showFilterBar = !this.showFilterBar;
-                // Prevent body scroll when filter is open on mobile
-                if (window.innerWidth <= 992) {
-                    if (this.showFilterBar) {
-                        document.body.classList.add('filter-open');
-                    } else {
-                        document.body.classList.remove('filter-open');
-                    }
-                }
-            },
-            handleResize() {
-    if (window.innerWidth <= 992) { // Bootstrap's lg breakpoint (iPad and smaller)
-      this.showFilterBar = false;
-      document.body.classList.remove('filter-open');
-    } else {
-      this.showFilterBar = true;
-      document.body.classList.remove('filter-open');
-    }
-  },
+            this.showFilterBar = !this.showFilterBar;
+        },
+        handleResize() {
+            // Only force the filter to be visible on desktop.
+            // On mobile, keep the current open/close state so scrolling (which may trigger resize)
+            // does NOT automatically close the filter.
+            if (window.innerWidth > 992) { // Desktop
+                this.showFilterBar = true;
+            }
+        },
   
   // Prevent filter from closing when scrolling inside it on mobile
   handleTouchStart(e) {
@@ -459,53 +424,6 @@ export default {
                 </div>
 
                 <div class="accordion-item customize-according mt-2">
-                    <h2 class="accordion-header" id="heading3">
-                        <button class="accordion-button  btn collapsed" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#collapse3" aria-expanded="false" aria-controls="collapse3">
-                            <div class="title-fill">
-                                <img loading="lazy" src="/img/icons/car.svg">
-                                <span>{{ $t('filter_body_type') }}</span>
-                            </div>
-                        </button>
-                    </h2>
-                    <div id="collapse3" class="accordion-collapse collapse  " aria-labelledby="heading3"
-                        data-bs-parent="#accordionExample">
-                        <div class="accordion-body customize-acc-body scrollable-list">
-                            <div v-for="(item, index) in getBodyTypesData" :key="index" class="form-check">
-                                <input class="form-check-input" :id="'flexRadioDefault' + (index)" type="radio"
-                                    name="car" :value="item.name" @change="selectedBodyTypeFunc(item.id)">
-                                <label class="form-check-label" :for="'flexRadioDefault' + (index)">{{ item.name
-                                    }}</label>
-                                <!-- <span>(345)</span> -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="accordion-item customize-according mt-2">
-                    <h2 class="accordion-header" id="heading4">
-                        <button class="accordion-button  btn collapsed" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#collapse4" aria-expanded="false" aria-controls="collapse4">
-                            <div class="title-fill">
-                                <img loading="lazy" src="/img/icons/car.svg">
-                                <span>{{ $t('filter_specefication') }}</span>
-                            </div>
-                        </button>
-                    </h2>
-                    <div id="collapse4" class="accordion-collapse collapse " aria-labelledby="heading4"
-                        data-bs-parent="#accordionExample">
-                        <div class="accordion-body customize-acc-body scrollable-list">
-                            <div v-for="(item, index) in getSpecificationsData" :key="index" class="form-check">
-                                <input class="form-check-input" :id="'flexRadioDefault' + (index)" type="radio"
-                                    name="car" :value="item.name" @change="selectedSpecificationFunc(item.id)">
-                                <label class="form-check-label" :for="'flexRadioDefault' + (index)">{{ item.name
-                                    }}</label>
-                                <!-- <span>(345)</span> -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="accordion-item customize-according mt-2">
                     <h2 class="accordion-header" id="heading5">
                         <button class="accordion-button  btn collapsed" type="button" data-bs-toggle="collapse"
                             data-bs-target="#collapse5" aria-expanded="false" aria-controls="collapse5">
@@ -521,29 +439,6 @@ export default {
                             <div v-for="(item, index) in getColorsData" :key="index" class="form-check">
                                 <input class="form-check-input" :id="'flexRadioDefault' + (index)" type="radio"
                                     name="car" :value="item.name" @change="selectedColorFunc(item.id)">
-                                <label class="form-check-label" :for="'flexRadioDefault' + (index)">{{ item.name
-                                    }}</label>
-                                <!-- <span>(345)</span> -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="accordion-item customize-according mt-2">
-                    <h2 class="accordion-header" id="heading6">
-                        <button class="accordion-button  btn collapsed" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#collapse6" aria-expanded="false" aria-controls="collapse6">
-                            <div class="title-fill">
-                                <img loading="lazy" src="/img/icons/color.svg">
-                                <span>{{ $t('filter_painting_type') }}</span>
-                            </div>
-                        </button>
-                    </h2>
-                    <div id="collapse6" class="accordion-collapse collapse  " aria-labelledby="heading6"
-                        data-bs-parent="#accordionExample">
-                        <div class="accordion-body customize-acc-body  scrollable-list">
-                            <div v-for="(item, index) in getPaintedTypesData" :key="index" class="form-check">
-                                <input class="form-check-input" :id="'flexRadioDefault' + (index)" type="radio"
-                                    name="car" :value="item.name" @change="selectedPaintedTypeFunc(item.id)">
                                 <label class="form-check-label" :for="'flexRadioDefault' + (index)">{{ item.name
                                     }}</label>
                                 <!-- <span>(345)</span> -->
@@ -590,30 +485,6 @@ export default {
                             <div v-for="(item, index) in getGearTypesData" :key="index" class="form-check">
                                 <input class="form-check-input" :id="'flexRadioDefault' + (index)" type="radio"
                                     name="car" :value="item.name" @change="selectedGearTypeFunc(item.id)">
-                                <label class="form-check-label" :for="'flexRadioDefault' + (index)">{{ item.name
-                                    }}</label>
-                                <!-- <span>(345)</span> -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="accordion-item customize-according mt-2">
-                    <h2 class="accordion-header" id="heading10">
-                        <button class="accordion-button  btn collapsed" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#collapse10" aria-expanded="false" aria-controls="collapse10">
-                            <div class="title-fill">
-                                <img loading="lazy" src="/img/icons/spas.svg">
-                                <span>{{ $t('filter_specefication') }}</span>
-                            </div>
-                        </button>
-                    </h2>
-                    <div id="collapse10" class="accordion-collapse collapse " aria-labelledby="heading10"
-                        data-bs-parent="#accordionExample">
-                        <div class="accordion-body customize-acc-body scrollable-list">
-                            <div v-for="(item, index) in getSpecificationsData" :key="index" class="form-check">
-                                <input class="form-check-input" :id="'flexRadioDefault' + (index)" type="radio"
-                                    name="car" :value="item.name" @change="selectedSpecificationFunc(item.id)">
                                 <label class="form-check-label" :for="'flexRadioDefault' + (index)">{{ item.name
                                     }}</label>
                                 <!-- <span>(345)</span> -->
@@ -680,18 +551,16 @@ export default {
     /* Optional: Space above the scrollable area */
     -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
     touch-action: pan-y; /* Allow vertical scrolling */
-    overscroll-behavior: contain; /* Prevent scroll chaining */
+    /* Let scroll bubble up so the page can continue scrolling at the ends */
 }
 
 .filter-bar {
     touch-action: pan-y; /* Allow vertical scrolling */
-    overscroll-behavior: contain; /* Prevent scroll chaining */
     -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
 }
 
 .filter-bar .accordion-body {
     touch-action: pan-y; /* Allow vertical scrolling */
-    overscroll-behavior: contain; /* Prevent scroll chaining */
 }
 
 /* Prevent filter from closing when scrolling on mobile */
@@ -703,7 +572,6 @@ export default {
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
         touch-action: pan-y;
-        overscroll-behavior: contain;
         /* Prevent any pointer events from closing the filter */
         pointer-events: auto;
     }
@@ -723,14 +591,12 @@ export default {
     
     .filter-bar .accordion-body {
         touch-action: pan-y;
-        overscroll-behavior: contain;
     }
     
     /* Ensure scrollable lists work properly */
     .filter-bar .scrollable-list {
         -webkit-overflow-scrolling: touch;
         touch-action: pan-y;
-        overscroll-behavior: contain;
         /* Increase max height on mobile for better scrolling */
         max-height: 250px;
     }

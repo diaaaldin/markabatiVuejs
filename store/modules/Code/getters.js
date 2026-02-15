@@ -22,9 +22,9 @@ export const getPaintedStatusData = (state) => {
     return state.PaintedStatusData;
 }
 
-export const getSpecificationsData = (state) => {
-    return state.SpecificationsData;
-}
+// export const getSpecificationsData = (state) => {
+//     return state.SpecificationsData;
+// }
 
 export const getOrderStatusData = (state) => {
     return state.OrderStatusData;
@@ -34,17 +34,17 @@ export const getVehicleStatusData = (state) => {
     return state.VehicleStatusData;
 }
 
-export const getBodyTypesData = (state) => {
-    return state.BodyTypesData;
-}
+// export const getBodyTypesData = (state) => {
+//     return state.BodyTypesData;
+// }
 
 export const getColorsData = (state) => {
     return state.ColorsData;
 }
 
-export const getPaintedTypesData = (state) => {
-    return state.PaintedTypesData;
-}
+// export const getPaintedTypesData = (state) => {
+//     return state.PaintedTypesData;
+// }
 
 export const getGearTypesData = (state) => {
     return state.GearTypesData;

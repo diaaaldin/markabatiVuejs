@@ -50,6 +50,7 @@ export default {
             myFiles: [],
 
             emailError: '',
+            mobileError: '',
         }
     },
     mounted() {
@@ -218,7 +219,6 @@ export default {
             } else {
                 this.CompanyProfileInfo(this.data.id).then(Response => {
                     this.setData();
-                    console.log("getUserData : ", this.getUserData);
 
                     loading.close();
                 }).catch(error => {
@@ -595,20 +595,61 @@ export default {
         
         filterMobileInput(event) {
             let input = event.target.value;
-
             // Keep only digits, but allow "+" only at the start
             input = input.replace(/(?!^\+)[^\d]/g, '');
 
-            if (input.startsWith('+')) {
-                // Limit: "+" + 13 digits max
+            if (input.startsWith('00')) {
+                // Exactly 14 digits when starting with 00
+                input = input.slice(0, 14);
+            } else if (input.startsWith('+')) {
+                // Exactly 13 characters when starting with + (1 char + and 12 digits)
                 input = input.slice(0, 13);
             } else {
-                // Limit: 14 digits max
+                // For other input, still cap to 14 characters
                 input = input.slice(0, 14);
             }
 
             this.data.mobile = input;
+
+            // validate after formatting
+            this.validateMobile(this.data.mobile);
         },
+        
+        validateMobile(mobile) {
+            const raw = this.data.mobile || '';
+            const digits = raw.replace(/\D/g, '');
+
+            if (!raw) {
+                this.mobileError = '';
+                return false;
+            }
+
+            // WhatsApp number must start with 00 or +
+            if (!(raw.startsWith('00') || raw.startsWith('+'))) {
+                this.mobileError = 'رقم الواتساب يجب أن يبدأ بـ 00 أو +';
+                return false;
+            }
+
+            // If starts with 00 → total 14 digits (including the 00)
+            if (raw.startsWith('00')) {
+                if (digits.length !== 14) {
+                    this.mobileError = 'إذا بدأ الرقم بـ 00 فيجب أن يتكون من 14 رقماً.';
+                    return false;
+                }
+            }
+
+            // If starts with + → total 13 characters (1 + and 12 digits)
+            if (raw.startsWith('+')) {
+                if (raw.length !== 13 || digits.length !== 12) {
+                    this.mobileError = 'إذا بدأ الرقم بـ + فيجب أن يتكون من 12 رقماً بعد إشارة +.';
+                    return false;
+                }
+            }
+
+            this.mobileError = '';
+            return true;
+        },
+
         filterSSNInput(event) {
             const input = event.target.value.replace(/\D/g, '').slice(0, 9);
             this.data.ssn = input;
@@ -751,8 +792,10 @@ export default {
                     <div class="col-lg-6">
                         <label class="label-form"> {{ $t('profile_input_mobile') }} </label>
                         <input v-model="data.mobile" name="mobile" id="phone" type="tel" ref="phoneInput"
-                            class="form-control mt-2 mb-4  py-3 text-start list_link gray-inp" maxlength="10"
-                            placeholder="(201) 555-0123" aria-label="" aria-describedby="basic-addon1" required>
+                            class="form-control mt-2 mb-4  py-3 text-start list_link gray-inp"
+                            maxlength="14"
+                            placeholder="(+970) 59-512-3123" aria-label="" aria-describedby="basic-addon1" required
+                            @input="filterMobileInput">
 
                     </div>
                     <div class="col-lg-6">

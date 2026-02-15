@@ -119,7 +119,6 @@ export default {
             try {
                 // Proceed only if validation passes
                 if (this.checkAddValidation()) {
-                    console.log("this.data : " , this.data);
                     this.CreatePaymentMovements(this.data).then((Response) => {
                         this.$moshaToast(this.$t('general_operation_success_message'), {
                             hideProgressBar: 'false',

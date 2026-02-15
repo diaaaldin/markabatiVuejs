@@ -193,7 +193,6 @@ export default {
             headers: { 'Authorization': token, "Access-Control-Allow-Origin": "*" },
         };
 
-        console.log("this.data : ", data);
         const responce = Api.put(`${END_POINT}/UpdateVehicle`, data, config);
         return responce;
     },

@@ -7,6 +7,11 @@ export default {
       showPopup: false,
       popupShownOnce: false,
       currentIndex: 0,
+      touchStartX: 0,
+      touchStartY: 0,
+      touchEndX: 0,
+      touchEndY: 0,
+      minSwipeDistance: 50,
     };
   },
   created() {
@@ -41,6 +46,58 @@ export default {
         this.currentIndex--;
       }
     },
+    handleTouchStart(e) {
+      this.touchStartX = e.touches[0].clientX;
+      this.touchStartY = e.touches[0].clientY;
+    },
+    handleTouchMove(e) {
+      // Only prevent default if we detect a horizontal swipe to avoid interfering with vertical scrolling
+      const deltaX = Math.abs(e.touches[0].clientX - this.touchStartX);
+      const deltaY = Math.abs(e.touches[0].clientY - this.touchStartY);
+      // If horizontal movement is greater, prevent default to allow smooth horizontal swiping
+      if (deltaX > deltaY && deltaX > 10) {
+        e.preventDefault();
+      }
+    },
+    handleTouchEnd(e) {
+      this.touchEndX = e.changedTouches[0].clientX;
+      this.touchEndY = e.changedTouches[0].clientY;
+      this.handleSwipe();
+    },
+    handleSwipe() {
+      const deltaX = this.touchEndX - this.touchStartX;
+      const deltaY = this.touchEndY - this.touchStartY;
+      const absDeltaX = Math.abs(deltaX);
+      const absDeltaY = Math.abs(deltaY);
+
+      // Check if it's a vertical swipe (up or down) to close
+      if (absDeltaY > this.minSwipeDistance && absDeltaY > absDeltaX) {
+        // Close popup on both swipe up and swipe down
+        this.closePopup();
+        return;
+      }
+
+      // Check if it's a horizontal swipe (to navigate)
+      if (absDeltaX > this.minSwipeDistance && absDeltaX > absDeltaY) {
+        if (deltaX > 0) {
+          // Swipe right - next image
+          this.nextImage();
+        } else {
+          // Swipe left - previous image
+          this.prevImage();
+        }
+      }
+    },
+    handleOverlayClick(e) {
+      // Close popup if clicking on the overlay (not on the image content)
+      if (e.target.classList.contains('popup-overlay')) {
+        this.closePopup();
+      }
+    },
+    handleImageClick(e) {
+      // Prevent closing when clicking on the image or controls
+      e.stopPropagation();
+    },
   },
 };
 </script>
@@ -71,14 +128,24 @@ export default {
     </div>
 
     <!-- Fullscreen popup for mobile + tablets -->
-    <div v-if="showPopup" class="popup-overlay">
+    <div 
+      v-if="showPopup" 
+      class="popup-overlay"
+      @click="handleOverlayClick"
+    >
          <div class="btn-x">
 <button class="close-btn" @click="closePopup">
     <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path fill-rule="evenodd" clip-rule="evenodd" d="M19.207 6.207a1 1 0 0 0-1.414-1.414L12 10.586 6.207 4.793a1 1 0 0 0-1.414 1.414L10.586 12l-5.793 5.793a1 1 0 1 0 1.414 1.414L12 13.414l5.793 5.793a1 1 0 0 0 1.414-1.414L13.414 12l5.793-5.793z" fill="#fff"></path></g></svg>
 </button>
 
         </div>
-      <div class="popup-content">
+      <div 
+        class="popup-content" 
+        @click="handleImageClick"
+        @touchstart="handleTouchStart"
+        @touchmove="handleTouchMove"
+        @touchend="handleTouchEnd"
+      >
        
         
         <div class="slider-controls">
@@ -125,6 +192,13 @@ export default {
   max-width: 90%;
   max-height: 90%;
   text-align: center;
+  touch-action: pan-y;
+}
+
+.popup-content .image {
+  touch-action: pan-x pan-y;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 .popup-content img {
@@ -132,6 +206,9 @@ export default {
   max-height: 70vh;
   object-fit: contain;
   border-radius: 10px;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
 }
 .btn-x{
     position: relative;

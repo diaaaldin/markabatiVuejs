@@ -19,24 +19,24 @@ export default{
     GetPaintedStatus(){
         return Api.get(`${END_POINT}/GetPaintedStatus`);
     },
-    GetSpecification(){
-        return Api.get(`${END_POINT}/GetSpecification`);
-    },
+    // GetSpecification(){
+    //     return Api.get(`${END_POINT}/GetSpecification`);
+    // },
     GetOrderStatus(){
         return Api.get(`${END_POINT}/GetOrderStatus`);
     },
     GetVehicleStatus(){
         return Api.get(`${END_POINT}/GetVehicleStatus`);
     },
-    GetBodyType(){
-        return Api.get(`${END_POINT}/GetBodyType`);
-    },
+    // GetBodyType(){
+    //     return Api.get(`${END_POINT}/GetBodyType`);
+    // },
     GetColor(){
         return Api.get(`${END_POINT}/GetColor`);
     },
-    GetPaintedType(){
-        return Api.get(`${END_POINT}/GetPaintedType`);
-    },
+    // GetPaintedType(){
+    //     return Api.get(`${END_POINT}/GetPaintedType`);
+    // },
     GetGearType(){
         return Api.get(`${END_POINT}/GetGearType`);
     }, 

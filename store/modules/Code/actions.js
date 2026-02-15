@@ -59,24 +59,24 @@ export const GetPaintedStatus = ({ commit, dispatch }) => {
         }
     });
 }
-export const GetSpecification = ({ commit, dispatch }) => {
-    return Category.GetSpecification().then(function (response) {
-        commit('SET_SPECIFICATIONS_DATA', response.data.data);
-        return response.data.data;
-    }).catch(function (error) {
-        if (error) {
-            // Error with response
-            if (error.status == 401) {
-                console.log("Unauthorized");
-            } else {
-                console.log(error.message);
-            }
-        } else {
-            // Network failure or unexpected error
-            console.log("An error occurred. Please try again later.");
-        }
-    });
-}
+// export const GetSpecification = ({ commit, dispatch }) => {
+//     return Category.GetSpecification().then(function (response) {
+//         commit('SET_SPECIFICATIONS_DATA', response.data.data);
+//         return response.data.data;
+//     }).catch(function (error) {
+//         if (error) {
+//             // Error with response
+//             if (error.status == 401) {
+//                 console.log("Unauthorized");
+//             } else {
+//                 console.log(error.message);
+//             }
+//         } else {
+//             // Network failure or unexpected error
+//             console.log("An error occurred. Please try again later.");
+//         }
+//     });
+// }
 export const GetOrderStatus = ({ commit, dispatch }) => {
     return Category.GetOrderStatus().then(function (response) {
         commit('SET_ORDER_STATUS_DATA', response.data.data);
@@ -113,24 +113,24 @@ export const GetVehicleStatus = ({ commit, dispatch }) => {
         }
     });
 }
-export const GetBodyType = ({ commit, dispatch }) => {
-    return Category.GetBodyType().then(function (response) {
-        commit('SET_BODY_TYPES_DATA', response.data.data);
-        return response.data.data;
-    }).catch(function (error) {
-        if (error) {
-            // Error with response
-            if (error.status == 401) {
-                console.log("Unauthorized");
-            } else {
-                console.log(error.message);
-            }
-        } else {
-            // Network failure or unexpected error
-            console.log("An error occurred. Please try again later.");
-        }
-    });
-}
+// export const GetBodyType = ({ commit, dispatch }) => {
+//     return Category.GetBodyType().then(function (response) {
+//         commit('SET_BODY_TYPES_DATA', response.data.data);
+//         return response.data.data;
+//     }).catch(function (error) {
+//         if (error) {
+//             // Error with response
+//             if (error.status == 401) {
+//                 console.log("Unauthorized");
+//             } else {
+//                 console.log(error.message);
+//             }
+//         } else {
+//             // Network failure or unexpected error
+//             console.log("An error occurred. Please try again later.");
+//         }
+//     });
+// }
 export const GetColor = ({ commit, dispatch }) => {
     return Category.GetColor().then(function (response) {
         commit('SET_COLORS_DATA', response.data.data);
@@ -149,24 +149,24 @@ export const GetColor = ({ commit, dispatch }) => {
         }
     });
 }
-export const GetPaintedType = ({ commit, dispatch }) => {
-     Category.GetPaintedType().then(function (response) {
-        commit('SET_PAINTED_TYPES_DATA', response.data.data);
-        return response.data.data;
-    }).catch(function (error) {
-        if (error) {
-            // Error with response
-            if (error.status == 401) {
-                console.log("Unauthorized");
-            } else {
-                console.log(error.message);
-            }
-        } else {
-            // Network failure or unexpected error
-            console.log("An error occurred. Please try again later.");
-        }
-    });
-}
+// export const GetPaintedType = ({ commit, dispatch }) => {
+//      Category.GetPaintedType().then(function (response) {
+//         commit('SET_PAINTED_TYPES_DATA', response.data.data);
+//         return response.data.data;
+//     }).catch(function (error) {
+//         if (error) {
+//             // Error with response
+//             if (error.status == 401) {
+//                 console.log("Unauthorized");
+//             } else {
+//                 console.log(error.message);
+//             }
+//         } else {
+//             // Network failure or unexpected error
+//             console.log("An error occurred. Please try again later.");
+//         }
+//     });
+// }
 export const GetGearType = ({ commit, dispatch }) => {
     Category.GetGearType().then(function (response) {
         commit('SET_GEAR_TYPES_DATA', response.data.data);

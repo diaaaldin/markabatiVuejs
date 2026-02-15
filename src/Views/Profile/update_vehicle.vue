@@ -32,11 +32,8 @@ export default {
 				modelIdFk: 0,
 				year: 0,
 				numOfMeals: 0,
-				bodyTypeIdCfk: 0,
 				colorIdCFK: 0,
-				paintedTypeIdCfk: 0,
 				paintedStatusIdCfk: 0,
-				specificationIdCfk: 0,
 				price: 0,
 				currency: 0,
 				gearTypeIdCfk: 0,
@@ -85,13 +82,13 @@ export default {
 	},
 
 	computed: {
-		...mapGetters("Code", ["getBrandsData", "getBrandModelsData", "getPaintedStatusData", "getSpecificationsData"
-			, "getBodyTypesData", "getColorsData", "getPaintedTypesData", "getGearTypesData", "getOilTypesData", "getCurrencyData"]),
+		...mapGetters("Code", ["getBrandsData", "getBrandModelsData", "getPaintedStatusData",
+			"getColorsData", "getGearTypesData", "getOilTypesData", "getCurrencyData"]),
 		...mapGetters("Vehicles", ["getCreateUpdateVehicleData"]),
 	},
 	methods: {
-		...mapActions("Code", ["GetBrands", "GetBrandModels", "GetPaintedStatus", "GetSpecification"
-			, "GetBodyType", "GetColor", "GetPaintedType", "GetGearType", "GetOilType", "GetCurrency"]),
+		...mapActions("Code", ["GetBrands", "GetBrandModels", "GetPaintedStatus",
+			"GetColor", "GetGearType", "GetOilType", "GetCurrency"]),
 
 		...mapActions("Vehicles", ["UpdateVehicle"]),
 
@@ -108,10 +105,7 @@ export default {
 					this.GetBrands(),
 					this.GetBrandModels(this.getCreateUpdateVehicleData.brandIdFk),
 					this.GetPaintedStatus(),
-					this.GetSpecification(),
-					this.GetBodyType(),
 					this.GetColor(),
-					this.GetPaintedType(),
 					this.GetGearType(),
 					this.GetOilType(),
 					this.GetCurrency(),
@@ -167,33 +161,53 @@ export default {
 				text: "",
 			});
 
-			try {
-				// Proceed only if validation passes
-				if (this.checkUpdateValidation()) {
-					this.UpdateVehicle(this.data).then((Response) => {
-						this.$moshaToast('تم تعديل المركبة بنجاح', {
+			// If validation fails, close loading immediately and don't send request
+			if (!this.checkUpdateValidation()) {
+				loading.close();
+				return;
+			}
+
+			// Keep loading active until the request finishes (success or error)
+			this.UpdateVehicle(this.data)
+				.then((Response) => {
+					// Close loading once we have a successful response
+					loading.close();
+
+					this.$moshaToast('تم تعديل المركبة بنجاح', {
+						hideProgressBar: 'false',
+						showIcon: 'true',
+						swipeClose: 'true',
+						type: 'success',
+						timeout: 3000,
+					});
+					$('#confirm').modal('hide');
+					this.$router.push({ name: "profile_my_vehicles" });
+				})
+				.catch((error) => {
+					// Close loading on error response
+					loading.close();
+
+					if (error.response && error.response.status === 401) {
+						this.$moshaToast(this.$t('general_user_not_allow_error_message'), {
 							hideProgressBar: 'false',
+							position: 'top-center',
 							showIcon: 'true',
 							swipeClose: 'true',
-							type: 'success',
+							type: 'warning',
 							timeout: 3000,
 						});
-						loading.close();
-						this.$router.push({ name: "profile_my_vehicles" });
-					});
-				}
-			} catch (error) {
-				this.$moshaToast(error.response?.data?.message || 'An error occurred', {
-					hideProgressBar: 'false',
-					position: 'top-center',
-					showIcon: 'true',
-					swipeClose: 'true',
-					type: 'warning',
-					timeout: 3000,
+					} else {
+						// Handle other errors with the provided message from the response
+						this.$moshaToast(error.response?.data?.message || 'An error occurred', {
+							hideProgressBar: 'false',
+							position: 'top-center',
+							showIcon: 'true',
+							swipeClose: 'true',
+							type: 'warning',  // Default type is 'warning'
+							timeout: 3000,
+						});
+					}
 				});
-			} finally {
-				loading.close();
-			}
 		},
 		checkUpdateValidation() {
 			if (this.data.id == 0) {
@@ -246,48 +260,8 @@ export default {
 					timeout: 3000,
 				});
 				return false;
-			} else if (this.data.bodyTypeIdCfk == 0) {
-				this.$moshaToast('إختر نوع هيكل المركبة', {
-					hideProgressBar: 'false',
-					position: 'top-center',
-					showIcon: 'true',
-					swipeClose: 'true',
-					type: 'warning',
-					timeout: 3000,
-				});
-				return false;
 			} else if (this.data.colorIdCFK == 0) {
 				this.$moshaToast('إختر لون المركبة', {
-					hideProgressBar: 'false',
-					position: 'top-center',
-					showIcon: 'true',
-					swipeClose: 'true',
-					type: 'warning',
-					timeout: 3000,
-				});
-				return false;
-			} else if (this.data.paintedTypeIdCfk == 0) {
-				this.$moshaToast('إختر نوع دهان المركبة', {
-					hideProgressBar: 'false',
-					position: 'top-center',
-					showIcon: 'true',
-					swipeClose: 'true',
-					type: 'warning',
-					timeout: 3000,
-				});
-				return false;
-			} else if (this.data.paintedStatusIdCfk == 0) {
-				this.$moshaToast('إختر حالة دهان المركبة', {
-					hideProgressBar: 'false',
-					position: 'top-center',
-					showIcon: 'true',
-					swipeClose: 'true',
-					type: 'warning',
-					timeout: 3000,
-				});
-				return false;
-			} else if (this.data.specificationIdCfk == 0) {
-				this.$moshaToast('إختر مواصفات المركبة', {
 					hideProgressBar: 'false',
 					position: 'top-center',
 					showIcon: 'true',
@@ -410,17 +384,63 @@ export default {
 		////////////////////////////
 		////////////////////////////
 
+		// Compress and convert image file to Base64 to reduce upload size
 		passImgAsBase64(file) {
-			var self = this;
-			var reader = new FileReader();
-			reader.readAsDataURL(file);
-			reader.onload = function () {
-				const base64Image = reader.result;
-				self.base64Images.push(base64Image);
-			};
-			reader.onerror = function (error) {
-				// console.log('Error: ', error);
-			};
+			const MAX_WIDTH = 1280;   // max width in pixels
+			const MAX_HEIGHT = 1280;  // max height in pixels
+			const QUALITY = 0.8;      // JPEG quality (0–1)
+
+			return new Promise((resolve, reject) => {
+				// Log original file size (in KB)
+				// console.log('Original image size (KB):', (file.size / 1024).toFixed(2));
+
+				const reader = new FileReader();
+
+				reader.onload = (e) => {
+					const img = new Image();
+					img.onload = () => {
+						let { width, height } = img;
+
+						// Calculate new size while keeping aspect ratio
+						if (width > MAX_WIDTH || height > MAX_HEIGHT) {
+							const widthRatio = MAX_WIDTH / width;
+							const heightRatio = MAX_HEIGHT / height;
+							const scale = Math.min(widthRatio, heightRatio);
+							width = Math.round(width * scale);
+							height = Math.round(height * scale);
+						}
+
+						const canvas = document.createElement('canvas');
+						canvas.width = width;
+						canvas.height = height;
+						const ctx = canvas.getContext('2d');
+						ctx.drawImage(img, 0, 0, width, height);
+
+						// Export as compressed JPEG base64
+						const compressedDataUrl = canvas.toDataURL('image/jpeg', QUALITY);
+
+						// Rough estimate of compressed size in KB from Base64 length
+						const compressedSizeBytes = Math.ceil((compressedDataUrl.length * 3) / 4);
+						// console.log('Compressed image size (KB):', (compressedSizeBytes / 1024).toFixed(2));
+
+						resolve(compressedDataUrl);
+					};
+
+					img.onerror = (err) => {
+						console.error('Image load error:', err);
+						resolve(undefined);
+					};
+
+					img.src = e.target.result;
+				};
+
+				reader.onerror = (err) => {
+					console.error('FileReader error:', err);
+					resolve(undefined);
+				};
+
+				reader.readAsDataURL(file);
+			});
 		},
 
 		filePondChanged: debounce(async function (error, fileItem) {
@@ -581,18 +601,6 @@ function debounce(func, wait) {
 					</div>
 					<div class="col-12 col-md-6">
 						<div class="form-group">
-							<label>نوع هيكل المركبة</label>
-							<select v-model="data.bodyTypeIdCfk"
-								class="form-control mt-2 mb-4  py-3 text-start list_link gray-inp">
-								<option value="0" key="0" selected>-- إختر نوع هيكل المركبة --</option>
-								<option v-for="item in getBodyTypesData" :key="item.id" :value="item.id">
-									{{ item.name }}
-								</option>
-							</select>
-						</div>
-					</div>
-					<div class="col-12 col-md-6">
-						<div class="form-group">
 							<label>لون المركبة</label>
 							<select v-model="data.colorIdCFK"
 								class="form-control mt-2 mb-4  py-3 text-start list_link gray-inp">
@@ -606,37 +614,11 @@ function debounce(func, wait) {
 
 					<div class="col-12 col-md-6">
 						<div class="form-group">
-							<label>نوع دهان المركبة</label>
-							<div>
-								<select v-model="data.paintedTypeIdCfk"
-									class="form-control mt-2 mb-4  py-3 text-start list_link gray-inp">
-									<option value="0" key="0" selected>-- إختر نوع دهان المركبة --</option>
-									<option v-for="item in getPaintedTypesData" :key="item.id" :value="item.id">
-										{{ item.name }}
-									</option>
-								</select>
-							</div>
-						</div>
-					</div>
-					<div class="col-12 col-md-6">
-						<div class="form-group">
 							<label>حالة دهان المركبة</label>
 							<select v-model="data.paintedStatusIdCfk"
 								class="form-control mt-2 mb-4  py-3 text-start list_link gray-inp">
 								<option value="0" key="0" selected>-- إختر حالة دهان المركبة --</option>
 								<option v-for="item in getPaintedStatusData" :key="item.id" :value="item.id">
-									{{ item.name }}
-								</option>
-							</select>
-						</div>
-					</div>
-					<div class="col-12 col-md-6">
-						<div class="form-group">
-							<label>مواصفات المركبة</label>
-							<select v-model="data.specificationIdCfk"
-								class="form-control mt-2 mb-4  py-3 text-start list_link gray-inp">
-								<option value="0" key="0" selected>-- إختر مواصفات المركبة --</option>
-								<option v-for="item in getSpecificationsData" :key="item.id" :value="item.id">
 									{{ item.name }}
 								</option>
 							</select>
@@ -655,7 +637,7 @@ function debounce(func, wait) {
 							</select>
 						</div>
 					</div>
-					<div class="col-12 col-md-12">
+					<div class="col-12 col-md-6">
 						<div class="form-group">
 							<label>نوع وقود المركبة</label>
 							<select v-model="data.oilTypeIdCfk"

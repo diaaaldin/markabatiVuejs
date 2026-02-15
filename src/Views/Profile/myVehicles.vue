@@ -8,6 +8,7 @@ import axios from "axios";
 import { VehicleStatusEnum, CurrenceEnum } from '@/config/config.js';
 
 
+
 export default {
   data() {
     return {
@@ -89,7 +90,7 @@ export default {
       this.GetMyVehicles(this.data.statusId).then(Response => {
         loading.close();
       }).catch(error => {
-        this.$moshaToast(error.response.data.message, {
+        this.$moshaToast(error?.response?.data?.message || 'An error occurred', {
           hideProgressBar: 'false',
           position: 'top-center',
           showIcon: 'true',
@@ -106,7 +107,7 @@ export default {
     GetData() {
       this.GetMyVehicles().then(Response => {
       }).catch(error => {
-        this.$moshaToast(error.response.data.message, {
+        this.$moshaToast(error?.response?.data?.message || 'An error occurred', {
           hideProgressBar: 'false',
           position: 'top-center',
           showIcon: 'true',
@@ -139,7 +140,7 @@ export default {
           this.GetData();
           $('#delete_vehicle').modal('hide');
         }).catch(error => {
-          this.$moshaToast(error.response.data.message, {
+          this.$moshaToast(error?.response?.data?.message || 'An error occurred', {
             hideProgressBar: 'false',
             position: 'top-center',
             showIcon: 'true',
@@ -221,7 +222,7 @@ export default {
           this.clearData();
           $('#update_360_modal').modal('hide');
         }).catch(error => {
-          if (error.response && error.response.status === 401) {
+          if (error?.response && error.response.status === 401) {
             this.$moshaToast(this.$t('general_user_not_allow_error_message'), {
               hideProgressBar: 'false',
               position: 'top-center',
@@ -232,7 +233,7 @@ export default {
             });
           } else {
             // Handle other errors with the provided message from the response
-            this.$moshaToast(error.response?.data?.message || 'An error occurred', {
+            this.$moshaToast(error?.response?.data?.message || 'An error occurred', {
               hideProgressBar: 'false',
               position: 'top-center',
               showIcon: 'true',
@@ -292,7 +293,7 @@ export default {
         this.$router.push({ name: "profile_update_vehicle" });
         loading.close();
       }).catch(error => {
-        this.$moshaToast(error.response.data.message, {
+        this.$moshaToast(error?.response?.data?.message || 'An error occurred', {
           hideProgressBar: 'false',
           position: 'top-center',
           showIcon: 'true',

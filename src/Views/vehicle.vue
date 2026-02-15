@@ -37,9 +37,6 @@ export default {
                 currency: 0,
                 meals: 0,
                 color: "",
-                bodyType: "",
-                specification: "",
-                paintedType: "",
                 paintedStatus: "",
                 gearType: "",
                 oilType: "",
@@ -722,79 +719,6 @@ export default {
                         </span>
                         <h5> {{ $t('vehicle_card_color') }}</h5>
                         <p> {{ data.color }}</p>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-3 col-sm-6 text-center">
-                    <div class="details-squre">
-                        <span>
-                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                                <g id="SVGRepo_iconCarrier">
-                                    <path
-                                        d="M2 11C2 11.5523 2.44772 12 3 12H6V9C6 8.44771 5.55229 8 5 8H3C2.44772 8 2 8.44771 2 9V11Z"
-                                        fill="#0F0F0F"></path>
-                                    <path d="M10 12H14V9C14 8.44771 13.5523 8 13 8H11C10.4477 8 10 8.44771 10 9V12Z"
-                                        fill="#0F0F0F"></path>
-                                    <path d="M6 15C6 15.5523 6.44772 16 7 16H9C9.55229 16 10 15.5523 10 15V12H6V15Z"
-                                        fill="#0F0F0F"></path>
-                                    <path
-                                        d="M18 12H21C21.5523 12 22 11.5523 22 11V9C22 8.44771 21.5523 8 21 8H19C18.4477 8 18 8.44771 18 9V12Z"
-                                        fill="#0F0F0F"></path>
-                                    <path
-                                        d="M14 15C14 15.5523 14.4477 16 15 16H17C17.5523 16 18 15.5523 18 15V12H14V15Z"
-                                        fill="#0F0F0F"></path>
-                                    <path
-                                        d="M2 19C2 18.4477 2.44772 18 3 18H21C21.5523 18 22 18.4477 22 19C22 19.5523 21.5523 20 21 20H3C2.44772 20 2 19.5523 2 19Z"
-                                        fill="#0F0F0F"></path>
-                                    <path
-                                        d="M2 5C2 4.44772 2.44772 4 3 4H21C21.5523 4 22 4.44772 22 5C22 5.55228 21.5523 6 21 6H3C2.44772 6 2 5.55228 2 5Z"
-                                        fill="#0F0F0F"></path>
-                                </g>
-                            </svg>
-                        </span>
-                        <h5>{{ $t('vehicle_card_body_type') }}</h5>
-                        <p>{{ data.bodyType }} </p>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-3 col-sm-6 text-center">
-                    <div class="details-squre">
-                        <span>
-                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                                <g id="SVGRepo_iconCarrier">
-                                    <path
-                                        d="M7 12C6.44772 12 6 11.5523 6 11C6 10.4477 6.44772 10 7 10H17C17.5523 10 18 10.4477 18 11C18 11.5523 17.5523 12 17 12L7 12Z"
-                                        fill="#0F0F0F"></path>
-                                    <path
-                                        d="M6 15C6 15.5523 6.44772 16 7 16H13C13.5523 16 14 15.5523 14 15C14 14.4477 13.5523 14 13 14H7C6.44772 14 6 14.4477 6 15Z"
-                                        fill="#0F0F0F"></path>
-                                    <path fill-rule="evenodd" clip-rule="evenodd"
-                                        d="M7 1C6.44772 1 6 1.44772 6 2V3H4C2.89543 3 2 3.89543 2 5V19C2 21.2091 3.79086 23 6 23H18C20.2091 23 22 21.2091 22 19V5C22 3.89543 21.1046 3 20 3H18V2C18 1.44772 17.5523 1 17 1C16.4477 1 16 1.44772 16 2V3H13V2C13 1.44772 12.5523 1 12 1C11.4477 1 11 1.44772 11 2V3H8V2C8 1.44772 7.55228 1 7 1ZM16 5H13V6C13 6.55228 12.5523 7 12 7C11.4477 7 11 6.55228 11 6V5H8V6C8 6.55228 7.55228 7 7 7C6.44772 7 6 6.55228 6 6V5H5C4.44772 5 4 5.44772 4 6V19C4 20.1046 4.89543 21 6 21H18C19.1046 21 20 20.1046 20 19V6C20 5.44772 19.5523 5 19 5H18V6C18 6.55228 17.5523 7 17 7C16.4477 7 16 6.55228 16 6V5Z"
-                                        fill="#0F0F0F"></path>
-                                </g>
-                            </svg>
-                        </span>
-                        <h5> {{ $t('vehicle_card_specefication') }}</h5>
-                        <p> {{ data.specification }}</p>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-3 col-sm-6 text-center">
-                    <div class="details-squre">
-                        <span>
-                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
-                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
-                                <g id="SVGRepo_iconCarrier">
-                                    <path fill-rule="evenodd" clip-rule="evenodd"
-                                        d="M5 4C5 2.34315 6.34315 1 8 1H20C21.6569 1 23 2.34315 23 4V6C23 7.65685 21.6569 9 20 9H8C6.34315 9 5 7.65685 5 6H4C3.44772 6 3 6.44772 3 7V9C3 9.55228 3.44772 10 4 10H12C13.6569 10 15 11.3431 15 13V14C16.1046 14 17 14.8954 17 16L17 21C17 22.1046 16.1046 23 15 23H13C11.8954 23 11 22.1046 11 21V16C11 14.8954 11.8954 14 13 14V13C13 12.4477 12.5523 12 12 12H4C2.34315 12 1 10.6569 1 9V7C1 5.34315 2.34315 4 4 4H5ZM8 3C7.44772 3 7 3.44772 7 4V6C7 6.55228 7.44772 7 8 7H20C20.5523 7 21 6.55228 21 6V4C21 3.44772 20.5523 3 20 3H8ZM15 21L15 16H13V21H15Z"
-                                        fill="#0F0F0F"></path>
-                                </g>
-                            </svg>
-                        </span>
-                        <h5>{{ $t('vehicle_card_painting_type') }}</h5>
-                        <p>{{ data.paintedType }} </p>
                     </div>
                 </div>
                 <div class="col-lg-2 col-md-3 col-sm-6 text-center">

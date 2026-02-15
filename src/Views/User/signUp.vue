@@ -36,11 +36,26 @@ export default {
             },
             userType: UserTypeEnum,
             emailError: '',
+            mobileError: '',
 
             stateCities: [],
 
             isPassword1Visible: false,
             isPassword2Visible: false,
+
+            // simple error flags for required fields (for visual indicators)
+            errors: {
+                name: false,
+                email: false,
+                mobile: false,
+                ssn: false,
+                licenseNumber: false,
+                addressState: false,
+                addressCity: false,
+                addressInfo: false,
+                password: false,
+                confirmPassword: false,
+            },
         }
     },
     created() {
@@ -94,6 +109,12 @@ export default {
 
     methods: {
         ...mapActions("Users", ["CustomerSignUp", "ComponySignUp"]),
+
+        clearErrors() {
+            Object.keys(this.errors).forEach(key => {
+                this.errors[key] = false;
+            });
+        },
 
         getSignUpNormalfunc() {
             if (this.checkValidationNormal()) {
@@ -159,7 +180,9 @@ export default {
         },
 
         checkValidationNormal() {
+            this.clearErrors();
             if (this.data.name.trim() == '') {
+                this.errors.name = true;
                 this.$moshaToast("أدخل الإسم", {
                     hideProgressBar: 'false',
                     position: 'top-center',
@@ -171,6 +194,7 @@ export default {
                 this.$refs.name.focus();
                 return false;
             } else if (this.data.email.trim() == '') {
+                this.errors.email = true;
                 this.$moshaToast("أدخل الإيميل", {
                     hideProgressBar: 'false',
                     position: 'top-center',
@@ -182,7 +206,20 @@ export default {
                 this.$refs.email.focus();
                 return false;
             } else if (this.data.mobile.trim() == '') {
+                this.errors.mobile = true;
                 this.$moshaToast("أدخل رقم الجوال", {
+                    hideProgressBar: 'false',
+                    position: 'top-center',
+                    showIcon: 'true',
+                    swipeClose: 'true',
+                    type: 'warning',
+                    timeout: 3000,
+                });
+                this.$refs.mobile.focus();
+                return false;
+            } else if (!this.validateMobile(this.data.mobile)) {
+                this.errors.mobile = true;
+                this.$moshaToast("الرجاء إدخال رقم جوال / واتساب صالح", {
                     hideProgressBar: 'false',
                     position: 'top-center',
                     showIcon: 'true',
@@ -194,6 +231,7 @@ export default {
                 return false;
             }
             else if (this.data.ssn.trim() == '') {
+                this.errors.ssn = true;
                 this.$moshaToast("أدخل رقم الهوية", {
                     hideProgressBar: 'false',
                     position: 'top-center',
@@ -230,6 +268,7 @@ export default {
             //     return false;
             // }
             else if (this.data.addressState == 0) {
+                this.errors.addressState = true;
                 this.$moshaToast("إختر المحافظة", {
                     hideProgressBar: 'false',
                     position: 'top-center',
@@ -241,6 +280,7 @@ export default {
                 this.$refs.addressState.focus();
                 return false;
             } else if (this.data.addressCity == 0) {
+                this.errors.addressCity = true;
                 this.$moshaToast("إختر المدينة", {
                     hideProgressBar: 'false',
                     position: 'top-center',
@@ -252,6 +292,7 @@ export default {
                 this.$refs.addressCity.focus();
                 return false;
             } else if (this.data.password.trim() == '') {
+                this.errors.password = true;
                 this.$moshaToast("أدخل كلمة المرور", {
                     hideProgressBar: 'false',
                     position: 'top-center',
@@ -263,6 +304,7 @@ export default {
                 this.$refs.password.focus();
                 return false;
             } else if (this.data.confirmPassword.trim() == '') {
+                this.errors.confirmPassword = true;
                 this.$moshaToast("أدخل تأكيد كلمة المرور", {
                     hideProgressBar: 'false',
                     position: 'top-center',
@@ -274,6 +316,8 @@ export default {
                 this.$refs.confirmPassword.focus();
                 return false;
             } else if (this.data.password != this.data.confirmPassword) {
+                this.errors.password = true;
+                this.errors.confirmPassword = true;
                 this.$moshaToast("تأكيد كلمة المرور لا تتطابق مع كلمة المرور", {
                     hideProgressBar: 'false',
                     position: 'top-center',
@@ -302,7 +346,9 @@ export default {
         },
 
         checkValidationCompany() {
+            this.clearErrors();
             if (this.data.name.trim() == '') {
+                this.errors.name = true;
                 this.$moshaToast("أدخل الإسم", {
                     hideProgressBar: 'false',
                     position: 'top-center',
@@ -314,6 +360,7 @@ export default {
                 this.$refs.name.focus();
                 return false;
             } else if (this.data.email.trim() == '') {
+                this.errors.email = true;
                 this.$moshaToast("أدخل الإيميل", {
                     hideProgressBar: 'false',
                     position: 'top-center',
@@ -325,7 +372,20 @@ export default {
                 this.$refs.email.focus();
                 return false;
             } else if (this.data.mobile.trim() == '') {
+                this.errors.mobile = true;
                 this.$moshaToast("أدخل رقم الجوال", {
+                    hideProgressBar: 'false',
+                    position: 'top-center',
+                    showIcon: 'true',
+                    swipeClose: 'true',
+                    type: 'warning',
+                    timeout: 3000,
+                });
+                this.$refs.mobile.focus();
+                return false;
+            } else if (!this.validateMobile(this.data.mobile)) {
+                this.errors.mobile = true;
+                this.$moshaToast("الرجاء إدخال رقم جوال / واتساب صالح", {
                     hideProgressBar: 'false',
                     position: 'top-center',
                     showIcon: 'true',
@@ -349,6 +409,7 @@ export default {
             //     return false;
             // } 
             else if (this.data.licenseNumber.trim() == '') {
+                this.errors.licenseNumber = true;
                 this.$moshaToast("أدخل رقم الترخيص", {
                     hideProgressBar: 'false',
                     position: 'top-center',
@@ -361,6 +422,7 @@ export default {
                 return false;
             }
             else if (this.data.addressState == 0) {
+                this.errors.addressState = true;
                 this.$moshaToast("إختر المحافظة", {
                     hideProgressBar: 'false',
                     position: 'top-center',
@@ -372,6 +434,7 @@ export default {
                 this.$refs.addressState.focus();
                 return false;
             } else if (this.data.addressCity == 0) {
+                this.errors.addressCity = true;
                 this.$moshaToast("إختر المدينة", {
                     hideProgressBar: 'false',
                     position: 'top-center',
@@ -383,6 +446,7 @@ export default {
                 this.$refs.addressCity.focus();
                 return false;
             } else if (this.data.password.trim() == '') {
+                this.errors.password = true;
                 this.$moshaToast("أدخل كلمة المرور", {
                     hideProgressBar: 'false',
                     position: 'top-center',
@@ -394,6 +458,7 @@ export default {
                 this.$refs.password.focus();
                 return false;
             } else if (this.data.confirmPassword.trim() == '') {
+                this.errors.confirmPassword = true;
                 this.$moshaToast("أدخل تأكيد كلمة المرور", {
                     hideProgressBar: 'false',
                     position: 'top-center',
@@ -405,6 +470,8 @@ export default {
                 this.$refs.confirmPassword.focus();
                 return false;
             } else if (this.data.password != this.data.confirmPassword) {
+                this.errors.password = true;
+                this.errors.confirmPassword = true;
                 this.$moshaToast("تأكيد كلمة المرور لا تتطابق مع كلمة المرور", {
                     hideProgressBar: 'false',
                     position: 'top-center',
@@ -418,6 +485,7 @@ export default {
                 return false;
 
             } else if (!this.validateEmail(this.data.email)) {
+                this.errors.email = true;
                 this.$moshaToast("الرجاء إدخال إيميل صالح", {
                     hideProgressBar: 'false',
                     position: 'top-center',
@@ -452,21 +520,62 @@ export default {
             }
         },
 
+        validateMobile(mobile) {
+            const raw = this.data.mobile || '';
+            const digits = raw.replace(/\D/g, '');
+
+            if (!raw) {
+                this.mobileError = '';
+                return false;
+            }
+
+            // WhatsApp number must start with 00 or +
+            if (!(raw.startsWith('00') || raw.startsWith('+'))) {
+                this.mobileError = 'رقم الواتساب يجب أن يبدأ بـ 00 أو +';
+                return false;
+            }
+
+            // If starts with 00 → total 14 digits (including the 00)
+            if (raw.startsWith('00')) {
+                if (digits.length !== 14) {
+                    this.mobileError = 'إذا بدأ الرقم بـ 00 فيجب أن يتكون من 14 رقماً.';
+                    return false;
+                }
+            }
+
+            // If starts with + → total 13 characters (1 + and 12 digits)
+            if (raw.startsWith('+')) {
+                if (raw.length !== 13 || digits.length !== 12) {
+                    this.mobileError = 'إذا بدأ الرقم بـ + فيجب أن يتكون من 12 رقماً بعد إشارة +.';
+                    return false;
+                }
+            }
+
+            this.mobileError = '';
+            return true;
+        },
+
         filterMobileInput(event) {
             let input = event.target.value;
 
             // Keep only digits, but allow "+" only at the start
             input = input.replace(/(?!^\+)[^\d]/g, '');
 
-            if (input.startsWith('+')) {
-                // Limit: "+" + 13 digits max
+            if (input.startsWith('00')) {
+                // Exactly 14 digits when starting with 00
+                input = input.slice(0, 14);
+            } else if (input.startsWith('+')) {
+                // Exactly 13 characters when starting with + (1 char + and 12 digits)
                 input = input.slice(0, 13);
             } else {
-                // Limit: 14 digits max
+                // For other input, still cap to 14 characters
                 input = input.slice(0, 14);
             }
 
             this.data.mobile = input;
+
+            // run validation similar to validateEmail
+            this.validateMobile(this.data.mobile);
         },
 
         filterSsnInput(event) {
@@ -651,20 +760,23 @@ export default {
                                                         <br>
                                                         <input v-model="data.name" ref="name" name="name" type="text"
                                                             class="form-control my-3 py-3 text-start gray_text gray-inp "
+                                                            :class="{ 'is-invalid': errors.name }"
                                                             placeholder="الاسم" required>
                                                         <label class="text">البريد الالكتروني</label>
                                                         <br>
                                                         <input v-model="data.email" ref="email" name="email"
                                                             type="email" @input="validateEmail"
                                                             class="form-control my-3 py-3 text-start gray_text gray-inp "
+                                                            :class="{ 'is-invalid': errors.email }"
                                                             placeholder="البريد الالكتروني" required>
                                                         <p v-if="emailError" style="color: red">{{ emailError }}</p>
 
                                                         <label class="text">رقم الهاتف </label>
                                                         <br>
                                                         <input v-model="data.mobile" name="mobile" id="phone" type="tel"
-                                                            ref="phoneInput"
+                                                            ref="mobile"
                                                             class="form-control my-3 py-3 text-start gray_text gray-inp"
+                                                            :class="{ 'is-invalid': errors.mobile }"
                                                             placeholder="(+970) 59-512-3123" aria-label=""
                                                             aria-describedby="basic-addon1" @input="filterMobileInput"
                                                             required>
@@ -673,6 +785,7 @@ export default {
                                                         <br>
                                                         <select v-model="data.addressState"
                                                             class="form-control my-3 py-3 text-start gray_text gray-inp"
+                                                            :class="{ 'is-invalid': errors.addressState }"
                                                             @change="setStatesCities(data.addressState)">
 
                                                             <option value="0" key="0" selected>{{
@@ -687,6 +800,7 @@ export default {
                                                         <br>
                                                         <select v-model="data.addressCity"
                                                             class="form-control  my-3 py-3 text-start gray_text gray-inp"
+                                                            :class="{ 'is-invalid': errors.addressCity }"
                                                             :disabled="!stateCities || stateCities.length === 0">
                                                             <option value="0" key="0" selected>{{
                                                                 $t('general_select_city') }}</option>
@@ -700,12 +814,14 @@ export default {
                                                         <textarea v-model="data.addressInfo" ref="addressInfo"
                                                             name="addressInfo" type="text"
                                                             class="form-control my-3 py-3 text-start gray_text gray-inp "
+                                                            :class="{ 'is-invalid': errors.addressInfo }"
                                                             placeholder="" required></textarea>
 
                                                         <label class="text">رقم الهوية</label>
                                                         <br>
                                                         <input v-model="data.ssn" ref="ssn" name="ssn" type="text"
                                                             class="form-control my-3 py-3 text-start gray_text gray-inp "
+                                                            :class="{ 'is-invalid': errors.ssn }"
                                                             placeholder="00000000" @input="filterSsnInput" required>
 
                                                         <div class="password-container">
@@ -720,6 +836,7 @@ export default {
                                                             <input v-model="data.password"
                                                                 :type="isPassword1Visible ? 'text' : 'password'"
                                                                 class="form-control mt-2 mb-4  py-3 text-start list_link gray-inp id_password"
+                                                                :class="{ 'is-invalid': errors.password }"
                                                                 autocomplete="current-password"
                                                                 placeholder="كلمة المرور " required>
                                                             <a v-on:click="togglePassword1Visibility">
@@ -741,6 +858,7 @@ export default {
                                                             <input v-model="data.confirmPassword"
                                                                 :type="isPassword2Visible ? 'text' : 'password'"
                                                                 class="form-control mt-2 mb-4  py-3 text-start list_link gray-inp id_password"
+                                                                :class="{ 'is-invalid': errors.confirmPassword }"
                                                                 autocomplete="current-password"
                                                                 placeholder="تأكيد كلمة المرور " required>
                                                             <a v-on:click="togglePassword2Visibility">
@@ -779,12 +897,14 @@ export default {
                                                         <br>
                                                         <input v-model="data.name" ref="name" name="name" type="text"
                                                             class="form-control my-3 py-3 text-start gray_text gray-inp "
+                                                            :class="{ 'is-invalid': errors.name }"
                                                             placeholder="الاسم" required>
                                                         <label class="text">البريد الالكتروني</label>
                                                         <br>
                                                         <input v-model="data.email" ref="email" name="email"
                                                             type="email" @input="validateEmail"
                                                             class="form-control my-3 py-3 text-start gray_text gray-inp "
+                                                            :class="{ 'is-invalid': errors.email }"
                                                             placeholder="البريد الالكتروني" required>
                                                         <p v-if="emailError" style="color: red">{{ emailError }}</p>
 
@@ -792,8 +912,9 @@ export default {
                                                         <label class="text">رقم الهاتف</label>
                                                         <br>
                                                         <input v-model="data.mobile" name="mobile" id="phone" type="tel"
-                                                            ref="phoneInput"
+                                                            ref="mobile"
                                                             class="form-control my-3 py-3 text-start gray_text gray-inp"
+                                                            :class="{ 'is-invalid': errors.mobile }"
                                                             placeholder="(+970) 59-512-3123" aria-label=""
                                                             aria-describedby="basic-addon1" @input="filterMobileInput"
                                                             required>
@@ -801,6 +922,7 @@ export default {
                                                         <br>
                                                         <select v-model="data.addressState" name="addressState"
                                                             class="form-control my-3 py-3 text-start gray_text gray-inp"
+                                                            :class="{ 'is-invalid': errors.addressState }"
                                                             @change="setStatesCities(data.addressState)">
                                                             <option value="0" key="0" selected>{{
                                                                 $t('general_select_state') }}</option>
@@ -814,6 +936,7 @@ export default {
                                                         <br>
                                                         <select v-model="data.addressCity" name="addressCity"
                                                             class="form-control  my-3 py-3 text-start gray_text gray-inp"
+                                                            :class="{ 'is-invalid': errors.addressCity }"
                                                             :disabled="!stateCities || stateCities.length === 0">
                                                             <option value="0" key="0" selected>{{
                                                                 $t('general_select_city') }}</option>
@@ -828,6 +951,7 @@ export default {
                                                         <textarea v-model="data.addressInfo" ref="addressInfo"
                                                             name="addressInfo" type="text"
                                                             class="form-control my-3 py-3 text-start gray_text gray-inp "
+                                                            :class="{ 'is-invalid': errors.addressInfo }"
                                                             placeholder="" required></textarea>
 
 
@@ -836,6 +960,7 @@ export default {
                                                         <input v-model="data.licenseNumber" ref="licenseNumber"
                                                             name="licenseNumber" type="text"
                                                             class="form-control my-3 py-3 text-start gray_text gray-inp "
+                                                            :class="{ 'is-invalid': errors.licenseNumber }"
                                                             placeholder="00000000" required>
 
                                                         <div class="password-container">
@@ -845,6 +970,7 @@ export default {
                                                             <input v-model="data.password"
                                                                 :type="isPassword1Visible ? 'text' : 'password'"
                                                                 class="form-control mt-2 mb-4  py-3 text-start list_link gray-inp id_password"
+                                                                :class="{ 'is-invalid': errors.password }"
                                                                 autocomplete="current-password"
                                                                 placeholder="كلمة المرور " required>
                                                             <a v-on:click="togglePassword1Visibility">
@@ -859,6 +985,7 @@ export default {
                                                             <input v-model="data.confirmPassword"
                                                                 :type="isPassword2Visible ? 'text' : 'password'"
                                                                 class="form-control mt-2 mb-4  py-3 text-start list_link gray-inp id_password"
+                                                                :class="{ 'is-invalid': errors.confirmPassword }"
                                                                 autocomplete="current-password"
                                                                 placeholder="تأكيد كلمة المرور " required>
                                                             <a v-on:click="togglePassword2Visibility">
@@ -905,5 +1032,10 @@ export default {
 <style scoped>
 .have_account a:hover {
     color: #26d829;
+}
+
+/* simple red border for invalid fields */
+.is-invalid {
+    border-color: #dc3545 !important;
 }
 </style>
