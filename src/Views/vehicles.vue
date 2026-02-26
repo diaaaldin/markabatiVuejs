@@ -423,11 +423,18 @@ export default {
             this.page = 1;
             this.SearchChangeFunc();
         },
-
         goToPage(page) {
             if (page < 1 || page > this.pagination.pageCount) return;
             this.page = page;
             this.SearchChangeFunc();
+
+            // Scroll to top of the page after changing pagination
+            if (typeof window !== 'undefined') {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth',
+                });
+            }
         },
 
         handleResize() {

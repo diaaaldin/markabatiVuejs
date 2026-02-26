@@ -243,18 +243,18 @@ export default {
                 this.$refs.ssn.focus();
                 return false;
             }
-            // else if (this.checkSSN(this.data.ssn.trim())) {
-            //     this.$moshaToast("أدخل رقم الهوية بشكل صحيح", {
-            //         hideProgressBar: 'false',
-            //         position: 'top-center',
-            //         showIcon: 'true',
-            //         swipeClose: 'true',
-            //         type: 'warning',
-            //         timeout: 3000,
-            //     });
-            //     this.$refs.ssn.focus();
-            //     return false;
-            // }
+            else if (this.checkSSN(this.data.ssn.trim())) {
+                this.$moshaToast("أدخل رقم الهوية بشكل صحيح", {
+                    hideProgressBar: 'false',
+                    position: 'top-center',
+                    showIcon: 'true',
+                    swipeClose: 'true',
+                    type: 'warning',
+                    timeout: 3000,
+                });
+                this.$refs.ssn.focus();
+                return false;
+            }
             // else if (this.data.licenseNumber.trim() == '' ) {
             //     this.$moshaToast("أدخل رقم الترخيص", {
             //         hideProgressBar: 'false',
@@ -408,19 +408,6 @@ export default {
             //     this.$refs.password.focus();
             //     return false;
             // } 
-            else if (this.data.licenseNumber.trim() == '') {
-                this.errors.licenseNumber = true;
-                this.$moshaToast("أدخل رقم الترخيص", {
-                    hideProgressBar: 'false',
-                    position: 'top-center',
-                    showIcon: 'true',
-                    swipeClose: 'true',
-                    type: 'warning',
-                    timeout: 3000,
-                });
-                this.$refs.licenseNumber.focus();
-                return false;
-            }
             else if (this.data.addressState == 0) {
                 this.errors.addressState = true;
                 this.$moshaToast("إختر المحافظة", {
@@ -954,14 +941,6 @@ export default {
                                                             :class="{ 'is-invalid': errors.addressInfo }"
                                                             placeholder="" required></textarea>
 
-
-                                                        <label class="text">رقم الترخيص</label>
-                                                        <br>
-                                                        <input v-model="data.licenseNumber" ref="licenseNumber"
-                                                            name="licenseNumber" type="text"
-                                                            class="form-control my-3 py-3 text-start gray_text gray-inp "
-                                                            :class="{ 'is-invalid': errors.licenseNumber }"
-                                                            placeholder="00000000" required>
 
                                                         <div class="password-container">
                                                             <label class="text">كلمة المرور</label>

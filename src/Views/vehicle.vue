@@ -267,6 +267,19 @@ export default {
             return text.length > 150 ? text.slice(0, 150) + '...' : text;
         },
 
+        scrollToDescription() {
+            // Ensure DOM is updated before scrolling
+            this.$nextTick(() => {
+                const el = document.getElementById('vehicle-description-section');
+                if (el) {
+                    el.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start',
+                    });
+                }
+            });
+        },
+
         stateNameFunc(id) {
             // console.log("this.getStatesData : ",id);
             if (!this.getStatesData || !Array.isArray(this.getStatesData)) {
@@ -526,8 +539,11 @@ export default {
                                             {{ item }}
                                         </li>
                                         <p> {{ stripHtml(data.description) }}
-                                            <a v-if="data.description.length > 150" href="#vehicle-description-section"> ><span class="more">مشاهدة
-                                                    المزيد</span></a>
+                                            <a v-if="data.description.length > 150"
+                                               href="javascript:void(0)"
+                                               @click.prevent="scrollToDescription">
+                                                <span class="more">مشاهدة المزيد</span>
+                                            </a>
                                         </p>
                                     </ul>
                                 </div>

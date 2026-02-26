@@ -404,7 +404,7 @@ export default {
                                 </a>
                             </li>
                             <li class="log-out">
-                                <a href="" class="dropdown-item" v-on:click="logoutFunc()">
+                                <a href="javascript:void(0)" class="dropdown-item" @click.prevent="logoutFunc()">
                                     {{ $t('navbar_logout') }}
                                 </a>
                             </li>

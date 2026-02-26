@@ -23,7 +23,7 @@ export default {
 			pagination: {
 				currentPage: 1,
 				pageCount: 3,
-				pageSize: 3,
+				pageSize: 12,
 				rowCount: 9,
 			},
 			windowWidth: window.innerWidth,

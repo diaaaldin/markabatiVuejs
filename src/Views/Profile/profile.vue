@@ -447,18 +447,7 @@ export default {
                     timeout: 3000,
                 });
                 return false;
-            } else if (this.data.addressInfo == "") {
-                this.$moshaToast(this.$t('user_data_check_address_info'), {
-                    hideProgressBar: 'false',
-                    position: 'top-center',
-                    showIcon: 'true',
-                    swipeClose: 'true',
-                    type: 'warning',
-                    timeout: 3000,
-                });
-                return false;
             }
-
             return true;
         },
 
@@ -763,7 +752,7 @@ export default {
                         </div>
                     </div>
 
-                    <div class="d-flex  div-img-profile px-0 justify-content-lg-start mb-4">
+                    <div class="d-flex  div-img-profile px-0 justify-content-lg-start mb-4 ">
                         <img loading="lazy" data-bs-toggle="modal" data-bs-target="#cropper_modal" :src="userImage"
                             alt="profile-picture" class="img-fluid hero-profile-pic" id="output">
                         <div
@@ -801,7 +790,7 @@ export default {
                     <div class="col-lg-6">
                         <label class="label-form">{{ $t('profile_input_address') }} </label>
                         <input v-model="data.addressInfo" name="addressInfo" type="text"
-                            class="form-control mt-2 mb-4  py-3 text-start list_link gray-inp" placeholder="عنوان السكن"
+                            class="form-control mt-2 mb-4  py-3 text-start list_link gray-inp" placeholder="العنوان"
                             required="">
                     </div>
 
@@ -833,19 +822,6 @@ export default {
                             class="form-control mt-2 mb-4  py-3 text-start list_link gray-inp" maxlength="10"
                             placeholder="(201) 555-0123" aria-label="" aria-describedby="basic-addon1" required>
 
-                    </div>
-                    <div v-else class="col-lg-6">
-                        <label class="label-form"> {{ $t('profile_input_licenseNumber') }} </label>
-                        <input v-model="data.licenseNumber" name="" id="licenseNumber"
-                            class="form-control mt-2 mb-4  py-3 text-start list_link gray-inp" maxlength="10"
-                            placeholder="(201) 555-0123" aria-label="" aria-describedby="basic-addon1" required>
-
-                    </div>
-                    <div class="col-lg-6">
-                        <label class="label-form"> {{ $t('profile_input_moreInfo') }} </label>
-                        <input v-model="data.moreInfo" name="moreInfo" type="text"
-                            class="form-control mt-2 mb-4  py-3 text-start list_link gray-inp"
-                            placeholder="أدخل معلومات أخرى" required="">
                     </div>
                     <hr>
                     <div class="row justify-content-start">

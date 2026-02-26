@@ -34,8 +34,8 @@ import gallary from '@/Views/gallary.vue'
 import payment from '@/Views/payment.vue'
 import pay_for_us from '@/Views/payForUs.vue'
 
-import teckitsuccess from '@/Views/Checkout/PaymentSuccess.vue'
-import teckitfail from '@/Views/Checkout/PaymentFail.vue'
+// import teckitsuccess from '@/Views/Checkout/PaymentSuccess.vue'
+// import teckitfail from '@/Views/Checkout/PaymentFail.vue'
 
 
 
@@ -91,17 +91,17 @@ const routes = [
         name: "pay_for_us",
         component:  () => import('@/Views/payForUs.vue')
     },
-    {
-        path: '/teckitfail',
-        name: "teckitfail",
-        component:  () => import('@/Views/Checkout/PaymentFail.vue')
-    },
-    {
-        path: '/teckitsuccess',
-        name: "teckitsuccess",
-        component:  () => import('@/Views/Checkout/PaymentSuccess.vue'),
-        props: route => ({ sessionId: route.query.sessionId }) // Pass sessionId as a prop
-    },
+    // {
+    //     path: '/teckitfail',
+    //     name: "teckitfail",
+    //     component:  () => import('@/Views/Checkout/PaymentFail.vue')
+    // },
+    // {
+    //     path: '/teckitsuccess',
+    //     name: "teckitsuccess",
+    //     component:  () => import('@/Views/Checkout/PaymentSuccess.vue'),
+    //     props: route => ({ sessionId: route.query.sessionId }) // Pass sessionId as a prop
+    // },
     {
         path: '/profile',
         name: "profile",
@@ -180,4 +180,12 @@ const router = createRouter({
     }
 });
 
-export default router 
+router.afterEach((to, from) => {
+    if (window.fbq) {
+      window.fbq('track', 'PageView', {
+        page_path: to.fullPath
+      })
+    }
+  });
+
+export default router

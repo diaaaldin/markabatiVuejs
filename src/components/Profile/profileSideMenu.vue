@@ -90,7 +90,8 @@ export default {
 
     <div class="collapse d-lg-block " id="collapseExample">
       <ul class="list-group list-group-flush white_card_collapse_bottom h-100">
-        <li class="list-group-item" :class="{ active: $route.path === '/profile' }">
+       
+        <li class="list-group-item" :class="{ active: $route.path === '/profile' }" @click="$router.push('/profile')" style="cursor: pointer;">
           <div class="d-flex justify-content-between align-items-center py-2">
             <div class="justify-content-start  d-flex">
               <div class="d-flex align-items-center">
@@ -105,7 +106,7 @@ export default {
                     d="M9 3C9 2.44772 9.44772 2 10 2H14C14.5523 2 15 2.44772 15 3V4C15 4.55228 14.5523 5 14 5H10C9.44772 5 9 4.55228 9 4V3Z"
                     fill="#26d829" />
                 </svg>
-                <router-link to="/profile" class="list_link ms-2"> {{ $t('profile_sidemenu_profile') }} </router-link>
+                <router-link to="/profile" class="list_link ms-2" @click.stop> {{ $t('profile_sidemenu_profile') }} </router-link>
               </div>
             </div>
             <div class="justify-content-end  d-flex">
@@ -127,7 +128,8 @@ export default {
             </div>
           </div>
         </li>
-        <li class="list-group-item " :class="{ active: $route.path === '/my_vehicles' }">
+        
+        <li class="list-group-item " :class="{ active: $route.path === '/my_vehicles' }" @click="$router.push('/my_vehicles')" style="cursor: pointer;">
           <div class="d-flex justify-content-between align-items-center py-2">
             <div class="justify-content-start  d-flex">
               <div class="d-flex align-items-center">
@@ -150,7 +152,7 @@ export default {
                       fill="#26d829"></path>
                   </g>
                 </svg>
-                <router-link to="/my_vehicles" class="list_link ms-2"> {{ $t('profile_sidemenu_vehicles') }}
+                <router-link to="/my_vehicles" class="list_link ms-2" @click.stop> {{ $t('profile_sidemenu_vehicles') }}
                 </router-link>
               </div>
             </div>
@@ -174,7 +176,7 @@ export default {
           </div>
         </li>
 
-        <li class="list-group-item" :class="{ active: $route.path === '/favorit' }">
+        <li class="list-group-item" :class="{ active: $route.path === '/favorit' }" @click="$router.push('/favorit')" style="cursor: pointer;">
           <div class="d-flex justify-content-between align-items-center py-2">
             <div class="justify-content-start  d-flex">
               <div class="d-flex align-items-center">
@@ -186,7 +188,7 @@ export default {
                     d="M15.7071 7.29289C16.0976 7.68342 16.0976 8.31658 15.7071 8.70711L11.7071 12.7071C11.3166 13.0976 10.6834 13.0976 10.2929 12.7071L8.29289 10.7071C7.90237 10.3166 7.90237 9.68342 8.29289 9.29289C8.68342 8.90237 9.31658 8.90237 9.70711 9.29289L11 10.5858L14.2929 7.29289C14.6834 6.90237 15.3166 6.90237 15.7071 7.29289Z"
                     fill="#26d829" />
                 </svg>
-                <router-link to="/favorit" class="list_link ms-2"> {{ $t('profile_sidemenu_favorite') }} </router-link>
+                <router-link to="/favorit" class="list_link ms-2" @click.stop> {{ $t('profile_sidemenu_favorite') }} </router-link>
               </div>
             </div>
             <div class="justify-content-end  d-flex">
@@ -210,7 +212,7 @@ export default {
         </li>
 
         <li class="list-group-item dropdown_list" :class="{ active: activeDropdown === 'orders' }"
-          @click="toggleDropdown('orders')">
+          @click.stop="toggleDropdown('orders')">
           <div class="d-flex justify-content-between align-items-center py-2">
             <div class="justify-content-start  d-flex">
               <div class="d-flex align-items-center">
@@ -249,7 +251,7 @@ export default {
           </div>
         </li>
 
-        <li v-if="activeDropdown === 'orders'" class="list-group-item ps-4">
+        <li v-if="activeDropdown === 'orders'" class="list-group-item ps-4" @click="$router.push('/ads_orders')" style="cursor: pointer;">
           <div class="justify-content-start  d-flex">
             <div class="d-flex align-items-center">
               <svg viewBox="0 0 24 24" width="24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -264,11 +266,11 @@ export default {
                     fill="#26d829"></path>
                 </g>
               </svg>
-              <router-link to="/ads_orders" class="list_link">{{ $t('profile_sidemenu_orders_ads') }}</router-link>
+              <router-link to="/ads_orders" class="list_link" @click.stop>{{ $t('profile_sidemenu_orders_ads') }}</router-link>
             </div>
           </div>
         </li>
-        <li v-if="activeDropdown === 'orders'" class="list-group-item ps-4">
+        <li v-if="activeDropdown === 'orders'" class="list-group-item ps-4" @click="$router.push('/star_orders')" style="cursor: pointer;">
           <div class="justify-content-start  d-flex">
             <div class="d-flex align-items-center">
               <svg viewBox="0 0 24 24" width="24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -283,11 +285,11 @@ export default {
                     fill="#26d829"></path>
                 </g>
               </svg>
-              <router-link to="/star_orders" class="list_link">{{ $t('profile_sidemenu_orders_star') }}</router-link>
+              <router-link to="/star_orders" class="list_link" @click.stop>{{ $t('profile_sidemenu_orders_star') }}</router-link>
             </div>
           </div>
         </li>
-        <li class="list-group-item" :class="{ active: $route.path === '/payment_operation' }">
+        <li class="list-group-item" :class="{ active: $route.path === '/payment_operation' }" @click="$router.push('/payment_operation')" style="cursor: pointer;">
           <div class="d-flex justify-content-between align-items-center py-2">
             <div class="justify-content-start  d-flex">
               <div class="d-flex align-items-center">
@@ -309,7 +311,7 @@ export default {
                       fill="#26d829"></path>
                   </g>
                 </svg>
-                <router-link to="/payment_operation" class="list_link ms-2"> {{ $t('profile_sidemenu_payment_operation')
+                <router-link to="/payment_operation" class="list_link ms-2" @click.stop> {{ $t('profile_sidemenu_payment_operation')
                 }} </router-link>
               </div>
             </div>
@@ -334,7 +336,7 @@ export default {
         </li>
 
 
-        <li class="list-group-item" :class="{ active: $route.path === '/change_password' }">
+        <li class="list-group-item" :class="{ active: $route.path === '/change_password' }" @click="$router.push('/change_password')" style="cursor: pointer;">
           <div class="d-flex justify-content-between align-items-center py-2">
             <div class="justify-content-start  d-flex">
               <div class="d-flex align-items-center">
@@ -347,7 +349,7 @@ export default {
                     fill="#26d829" />
                 </svg>
 
-                <router-link to="/change_password" class="list_link ms-2"> {{ $t('profile_sidemenu_change_password') }}
+                <router-link to="/change_password" class="list_link ms-2" @click.stop> {{ $t('profile_sidemenu_change_password') }}
                 </router-link>
               </div>
             </div>

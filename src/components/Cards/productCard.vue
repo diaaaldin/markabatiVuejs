@@ -326,7 +326,7 @@ export default {
                     <div class="d-flex justify-content-between">
                         <div class=" d-flex  flex-column">
                             <div class="d-flex align-items-center mb-2">
-                                <a href="hotel_details.html" class="name-details">
+                                <a href="javascript:void(0)" class="name-details" v-on:click="toProductFunc()">
                                     {{ product.modelName }}
                                 </a>
                             </div>
