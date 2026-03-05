@@ -1397,6 +1397,7 @@ background-color: #0bc00e;
   box-shadow: rgba(0, 0, 0, 0.15) 0px 15px 25px,
     rgba(0, 0, 0, 0.05) 0px 5px 10px;
     margin-bottom: 50px;
+    padding-bottom: 20px !important;
 }
 .favorite-product .image {
   background-color: #f5f5f5;
@@ -1992,10 +1993,10 @@ border-radius: 30px;
   text-decoration: line-through;
 }
 .card .show-more-details{
-margin-top: 20px;
+margin-top: 5px;
 padding: 0;
-
 }
+
 .card .show-more-details li{
 font-size: 14px;
 list-style: none;
@@ -2462,7 +2463,7 @@ background-color: black;
   position: relative;
 }
 .gallary .header-title.bg{
-height: 400px;
+  height: 430px;
   background-image: linear-gradient(90deg,rgba(28, 102, 30, 0.5) 0%, rgba(0, 0, 0, 0.74) 50%, rgba(28, 102, 30, 0.5) 100%),
     url("/img/bg_seller4.jpg");
 }
