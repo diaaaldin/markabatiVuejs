@@ -520,7 +520,7 @@ export default {
                         </div>
                         <h1>{{ data.modelName }} </h1>
                         <div class="d-flex align-items-center">
-                            <span class="price"> {{ formatCurrency(data.price, data.currency) }} </span>
+                            <span class="price blur-price"> {{ formatCurrency(data.price, data.currency) }} </span>
                             <!-- <span class="des"> 34.75$ </span> -->
                         </div>
 
@@ -1003,5 +1003,22 @@ export default {
     .details-car .info {
         margin-top: 40px;
     }
+}
+
+.blur-price{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    width: 30%;
+    box-sizing: border-box;
+    border-radius: 10px;
+    background: linear-gradient(90deg, #d9f8d9 0%, #c8f3c8 100%);
+    border: 1px solid rgba(36, 220, 38, 0.25);
+    color: transparent;
+    text-shadow: 0 0 10px rgba(0,0,0,0.45);
+    filter: blur(2.5px);
+    user-select: none;
+    -webkit-user-select: none;
 }
 </style>
