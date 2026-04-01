@@ -1,7 +1,7 @@
 <script>
 import { mapState, mapGetters, mapActions } from "vuex";
 import { ElLoading } from 'element-plus';
-import FsLightbox from "fslightbox-vue/v3";
+import FsLightbox from "fslightbox-vue";
 import { OrderStatusEnum, CurrenceEnum } from '@/config/config.js'
 
 
@@ -354,7 +354,7 @@ export default {
 	</div>
 	<!-- /Delete Modal -->
 
-	<FsLightbox :toggler="toggler" :sources="selectedOrder.image" type="image" />
+	<FsLightbox v-if="selectedOrder.image && selectedOrder.image.length > 0" :key="toggler" :openOnMount="true" :sources="selectedOrder.image" type="image" />
 
 </template>
 <style scoped>

@@ -2,8 +2,9 @@
 import { RouterView } from 'vue-router';
 import { mapState, mapGetters, mapActions } from "vuex";
 import { ElLoading } from 'element-plus';
-import FsLightbox from "fslightbox-vue/v3";
+import FsLightbox from "fslightbox-vue";
 import Vehicle360View from "@/components/Image360/Vehicle360View.vue";
+import PriceHiddenChip from "@/components/PriceHiddenChip.vue";
 import axios from "axios";
 import { VehicleStatusEnum, CurrenceEnum } from '@/config/config.js';
 
@@ -58,6 +59,7 @@ export default {
   components: {
     FsLightbox,
     Vehicle360View,
+    PriceHiddenChip,
   },
 
   emits: {
@@ -406,6 +408,23 @@ export default {
         String(date.getDate()).padStart(2, '0');
     },
 
+    formatVehicleListYear(item) {
+      const y = item.year ?? item.Year;
+      if (y == null || y === '') return '—';
+      const n = Number(y);
+      if (Number.isNaN(n) || n === 0) return '—';
+      return n;
+    },
+
+    isHiddenPriceItem(item) {
+      const raw =
+        item?.IsHiddenPrice ??
+        item?.isHiddenPrice ??
+        item?.IsHidden ??
+        false;
+      return raw === true || raw === 1 || raw === 'true';
+    },
+
     formatCurrency(value, currency) {
       let currencyCode = "";
 
@@ -525,7 +544,7 @@ export default {
     <div class="ads">
       <div class="add">
         <router-link :to="{ name: 'profile_add_vehicle' }" class="option">{{
-          $t('profile_btn_addVehicel') }}
+          $t('btn_add_vehicle') }}
           <svg viewBox="0 0 24 24" width="20" fill="none" xmlns="http://www.w3.org/2000/svg">
             <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
             <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
@@ -554,6 +573,7 @@ export default {
               <th scope="col">#</th>
               <th scope="col">نوع المركبة</th>
               <th scope="col">موديل المركبة</th>
+              <th scope="col">{{ $t('vehicle_card_year') }}</th>
               <th scope="col">المسافة المقطوعة / كم</th>
               <th scope="col">سعر المركبة</th>
               <th scope="col">صورة المركبة </th>
@@ -569,8 +589,12 @@ export default {
               <td class="id">{{ index + 1 }}</td>
               <td>{{ item.brandName }} </td>
               <td>{{ item.modelName }}</td>
+              <td>{{ formatVehicleListYear(item) }}</td>
               <td>{{ item.meals }}</td>
-              <td>{{ formatCurrency(item.price, item.currency) }}</td>
+              <td>
+                <template v-if="!isHiddenPriceItem(item)">{{ formatCurrency(item.price, item.currency) }}</template>
+                <PriceHiddenChip v-else />
+              </td>
               <td>
                 <img loading="lazy" :src="item.image" class="img-responsive table-img" alt="product image" height="80">
               </td>
@@ -859,7 +883,7 @@ export default {
   </div>
   <!-- /update 360 modal -->
 
-  <FsLightbox :toggler="toggler" :sources="selectedVehicle.images" type="image" />
+  <FsLightbox v-if="selectedVehicle.images && selectedVehicle.images.length > 0" :key="toggler" :openOnMount="true" :sources="selectedVehicle.images" type="image" />
 
 </template>
 <style scoped>
@@ -871,5 +895,22 @@ export default {
 
 .profile .ads {
   margin-bottom: 77px;
+}
+
+.price-hidden {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(38, 217, 41, 0.35);
+  background: rgba(38, 217, 41, 0.08);
+  color: #26d829;
+  font-weight: 700;
+}
+
+.price-hidden-text {
+  font-size: 14px;
+  line-height: 1;
 }
 </style>

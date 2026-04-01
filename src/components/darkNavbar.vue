@@ -204,8 +204,17 @@ export default {
                             </router-link>
                         </li>
                         <li class="nav-item">
+                            <router-link to="/rent_vehicles" class="nav-link"
+                                :class="{ active: $route.path === '/rent_vehicles' }"> {{ $t('navbar_rent_vehicles') }}
+                            </router-link>
+                        </li>
+                        <li class="nav-item">
                             <router-link to="/sellers" class="nav-link" :class="{ active: $route.path === '/sellers' }">
                                 {{ $t('navbar_sellers') }} </router-link>
+                        </li>
+                        <li class="nav-item">
+                            <router-link to="/vehicles_rentelers" class="nav-link" :class="{ active: $route.path === '/vehicles_rentelers' }">
+                                {{ $t('navbar_vehicles_rentelers') }} </router-link>
                         </li>
                         <li class="nav-item">
                             <router-link to="/aboutus" class="nav-link" :class="{ active: $route.path === '/aboutus' }">

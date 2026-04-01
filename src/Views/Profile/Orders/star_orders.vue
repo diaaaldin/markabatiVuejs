@@ -1,7 +1,7 @@
 <script>
 import { mapState, mapGetters, mapActions } from "vuex";
 import { ElLoading } from 'element-plus';
-import FsLightbox from "fslightbox-vue/v3";
+import FsLightbox from "fslightbox-vue";
 import { OrderStatusEnum, CurrenceEnum } from '@/config/config.js'
 
 
@@ -412,9 +412,9 @@ export default {
 							</td>
 							<td>
 								<a class="option" data-bs-toggle="modal" data-bs-target="#update_modal"
-									v-on:click="selectItem(item.id)">تعديل</a>
+									v-on:click="selectItem(item.id)"> تعديل </a>
 								<a class="option del" data-bs-toggle="modal" data-bs-target="#delete_modal"
-									v-on:click="selectItem(item.id)">حذف</a>
+									v-on:click="selectItem(item.id)"> حذف </a>
 							</td>
 						</tr>
 					</tbody>
@@ -510,7 +510,7 @@ export default {
 	</div>
 	<!-- /Delete Modal -->
 
-	<FsLightbox :toggler="toggler" :sources="selectedOrder.image" type="image" />
+	<FsLightbox v-if="selectedOrder.image && selectedOrder.image.length > 0" :key="toggler" :openOnMount="true" :sources="selectedOrder.image" type="image" />
 
 </template>
 <style scoped>

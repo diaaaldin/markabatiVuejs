@@ -28,6 +28,7 @@
 
 
     "vehicles_title":"المركبات",
+    "vehicle_card_year":"Model year",
 
     "location_menu_main":"الرئيسية",
     "location_menu_vehicles":"سياراتنا",
@@ -123,6 +124,7 @@
     "profile_old_password":"Old Password",
     "profile_new_password":"New Password",
     "profile_confirm_password":"Confirm Password",
+    "profile_btn_addRentVehicle":"Add vehicle for rent",
 
     "password_old_check_message":"enter old password",
     "password_new_check_message":"enter new password",

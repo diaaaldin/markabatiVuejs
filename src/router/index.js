@@ -48,116 +48,140 @@ const routes = [
     {
         path: '/login',
         name: "login",
-        component:  () => import('@/Views/User/login.vue')
+        component: () => import('@/Views/User/login.vue')
     },
     {
         path: '/signUp',
         name: "signUp",
-        component:  () => import('@/Views/User/signUp.vue')
+        component: () => import('@/Views/User/signUp.vue')
     },
     {
         path: '/aboutus',
         name: "aboutus",
-        component:  () => import('@/Views/aboutUs.vue')
+        component: () => import('@/Views/aboutUs.vue')
     },
     {
         path: '/vehicles',
         name: "vehicles",
-        component:  () => import('@/Views/vehicles.vue')
+        component: () => import('@/Views/vehicles.vue')
+    },
+    {
+        path: '/rent_vehicles',
+        name: "rent_vehicles",
+        component: () => import('@/Views/Rent/rent_vehicles.vue')
+    },
+    {
+        path: '/vehicles_rentelers',
+        name: "vehicles_rentelers",
+        component: () => import('@/Views/Rent/vehicles_rentelers.vue')
     },
 
     {
         path: '/sellers',
         name: "sellers",
-        component:  () => import('@/Views/sellers.vue')
+        component: () => import('@/Views/sellers.vue')
     },
     {
         path: '/vehicle/:slug',
         name: "vehicle",
-        component:  () => import('@/Views/vehicle.vue')
+        component: () => import('@/Views/vehicle.vue')
+    },
+    {
+        path: '/rent_vehicle/:slug',
+        name: "rent_vehicle",
+        component: () => import('@/Views/Rent/rent_vehicle.vue')
+    },
+    {
+        path: '/rent_gallary/:slug',
+        name: "rent_gallary",
+        component: () => import('@/Views/Rent/rent_gallary.vue')
     },
     {
         path: '/gallary/:slug',
         name: "gallary",
-        component:  () => import('@/Views/gallary.vue')
+        component: () => import('@/Views/gallary.vue')
     },
     {
         path: '/payment',
         name: "payment",
-        component:  () => import('@/Views/payment.vue')
+        component: () => import('@/Views/payment.vue')
     },
     {
         path: '/pay_for_us',
         name: "pay_for_us",
-        component:  () => import('@/Views/payForUs.vue')
+        component: () => import('@/Views/payForUs.vue')
     },
-    // {
-    //     path: '/teckitfail',
-    //     name: "teckitfail",
-    //     component:  () => import('@/Views/Checkout/PaymentFail.vue')
-    // },
-    // {
-    //     path: '/teckitsuccess',
-    //     name: "teckitsuccess",
-    //     component:  () => import('@/Views/Checkout/PaymentSuccess.vue'),
-    //     props: route => ({ sessionId: route.query.sessionId }) // Pass sessionId as a prop
-    // },
     {
         path: '/profile',
         name: "profile",
-        component:  () => import('@/Views/profile.vue'),
+        component: () => import('@/Views/profile.vue'),
         children: [
             {
                 path: '',
                 name: "profile_profile",
-                component:  () => import('@/Views/Profile/profile.vue')
+                component: () => import('@/Views/Profile/profile.vue')
             },
             {
                 path: '/my_vehicles',
                 name: "profile_my_vehicles",
-                component:  () => import('@/Views/Profile/myVehicles.vue')
+                component: () => import('@/Views/Profile/myVehicles.vue')
             },
             {
                 path: '/ads_orders',
                 name: "profile_ads_orders",
-                component:  () => import('@/Views/Profile/Orders/ads_orders.vue')
+                component: () => import('@/Views/Profile/Orders/ads_orders.vue')
             },
             {
                 path: '/star_orders',
                 name: "profile_star_orders",
-                component:  () => import('@/Views/Profile/Orders/star_orders.vue')
+                component: () => import('@/Views/Profile/Orders/star_orders.vue')
             },
             {
                 path: '/change_password',
                 name: "profile_change_password",
-                component:  () => import('@/Views/Profile/changePassword.vue')
+                component: () => import('@/Views/Profile/changePassword.vue')
             },
             {
                 path: '/favorit',
                 name: "profile_favorit",
-                component:  () => import('@/Views/Profile/favorit.vue')
+                component: () => import('@/Views/Profile/favorit.vue')
             },
             {
                 path: '/payment_operation',
                 name: "profile_Payment",
-                component:  () => import('@/Views/Profile/PaymentOperations.vue')
+                component: () => import('@/Views/Profile/PaymentOperations.vue')
             },
             {
                 path: '/add_vehicle',
                 name: "profile_add_vehicle",
-                component:  () => import('@/Views/Profile/add_vehicle.vue')
+                component: () => import('@/Views/Profile/add_vehicle.vue')
             },
-             {
+            {
                 path: '/update_vehicle',
                 name: "profile_update_vehicle",
-                component:  () => import('@/Views/Profile/update_vehicle.vue')
+                component: () => import('@/Views/Profile/update_vehicle.vue')
             },
             {
                 path: '/add_ads',
                 name: "profile_add_ads",
-                component:  () => import('@/Views/Profile/add_ads.vue')
+                component: () => import('@/Views/Profile/add_ads.vue')
             },
-           
+            {
+                path: '/my_rent_vehicles',
+                name: "profile_my_rent_vehicles",
+                component: () => import('@/Views/Profile/Rent/my_rent_vehicles.vue')
+            },
+            {
+                path: '/add_rent_vehicle',
+                name: "profile_add_rent_vehicle",
+                component: () => import('@/Views/Profile/Rent/add_rent_vehicle.vue')
+            },
+            {
+                path: '/update_rent_vehicle',
+                name: "profile_update_rent_vehicle",
+                component: () => import('@/Views/Profile/Rent/update_rent_vehicle.vue')
+            },
+
         ]
     },
 
@@ -172,7 +196,7 @@ const router = createRouter({
         if (savedPosition) {
             return savedPosition;
         } else {
-            return { 
+            return {
                 top: 0,
                 behavior: 'smooth' // Smooth scroll for better UX
             };
@@ -182,10 +206,10 @@ const router = createRouter({
 
 router.afterEach((to, from) => {
     if (window.fbq) {
-      window.fbq('track', 'PageView', {
-        page_path: to.fullPath
-      })
+        window.fbq('track', 'PageView', {
+            page_path: to.fullPath
+        })
     }
-  });
+});
 
 export default router

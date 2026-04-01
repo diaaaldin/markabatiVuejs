@@ -69,6 +69,10 @@ export const SET_CONSTANTS_DATA = (state , data ) => {
     state.ConstantsData = data;
 }
 
+export const SET_RENT_DRIVER_STATUS_DATA = (state, data) => {
+    state.RentDriverStatusData = data;
+}
+
 export const SET_STATES_DATA = (state , data ) => {
     state.StatesData = data;
 }

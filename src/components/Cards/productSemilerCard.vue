@@ -2,6 +2,7 @@
 import { mapState, mapGetters, mapActions } from "vuex";
 import { ElLoading } from 'element-plus';
 import { CurrenceEnum } from '@/config/config.js';
+import PriceHiddenChip from '@/components/PriceHiddenChip.vue';
 
 
 export default {
@@ -54,7 +55,7 @@ export default {
         }
     },
     components: {
-
+        PriceHiddenChip,
     },
 
     emits: {
@@ -74,6 +75,16 @@ export default {
     computed: {
         ...mapGetters("Code", ["getStatesData", "getCitiesData"]),
         ...mapGetters("Vehicles", ["getFavoriteVehiclesIdData"]),
+
+        isHiddenPrice() {
+            const raw =
+                this.product?.IsHiddenPrice ??
+                this.product?.isHiddenPrice ??
+                this.product?.IsHidden ??
+                false;
+
+            return raw === true || raw === 1 || raw === 'true';
+        },
     },
     methods: {
         ...mapActions("Code", ["GetStates", "GetCities"]),
@@ -210,6 +221,7 @@ export default {
                 return false;
             }
         },
+
         toProductFunc() {
             this.$router.push({ name: "vehicle", params: { slug: this.product.slug } });
         },
@@ -257,7 +269,7 @@ export default {
             if (res) return res.name;
             else return "";
         },
-
+        
         cityNameFunc(id) {
             // console.log("this.getCitiesData : ", id);
             if (!this.getCitiesData || !Array.isArray(this.getCitiesData)) {
@@ -271,7 +283,6 @@ export default {
         whatsAppLinkFunc() {
             // const encodedMsg = encodeURIComponent(this.message);
             // return `https://wa.me/${this.phone}?text=${encodedMsg}`;
-
             let rawNumber = this.product.ownerMobile;
 
             // Clean and normalize the number
@@ -309,8 +320,6 @@ export default {
                     <div class="d-flex justify-content-between align-items-baseline mb-2">
                         <h6 class="card-title justify-content-start">{{ product.brandName }}</h6>
                         <a v-on:click="toggleFavoriteFunc()" href="javascript:void(0)" class="justify-content-end">
-                            <!-- <img loading="lazy" src="/img/icons/star2.svg"> -->
-
                             <svg viewBox="0 0 24 24" width="24" height="24" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
                                 <g id="SVGRepo_iconCarrier">
@@ -320,16 +329,23 @@ export default {
                                         :fill="isFavorite ? '#FFD700' : 'none'" stroke-width="1.5" />
                                 </g>
                             </svg>
-
                         </a>
                     </div>
-                    <div class="d-flex justify-content-between">
-                        <div class=" d-flex  flex-column">
-                            <div class="d-flex align-items-center mb-2">
+                       <div class="d-flex justify-content-between align-items-baseline mb-2">
                                 <a href="javascript:void(0)" class="name-details" v-on:click="toProductFunc()">
                                     {{ product.modelName }}
                                 </a>
-                            </div>
+                                <div class="state">
+                                                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                                    <g id="SVGRepo_iconCarrier"> <path d="M5.7 15C4.03377 15.6353 3 16.5205 3 17.4997C3 19.4329 7.02944 21 12 21C16.9706 21 21 19.4329 21 17.4997C21 16.5205 19.9662 15.6353 18.3 15M12 9H12.01M18 9C18 13.0637 13.5 15 12 18C10.5 15 6 13.0637 6 9C6 5.68629 8.68629 3 12 3C15.3137 3 18 5.68629 18 9ZM13 9C13 9.55228 12.5523 10 12 10C11.4477 10 11 9.55228 11 9C11 8.44772 11.4477 8 12 8C12.5523 8 13 8.44772 13 9Z" stroke="#26d829" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                     </path> 
+                                                    </g>
+                                                </svg> {{stateNameFunc(product.ownerAddressStateId)}}  
+                                            </div>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <div class=" d-flex  flex-column">
+                           
                             <!-- <div class=" d-flex align-items-center rate mb-2">
                                                     <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                             <path d="M6.19185 1.0681C6.52198 0.399179 7.47585 0.399172 7.80598 1.0681L9.37798 4.25325L12.893 4.76401C13.6312 4.87127 13.9259 5.77847 13.3918 6.29913L10.8482 8.7784L11.4487 12.2793C11.5748 13.0145 10.8031 13.5751 10.1428 13.228L6.99891 11.5751L3.85499 13.228C3.19473 13.5751 2.42304 13.0145 2.54914 12.2793L3.14958 8.7784L0.606087 6.29913C0.0719199 5.77847 0.36668 4.87127 1.10488 4.76401L4.6199 4.25325L6.19185 1.0681Z" fill="#FFCE1F"/>
@@ -358,19 +374,17 @@ export default {
                             </div>
 
                             <div class=" d-flex align-items-center">
-                                <span class="price">
-                                    <!-- 5000$ -->
+                                <span v-if="!isHiddenPrice" class="price">
                                     {{ formatCurrency(product.price, product.currency) }}
                                 </span>
+                                <PriceHiddenChip v-else />
                             </div>
 
                             <div class="card-show">
-
                                 <div class="card-show">
                                     <div class=" d-flex align-items-center">
                                         <ul class="show-more-details">
                                             <li v-for="item in product.bestThreeCategories">
-
                                                 <svg width="15" height="15" viewBox="0 0 28 28" fill="none"
                                                     xmlns="http://www.w3.org/2000/svg">
                                                     <path
@@ -387,24 +401,18 @@ export default {
                                                     fill="#24DC26">
                                                 </path>
                                             </svg> تسارع من 0 إلى 100 كم/س في عدد الثواني
-                                        </li>
-                                        <li>
-                                            <svg width="15" height="15" viewBox="0 0 28 28" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M14 0.666748C21.3637 0.666748 27.3333 6.63628 27.3333 14.0001C27.3333 21.3638 21.3637 27.3334 14 27.3334C6.6362 27.3334 0.666666 21.3638 0.666666 14.0001C0.666666 6.63628 6.6362 0.666748 14 0.666748ZM18.2929 9.95964L12.3333 15.9191L9.7071 13.293C9.31659 12.9025 8.68341 12.9025 8.29289 13.293C7.90237 13.6835 7.90237 14.3166 8.29289 14.7071L11.6263 18.0405C12.0168 18.431 12.6499 18.431 13.0404 18.0405L19.7071 11.3738C20.0976 10.9833 20.0976 10.3502 19.7071 9.95964C19.3165 9.56912 18.6835 9.56912 18.2929 9.95964Z"
-                                                    fill="#24DC26">
-                                                </path>
-                                            </svg> تصميم رياضي فاخر يعكس الإبداع الإيطالي
-                                        </li> -->
+                                            </li>-->
+                                            <!-- <li class="state">
+                                                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                                                    <g id="SVGRepo_iconCarrier"> <path d="M5.7 15C4.03377 15.6353 3 16.5205 3 17.4997C3 19.4329 7.02944 21 12 21C16.9706 21 21 19.4329 21 17.4997C21 16.5205 19.9662 15.6353 18.3 15M12 9H12.01M18 9C18 13.0637 13.5 15 12 18C10.5 15 6 13.0637 6 9C6 5.68629 8.68629 3 12 3C15.3137 3 18 5.68629 18 9ZM13 9C13 9.55228 12.5523 10 12 10C11.4477 10 11 9.55228 11 9C11 8.44772 11.4477 8 12 8C12.5523 8 13 8.44772 13 9Z" stroke="#26d829" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                     </path> 
+                                                    </g>
+                                                </svg> قطاع غزة  
+                                            </li>  -->
                                         </ul>
-
                                     </div>
-
                                 </div>
-
                             </div>
-
                         </div>
                     </div>
                     <a href="#" class="btn btn-light p-3 contact-with-seller w-100" data-bs-toggle="modal"
@@ -488,6 +496,24 @@ export default {
     border: none;
     padding-bottom: 0;
 }
+
+.price-hidden {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 14px;
+    border-radius: 12px;
+    border: 1px solid rgba(38, 217, 41, 0.35);
+    background: rgba(38, 217, 41, 0.08);
+    color: #26d829;
+    font-weight: 700;
+}
+
+.price-hidden-text {
+    font-size: 14px;
+    line-height: 1;
+}
+
 </style>
 
 <style>
@@ -504,5 +530,11 @@ export default {
 
 .modal-footer .btn-primary svg path {
     fill: white;
+}
+.state{
+    margin-top: 5px;
+}
+.state svg {
+    margin-right: -2px;
 }
 </style>

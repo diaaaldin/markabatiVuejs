@@ -76,3 +76,7 @@ export const getAnnouncementTypesData = (state) => {
 export const getConstantsData = (state) => {
     return state.ConstantsData;
 }
+
+export const getRentDriverStatusData = (state) => {
+    return state.RentDriverStatusData;
+}

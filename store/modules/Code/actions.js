@@ -2,6 +2,7 @@ import Category from "@/apis/Category";
 import router from "@/router/index";
 import cities from "@/config/cities.json";
 import states from "@/config/states.json";
+import { ParentEnum } from "@/config/config.js";
 
 export const GetBrands = ({ commit, dispatch }) => {
     return Category.GetBrands().then(function (response) {
@@ -335,6 +336,25 @@ export const GetCodesByParent = ({ commit, dispatch }, { parent1, parent2 = 0 })
             }
         } else {
             // Network failure or unexpected error
+            console.log("An error occurred. Please try again later.");
+        }
+        throw error;
+    });
+}
+
+export const GetRentDriverStatus = ({ commit }) => {
+    return Category.GetCodesByParent(ParentEnum.RentVehicleDriveStatus).then(function (response) {
+        const data = response.data.data || [];
+        commit('SET_RENT_DRIVER_STATUS_DATA', data);
+        return data;
+    }).catch(function (error) {
+        if (error) {
+            if (error.status == 401) {
+                console.log("Unauthorized");
+            } else {
+                console.log(error.message);
+            }
+        } else {
             console.log("An error occurred. Please try again later.");
         }
         throw error;

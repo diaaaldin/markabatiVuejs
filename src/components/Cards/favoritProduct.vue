@@ -2,6 +2,7 @@
 import { mapState, mapGetters, mapActions } from "vuex";
 import { ElLoading } from 'element-plus';
 import { CurrenceEnum } from '@/config/config.js';
+import PriceHiddenChip from '@/components/PriceHiddenChip.vue';
 
 
 export default {
@@ -44,7 +45,7 @@ export default {
     }
   },
   components: {
-
+    PriceHiddenChip,
   },
 
   emits: {
@@ -76,6 +77,16 @@ export default {
 
   computed: {
     ...mapGetters("Vehicles", ["getFavoriteVehiclesIdData"]),
+
+    isHiddenPrice() {
+      const raw =
+        this.product?.IsHiddenPrice ??
+        this.product?.isHiddenPrice ??
+        this.product?.IsHidden ??
+        false;
+
+      return raw === true || raw === 1 || raw === 'true';
+    },
 
   },
 
@@ -341,7 +352,10 @@ export default {
                     </g>
                   </g>
                 </svg>
-                <span class="gray_text_2 ms-1">{{ formatCurrency(product.price, product.currency) }}</span>
+                <span v-if="!isHiddenPrice" class="gray_text_2 ms-1">
+                  {{ formatCurrency(product.price, product.currency) }}
+                </span>
+                <PriceHiddenChip v-else :showIcon="false" />
               </div>
               <div class="d-flex align-items-center">
                 <svg version="1.1" id="OFFER" width="24" height="24" xmlns="http://www.w3.org/2000/svg"
@@ -425,5 +439,22 @@ export default {
     left: 0;
         top: 14px;
 }
+}
+
+.price-hidden {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(38, 217, 41, 0.35);
+  background: rgba(38, 217, 41, 0.08);
+  color: #26d829;
+  font-weight: 700;
+}
+
+.price-hidden-text {
+  font-size: 14px;
+  line-height: 1;
 }
 </style>

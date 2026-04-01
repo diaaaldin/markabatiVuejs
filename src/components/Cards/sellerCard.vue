@@ -26,6 +26,10 @@ export default {
                 }
             }
         },
+        galleryRouteName: {
+            type: String,
+            default: "gallary"
+        }
     },
 
      mounted() {
@@ -75,7 +79,7 @@ export default {
             else return "";
         },
             toGallaryFunc(){
-               this.$router.push({ name: "gallary", params: { slug: this.seller.slug } });
+               this.$router.push({ name: this.galleryRouteName, params: { slug: this.seller.slug } });
             }
         }
 

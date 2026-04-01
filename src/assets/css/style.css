@@ -1985,6 +1985,56 @@ border-radius: 30px;
   color: var(--main-color);
   font-weight: bold;
 }
+
+/* Hidden price chip (used across cards, lists, details) */
+.price-hidden {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 8px;
+  margin: 0;
+  border-radius: 6px;
+  border: 1px solid rgba(38, 217, 41, 0.35);
+  background: rgba(38, 217, 41, 0.08);
+  color: #26d829;
+  font-weight: 700;
+  line-height: 1.2;
+  box-sizing: border-box;
+  vertical-align: baseline;
+}
+
+.price-hidden svg {
+  width: 1em;
+  height: 1em;
+  flex-shrink: 0;
+}
+
+.price-hidden-text {
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+}
+
+/* Match visible price sizes */
+.card .price-hidden {
+  font-size: 20px;
+}
+.details-car .info .price-hidden {
+  font-size: 22px;
+}
+
+/* Favorites card: keep it compact like normal price text */
+.fav-card .price-hidden,
+.favorite-product .price-hidden {
+  font-size: 12px;
+  font-weight: 300;
+  line-height: 22px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  gap: 4px;
+  color: #26d829;
+}
 .card .des {
   font-size: 15px;
   color: black;

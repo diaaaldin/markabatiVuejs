@@ -11,6 +11,7 @@ import pageFooter from '@/components/footer.vue';
 import ImageSlider from '@/components/ImageSlider.vue';
 // import { pointManagmentOperation } from '@/config/config';
 import productSemilerCard from '@/components/Cards/productSemilerCard.vue'
+import PriceHiddenChip from '@/components/PriceHiddenChip.vue';
 import { CurrenceEnum } from '@/config/config.js';
 
 
@@ -76,7 +77,9 @@ export default {
                         meta: [
                             {
                                 name: 'description',
-                                content: `اشتري ${this.data.brandName} ${this.data.modelName} موديل ${this.data.year} في فلسطين - ${this.data.price} ${this.data.currency}. ${this.data.description || 'سيارة بحالة ممتازة'}`,
+                                content: this.isHiddenPrice
+                                    ? `اشتري ${this.data.brandName} ${this.data.modelName} موديل ${this.data.year} في فلسطين - يرجى التواصل. ${this.data.description || 'سيارة بحالة ممتازة'}`
+                                    : `اشتري ${this.data.brandName} ${this.data.modelName} موديل ${this.data.year} في فلسطين - ${this.data.price} ${this.data.currency}. ${this.data.description || 'سيارة بحالة ممتازة'}`,
                             },
                             {
                                 name: 'keywords',
@@ -88,7 +91,9 @@ export default {
                             },
                             {
                                 property: 'og:description',
-                                content: `سيارة ${this.data.brandName} ${this.data.modelName} موديل ${this.data.year} للبيع في فلسطين - ${this.data.price} ${this.data.currency}`
+                                content: this.isHiddenPrice
+                                    ? `سيارة ${this.data.brandName} ${this.data.modelName} موديل ${this.data.year} للبيع في فلسطين - يرجى التواصل`
+                                    : `سيارة ${this.data.brandName} ${this.data.modelName} موديل ${this.data.year} للبيع في فلسطين - ${this.data.price} ${this.data.currency}`
                             },
                             {
                                 property: 'og:image',
@@ -144,6 +149,7 @@ export default {
         ImageSlider,
         productSemilerCard,
         Vehicle360View,
+        PriceHiddenChip,
 
     },
 
@@ -159,6 +165,16 @@ export default {
         ...mapGetters("Vehicles", ["getVehicleData", "getFavoriteVehiclesIdData"]),
         ...mapGetters("Code", ["getStatesData", "getCitiesData"]),
 
+        isHiddenPrice() {
+            const raw =
+                this.data?.IsHiddenPrice ??
+                this.data?.isHiddenPrice ??
+                this.data?.IsHidden ??
+                false;
+
+            // Accept boolean, numeric and string values
+            return raw === true || raw === 1 || raw === 'true';
+        },
 
     },
     methods: {
@@ -180,7 +196,6 @@ export default {
             const id = idMatch ? idMatch[0] : null; // Extract the first number if it exists
 
             this.GetVehicle(id).then(Response => {
-                console.log("this.getVehicleData : ", this.getVehicleData);
                 this.data = this.getVehicleData;
                 if (this.isTokenValidSilent()) {
                     this.GetVehiclesFavoriteId();
@@ -520,7 +535,10 @@ export default {
                         </div>
                         <h1>{{ data.modelName }} </h1>
                         <div class="d-flex align-items-center">
-                            <span class="price"> {{ formatCurrency(data.price, data.currency) }} </span>
+                            <span v-if="!isHiddenPrice" class="price">
+                                {{ formatCurrency(data.price, data.currency) }}
+                            </span>
+                            <PriceHiddenChip v-else />
                             <!-- <span class="des"> 34.75$ </span> -->
                         </div>
 
@@ -544,7 +562,7 @@ export default {
                                                     <g id="SVGRepo_iconCarrier"> <path d="M5.7 15C4.03377 15.6353 3 16.5205 3 17.4997C3 19.4329 7.02944 21 12 21C16.9706 21 21 19.4329 21 17.4997C21 16.5205 19.9662 15.6353 18.3 15M12 9H12.01M18 9C18 13.0637 13.5 15 12 18C10.5 15 6 13.0637 6 9C6 5.68629 8.68629 3 12 3C15.3137 3 18 5.68629 18 9ZM13 9C13 9.55228 12.5523 10 12 10C11.4477 10 11 9.55228 11 9C11 8.44772 11.4477 8 12 8C12.5523 8 13 8.44772 13 9Z" stroke="#26d829" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                                      </path> 
                                                     </g>
-                                                </svg> قطاع غزة  
+                                                </svg> {{ stateNameFunc(data.ownerAddressStateId) }}
                                             </li> 
                                         <p> {{ stripHtml(data.description) }}
                                             <a v-if="data.description.length > 150"
@@ -666,7 +684,12 @@ export default {
                             </svg>
                         </span>
                         <h5>{{ $t('vehicle_card_price') }}</h5>
-                        <p> {{ formatCurrency(data.price, data.currency) }}</p>
+                        <p v-if="!isHiddenPrice">
+                            {{ formatCurrency(data.price, data.currency) }}
+                        </p>
+                        <p v-else class="rent-price-hidden">
+                            السعر مخفي
+                        </p>
                     </div>
                 </div>
                 <div class="col-lg-2 col-md-3 col-sm-6 text-center">
@@ -993,6 +1016,37 @@ export default {
 
 .details-squre span svg path {
     fill: #26d829;
+}
+
+.price-hidden {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 14px;
+    border-radius: 12px;
+    border: 1px solid rgba(38, 217, 41, 0.35);
+    background: rgba(38, 217, 41, 0.08);
+    color: #26d829;
+    font-weight: 700;
+}
+
+.price-hidden-text {
+    font-size: 14px;
+    line-height: 1;
+}
+
+.rent-price-hidden {
+    margin: 0;
+    padding: 10px 12px;
+    border-radius: 12px;
+    border: 1px solid rgba(38, 217, 41, 0.25);
+    background: rgba(38, 217, 41, 0.06);
+    color: #26d829;
+    font-weight: 700;
+}
+
+.rent-price-value {
+    margin: 0;
 }
 
 @media (max-width: 768px) {

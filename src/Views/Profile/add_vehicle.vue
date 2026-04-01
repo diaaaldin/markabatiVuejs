@@ -3,6 +3,7 @@ import { mapState, mapGetters, mapActions } from "vuex";
 import { ElLoading } from 'element-plus';
 import cropper from '@/components/cropper/VehicleImageCropper.vue';
 import CKEditorComponent from '@/components/editor/CKEditorComponent.vue';
+import BorderBox from '@/components/Profile/BorderBox.vue';
 
 // for file pond
 import vueFilePond from 'vue-filepond';
@@ -33,6 +34,7 @@ export default {
 				numOfMeals: null,
 				colorIdCFK: 0,
 				paintedStatusIdCfk: 0,
+				isHiddenPrice: false,
 				price: null,
 				currency: 0,
 				gearTypeIdCfk: 0,
@@ -68,6 +70,7 @@ export default {
 		FilePond,
 		cropper,
 		CKEditorComponent,
+		BorderBox,
 	},
 
 	emits: {
@@ -189,6 +192,13 @@ export default {
 					}
 				});
 		},
+		priceRequiredInvalid() {
+			if (this.data.isHiddenPrice) return false;
+			const p = parseFloat(this.data.price);
+			if (this.data.price === null || this.data.price === '' || Number.isNaN(p)) return true;
+			return p === 0;
+		},
+
 		checkAddValidation() {
 			if (this.data.brandIdFk == 0) {
 				this.$moshaToast('إختر نوع المركبة', {
@@ -270,7 +280,7 @@ export default {
 					timeout: 3000,
 				});
 				return false;
-			} else if (this.data.price == 0) {
+			} else if (this.priceRequiredInvalid()) {
 				this.$moshaToast('enter product price', {
 					hideProgressBar: 'false',
 					position: 'top-center',
@@ -280,7 +290,7 @@ export default {
 					timeout: 3000,
 				});
 				return false;
-			} else if (this.data.currency == 0) {
+			} else if (!this.data.isHiddenPrice && this.data.currency == 0) {
 				this.$moshaToast('إختر نوع العملة المراد', {
 					hideProgressBar: 'false',
 					position: 'top-center',
@@ -499,65 +509,54 @@ export default {
 			this.data.extinsionCategory.splice(index, 1);
 		},
 
-		// Year validation - only check after 4 digits are typed
-		validateYearAfter4Digits() {
-			// Convert to string to check length
-			const yearStr = this.data.year.toString();
+		getCurrentYear() {
+			return new Date().getFullYear();
+		},
 
-			// Only validate when exactly 4 digits are entered
-			if (yearStr.length === 4) {
-				const year = parseInt(this.data.year);
+		onYearKeydown(e) {
+			// allow navigation/edit keys + shortcuts
+			if (e.ctrlKey || e.metaKey) return;
+			const allowed = [
+				'Backspace', 'Delete', 'Tab', 'Enter', 'Escape',
+				'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown',
+				'Home', 'End',
+			];
+			if (allowed.includes(e.key)) return;
 
-				if (year > 2030) {
-					this.data.year = 2030;
-					this.$moshaToast('السنة يجب أن تكون أقل من أو تساوي 2030', {
-						hideProgressBar: 'false',
-						position: 'top-center',
-						showIcon: 'true',
-						swipeClose: 'true',
-						type: 'warning',
-						timeout: 3000,
-					});
-				} else if (year < 1900) {
-					this.data.year = 1900;
-					this.$moshaToast('السنة يجب أن تكون أكبر من أو تساوي 1900', {
-						hideProgressBar: 'false',
-						position: 'top-center',
-						showIcon: 'true',
-						swipeClose: 'true',
-						type: 'warning',
-						timeout: 3000,
-					});
-				}
+			// allow digits only
+			if (!/^\d$/.test(e.key)) {
+				e.preventDefault();
 			}
 		},
 
-		// Validation methods for numeric inputs
-		validateYear() {
-			const year = parseInt(this.data.year);
-			if (isNaN(year)) {
-				this.data.year = 0;
-			} else if (year < 1900) {
-				this.data.year = 1900;
-				this.$moshaToast('السنة يجب أن تكون أكبر من 1900', {
-					hideProgressBar: 'false',
-					position: 'top-center',
-					showIcon: 'true',
-					swipeClose: 'true',
-					type: 'warning',
-					timeout: 3000,
-				});
-			} else if (year > 2030) {
-				this.data.year = 2030;
-				this.$moshaToast('السنة يجب أن تكون أقل من 2030', {
-					hideProgressBar: 'false',
-					position: 'top-center',
-					showIcon: 'true',
-					swipeClose: 'true',
-					type: 'warning',
-					timeout: 3000,
-				});
+		onYearInput(e) {
+			const maxYear = this.getCurrentYear();
+			let v = e?.target?.value ?? (this.data.year == null ? '' : String(this.data.year));
+			v = v.replace(/\D/g, '').slice(0, 4);
+
+			if (v) {
+				const n = Number(v);
+				if (!Number.isNaN(n) && n > maxYear) {
+					v = String(maxYear);
+				}
 			}
+
+			this.data.year = v;
+			if (e?.target) e.target.value = v;
+		},
+
+		onYearPaste(e) {
+			e.preventDefault();
+			const text = (e.clipboardData || window.clipboardData)?.getData('text') ?? '';
+			const digits = String(text).replace(/\D/g, '').slice(0, 4);
+			const maxYear = this.getCurrentYear();
+			let v = digits;
+			if (v) {
+				const n = Number(v);
+				if (!Number.isNaN(n) && n > maxYear) v = String(maxYear);
+			}
+			this.data.year = v;
+			if (e?.target) e.target.value = v;
 		},
 
 		validateDistance() {
@@ -623,7 +622,7 @@ function debounce(func, wait) {
 			<div class="page-header">
 				<div class="row">
 					<div class="col-sm-12">
-						<h3 class="page-title">إضافة مركبة جديدة</h3>
+						<h3 class="page-title">إضافة مركبة للبيع</h3>
 					</div>
 				</div>
 			</div>
@@ -659,9 +658,9 @@ function debounce(func, wait) {
 					</div>
 					<div class="col-12 col-sm-6">
 						<div class="form-group">
-							<label>سنة إضافة المركبة</label>
-							<input v-model="data.year" type="number" placeholder="أدخل سنة المركبة (مثال: 2025)"
-								min="1900" max="2030" @input="validateYearAfter4Digits"
+							<label>سنة إنتاج المركبة</label>
+							<input v-model="data.year" type="text" inputmode="numeric" pattern="[0-9]*"
+								placeholder="yyyy" maxlength="4" @keydown="onYearKeydown" @paste="onYearPaste" @input="onYearInput"
 								class="form-control mt-2 mb-4  py-3 text-start list_link gray-inp">
 						</div>
 					</div>
@@ -724,25 +723,44 @@ function debounce(func, wait) {
 							</select>
 						</div>
 					</div>
-					<div class="col-12 col-md-6">
-						<div class="form-group">
-							<label>سعر المركبة</label>
-							<input v-model="data.price" type="number" placeholder="أدخل سعر المركبة (مثال: 25000)"
-								min="0" step="0.01" @input="validatePrice" @blur="validatePrice"
-								class="form-control mt-2 mb-4  py-3 text-start list_link gray-inp">
-						</div>
-					</div>
-					<div class="col-12 col-md-6">
-						<div class="form-group">
-							<label>العملة المرادة</label>
-							<select v-model="data.currency"
-								class="form-control mt-2 mb-4  py-3 text-start list_link gray-inp">
-								<option value="0" key="0" selected>-- إختر العملة المرادة --</option>
-								<option v-for="item in getCurrencyData" :key="item.id" :value="item.id">
-									{{ item.name }}
-								</option>
-							</select>
-						</div>
+					<div class="col-12">
+						<BorderBox title="سعر المركبة والعملة" variant="sale">
+							<div class="form-group">
+								<label class="price-privacy-toggle" for="vehiclePriceHiddenAdd">
+									<input id="vehiclePriceHiddenAdd" v-model="data.isHiddenPrice"
+										class="price-privacy-toggle__input" type="checkbox">
+									<span class="price-privacy-toggle__text">إخفاء السعر عن العرض</span>
+								</label>
+								<p v-if="data.isHiddenPrice" class="price-privacy-hint">
+									لن يُعرض السعر أو العملة للزوار. لا يُشترط إدخال السعر أو اختيار العملة للإرسال.
+								</p>
+							</div>
+							<transition name="price-fields">
+								<div v-if="!data.isHiddenPrice" class="row">
+									<div class="col-12 col-md-6">
+										<div class="form-group">
+											<label>سعر المركبة</label>
+											<input v-model="data.price" type="number"
+												placeholder="أدخل سعر المركبة (مثال: 25000)" min="0" step="0.01"
+												@input="validatePrice" @blur="validatePrice"
+												class="form-control mt-2 mb-4  py-3 text-start list_link gray-inp">
+										</div>
+									</div>
+									<div class="col-12 col-md-6">
+										<div class="form-group">
+											<label>العملة المرادة</label>
+											<select v-model="data.currency"
+												class="form-control mt-2 mb-4  py-3 text-start list_link gray-inp">
+												<option value="0" key="0" selected>-- إختر العملة المرادة --</option>
+												<option v-for="item in getCurrencyData" :key="item.id" :value="item.id">
+													{{ item.name }}
+												</option>
+											</select>
+										</div>
+									</div>
+								</div>
+							</transition>
+						</BorderBox>
 					</div>
 					<div class="col-12 col-sm-12">
 						<div class="form-group">

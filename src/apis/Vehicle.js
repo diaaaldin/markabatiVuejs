@@ -4,6 +4,115 @@ const END_POINT = 'Vehicle';
 
 
 export default {
+    // Rent vehicle endpoints
+    GetRentVehicle(id) {
+        return Api.get(`RentVehicle/GetRentVehicle`, {
+            params: { id }
+        });
+    },
+
+    GetRentVehiclesRandomly(data) {
+        const params = {
+            ...(data.searchData?.ownerId && data.searchData.ownerId !== 0 && { ownerId: data.searchData.ownerId }),
+            ...(data.searchData?.stateId && data.searchData.stateId !== 0 && { stateId: data.searchData.stateId }),
+            ...(data.searchData?.vehicleBrandId && data.searchData.vehicleBrandId !== 0 && { vehicleBrandId: data.searchData.vehicleBrandId }),
+            ...(data.searchData?.vehicleModelId && data.searchData.vehicleModelId !== 0 && { vehicleModelId: data.searchData.vehicleModelId }),
+            ...(data.searchData?.yearFrom && data.searchData.yearFrom !== 0 && { yearFrom: data.searchData.yearFrom }),
+            ...(data.searchData?.yearTo && data.searchData.yearTo !== 0 && { yearTo: data.searchData.yearTo }),
+            ...(data.searchData?.priceFrom && data.searchData.priceFrom !== 0 && { priceFrom: data.searchData.priceFrom }),
+            ...(data.searchData?.priceTo && data.searchData.priceTo !== 0 && { priceTo: data.searchData.priceTo }),
+            ...(data.searchData?.mealsFrom && data.searchData.mealsFrom !== 0 && { mealsFrom: data.searchData.mealsFrom }),
+            ...(data.searchData?.mealsTo && data.searchData.mealsTo !== 0 && { mealsTo: data.searchData.mealsTo }),
+            ...(data.searchData?.color && data.searchData.color !== 0 && { color: data.searchData.color }),
+            ...(data.searchData?.bodyType && data.searchData.bodyType !== 0 && { bodyType: data.searchData.bodyType }),
+            ...(data.searchData?.specification && data.searchData.specification !== 0 && { specification: data.searchData.specification }),
+            ...(data.searchData?.paintedType && data.searchData.paintedType !== 0 && { paintedType: data.searchData.paintedType }),
+            ...(data.searchData?.paintedStatus && data.searchData.paintedStatus !== 0 && { paintedStatus: data.searchData.paintedStatus }),
+            ...(data.searchData?.gearType && data.searchData.gearType !== 0 && { gearType: data.searchData.gearType }),
+            ...(data.searchData?.oilType && data.searchData.oilType !== 0 && { oilType: data.searchData.oilType }),
+            page: data.page ?? 1,
+            pageSize: data.pageSize ?? 5,
+            searchText: data.searchText ?? ""
+        };
+
+        return Api.get(`RentVehicle/GetRentVehiclesRandomly`, { params });
+    },
+
+    GetRentVehicleForUpdate(id) {
+        const token = localStorage.getItem("token")
+            ? JSON.parse(localStorage.getItem("token"))
+            : null;
+        return Api.get(`RentVehicle/GetRentVehicleForUpdate`, {
+            headers: { 'Authorization': token, "Access-Control-Allow-Origin": "*" },
+            params: { id }
+        });
+    },
+
+    GetMyRentVehicles(statusId) {
+        const token = localStorage.getItem("token")
+            ? JSON.parse(localStorage.getItem("token"))
+            : null;
+        return Api.get(`RentVehicle/GetMyRentVehicles`, {
+            headers: { 'Authorization': token, "Access-Control-Allow-Origin": "*" },
+            params: { statusId }
+        });
+    },
+
+    GetRentVehicleUpdateInfo(vehicleId) {
+        const token = localStorage.getItem("token")
+            ? JSON.parse(localStorage.getItem("token"))
+            : null;
+        return Api.get(`RentVehicle/GetRentVehicleUpdateInfo`, {
+            headers: { 'Authorization': token, "Access-Control-Allow-Origin": "*" },
+            params: { vehicleId }
+        });
+    },
+
+    CreateRentVehicle(data) {
+        const token = localStorage.getItem("token")
+            ? JSON.parse(localStorage.getItem("token"))
+            : null;
+        return Api.post(`RentVehicle/CreateRentVehicle`, data, {
+            headers: { 'Authorization': token, "Access-Control-Allow-Origin": "*" },
+        });
+    },
+
+    UpdateRentVehicle(data) {
+        const token = localStorage.getItem("token")
+            ? JSON.parse(localStorage.getItem("token"))
+            : null;
+        return Api.put(`RentVehicle/UpdateRentVehicle`, data, {
+            headers: { 'Authorization': token, "Access-Control-Allow-Origin": "*" },
+        });
+    },
+
+    DeleteRentVehicle(id) {
+        const token = localStorage.getItem("token")
+            ? JSON.parse(localStorage.getItem("token"))
+            : null;
+        return Api.delete(`RentVehicle/DeleteRentVehicle`, {
+            headers: { 'Authorization': token, "Access-Control-Allow-Origin": "*" },
+            params: { id }
+        });
+    },
+
+    UpdateRentVehicleStatus(data) {
+        const token = localStorage.getItem("token")
+            ? JSON.parse(localStorage.getItem("token"))
+            : null;
+        return Api.put(`RentVehicle/UpdateRentVehicleStatus`, data, {
+            headers: { 'Authorization': token, "Access-Control-Allow-Origin": "*" },
+        });
+    },
+
+    UpdateRentVehicleImage360(data) {
+        const token = localStorage.getItem("token")
+            ? JSON.parse(localStorage.getItem("token"))
+            : null;
+        return Api.put(`RentVehicle/UpdateRentVehicleImage360`, data, {
+            headers: { 'Authorization': token, "Access-Control-Allow-Origin": "*" },
+        });
+    },
 
     GetVehicle(id) {
 
@@ -58,6 +167,18 @@ export default {
 
         };
         return Api.get(`${END_POINT}/GetUserVehicles`, config);
+    },
+
+    GetUserRentVehicles(data) {
+        let config = {
+            params: {
+                userId: data.userId,
+                page: data.page,
+                pageSize: data.pageSize,
+                searchText: data.searchText ?? "",
+            },
+        };
+        return Api.get(`RentVehicle/GetUserRentVehicles`, config);
     },
 
     GetVehiclesFavorite() {

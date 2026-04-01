@@ -74,10 +74,19 @@ export default {
                     <li v-if="$route.path === '/my_vehicles'" class="breadcrumb-item active" aria-current="page">
                         {{ $t('location_menu_my_vehicles') }}
                     </li>
-                    <li v-if="$route.path === '/update_vehicle'" class="breadcrumb-item">
+                     <li v-if="$route.path === '/update_vehicle' || $route.path === '/add_vehicle' " class="breadcrumb-item">
                         <router-link :to="{ name: 'profile_my_vehicles' }"> {{ $t('location_menu_my_vehicles') }}
                         </router-link>
                     </li>
+
+                    <li v-if="$route.path === '/my_rent_vehicles'" class="breadcrumb-item active" aria-current="page">
+                        {{ $t('location_menu_my_rent_vehicles') }}
+                    </li>
+                     <li v-if="$route.path === '/update_rent_vehicle' || $route.path === '/add_rent_vehicle' " class="breadcrumb-item">
+                        <router-link :to="{ name: 'profile_my_rent_vehicles' }"> {{ $t('location_menu_my_rent_vehicles') }}
+                        </router-link>
+                    </li>
+                   
                     <li v-if="$route.path === '/favorit'" class="breadcrumb-item active" aria-current="page">
                         {{ $t('location_menu_favorite') }}
                     </li>
@@ -103,6 +112,16 @@ export default {
 
                     <li v-if="$route.path === '/add_ads'" class="breadcrumb-item active" aria-current="page">
                         {{ $t('location_menu_add_ads') }}
+                    </li>
+
+                    <li v-if="$route.path === '/add_rent_vehicle'" class="breadcrumb-item active" aria-current="page">
+                        {{ $t('location_menu_add_rent_vehicle') }}
+                    </li>
+                    <li v-if="$route.path === '/update_rent_vehicle'" class="breadcrumb-item active" aria-current="page">
+                        {{ $t('location_menu_update_rent_vehicle') }}
+                    </li>
+                     <li v-if="$route.path === '/payment'" class="breadcrumb-item active" aria-current="page">
+                        {{ $t('location_menu_payment') }}
                     </li>
                 </ol>
 

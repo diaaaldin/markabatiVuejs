@@ -84,6 +84,16 @@ export default {
         };
         return Api.get(`${END_POINT}/GetSellers`, config);
     },
+    GetVehicleRentelers(data) {
+        let config = {
+            params: {
+                name: data.name,
+                page: data.page,
+                pageSize: data.pageSize,
+            },
+        };
+        return Api.get(`${END_POINT}/GetVehicleRentelers`, config);
+    },
 
 
     CustomerProfileInfo(id) {

@@ -53,6 +53,15 @@ export const GetSellers = ({ commit, dispatch }, data) => {
     });
 }
 
+export const GetVehicleRentelers = ({ commit, dispatch }, data) => {
+    return User.GetVehicleRentelers(data).then(function (response) {
+        commit('SET_USERS_DATA', response.data.data);
+        return response.data.data;
+    }).catch(function (error) {
+        throw error;
+    });
+}
+
 export const CustomerProfileInfo = ({ commit, dispatch }, userId) => {
     return User.CustomerProfileInfo(userId).then(function (response) {
         commit('SET_USER_DATA', response.data.data);

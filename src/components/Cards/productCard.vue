@@ -2,6 +2,7 @@
 import { mapState, mapGetters, mapActions } from "vuex";
 import { ElLoading } from 'element-plus';
 import { CurrenceEnum } from '@/config/config.js';
+import PriceHiddenChip from '@/components/PriceHiddenChip.vue';
 
 
 export default {
@@ -54,7 +55,7 @@ export default {
         }
     },
     components: {
-
+        PriceHiddenChip,
     },
 
     emits: {
@@ -74,6 +75,16 @@ export default {
     computed: {
         ...mapGetters("Code", ["getStatesData", "getCitiesData"]),
         ...mapGetters("Vehicles", ["getFavoriteVehiclesIdData"]),
+
+        isHiddenPrice() {
+            const raw =
+                this.product?.IsHiddenPrice ??
+                this.product?.isHiddenPrice ??
+                this.product?.IsHidden ??
+                false;
+
+            return raw === true || raw === 1 || raw === 'true';
+        },
     },
     methods: {
         ...mapActions("Code", ["GetStates", "GetCities"]),
@@ -258,7 +269,7 @@ export default {
             if (res) return res.name;
             else return "";
         },
-
+        
         cityNameFunc(id) {
             // console.log("this.getCitiesData : ", id);
             if (!this.getCitiesData || !Array.isArray(this.getCitiesData)) {
@@ -309,8 +320,6 @@ export default {
                     <div class="d-flex justify-content-between align-items-baseline mb-2">
                         <h6 class="card-title justify-content-start">{{ product.brandName }}</h6>
                         <a v-on:click="toggleFavoriteFunc()" href="javascript:void(0)" class="justify-content-end">
-                            <!-- <img loading="lazy" src="/img/icons/star2.svg"> -->
-
                             <svg viewBox="0 0 24 24" width="24" height="24" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
                                 <g id="SVGRepo_iconCarrier">
@@ -320,7 +329,6 @@ export default {
                                         :fill="isFavorite ? '#FFD700' : 'none'" stroke-width="1.5" />
                                 </g>
                             </svg>
-
                         </a>
                     </div>
                        <div class="d-flex justify-content-between align-items-baseline mb-2">
@@ -332,7 +340,7 @@ export default {
                                                     <g id="SVGRepo_iconCarrier"> <path d="M5.7 15C4.03377 15.6353 3 16.5205 3 17.4997C3 19.4329 7.02944 21 12 21C16.9706 21 21 19.4329 21 17.4997C21 16.5205 19.9662 15.6353 18.3 15M12 9H12.01M18 9C18 13.0637 13.5 15 12 18C10.5 15 6 13.0637 6 9C6 5.68629 8.68629 3 12 3C15.3137 3 18 5.68629 18 9ZM13 9C13 9.55228 12.5523 10 12 10C11.4477 10 11 9.55228 11 9C11 8.44772 11.4477 8 12 8C12.5523 8 13 8.44772 13 9Z" stroke="#26d829" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                                      </path> 
                                                     </g>
-                                                </svg> قطاع غزة  
+                                                </svg> {{stateNameFunc(product.ownerAddressStateId)}}  
                                             </div>
                     </div>
                     <div class="d-flex justify-content-between">
@@ -366,10 +374,10 @@ export default {
                             </div>
 
                             <div class=" d-flex align-items-center">
-                                <span class="price">
-                                    <!-- 5000$ -->
+                                <span v-if="!isHiddenPrice" class="price">
                                     {{ formatCurrency(product.price, product.currency) }}
                                 </span>
+                                <PriceHiddenChip v-else />
                             </div>
 
                             <div class="card-show">
@@ -487,6 +495,23 @@ export default {
 .seller_card {
     border: none;
     padding-bottom: 0;
+}
+
+.price-hidden {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 14px;
+    border-radius: 12px;
+    border: 1px solid rgba(38, 217, 41, 0.35);
+    background: rgba(38, 217, 41, 0.08);
+    color: #26d829;
+    font-weight: 700;
+}
+
+.price-hidden-text {
+    font-size: 14px;
+    line-height: 1;
 }
 </style>
 

@@ -175,6 +175,17 @@ export default {
             </div>
           </div>
         </li>
+        <li class="list-group-item " :class="{ active: $route.path === '/my_rent_vehicles' }" @click="$router.push('/my_rent_vehicles')" style="cursor: pointer;">
+          <div class="d-flex justify-content-between align-items-center py-2">
+            <div class="justify-content-start  d-flex">
+              <div class="d-flex align-items-center">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22.1796 13.66C22.0296 12.01 21.5896 10.25 18.3796 10.25H5.6196C2.4096 10.25 1.9796 12.01 1.8196 13.66L1.2596 19.75C1.1896 20.51 1.4396 21.27 1.9596 21.84C2.4896 22.42 3.2396 22.75 4.0396 22.75H5.9196C7.5396 22.75 7.8496 21.82 8.0496 21.21L8.2496 20.61C8.4796 19.92 8.5396 19.75 9.4396 19.75H14.5596C15.4596 19.75 15.4896 19.85 15.7496 20.61L15.9496 21.21C16.1496 21.82 16.4596 22.75 18.0796 22.75H19.9596C20.7496 22.75 21.5096 22.42 22.0396 21.84C22.5596 21.27 22.8096 20.51 22.7396 19.75L22.1796 13.66Z" fill="#26d829"></path></svg>
+                <router-link to="/my_rent_vehicles" class="list_link ms-2" @click.stop>مركباتي للإيجار</router-link>
+              </div>
+            </div>
+            <div class="justify-content-end d-flex"><svg class="arrow" height="14px" width="14px" viewBox="0 0 492 492" xml:space="preserve"><path d="M198.608,246.104L382.664,62.04c5.068-5.056,7.856-11.816,7.856-19.024c0-7.212-2.788-13.968-7.856-19.032l-16.128-16.12 C361.476,2.792,354.712,0,347.504,0s-13.964,2.792-19.028,7.864L109.328,227.008c-5.084,5.08-7.868,11.868-7.848,19.084 c-0.02,7.248,2.76,14.028,7.848,19.112l218.944,218.932c5.064,5.072,11.82,7.864,19.032,7.864c7.208,0,13.964-2.792,19.032-7.864 l16.124-16.12c10.492-10.492,10.492-27.572,0-38.06L198.608,246.104z"></path></svg></div>
+          </div>
+        </li>
 
         <li class="list-group-item" :class="{ active: $route.path === '/favorit' }" @click="$router.push('/favorit')" style="cursor: pointer;">
           <div class="d-flex justify-content-between align-items-center py-2">

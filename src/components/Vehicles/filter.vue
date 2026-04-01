@@ -2,6 +2,12 @@
 import { mapState, mapGetters, mapActions } from "vuex";
 
 export default {
+    props: {
+        showMealsFilter: {
+            type: Boolean,
+            default: true,
+        },
+    },
     data() {
         return {
             stateId: 0,
@@ -85,7 +91,7 @@ export default {
             }
         },
         filterChangeFunc() {
-            this.$emit("filterChange", {
+            const payload = {
                 stateId: this.stateId,
                 vehicleBrandId: this.vehicleBrandId,
                 vehicleModelId: this.vehicleModelId,
@@ -97,9 +103,14 @@ export default {
                 yearTo: this.yearTo,
                 priceFrom: this.priceFrom,
                 priceTo: this.priceTo,
-                mealsFrom: this.mealsFrom,
-                mealsTo: this.mealsTo,
-            });
+            };
+
+            if (this.showMealsFilter) {
+                payload.mealsFrom = this.mealsFrom;
+                payload.mealsTo = this.mealsTo;
+            }
+
+            this.$emit("filterChange", payload);
         },
         selectedStateFunc(id) {
             this.stateId = id;
@@ -150,6 +161,7 @@ export default {
             }
         },
         emitMeal() {
+            if (!this.showMealsFilter) return;
             if (this.mealsFrom < this.mealsTo) {
                 this.filterChangeFunc();
             }
@@ -284,7 +296,7 @@ export default {
                     </div>
                 </div>
 
-                <div class="accordion-item customize-according mt-2">
+                <div v-if="showMealsFilter" class="accordion-item customize-according mt-2">
                     <h2 class="accordion-header" id="headingOne">
                         <button class="accordion-button  btn " type="button" data-bs-toggle="collapse"
                             data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">

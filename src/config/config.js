@@ -41,7 +41,7 @@ export const ParentEnum = {
   OrderStatus: 3,
   BodyType: 4,
   Colors: 5,
-  PaintedType: 6,
+  RentVehicleDriveStatus: 6,
   GearType: 7,
   OilType: 8,
   UserType: 9,

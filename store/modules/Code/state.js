@@ -25,4 +25,6 @@ export default{
     SendMessageWaysData: {},
     AnnouncementTypesData: {},
     ConstantsData: {},
+
+    RentDriverStatusData: [],
 }
