@@ -1022,7 +1022,7 @@ export default {
     display: inline-flex;
     align-items: center;
     gap: 10px;
-    padding: 8px 14px;
+    padding: 4px 10px;
     border-radius: 12px;
     border: 1px solid rgba(38, 217, 41, 0.35);
     background: rgba(38, 217, 41, 0.08);
